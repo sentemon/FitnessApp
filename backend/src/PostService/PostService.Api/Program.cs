@@ -1,9 +1,18 @@
 using PostService.Api.GraphQL.Mutation;
 using PostService.Api.GraphQL.Query;
+using PostService.Application;
+using PostService.Infrastructure;
+using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGraphQLServer()
+builder.Services
+    .AddPersistenceServices()
+    .AddInfrastructureServices()
+    .AddApplicationServices();
+
+builder.Services
+    .AddGraphQLServer()
     .AddMutationType<Mutation>()
     .AddQueryType<Query>();
 

@@ -1,16 +1,16 @@
+using PostService.Api.GraphQL.Mutation;
+using PostService.Api.GraphQL.Query;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddGraphQLServer()
+    .AddMutationType<Mutation>()
+    .AddQueryType<Query>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
+
+app.MapGraphQL();
 
 app.Run();

@@ -3,7 +3,7 @@ name: Post Service CI/CD Pipeline
 on:
   push:
     paths:
-      - 'backend/src/PostService/**'
+      - 'backend/services/PostService/**'
       - '.github/workflows/post.yml'
   pull_request:
     branches:
@@ -23,13 +23,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./backend/src/PostService/PostService.sln
+      run: dotnet restore ./backend/services/PostService/PostService.sln
 
     - name: Build project
-      run: dotnet build --configuration Release ./backend/src/PostService/PostService.sln --no-restore
+      run: dotnet build --configuration Release ./backend/services/PostService/PostService.sln --no-restore
 
     - name: Run tests
-      run: dotnet test ./backend/src/PostService/PostService.sln --no-restore --verbosity normal
+      run: dotnet test ./backend/services/PostService/PostService.sln --no-restore --verbosity normal
 
   docker:
     needs: build
@@ -43,7 +43,7 @@ jobs:
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest ./backend/src/PostService
+      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest ./backend/services/PostService
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest

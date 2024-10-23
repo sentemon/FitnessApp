@@ -1,14 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain", "PostService.Domain\PostService.Domain.csproj", "{BC83A789-36C2-42E7-B630-6BC503375C30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "src\PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Infrastructure", "PostService.Infrastructure\PostService.Infrastructure.csproj", "{49301846-33F7-4C75-A1F9-6A0FEBA5EADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain", "src\PostService.Domain\PostService.Domain.csproj", "{BC83A789-36C2-42E7-B630-6BC503375C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Persistence", "PostService.Persistence\PostService.Persistence.csproj", "{0E631CB2-47C2-458A-B163-43CE50473B8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Infrastructure", "src\PostService.Infrastructure\PostService.Infrastructure.csproj", "{49301846-33F7-4C75-A1F9-6A0FEBA5EADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application", "PostService.Application\PostService.Application.csproj", "{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Persistence", "src\PostService.Persistence\PostService.Persistence.csproj", "{0E631CB2-47C2-458A-B163-43CE50473B8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application", "src\PostService.Application\PostService.Application.csproj", "{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,12 @@ Global
 		{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2E44C019-ED30-4671-A878-D2F7B6071024} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
+		{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
+		{BC83A789-36C2-42E7-B630-6BC503375C30} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
+		{49301846-33F7-4C75-A1F9-6A0FEBA5EADD} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
+		{0E631CB2-47C2-458A-B163-43CE50473B8A} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
 	EndGlobalSection
 EndGlobal

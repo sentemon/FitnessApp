@@ -3,7 +3,7 @@ name: Post Service CI/CD Pipeline
 on:
   push:
     paths:
-      - './backend/src/PostService/**'
+      - 'backend/src/PostService/**'
   pull_request:
     branches:
       - master

@@ -5,7 +5,7 @@ using PostService.Infrastructure;
 using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-
+ 
 builder.Services
     .AddPersistenceServices()
     .AddInfrastructureServices()

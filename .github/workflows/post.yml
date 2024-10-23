@@ -1,0 +1,48 @@
+name: Post Service CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - './backend/src/PostService/**'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ./backend/src/PostService/PostService.sln
+
+    - name: Build project
+      run: dotnet build --configuration Release ./backend/src/PostService/PostService.sln --no-restore
+
+    - name: Run tests
+      run: dotnet test ./backend/src/PostService/PostService.sln --no-restore --verbosity normal
+
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest ./backend/src/PostService
+
+    - name: Push Docker image to Docker Hub
+      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest

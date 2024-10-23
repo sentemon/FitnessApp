@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'backend/src/PostService/**'
+      - '.github/workflows/post.yml'
   pull_request:
     branches:
       - master

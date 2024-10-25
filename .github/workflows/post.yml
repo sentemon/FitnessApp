@@ -5,6 +5,10 @@ on:
     paths:
       - 'backend/FitnessApp/src/PostService/**'
       - '.github/workflows/post.yml'
+    branches:
+      - master
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - master
@@ -43,7 +47,11 @@ jobs:
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest -f ./backend/FitnessApp/src/PostService/Dockerfile ./backend/FitnessApp
+      run: |
+        IMAGE_VERSION=${GITHUB_REF#refs/tags/} # Извлекаем версию из тега
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} -f ./backend/FitnessApp/src/PostService/Dockerfile ./backend/FitnessApp
 
     - name: Push Docker image to Docker Hub
-      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:latest
+      run: |
+        IMAGE_VERSION=${GITHUB_REF#refs/tags/} # Извлекаем версию из тега
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}

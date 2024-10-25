@@ -48,10 +48,18 @@ jobs:
 
     - name: Build Docker image
       run: |
-        IMAGE_VERSION=${GITHUB_REF#refs/tags/} # Извлекаем версию из тега
+        if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+        IMAGE_VERSION=${GITHUB_REF#refs/tags/}
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} -f ./backend/FitnessApp/src/PostService/Dockerfile ./backend/FitnessApp
+        else
+          echo "Skipping Docker image build because this is not a tag push."
+        fi
 
     - name: Push Docker image to Docker Hub
       run: |
-        IMAGE_VERSION=${GITHUB_REF#refs/tags/} # Извлекаем версию из тега
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}
+        if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+          IMAGE_VERSION=${GITHUB_REF#refs/tags/}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}
+        else
+          echo "Skipping Docker image push because this is not a tag push."
+        fi

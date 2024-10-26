@@ -4,7 +4,7 @@ namespace PostService.Domain.Entities;
 
 public class Post
 {
-    public Guid PostId { get; private set; }
+    public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
@@ -14,9 +14,9 @@ public class Post
     public int CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Post(Guid postId, Guid userId, string title, string description, string contentUrl, ContentType contentType)
+    public Post(Guid id, Guid userId, string title, string description, string contentUrl, ContentType contentType)
     {
-        PostId = postId;
+        Id = id;
         UserId = userId;
         Title = title;
         Description = description;

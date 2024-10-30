@@ -1,4 +1,4 @@
-using Shared.Application.Errors;
+using Shared.Application.Common;
 
 namespace Shared.Application.Abstractions;
 

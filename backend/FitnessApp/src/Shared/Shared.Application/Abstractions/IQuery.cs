@@ -1,5 +1,5 @@
 namespace Shared.Application.Abstractions;
 
-public interface IQuery<TResponse>
+public interface IQuery
 {
 }

@@ -1,4 +1,4 @@
-namespace Shared.Application.Errors;
+namespace Shared.Application.Common;
 
 public class Error
 {

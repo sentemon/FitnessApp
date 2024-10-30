@@ -1,5 +1,6 @@
-﻿using Shared.Application.Abstractions;
+﻿using PostService.Application.DTOs;
+using Shared.Application.Abstractions;
 
 namespace PostService.Application.Commands.AddPost;
 
-public record AddPostCommand() : ICommand;
+public record AddPostCommand(CreatePostDto CreatePost, Guid UserId) : ICommand;

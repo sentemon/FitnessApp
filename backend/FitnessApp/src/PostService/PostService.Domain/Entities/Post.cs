@@ -14,9 +14,9 @@ public class Post
     public int CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Post(Guid id, Guid userId, string title, string description, string contentUrl, ContentType contentType)
+    public Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         UserId = userId;
         Title = title;
         Description = description;
@@ -25,6 +25,12 @@ public class Post
         LikeCount = 0;
         CommentCount = 0;
         CreatedAt = DateTime.UtcNow;
+    }
+
+    public void Update(string title, string description)
+    {
+        Title = title;
+        Description = description;
     }
     
     public void IncrementCommentCount() => CommentCount++;

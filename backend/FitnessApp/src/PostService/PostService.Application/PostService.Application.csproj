@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
       <ProjectReference Include="..\PostService.Domain\PostService.Domain.csproj" />
+      <ProjectReference Include="..\PostService.Persistence\PostService.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

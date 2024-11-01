@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -16,7 +17,7 @@ public class GetPostQueryHandler : IQueryHandler<GetPostQuery, Post>
 
     public async Task<IResult<Post, Error>> HandleAsync(GetPostQuery query)
     {
-        var post = _context.Posts.FirstOrDefault(p => p.Id == query.Id);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == query.Id);
 
         if (post == null)
         {

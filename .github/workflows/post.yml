@@ -3,7 +3,7 @@ name: Post Service CI/CD Pipeline
 on:
   push:
     paths:
-      - 'backend/FitnessApp/src/PostService/**'
+      - 'backend/src/PostService/**'
       - '.github/workflows/post.yml'
     branches:
       - master
@@ -27,13 +27,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./backend/FitnessApp/FitnessApp.sln
+      run: dotnet restore ./backend/FitnessApp.sln
 
     - name: Build project
-      run: dotnet build --configuration Release ./backend/FitnessApp/FitnessApp.sln --no-restore
+      run: dotnet build --configuration Release ./backend/FitnessApp.sln --no-restore
 
     - name: Run tests
-      run: dotnet test ./backend/FitnessApp/FitnessApp.sln --no-restore --verbosity normal
+      run: dotnet test ./backend/FitnessApp.sln --no-restore --verbosity normal
 
   docker:
     needs: build
@@ -50,7 +50,7 @@ jobs:
       run: |
         if [[ "$GITHUB_REF" == refs/tags/* ]]; then
         IMAGE_VERSION=${GITHUB_REF#refs/tags/}
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} -f ./backend/FitnessApp/src/PostService/Dockerfile ./backend/FitnessApp
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} -f ./backend/src/PostService/Dockerfile ./backend
         else
           echo "Skipping Docker image build because this is not a tag push."
         fi

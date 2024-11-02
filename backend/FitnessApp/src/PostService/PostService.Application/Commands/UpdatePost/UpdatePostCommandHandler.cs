@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
 using PostService.Persistence;
@@ -22,12 +21,12 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
 
         if (post == null)
         {
-            return new Result<PostDto>(new Error("Post not found."));
+            return Result<PostDto>.Failure(new Error("Post not found."));
         }
 
         if (post.UserId != command.UserId)
         {
-            return new Result<PostDto>(new Error("You do not have permission to update this post."));
+            return Result<PostDto>.Failure(new Error("You do not have permission to update this post."));
         }
         
         post.Update(command.UpdatePost.Title, command.UpdatePost.Description);
@@ -43,6 +42,6 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
             post.CreatedAt
         );
 
-        return new Result<PostDto>(postDto);
+        return Result<PostDto>.Success(postDto);
     }
 }

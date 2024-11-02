@@ -21,9 +21,9 @@ public class GetPostQueryHandler : IQueryHandler<GetPostQuery, Post>
 
         if (post == null)
         {
-            return new Result<Post>(new Error("Post not found."));
+            return Result<Post>.Failure(new Error("Post not found."));
         }
 
-        return new Result<Post>(post);
+        return Result<Post>.Success(post);
     }
 }

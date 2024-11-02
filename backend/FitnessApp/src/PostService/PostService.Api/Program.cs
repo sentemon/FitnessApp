@@ -14,8 +14,9 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    .AddQueryType<Query>()
     .AddMutationType<Mutation>()
-    .AddQueryType<Query>();
+    .AddType(new UuidType());
 
 var app = builder.Build();
 

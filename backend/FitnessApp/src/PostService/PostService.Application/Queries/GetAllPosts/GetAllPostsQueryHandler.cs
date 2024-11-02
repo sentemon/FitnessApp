@@ -17,18 +17,11 @@ public class GetAllPostsQueryHandler : IQueryHandler<GetAllPostsQuery, IList<Pos
 
     public async Task<IResult<IList<Post>, Error>> HandleAsync(GetAllPostsQuery query)
     {
-        var lastPostId = Guid.Empty;
-        
-        if (!string.IsNullOrEmpty(query.AfterCursor) && !Guid.TryParse(query.AfterCursor, out lastPostId))
-        {
-            return new Result<IList<Post>>(new Error("Invalid cursor format."));
-        }
-        
         var queryablePosts = _context.Posts.AsQueryable();
 
-        if (lastPostId != Guid.Empty)
+        if (query.LastPostId != Guid.Empty)
         {
-            queryablePosts = queryablePosts.Where(p => p.Id != lastPostId);
+            queryablePosts = queryablePosts.Where(p => p.Id != query.LastPostId);
         }
         
         var posts = await queryablePosts
@@ -36,6 +29,6 @@ public class GetAllPostsQueryHandler : IQueryHandler<GetAllPostsQuery, IList<Pos
             .Take(query.First)
             .ToListAsync();
         
-        return new Result<IList<Post>>(posts);
+        return Result<IList<Post>>.Success(posts);
     }
 }

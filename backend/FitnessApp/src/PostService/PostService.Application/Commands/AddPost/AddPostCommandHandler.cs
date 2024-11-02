@@ -4,6 +4,7 @@ using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.Application.Extensions;
 
 namespace PostService.Application.Commands.AddPost;
 
@@ -20,12 +21,11 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
 
     public async Task<IResult<PostDto, Error>> HandleAsync(AddPostCommand command)
     {
-        var validatorResult = await _validator.ValidateAsync(command.CreatePost);
+        var errorMessage = await _validator.ValidateResultAsync(command.CreatePost);
 
-        if (!validatorResult.IsValid)
+        if (!string.IsNullOrEmpty(errorMessage))
         {
-            var errorMessage = string.Join("; ", validatorResult.Errors.Select(e => e.ErrorMessage));
-            return new Result<PostDto>(new Error(errorMessage));
+            return Result<PostDto>.Failure(new Error(errorMessage));
         }
 
         var post = new Post(
@@ -48,6 +48,6 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             post.CreatedAt
         );
 
-        return new Result<PostDto>(postDto);
+        return Result<PostDto>.Success(postDto);
     }
 }

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PostService.Api.GraphQL.Mutation;
-using PostService.Api.GraphQL.Query;
+using PostService.Api.GraphQL.Mutations;
+using PostService.Api.GraphQL.Queries;
 using PostService.Application;
 using PostService.Infrastructure;
 using PostService.Persistence;

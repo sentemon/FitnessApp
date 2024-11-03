@@ -23,7 +23,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
     {
         var errorMessage = await _validator.ValidateResultAsync(command.CreatePost);
 
-        if (!string.IsNullOrEmpty(errorMessage))
+        if (errorMessage != null)
         {
             return Result<PostDto>.Failure(new Error(errorMessage));
         }
@@ -45,8 +45,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             post.ContentType,
             post.LikeCount,
             post.CommentCount,
-            post.CreatedAt
-        );
+            post.CreatedAt);
 
         return Result<PostDto>.Success(postDto);
     }

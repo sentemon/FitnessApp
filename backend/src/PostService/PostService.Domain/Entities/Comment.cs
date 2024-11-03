@@ -8,9 +8,9 @@ public class Comment
     public string Content { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Comment(Guid id, Guid postId, Guid userId, string content)
+    public Comment(Guid postId, Guid userId, string content)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         PostId = postId;
         UserId = userId;
         Content = content;

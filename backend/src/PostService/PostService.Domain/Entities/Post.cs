@@ -34,6 +34,8 @@ public class Post
     }
     
     public void IncrementCommentCount() => CommentCount++;
+    public void DecrementCommentCount() => CommentCount--;
     
     public void IncrementLikeCount() => LikeCount++;
+    public void DecrementLikeCount() => LikeCount--;
 }

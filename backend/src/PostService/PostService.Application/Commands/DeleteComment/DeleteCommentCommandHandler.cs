@@ -28,6 +28,14 @@ public class DeleteCommentCommandHandler : ICommandHandler<DeleteCommentCommand,
             return Result<string>.Failure(new Error("You do not have permission to delete this comment."));
         }
 
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+
+        if (post == null)
+        {
+            return Result<string>.Failure(new Error("Post not found."));
+        }
+        
+        post.DecrementCommentCount();
         _context.Remove(comment);
         await _context.SaveChangesAsync();
 

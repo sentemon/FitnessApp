@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
 using PostService.Domain.Entities;
 using PostService.Persistence;
@@ -34,6 +35,16 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
             command.CreateComment.Content);
 
         _context.Comments.Add(comment);
+
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+        
+        if (post == null)
+        {
+            return Result<CommentDto>.Failure(new Error("Post not found"));
+        }
+        
+        post.IncrementCommentCount();
+        
         await _context.SaveChangesAsync();
 
         var commentDto = new CommentDto(

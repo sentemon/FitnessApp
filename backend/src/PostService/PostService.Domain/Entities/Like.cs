@@ -7,9 +7,9 @@ public class Like
     public Guid UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Like(Guid id, Guid postId, Guid userId)
+    public Like(Guid postId, Guid userId)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         PostId = postId;
         UserId = userId;
         CreatedAt = DateTime.UtcNow;

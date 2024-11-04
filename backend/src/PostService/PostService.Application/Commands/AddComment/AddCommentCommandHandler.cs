@@ -29,22 +29,20 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
             return Result<CommentDto>.Failure(new Error(errorMessage));
         }
 
-        var comment = new Comment(
-            command.CreateComment.PostId,
-            command.UserId,
-            command.CreateComment.Content);
-
-        _context.Comments.Add(comment);
-
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.CreateComment.PostId);
         
         if (post == null)
         {
             return Result<CommentDto>.Failure(new Error("Post not found"));
         }
         
+        var comment = new Comment(
+            command.CreateComment.PostId,
+            command.UserId,
+            command.CreateComment.Content);
+
+        _context.Comments.Add(comment);
         post.IncrementCommentCount();
-        
         await _context.SaveChangesAsync();
 
         var commentDto = new CommentDto(

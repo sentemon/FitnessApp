@@ -10,8 +10,8 @@ public class Post
     public string Description { get; private set; }
     public string ContentUrl { get; private set; }
     public ContentType ContentType { get; private set; }
-    public int LikeCount { get; private set; }
-    public int CommentCount { get; private set; }
+    public uint LikeCount { get; private set; }
+    public uint CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     public Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)

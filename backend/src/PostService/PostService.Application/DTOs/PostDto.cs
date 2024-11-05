@@ -7,6 +7,6 @@ public record PostDto(
     string Description,
     string ContentUrl,
     ContentType ContentType,
-    int LikeCount,
-    int CommentCount,
+    uint LikeCount,
+    uint CommentCount,
     DateTime CreatedAt);

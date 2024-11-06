@@ -1,6 +1,7 @@
 using PostService.Domain.Entities;
 using PostService.Domain.Enums;
 using Xunit;
+using FluentAssertions;
 
 namespace PostService.Domain.Tests;
 
@@ -13,21 +14,21 @@ public class PostTests
         var userId = Guid.NewGuid();
         var title = "Sample Title";
         var description = "Sample Description";
-        var contentUrl = "http://example.com/content";
+        var contentUrl = "https://example.com/content";
         var contentType = ContentType.Text;
 
         // Act
         var post = new Post(userId, title, description, contentUrl, contentType);
 
         // Assert
-        Assert.Equal(userId, post.UserId);
-        Assert.Equal(title, post.Title);
-        Assert.Equal(description, post.Description);
-        Assert.Equal(contentUrl, post.ContentUrl);
-        Assert.Equal(contentType, post.ContentType);
-        Assert.Equal((uint)0, post.LikeCount);
-        Assert.Equal((uint)0, post.CommentCount);
-        Assert.Equal(DateTime.UtcNow.Date, post.CreatedAt.Date);
+        post.UserId.Should().Be(userId);
+        post.Title.Should().Be(title);
+        post.Description.Should().Be(description);
+        post.ContentUrl.Should().Be(contentUrl);
+        post.ContentType.Should().Be(contentType);
+        post.LikeCount.Should().Be(0);
+        post.CommentCount.Should().Be(0);
+        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public class PostTests
             Guid.NewGuid(), 
             "Old Title", 
             "Old Description", 
-            "http://example.com",
+            "https://example.com",
             ContentType.Text);
         
         var newTitle = "New Title";
@@ -48,8 +49,8 @@ public class PostTests
         post.Update(newTitle, newDescription);
 
         // Assert
-        Assert.Equal(newTitle, post.Title);
-        Assert.Equal(newDescription, post.Description);
+        post.Title.Should().Be(newTitle);
+        post.Description.Should().Be(newDescription);
     }
 
     [Fact]
@@ -60,14 +61,14 @@ public class PostTests
             Guid.NewGuid(),
             "Title", 
             "Description",
-            "http://example.com",
+            "https://example.com",
             ContentType.Text);
 
         // Act
         post.IncrementLikeCount();
 
         // Assert
-        Assert.Equal((uint)1, post.LikeCount);
+        post.LikeCount.Should().Be(1);
     }
 
     [Fact]
@@ -78,7 +79,7 @@ public class PostTests
             Guid.NewGuid(),
             "Title",
             "Description",
-            "http://example.com",
+            "https://example.com",
             ContentType.Text);
         
         post.IncrementLikeCount(); // Initial increment to avoid negative count
@@ -87,7 +88,7 @@ public class PostTests
         post.DecrementLikeCount();
 
         // Assert
-        Assert.Equal((uint)0, post.LikeCount);
+        post.LikeCount.Should().Be(0);
     }
 
     [Fact]
@@ -98,14 +99,14 @@ public class PostTests
             Guid.NewGuid(), 
             "Title", 
             "Description", 
-            "http://example.com", 
+            "https://example.com", 
             ContentType.Text);
 
         // Act
         post.IncrementCommentCount();
 
         // Assert
-        Assert.Equal((uint)1, post.CommentCount);
+        post.CommentCount.Should().Be(1);
     }
 
     [Fact]
@@ -116,7 +117,7 @@ public class PostTests
             Guid.NewGuid(),
             "Title", 
             "Description",
-            "http://example.com",
+            "https://example.com",
             ContentType.Text);
         
         post.IncrementCommentCount(); // Initial increment to avoid negative count
@@ -125,6 +126,6 @@ public class PostTests
         post.DecrementCommentCount();
 
         // Assert
-        Assert.Equal((uint)0, post.CommentCount);
+        post.CommentCount.Should().Be(0);
     }
 }

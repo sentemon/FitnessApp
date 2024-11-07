@@ -12,12 +12,17 @@ public class Comment
     {
         if (postId == Guid.Empty)
         {
-            throw new ArgumentException("PostId cannot be empty.", nameof(userId));
+            throw new ArgumentException("PostId cannot be empty.", nameof(postId));
         }
         
         if (userId == Guid.Empty)
         {
             throw new ArgumentException("UserId cannot be empty.", nameof(userId));
+        }
+
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException("Content cannot be empty or whitespace.", nameof(content));
         }
         
         Id = Guid.NewGuid();

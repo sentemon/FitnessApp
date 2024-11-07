@@ -11,7 +11,7 @@ public class Like
     {
         if (postId == Guid.Empty)
         {
-            throw new ArgumentException("PostId cannot be empty.", nameof(userId));
+            throw new ArgumentException("PostId cannot be empty.", nameof(postId));
         }
         
         if (userId == Guid.Empty)

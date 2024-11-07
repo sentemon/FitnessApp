@@ -10,6 +10,16 @@ public class Comment
 
     public Comment(Guid postId, Guid userId, string content)
     {
+        if (postId == Guid.Empty)
+        {
+            throw new ArgumentException("PostId cannot be empty.", nameof(userId));
+        }
+        
+        if (userId == Guid.Empty)
+        {
+            throw new ArgumentException("UserId cannot be empty.", nameof(userId));
+        }
+        
         Id = Guid.NewGuid();
         PostId = postId;
         UserId = userId;

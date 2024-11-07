@@ -16,6 +16,13 @@ public class Post
 
     public Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)
     {
+        if (userId == Guid.Empty)
+        {
+            throw new ArgumentException("UserId cannot be empty.", nameof(userId));
+        }
+        
+        ValidateContent(contentType, title, description, contentUrl);
+        
         Id = Guid.NewGuid();
         UserId = userId;
         Title = title;
@@ -29,6 +36,8 @@ public class Post
 
     public void Update(string title, string description)
     {
+        ValidateContent(ContentType, title, description, ContentUrl);
+        
         Title = title;
         Description = description;
     }
@@ -38,4 +47,25 @@ public class Post
     
     public void IncrementLikeCount() => LikeCount++;
     public void DecrementLikeCount() => LikeCount--;
+    
+    private static void ValidateContent(ContentType contentType, string title, string description, string contentUrl)
+    {
+        if (contentType == ContentType.Text)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("Title cannot be empty for text content.", nameof(title));
+            }
+
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                throw new ArgumentException("Description cannot be empty for text content.", nameof(description));
+            }
+        }
+
+        if ((contentType == ContentType.Image || contentType == ContentType.Video) && string.IsNullOrWhiteSpace(contentUrl))
+        {
+            throw new ArgumentException("ContentUrl is required for image or video content.", nameof(contentUrl));
+        }
+    }
 }

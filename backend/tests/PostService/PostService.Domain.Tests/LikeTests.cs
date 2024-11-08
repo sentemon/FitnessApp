@@ -22,4 +22,36 @@ public class LikeTests
         like.UserId.Should().Be(userId);
         like.CreatedAt.Date.Should().Be(createdAt.Date);
     }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenPostIdIsEmpty()
+    {
+        // Arrange
+        var postId = Guid.Empty;
+        var userId = Guid.NewGuid();
+        
+        // Act
+        var act = () => new Like(postId, userId);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("PostId cannot be empty. (Parameter 'postId')")
+            .And.ParamName.Should().Be("postId");
+    }
+    
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenUserIdIsEmpty()
+    {
+        // Arrange
+        var postId = Guid.NewGuid();
+        var userId = Guid.Empty;
+        
+        // Act
+        var act = () => new Like(postId, userId);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .And.ParamName.Should().Be("userId");
+    }
 }

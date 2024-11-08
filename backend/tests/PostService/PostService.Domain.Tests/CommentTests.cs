@@ -24,4 +24,55 @@ public class CommentTests
         comment.Content.Should().Be(content);
         comment.CreatedAt.Date.Should().Be(createdAt.Date);
     }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenPostIdIsEmpty()
+    {
+        // Arrange
+        var postId = Guid.Empty;
+        var userId = Guid.NewGuid();
+        var content = "Content";
+        
+        // Act
+        var act = () => new Comment(postId, userId, content);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("PostId cannot be empty. (Parameter 'postId')")
+            .And.ParamName.Should().Be("postId");
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenUserIdIsEmpty()
+    {
+        // Arrange
+        var postId = Guid.NewGuid();
+        var userId = Guid.Empty;
+        var content = "Content";
+        
+        // Act
+        var act = () => new Comment(postId, userId, content);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .And.ParamName.Should().Be("userId");
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenContentIsEmpty()
+    {
+        // Arrange
+        var postId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var content = "";
+        
+        // Act
+        var act = () => new Comment(postId, userId, content);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Content cannot be empty or whitespace. (Parameter 'content')")
+            .And.ParamName.Should().Be("content");
+    }
 }

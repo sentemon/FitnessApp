@@ -38,7 +38,7 @@ public class CommentTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("PostId cannot be empty. (Parameter 'postId')")
+            .WithMessage($"PostId cannot be empty. (Parameter '{nameof(postId)}')")
             .And.ParamName.Should().Be("postId");
     }
 
@@ -55,7 +55,7 @@ public class CommentTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .WithMessage($"UserId cannot be empty. (Parameter '{nameof(userId)}')")
             .And.ParamName.Should().Be("userId");
     }
 
@@ -72,7 +72,7 @@ public class CommentTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("Content cannot be empty or whitespace. (Parameter 'content')")
+            .WithMessage($"Content cannot be empty or whitespace. (Parameter '{nameof(content)}')")
             .And.ParamName.Should().Be("content");
     }
 }

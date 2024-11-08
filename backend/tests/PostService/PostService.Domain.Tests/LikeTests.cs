@@ -35,7 +35,7 @@ public class LikeTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("PostId cannot be empty. (Parameter 'postId')")
+            .WithMessage($"PostId cannot be empty. (Parameter '{nameof(postId)}')")
             .And.ParamName.Should().Be("postId");
     }
     
@@ -51,7 +51,7 @@ public class LikeTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .WithMessage($"UserId cannot be empty. (Parameter '{nameof(userId)}')")
             .And.ParamName.Should().Be("userId");
     }
 }

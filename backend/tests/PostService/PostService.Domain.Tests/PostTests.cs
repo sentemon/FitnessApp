@@ -144,7 +144,7 @@ public class PostTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .WithMessage($"UserId cannot be empty. (Parameter '{nameof(userId)}')")
             .And.ParamName.Should().Be("userId");
     }
 
@@ -163,7 +163,7 @@ public class PostTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("Title cannot be empty for text content. (Parameter 'title')")
+            .WithMessage($"Title cannot be empty for text content. (Parameter '{nameof(title)}')")
             .And.ParamName.Should().Be("title");
     }
 
@@ -182,7 +182,7 @@ public class PostTests
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("Description cannot be empty for text content. (Parameter 'description')")
+            .WithMessage($"Description cannot be empty for text content. (Parameter '{nameof(description)}')")
             .And.ParamName.Should().Be("description");
     }
 
@@ -201,7 +201,7 @@ public class PostTests
 
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("ContentUrl is required for image or video content. (Parameter 'contentUrl')")
+            .WithMessage($"ContentUrl is required for image or video content. (Parameter '{nameof(contentUrl)}')")
             .And.ParamName.Should().Be("contentUrl");
     }
 }

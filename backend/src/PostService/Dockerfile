@@ -11,6 +11,7 @@ COPY ["src/PostService/PostService.Application/PostService.Application.csproj", 
 COPY ["src/PostService/PostService.Domain/PostService.Domain.csproj", "src/PostService/PostService.Domain/"]
 COPY ["src/PostService/PostService.Infrastructure/PostService.Infrastructure.csproj", "src/PostService/PostService.Infrastructure/"]
 COPY ["src/PostService/PostService.Persistence/PostService.Persistence.csproj", "src/PostService/PostService.Persistence/"]
+COPY ["src/Shared/Shared.Application/Shared.Application.csproj", "src/Shared/Shared.Application/"]
 
 RUN dotnet restore "src/PostService/PostService.Api/PostService.Api.csproj"
 

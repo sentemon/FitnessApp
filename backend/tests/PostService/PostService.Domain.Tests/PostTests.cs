@@ -128,4 +128,80 @@ public class PostTests
         // Assert
         post.CommentCount.Should().Be(0);
     }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenUserIdIsEmpty()
+    {
+        // Arrange
+        var userId = Guid.Empty;
+        var title = "Title";
+        var description = "Description";
+        var contentUrl = "https://example.com";
+        var contentType = ContentType.Text;
+        
+        // Act
+        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("UserId cannot be empty. (Parameter 'userId')")
+            .And.ParamName.Should().Be("userId");
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenTitleIsEmpty_ForTextContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "";
+        var description = "Description";
+        var contentUrl = "https://example.com";
+        var contentType = ContentType.Text;
+        
+        // Act
+        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Title cannot be empty for text content. (Parameter 'title')")
+            .And.ParamName.Should().Be("title");
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenDescriptionIsEmpty_ForTextContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "Title";
+        var description = "";
+        var contentUrl = "https://example.com";
+        var contentType = ContentType.Text;
+        
+        // Act
+        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Description cannot be empty for text content. (Parameter 'description')")
+            .And.ParamName.Should().Be("description");
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForImageOrVideoContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "Title";
+        var description = "Description";
+        var contentUrl = "";
+        var contentType = ContentType.Image;
+        
+        // Act
+        var act = () => new Post(userId, title, description, contentUrl, contentType);
+
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("ContentUrl is required for image or video content. (Parameter 'contentUrl')")
+            .And.ParamName.Should().Be("contentUrl");
+    }
 }

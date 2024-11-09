@@ -3,15 +3,17 @@ name: Post Service CI/CD Pipeline
 on:
   push:
     paths:
-      - 'backend/src/PostService/**'
-      - '.github/workflows/post.yml'
+      - backend/src/PostService/**
+      - .github/workflows/post.yml
     branches:
       - master
+      - develop
     tags:
       - 'v*'
   pull_request:
     branches:
       - master
+      - develop
 
 jobs:
   build:

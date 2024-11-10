@@ -11,8 +11,7 @@ on:
     tags:
       - 'v*'
   pull_request:
-    branches:
-      - *
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:

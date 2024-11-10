@@ -7,13 +7,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.5" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
       <PackageReference Include="Testcontainers" Version="4.0.0" />
       <PackageReference Include="Testcontainers.PostgreSql" Version="4.0.0" />
       <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
+      <PackageReference Include="xunit" Version="2.9.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\src\PostService\PostService.Application\PostService.Application.csproj" />
       <ProjectReference Include="..\..\..\src\PostService\PostService.Persistence\PostService.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="QueryHandlerTests\" />
     </ItemGroup>
 
 </Project>

@@ -1,41 +1,30 @@
+using Microsoft.Extensions.DependencyInjection;
+using PostService.Application.Commands.AddPost;
 using PostService.Persistence;
 using Testcontainers.PostgreSql;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace PostService.Application.Tests;
 
-public class TestFixture : IAsyncLifetime
+public class TestFixture
 {
-    private readonly PostgreSqlContainer _postgreSqlContainer;
+    private readonly TestStartup _testStartup = new();
     public readonly PostDbContext PostDbContextFixture;
+    
+    public readonly AddPostCommandHandler AddPostCommandHandler;
+    
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
+        .Build();
 
     public TestFixture()
     {
-        _postgreSqlContainer = new PostgreSqlBuilder()
-            .WithImage("postgres:15-alpine")
-            .WithDatabase("TestDb")
-            .WithUsername("testuser")
-            .WithPassword("password")
-            .WithCleanUp(true)
-            .Build();
-        
-        var options = new DbContextOptionsBuilder<PostDbContext>()
-            .UseNpgsql(_postgreSqlContainer.GetConnectionString())
-            .Options;
+        _postgreSqlContainer.StartAsync().Wait();
 
-        PostDbContextFixture = new PostDbContext(options);
-    }
+        var connectionString = _postgreSqlContainer.GetConnectionString();
+        var serviceProvider = _testStartup.Initialize(connectionString);
 
-    public async Task InitializeAsync()
-    {
-        await _postgreSqlContainer.StartAsync();
-        await PostDbContextFixture.Database.MigrateAsync();
-    }
+        PostDbContextFixture = serviceProvider.GetRequiredService<PostDbContext>();
 
-    public async Task DisposeAsync()
-    {
-        await PostDbContextFixture.DisposeAsync();
-        await _postgreSqlContainer.StopAsync();
+        AddPostCommandHandler = serviceProvider.GetRequiredService<AddPostCommandHandler>();
     }
 }

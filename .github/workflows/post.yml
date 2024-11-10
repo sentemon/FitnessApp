@@ -33,7 +33,9 @@ jobs:
       run: dotnet build --configuration Release ./backend/FitnessApp.sln --no-restore
 
     - name: Run tests
-      run: dotnet test ./backend/FitnessApp.sln --configuration Release --no-build --verbosity normal
+      run: |
+        dotnet test ./backend/tests/PostService/PostService.Domain.Tests/PostService.Domain.Tests.csproj --configuration Release --no-build --verbosity normal
+        dotnet test ./backend/tests/PostService/PostService.Application.Tests/PostService.Application.Tests.csproj --configuration Release --no-build --verbosity normal
 
   docker:
     needs: build

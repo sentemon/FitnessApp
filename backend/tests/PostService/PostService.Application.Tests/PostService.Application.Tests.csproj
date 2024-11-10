@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Testcontainers" Version="4.0.0" />
+      <PackageReference Include="Testcontainers.PostgreSql" Version="4.0.0" />
+      <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\PostService\PostService.Persistence\PostService.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

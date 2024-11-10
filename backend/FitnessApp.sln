@@ -26,6 +26,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application.Tests", "tests\PostService\PostService.Application.Tests\PostService.Application.Tests.csproj", "{5325FC87-0538-4AE1-8979-F9597F3FF466}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\post.yml = ..\.github\workflows\post.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

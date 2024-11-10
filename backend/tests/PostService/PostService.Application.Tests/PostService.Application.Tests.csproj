@@ -20,8 +20,4 @@
       <ProjectReference Include="..\..\..\src\PostService\PostService.Persistence\PostService.Persistence.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="QueryHandlerTests\" />
-    </ItemGroup>
-
 </Project>

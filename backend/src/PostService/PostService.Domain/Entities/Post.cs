@@ -14,7 +14,7 @@ public class Post
     public uint CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)
+    private Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)
     {
         if (userId == Guid.Empty)
         {
@@ -34,6 +34,21 @@ public class Post
         CreatedAt = DateTime.UtcNow;
     }
 
+    public static Post CreateTextPost(Guid userId, string title, string description)
+    {
+        return new Post(userId, title, description, string.Empty, ContentType.Text);
+    }
+
+    public static Post CreateImagePost(Guid userId, string contentUrl, string title = "", string description = "")
+    {
+        return new Post(userId, title, description, contentUrl, ContentType.Image);
+    }
+
+    public static Post CreateVideoPost(Guid userId, string contentUrl, string title = "", string description = "")
+    {
+        return new Post(userId, title, description, contentUrl, ContentType.Video);
+    }
+    
     public void Update(string title, string description)
     {
         ValidateContent(ContentType, title, description, ContentUrl);
@@ -63,7 +78,7 @@ public class Post
             }
         }
 
-        if ((contentType == ContentType.Image || contentType == ContentType.Video) && string.IsNullOrWhiteSpace(contentUrl))
+        else if ((contentType == ContentType.Image || contentType == ContentType.Video) && string.IsNullOrWhiteSpace(contentUrl))
         {
             throw new ArgumentException("ContentUrl is required for image or video content.", nameof(contentUrl));
         }

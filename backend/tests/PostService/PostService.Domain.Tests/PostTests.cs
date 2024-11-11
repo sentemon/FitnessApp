@@ -8,24 +8,68 @@ namespace PostService.Domain.Tests;
 public class PostTests
 {
     [Fact]
-    public void Constructor_ShouldInitializeFieldsCorrectly()
+    public void CreateTextPost_ShouldInitializeFieldsCorrectly()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var title = "Sample Title";
         var description = "Sample Description";
-        var contentUrl = "https://example.com/content";
-        var contentType = ContentType.Text;
 
         // Act
-        var post = new Post(userId, title, description, contentUrl, contentType);
+        var post = Post.CreateTextPost(userId, title, description);
+
+        // Assert
+        post.UserId.Should().Be(userId);
+        post.Title.Should().Be(title);
+        post.Description.Should().Be(description);
+        post.ContentUrl.Should().Be(string.Empty);
+        post.ContentType.Should().Be(ContentType.Text);
+        post.LikeCount.Should().Be(0);
+        post.CommentCount.Should().Be(0);
+        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
+    }
+
+    [Fact]
+    public void CreateImagePost_ShouldInitializeFieldsCorrectly()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "Sample Title";
+        var description = "Sample Description";
+        var contentUrl = "https://example.com/image.jpg";
+
+        // Act
+        var post = Post.CreateImagePost(userId, contentUrl, title, description);
 
         // Assert
         post.UserId.Should().Be(userId);
         post.Title.Should().Be(title);
         post.Description.Should().Be(description);
         post.ContentUrl.Should().Be(contentUrl);
-        post.ContentType.Should().Be(contentType);
+        post.ContentType.Should().Be(ContentType.Image);
+        post.LikeCount.Should().Be(0);
+        post.CommentCount.Should().Be(0);
+        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
+    }
+
+    [Fact]
+    public void CreateVideoPost_ShouldInitializeFieldsCorrectly()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "Sample Title";
+        var description = "Sample Description";
+        var contentUrl = "https://example.com/video.mp4";
+
+        // Act
+        var post = Post.CreateVideoPost(userId, contentUrl, title, description);
+
+        // Assert
+        post.UserId.Should().Be(userId);
+        post.Title.Should().Be(title);
+        post.Description.Should().Be(description);
+        post.ContentUrl.Should().Be(contentUrl);
+        post.ContentType.Should().Be(ContentType.Video);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
         post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
@@ -35,13 +79,11 @@ public class PostTests
     public void Update_ShouldModifyTitleAndDescription()
     {
         // Arrange
-        var post = new Post(
+        var post = Post.CreateTextPost(
             Guid.NewGuid(), 
             "Old Title", 
-            "Old Description", 
-            "https://example.com",
-            ContentType.Text);
-        
+            "Old Description");
+
         var newTitle = "New Title";
         var newDescription = "New Description";
 
@@ -57,12 +99,10 @@ public class PostTests
     public void IncrementLikeCount_ShouldIncreaseLikeCountByOne()
     {
         // Arrange
-        var post = new Post(
+        var post = Post.CreateTextPost(
             Guid.NewGuid(),
             "Title", 
-            "Description",
-            "https://example.com",
-            ContentType.Text);
+            "Description");
 
         // Act
         post.IncrementLikeCount();
@@ -75,12 +115,10 @@ public class PostTests
     public void DecrementLikeCount_ShouldDecreaseLikeCountByOne()
     {
         // Arrange
-        var post = new Post(
+        var post = Post.CreateTextPost(
             Guid.NewGuid(),
             "Title",
-            "Description",
-            "https://example.com",
-            ContentType.Text);
+            "Description");
         
         post.IncrementLikeCount(); // Initial increment to avoid negative count
 
@@ -95,12 +133,10 @@ public class PostTests
     public void IncrementCommentCount_ShouldIncreaseCommentCountByOne()
     {
         // Arrange
-        var post = new Post(
+        var post = Post.CreateTextPost(
             Guid.NewGuid(), 
             "Title", 
-            "Description", 
-            "https://example.com", 
-            ContentType.Text);
+            "Description");
 
         // Act
         post.IncrementCommentCount();
@@ -113,12 +149,10 @@ public class PostTests
     public void DecrementCommentCount_ShouldDecreaseCommentCountByOne()
     {
         // Arrange
-        var post = new Post(
+        var post = Post.CreateTextPost(
             Guid.NewGuid(),
             "Title", 
-            "Description",
-            "https://example.com",
-            ContentType.Text);
+            "Description");
         
         post.IncrementCommentCount(); // Initial increment to avoid negative count
 
@@ -130,17 +164,15 @@ public class PostTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowArgumentException_WhenUserIdIsEmpty()
+    public void CreateTextPost_ShouldThrowArgumentException_WhenUserIdIsEmpty()
     {
         // Arrange
         var userId = Guid.Empty;
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Text;
         
         // Act
-        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        var act = () => Post.CreateTextPost(userId, title, description);
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
@@ -149,17 +181,15 @@ public class PostTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowArgumentException_WhenTitleIsEmpty_ForTextContent()
+    public void CreateTextPost_ShouldThrowArgumentException_WhenTitleIsEmpty_ForTextContent()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var title = "";
         var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Text;
         
         // Act
-        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        var act = () => Post.CreateTextPost(userId, title, description);
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
@@ -168,17 +198,15 @@ public class PostTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowArgumentException_WhenDescriptionIsEmpty_ForTextContent()
+    public void CreateTextPost_ShouldThrowArgumentException_WhenDescriptionIsEmpty_ForTextContent()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var title = "Title";
         var description = "";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Text;
         
         // Act
-        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        var act = () => Post.CreateTextPost(userId, title, description);
         
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
@@ -187,17 +215,34 @@ public class PostTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForImageOrVideoContent()
+    public void CreateImagePost_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForImageContent()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var title = "Title";
         var description = "Description";
         var contentUrl = "";
-        var contentType = ContentType.Image;
         
         // Act
-        var act = () => new Post(userId, title, description, contentUrl, contentType);
+        var act = () => Post.CreateImagePost(userId, contentUrl, title, description);
+
+        // Assert
+        act.Should().ThrowExactly<ArgumentException>()
+            .WithMessage($"ContentUrl is required for image or video content. (Parameter '{nameof(contentUrl)}')")
+            .And.ParamName.Should().Be("contentUrl");
+    }
+
+    [Fact]
+    public void CreateVideoPost_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForVideoContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var title = "Title";
+        var description = "Description";
+        var contentUrl = "";
+        
+        // Act
+        var act = () => Post.CreateVideoPost(userId, contentUrl, title, description);
 
         // Assert
         act.Should().ThrowExactly<ArgumentException>()

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using PostService.Application.DTOs;
 using PostService.Domain.Entities;
+using PostService.Domain.Enums;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -28,12 +29,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             return Result<PostDto>.Failure(new Error(errorMessage));
         }
 
-        var post = new Post(
-            command.UserId, 
-            command.CreatePost.Title, 
-            command.CreatePost.Description,
-            command.CreatePost.ContentUrl,
-            command.CreatePost.ContentType);
+        var post = CreatePostForSpecifiedType(command);
 
         _context.Posts.Add(post);
         await _context.SaveChangesAsync();
@@ -48,5 +44,19 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             post.CreatedAt);
 
         return Result<PostDto>.Success(postDto);
+    }
+
+    private static Post CreatePostForSpecifiedType(AddPostCommand command)
+    {
+        return command.CreatePost.ContentType switch
+        {
+            ContentType.Text => Post.CreateTextPost(command.UserId, command.CreatePost.Title, command.CreatePost.Description),
+            
+            ContentType.Image => Post.CreateImagePost(command.UserId, command.CreatePost.ContentUrl, command.CreatePost.Title, command.CreatePost.Description),
+            
+            ContentType.Video => Post.CreateVideoPost(command.UserId, command.CreatePost.ContentUrl, command.CreatePost.Title, command.CreatePost.Description),
+            
+            _ => throw new InvalidOperationException("Unsupported content type.")
+        };
     }
 }

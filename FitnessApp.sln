@@ -1,41 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "PostService", "{84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "backend\PostService", "{84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "src\PostService\PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "backend\src\PostService\PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain", "src\PostService\PostService.Domain\PostService.Domain.csproj", "{BC83A789-36C2-42E7-B630-6BC503375C30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain", "backend\src\PostService\PostService.Domain\PostService.Domain.csproj", "{BC83A789-36C2-42E7-B630-6BC503375C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Infrastructure", "src\PostService\PostService.Infrastructure\PostService.Infrastructure.csproj", "{49301846-33F7-4C75-A1F9-6A0FEBA5EADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Infrastructure", "backend\src\PostService\PostService.Infrastructure\PostService.Infrastructure.csproj", "{49301846-33F7-4C75-A1F9-6A0FEBA5EADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Persistence", "src\PostService\PostService.Persistence\PostService.Persistence.csproj", "{0E631CB2-47C2-458A-B163-43CE50473B8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Persistence", "backend\src\PostService\PostService.Persistence\PostService.Persistence.csproj", "{0E631CB2-47C2-458A-B163-43CE50473B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application", "src\PostService\PostService.Application\PostService.Application.csproj", "{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application", "backend\src\PostService\PostService.Application\PostService.Application.csproj", "{4FD56528-F5F1-4BF8-AC46-A5E54D158AA2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B7E4E4CF-E7A9-4DAC-807E-DFF17553BAE8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "backend\src", "{B7E4E4CF-E7A9-4DAC-807E-DFF17553BAE8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{112E9C63-BF62-49C1-AD19-03855535225B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "backend\Shared", "{112E9C63-BF62-49C1-AD19-03855535225B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Application", "src\Shared\Shared.Application\Shared.Application.csproj", "{824BB290-EC26-471B-AEA6-1395B4C23177}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Application", "backend\src\Shared\Shared.Application\Shared.Application.csproj", "{824BB290-EC26-471B-AEA6-1395B4C23177}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2B7719FF-D7B4-4EFA-B3C5-2240EC19A1A5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "backend\tests", "{2B7719FF-D7B4-4EFA-B3C5-2240EC19A1A5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "tests\PostService", "{885CB230-66EA-4743-8162-6A240AA960A4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "backend\tests\PostService", "{885CB230-66EA-4743-8162-6A240AA960A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain.Tests", "tests\PostService\PostService.Domain.Tests\PostService.Domain.Tests.csproj", "{9CD34775-6A28-4C93-9BFC-C15F54C3FA21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain.Tests", "backend\tests\PostService\PostService.Domain.Tests\PostService.Domain.Tests.csproj", "{9CD34775-6A28-4C93-9BFC-C15F54C3FA21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application.Tests", "tests\PostService\PostService.Application.Tests\PostService.Application.Tests.csproj", "{5325FC87-0538-4AE1-8979-F9597F3FF466}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application.Tests", "backend\tests\PostService\PostService.Application.Tests\PostService.Application.Tests.csproj", "{5325FC87-0538-4AE1-8979-F9597F3FF466}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\post.yml = ..\.github\workflows\post.yml
+		.github\workflows\post.yml = .github\workflows\post.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"
 	ProjectSection(SolutionItems) = preProject
-		..\.gitignore = ..\.gitignore
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

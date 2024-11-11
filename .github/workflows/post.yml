@@ -27,10 +27,10 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./backend/FitnessApp.sln
+      run: dotnet restore ./FitnessApp.sln
 
     - name: Build project
-      run: dotnet build --configuration Release ./backend/FitnessApp.sln --no-restore
+      run: dotnet build --configuration Release ./FitnessApp.sln --no-restore
 
     - name: Run tests
       run: |

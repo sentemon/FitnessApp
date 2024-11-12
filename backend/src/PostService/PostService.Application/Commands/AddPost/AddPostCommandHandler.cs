@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using PostService.Application.DTOs;
+using PostService.Application.Validators;
 using PostService.Domain.Entities;
 using PostService.Domain.Enums;
 using PostService.Persistence;
@@ -14,10 +15,10 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
     private readonly PostDbContext _context;
     private readonly IValidator<CreatePostDto> _validator;
 
-    public AddPostCommandHandler(PostDbContext context, IValidator<CreatePostDto> validator)
+    public AddPostCommandHandler(PostDbContext context)
     {
         _context = context;
-        _validator = validator;
+        _validator = new CreatePostValidator();
     }
 
     public async Task<IResult<PostDto, Error>> HandleAsync(AddPostCommand command)

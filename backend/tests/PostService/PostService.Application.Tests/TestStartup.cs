@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddPost;
+using PostService.Application.Commands.DeletePost;
 using PostService.Application.DTOs;
 using PostService.Persistence;
 
@@ -17,7 +18,8 @@ public class TestStartup
                 options.UseNpgsql(connectionString);
             })
             .AddScoped<IValidator<CreatePostDto>, InlineValidator<CreatePostDto>>()
-            .AddScoped<AddPostCommandHandler>();
+            .AddScoped<AddPostCommandHandler>()
+            .AddScoped<DeletePostCommandHandler>();
 
         return serviceCollection.BuildServiceProvider();
     }

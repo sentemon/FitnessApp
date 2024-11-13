@@ -36,6 +36,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         await _context.SaveChangesAsync();
         
         var postDto = new PostDto(
+            post.Id,
             post.Title,
             post.Description,
             post.ContentUrl,

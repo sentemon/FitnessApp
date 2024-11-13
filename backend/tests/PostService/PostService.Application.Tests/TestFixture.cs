@@ -10,9 +10,9 @@ public class TestFixture
 {
     private readonly TestStartup _testStartup = new();
     public readonly PostDbContext PostDbContextFixture;
-    public readonly DeletePostCommandHandler DeletePostCommandHandler;
     
     public readonly AddPostCommandHandler AddPostCommandHandler;
+    public readonly DeletePostCommandHandler DeletePostCommandHandler;
     
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")

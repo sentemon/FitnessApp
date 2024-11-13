@@ -33,6 +33,7 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
         await _context.SaveChangesAsync();
         
         var postDto = new PostDto(
+            post.Id,
             post.Title,
             post.Description,
             post.ContentUrl,

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddPost;
+using PostService.Application.Commands.DeletePost;
 using PostService.Persistence;
 using Testcontainers.PostgreSql;
 
@@ -9,6 +10,7 @@ public class TestFixture
 {
     private readonly TestStartup _testStartup = new();
     public readonly PostDbContext PostDbContextFixture;
+    public readonly DeletePostCommandHandler DeletePostCommandHandler;
     
     public readonly AddPostCommandHandler AddPostCommandHandler;
     
@@ -26,5 +28,6 @@ public class TestFixture
         PostDbContextFixture = serviceProvider.GetRequiredService<PostDbContext>();
 
         AddPostCommandHandler = serviceProvider.GetRequiredService<AddPostCommandHandler>();
+        DeletePostCommandHandler = serviceProvider.GetRequiredService<DeletePostCommandHandler>();
     }
 }

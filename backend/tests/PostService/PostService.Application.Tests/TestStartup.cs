@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
@@ -21,7 +22,8 @@ public class TestStartup
             .AddScoped<IValidator<CreatePostDto>, InlineValidator<CreatePostDto>>()
             .AddScoped<AddPostCommandHandler>()
             .AddScoped<UpdatePostCommandHandler>()
-            .AddScoped<DeletePostCommandHandler>();
+            .AddScoped<DeletePostCommandHandler>()
+            .AddScoped<AddLikeCommandHandler>();
 
         return serviceCollection.BuildServiceProvider();
     }

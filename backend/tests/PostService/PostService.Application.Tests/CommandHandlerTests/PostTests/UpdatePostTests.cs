@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using PostService.Application.Commands.AddPost;
@@ -26,11 +25,11 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var postCommand = new AddPostCommand(createPost, userId);
 
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
-
+        post.Response.Should().NotBeNull();
+        
         var newTitle = "New Title";
         var newDescription = "New Description";
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        
         var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
 
         var command = new UpdatePostCommand(updatePost, userId);
@@ -84,11 +83,11 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var postCommand = new AddPostCommand(createPost, userId);
         
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
+        post.Response.Should().NotBeNull();
 
         var newTitle = "New Title";
         var newDescription = "New Description";
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        
         var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
         
         var command = new UpdatePostCommand(updatePost, anotherUserId);

@@ -77,8 +77,8 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         
         // Act
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        post.Response.Should().NotBeNull();
+        
         var command = new DeletePostCommand(post.Response.Id, anotherUserId);
         
         // Act

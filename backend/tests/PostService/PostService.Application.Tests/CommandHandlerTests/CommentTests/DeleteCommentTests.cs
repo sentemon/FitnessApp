@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -27,17 +26,17 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
 
         var content = "This is a comment";
         
-        Debug.Assert(post.Response != null, "post.Response != null");
         var createComment = new CreateCommentDto(post.Response.Id, content);
         
         var commandComment = new AddCommentCommand(createComment, userId);
-        var commentResult = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
-
-        Debug.Assert(commentResult.Response != null, "commentResult.Response != null");
-        var command = new DeleteCommentCommand(commentResult.Response.Id, post.Response.Id, userId);
+        var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
+        comment.Response.Should().NotBeNull();
+        
+        var command = new DeleteCommentCommand(comment.Response.Id, post.Response.Id, userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -48,7 +47,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         result.Response.Should().Be("You successfully deleted comment.");
 
         var deletedComment = await Fixture.PostDbContextFixture.Comments
-            .FirstOrDefaultAsync(c => c.Id == commentResult.Response.Id);
+            .FirstOrDefaultAsync(c => c.Id == comment.Response.Id);
         deletedComment.Should().BeNull();
 
         var updatedPost = await Fixture.PostDbContextFixture.Posts
@@ -70,10 +69,10 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
 
         var id = Guid.Empty;
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        
         var deleteCommand = new DeleteCommentCommand(id, post.Response.Id, userId);
 
         // Act
@@ -101,19 +100,17 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
 
         var content = "This is a comment";
         
-        Debug.Assert(post.Response != null, "post.Response != null");
         var createComment = new CreateCommentDto(post.Response.Id, content);
         
         var commandComment = new AddCommentCommand(createComment, userId);
-        var commentResult = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
+        var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
+        comment.Response.Should().NotBeNull();
 
-        Debug.Assert(commentResult.Response != null, "commentResult.Response != null");
-        var commentId = commentResult.Response.Id;
-
-        var command = new DeleteCommentCommand(commentId, post.Response.Id, anotherUserId);
+        var command = new DeleteCommentCommand(comment.Response.Id, post.Response.Id, anotherUserId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);

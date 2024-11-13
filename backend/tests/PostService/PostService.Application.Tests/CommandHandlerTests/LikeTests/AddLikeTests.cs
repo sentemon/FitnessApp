@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +26,8 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
         var commandPost = new AddPostCommand(createPost, userId);
         
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        post.Response.Should().NotBeNull();
+        
         var command = new AddLikeCommand(post.Response.Id, userId);
         
         // Act
@@ -79,8 +78,8 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        post.Response.Should().NotBeNull();
+        
         var command = new AddLikeCommand(post.Response.Id, userId);
         
         var firstResult = await Fixture.AddLikeCommandHandler.HandleAsync(command);

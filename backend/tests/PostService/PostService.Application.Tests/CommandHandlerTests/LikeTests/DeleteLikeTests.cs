@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -28,13 +27,13 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         var commandPost = new AddPostCommand(createPost, userId);
         
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        post.Response.Should().NotBeNull();
+        
         var commandLike = new AddLikeCommand(post.Response.Id, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
-
-        Debug.Assert(like.Response != null, "like.Response != null");
+        like.Response.Should().NotBeNull();
+        
         var command = new DeleteLikeCommand(like.Response.Id, like.Response.PostId, like.Response.UserId);
         
         // Act 
@@ -86,13 +85,13 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-
-        Debug.Assert(post.Response != null, "post.Response != null");
+        post.Response.Should().NotBeNull();
+        
         var commandLike = new AddLikeCommand(post.Response.Id, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
-
-        Debug.Assert(like.Response != null, "like.Response != null");
+        like.Response.Should().NotBeNull();
+        
         var command = new DeleteLikeCommand(like.Response.Id, like.Response.PostId, anotherUserId);
 
         // Act

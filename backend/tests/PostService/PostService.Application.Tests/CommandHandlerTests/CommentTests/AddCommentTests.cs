@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +26,10 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         var commandPost = new AddPostCommand(createPost, userId);
 
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
 
         var content = "This is a comment";
-        Debug.Assert(post.Response != null, "post.Response != null");
+        
         var createComment = new CreateCommentDto(post.Response.Id, content);
 
         var command = new AddCommentCommand(createComment, userId);
@@ -84,10 +84,10 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
 
         var content = "This is the first comment";
         
-        Debug.Assert(post.Response != null, "post.Response != null");
         var createComment = new CreateCommentDto(post.Response.Id, content);
 
         var command = new AddCommentCommand(createComment, userId);

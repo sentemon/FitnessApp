@@ -2,17 +2,17 @@ using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using PostService.Application.Commands.AddPost;
-using PostService.Application.Commands.DeletePost;
+using PostService.Application.Commands.UpdatePost;
 using PostService.Application.DTOs;
 using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.PostTests;
 
-public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
+public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
 {
     [Fact]
-    public async Task HandleAsync_ShouldDeletePost_WhenPostExists()
+    public async Task HandleAsync_ShouldUpdatePost_WhenDataIsValid()
     {
         // Arrange
         var title = "Title";
@@ -24,35 +24,43 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         var userId = Guid.NewGuid();
 
         var postCommand = new AddPostCommand(createPost, userId);
-        
-        // Act
+
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
 
+        var newTitle = "New Title";
+        var newDescription = "New Description";
+
         Debug.Assert(post.Response != null, "post.Response != null");
-        var command = new DeletePostCommand(post.Response.Id, userId);
-        
+        var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
+
+        var command = new UpdatePostCommand(updatePost, userId);
+
         // Act
-        var result = await Fixture.DeletePostCommandHandler.HandleAsync(command);
-        
+        var result = await Fixture.UpdatePostCommandHandler.HandleAsync(command);
+
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.StatusCode.Should().Be(HttpStatusCode.OK);
-        result.Response.Should().Be("You successfully deleted post.");
+        result.Response.Should().NotBeNull();
+        result.Response.Title.Should().Be(newTitle);
+        result.Response.Description.Should().Be(newDescription);
     }
-    
-    [Fact]
-    public async Task HandleAsync_ShouldFail_WhenPostDoesNotExist()
+
+    [Fact] public async Task HandleAsync_ShouldFail_WhenPostDoesNotExist()
     {
         // Arrange
         var id = Guid.Empty;
+        var newTitle = "New Title";
+        var newDescription = "New Description";
+        
+        var updatePost = new UpdatePostDto(id, newTitle, newDescription);
         var userId = Guid.NewGuid();
-        
+
+        var command = new UpdatePostCommand(updatePost, userId);
+
         // Act
-        var command = new DeletePostCommand(id, userId);
-        
-        // Act
-        var result = await Fixture.DeletePostCommandHandler.HandleAsync(command);
-        
+        var result = await Fixture.UpdatePostCommandHandler.HandleAsync(command);
+
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -75,19 +83,23 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
 
         var postCommand = new AddPostCommand(createPost, userId);
         
-        // Act
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
 
+        var newTitle = "New Title";
+        var newDescription = "New Description";
+
         Debug.Assert(post.Response != null, "post.Response != null");
-        var command = new DeletePostCommand(post.Response.Id, anotherUserId);
+        var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
+        
+        var command = new UpdatePostCommand(updatePost, anotherUserId);
         
         // Act
-        var result = await Fixture.DeletePostCommandHandler.HandleAsync(command);
+        var result = await Fixture.UpdatePostCommandHandler.HandleAsync(command);
         
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to delete this post.");
+        result.Error?.Message.Should().Be("You do not have permission to update this post.");
     }
 }

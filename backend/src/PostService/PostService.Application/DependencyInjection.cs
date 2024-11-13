@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeleteComment;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         
         services.AddScoped<AddPostCommandHandler>();
         services.AddScoped<UpdatePostCommandHandler>();
+        services.AddScoped<AddCommentCommandHandler>();
         services.AddScoped<DeleteCommentCommandHandler>();
         services.AddScoped<AddLikeCommandHandler>();
         services.AddScoped<DeleteLikeCommandHandler>();

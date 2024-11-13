@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
+using PostService.Application.Validators;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -14,26 +15,26 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
     private readonly PostDbContext _context;
     private readonly IValidator<CreateCommentDto> _validator;
 
-    public AddCommentCommandHandler(PostDbContext context, IValidator<CreateCommentDto> validator)
+    public AddCommentCommandHandler(PostDbContext context)
     {
         _context = context;
-        _validator = validator;
+        _validator = new CreateCommentValidator();
     }
 
     public async Task<IResult<CommentDto, Error>> HandleAsync(AddCommentCommand command)
     {
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.CreateComment.PostId);
+        
+        if (post == null)
+        {
+            return Result<CommentDto>.Failure(new Error("Post not found."));
+        }
+        
         var errorMessage = await _validator.ValidateResultAsync(command.CreateComment);
 
         if (errorMessage != null)
         {
             return Result<CommentDto>.Failure(new Error(errorMessage));
-        }
-
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.CreateComment.PostId);
-        
-        if (post == null)
-        {
-            return Result<CommentDto>.Failure(new Error("Post not found"));
         }
         
         var comment = new Comment(
@@ -47,6 +48,7 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
 
         var commentDto = new CommentDto(
             comment.Id,
+            comment.PostId,
             comment.UserId,
             comment.Content,
             comment.CreatedAt);

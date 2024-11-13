@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
+using PostService.Application.Commands.DeleteComment;
 using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
@@ -17,6 +19,8 @@ public class TestFixture
     public readonly AddPostCommandHandler AddPostCommandHandler;
     public readonly UpdatePostCommandHandler UpdatePostCommandHandler;
     public readonly DeletePostCommandHandler DeletePostCommandHandler;
+    public readonly AddCommentCommandHandler AddCommentCommandHandler;
+    public readonly DeleteCommentCommandHandler DeleteCommentCommandHandler;
     public readonly AddLikeCommandHandler AddLikeCommandHandler;
     public readonly DeleteLikeCommandHandler DeleteLikeCommandHandler;
     
@@ -36,6 +40,8 @@ public class TestFixture
         AddPostCommandHandler = serviceProvider.GetRequiredService<AddPostCommandHandler>();
         UpdatePostCommandHandler = serviceProvider.GetRequiredService<UpdatePostCommandHandler>();
         DeletePostCommandHandler = serviceProvider.GetRequiredService<DeletePostCommandHandler>();
+        AddCommentCommandHandler = serviceProvider.GetRequiredService<AddCommentCommandHandler>();
+        DeleteCommentCommandHandler = serviceProvider.GetRequiredService<DeleteCommentCommandHandler>();
         AddLikeCommandHandler = serviceProvider.GetRequiredService<AddLikeCommandHandler>();
         DeleteLikeCommandHandler = serviceProvider.GetRequiredService<DeleteLikeCommandHandler>();
     }

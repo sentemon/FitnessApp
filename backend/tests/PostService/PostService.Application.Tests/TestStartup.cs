@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
+using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
 using PostService.Application.DTOs;
@@ -23,7 +24,8 @@ public class TestStartup
             .AddScoped<AddPostCommandHandler>()
             .AddScoped<UpdatePostCommandHandler>()
             .AddScoped<DeletePostCommandHandler>()
-            .AddScoped<AddLikeCommandHandler>();
+            .AddScoped<AddLikeCommandHandler>()
+            .AddScoped<DeleteLikeCommandHandler>();
 
         return serviceCollection.BuildServiceProvider();
     }

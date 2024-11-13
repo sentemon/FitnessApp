@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
+using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
 using PostService.Persistence;
@@ -17,6 +18,7 @@ public class TestFixture
     public readonly UpdatePostCommandHandler UpdatePostCommandHandler;
     public readonly DeletePostCommandHandler DeletePostCommandHandler;
     public readonly AddLikeCommandHandler AddLikeCommandHandler;
+    public readonly DeleteLikeCommandHandler DeleteLikeCommandHandler;
     
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
@@ -35,5 +37,6 @@ public class TestFixture
         UpdatePostCommandHandler = serviceProvider.GetRequiredService<UpdatePostCommandHandler>();
         DeletePostCommandHandler = serviceProvider.GetRequiredService<DeletePostCommandHandler>();
         AddLikeCommandHandler = serviceProvider.GetRequiredService<AddLikeCommandHandler>();
+        DeleteLikeCommandHandler = serviceProvider.GetRequiredService<DeleteLikeCommandHandler>();
     }
 }

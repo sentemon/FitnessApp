@@ -40,8 +40,10 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
         result.Response.Should().NotBeNull();
         result.Response.PostId.Should().Be(post.Response.Id);
         result.Response.UserId.Should().Be(userId);
-        Fixture.PostDbContextFixture.Posts.First(p => p.Id == post.Response.Id)
-            .LikeCount.Should().Be(1);
+        
+        var likedPost = await Fixture.PostDbContextFixture.Posts
+            .FirstAsync(p => p.Id == post.Response.Id);
+        likedPost.LikeCount.Should().Be(1);
     }
     
     [Fact]
@@ -64,7 +66,7 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
     }
     
     [Fact]
-    public async Task HandleAsync_ShouldFail_WhenUserIdDoesNotMatch()
+    public async Task HandleAsync_ShouldFail_WhenUserTriesToLikePostTwice()
     {
         // Arrange
         var title = "Title";
@@ -74,22 +76,26 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Guid.NewGuid();
-        var anotherUserId = Guid.NewGuid();
 
         var commandPost = new AddPostCommand(createPost, userId);
-        
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
 
         Debug.Assert(post.Response != null, "post.Response != null");
-        var command = new AddLikeCommand(post.Response.Id, anotherUserId);
+        var command = new AddLikeCommand(post.Response.Id, userId);
         
-        // Act
-        var result = await Fixture.AddLikeCommandHandler.HandleAsync(command);
+        var firstResult = await Fixture.AddLikeCommandHandler.HandleAsync(command);
+        firstResult.IsSuccess.Should().BeTrue();
+
+        var secondResult = await Fixture.AddLikeCommandHandler.HandleAsync(command);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to like this post.");
+        secondResult.IsSuccess.Should().BeFalse();
+        secondResult.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        secondResult.Response.Should().BeNull();
+        secondResult.Error?.Message.Should().Be("User has already liked this post.");
+        
+        var likedPost = await Fixture.PostDbContextFixture.Posts
+            .FirstAsync(p => p.Id == post.Response.Id);
+        likedPost.LikeCount.Should().Be(1);
     }
 }

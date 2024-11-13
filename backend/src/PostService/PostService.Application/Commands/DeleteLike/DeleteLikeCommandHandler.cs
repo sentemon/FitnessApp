@@ -23,9 +23,12 @@ public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, strin
             return Result<string>.Failure(new Error("Like not found."));
         }
 
-        if (like.UserId != command.UserId)
+        var isAlreadyLiked = await _context.Likes
+            .AnyAsync(l => l.PostId == command.PostId && l.UserId == command.UserId);
+    
+        if (!isAlreadyLiked)
         {
-            return Result<string>.Failure(new Error("You do not have permission to delete this like."));
+            return Result<string>.Failure(new Error("User has not liked this post yet."));
         }
 
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == like.PostId);

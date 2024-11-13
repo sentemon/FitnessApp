@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeleteComment;
+using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.UpdatePost;
 
 namespace PostService.Application;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<UpdatePostCommandHandler>();
         services.AddScoped<DeleteCommentCommandHandler>();
         services.AddScoped<AddLikeCommandHandler>();
+        services.AddScoped<DeleteLikeCommandHandler>();
         
         return services;
     }

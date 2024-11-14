@@ -71,6 +71,38 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     }
 
     [Fact]
+    public async Task HandleAsync_ShouldFail_WhenCommentTooLong()
+    {
+        var title = "Title";
+        var description = "Description";
+        var contentUrl = "https://example.com";
+        var contentType = ContentType.Image;
+
+        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var userId = Guid.NewGuid();
+
+        var commandPost = new AddPostCommand(createPost, userId);
+
+        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
+        post.Response.Should().NotBeNull();
+
+        var content = new string('*', 513);
+        
+        var createComment = new CreateCommentDto(post.Response.Id, content);
+
+        var command = new AddCommentCommand(createComment, userId);
+
+        // Act
+        var result = await Fixture.AddCommentCommandHandler.HandleAsync(command);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        result.Response.Should().BeNull();
+        result.Error?.Message.Should().Be("Comment cannot be longer than 512 characters");
+    }
+
+    [Fact]
     public async Task HandleAsync_ShouldAllowMultipleCommentsFromUser()
     {
         // Arrange

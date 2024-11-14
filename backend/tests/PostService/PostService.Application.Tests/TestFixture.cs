@@ -6,6 +6,7 @@ using PostService.Application.Commands.DeleteComment;
 using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
+using PostService.Application.Queries.GetPost;
 using PostService.Persistence;
 using Testcontainers.PostgreSql;
 
@@ -23,6 +24,8 @@ public class TestFixture
     public readonly DeleteCommentCommandHandler DeleteCommentCommandHandler;
     public readonly AddLikeCommandHandler AddLikeCommandHandler;
     public readonly DeleteLikeCommandHandler DeleteLikeCommandHandler;
+
+    internal readonly GetPostQueryHandler GetPostQueryHandler;
     
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
@@ -44,5 +47,7 @@ public class TestFixture
         DeleteCommentCommandHandler = serviceProvider.GetRequiredService<DeleteCommentCommandHandler>();
         AddLikeCommandHandler = serviceProvider.GetRequiredService<AddLikeCommandHandler>();
         DeleteLikeCommandHandler = serviceProvider.GetRequiredService<DeleteLikeCommandHandler>();
+
+        GetPostQueryHandler = serviceProvider.GetRequiredService<GetPostQueryHandler>();
     }
 }

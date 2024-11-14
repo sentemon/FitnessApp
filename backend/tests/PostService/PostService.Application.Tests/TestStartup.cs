@@ -9,6 +9,7 @@ using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
 using PostService.Application.DTOs;
+using PostService.Application.Queries.GetPost;
 using PostService.Persistence;
 
 namespace PostService.Application.Tests;
@@ -30,7 +31,8 @@ public class TestStartup
             .AddScoped<AddCommentCommandHandler>()
             .AddScoped<DeleteCommentCommandHandler>()
             .AddScoped<AddLikeCommandHandler>()
-            .AddScoped<DeleteLikeCommandHandler>();
+            .AddScoped<DeleteLikeCommandHandler>()
+            .AddScoped<GetPostQueryHandler>();
 
         return serviceCollection.BuildServiceProvider();
     }

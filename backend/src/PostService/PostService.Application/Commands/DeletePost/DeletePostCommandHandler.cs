@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PostService.Domain.Constants;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -20,17 +21,17 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
 
         if (post == null)
         {
-            return Result<string>.Failure(new Error("Post not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
         if (post.UserId != command.UserId)
         {
-            return Result<string>.Failure(new Error("You do not have permission to delete this post."));
+            return Result<string>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToDeleteThisPost));
         }
         
         _context.Posts.Remove(post);
         await _context.SaveChangesAsync();
 
-        return Result<string>.Success("You successfully deleted post.");
+        return Result<string>.Success(ResponseMessages.YouSuccessfullyDeletedPost);
     }
 }

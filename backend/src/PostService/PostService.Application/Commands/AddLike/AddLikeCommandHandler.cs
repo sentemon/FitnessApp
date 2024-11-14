@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
+using PostService.Domain.Constants;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -22,7 +23,7 @@ public class AddLikeCommandHandler : ICommandHandler<AddLikeCommand, LikeDto>
 
         if (post == null)
         {
-            return Result<LikeDto>.Failure(new Error("Post not found."));
+            return Result<LikeDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
         
         var isAlreadyLiked = await _context.Likes
@@ -30,7 +31,7 @@ public class AddLikeCommandHandler : ICommandHandler<AddLikeCommand, LikeDto>
     
         if (isAlreadyLiked)
         {
-            return Result<LikeDto>.Failure(new Error("User has already liked this post."));
+            return Result<LikeDto>.Failure(new Error(ResponseMessages.UserHasAlreadyLikedThisPost));
         }
             
         var like = new Like(

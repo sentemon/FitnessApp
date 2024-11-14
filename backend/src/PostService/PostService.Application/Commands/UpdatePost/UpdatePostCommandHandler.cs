@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
+using PostService.Domain.Constants;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -21,12 +22,12 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
 
         if (post == null)
         {
-            return Result<PostDto>.Failure(new Error("Post not found."));
+            return Result<PostDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
         if (post.UserId != command.UserId)
         {
-            return Result<PostDto>.Failure(new Error("You do not have permission to update this post."));
+            return Result<PostDto>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToUpdateThisPost));
         }
         
         post.Update(command.UpdatePost.Title, command.UpdatePost.Description);

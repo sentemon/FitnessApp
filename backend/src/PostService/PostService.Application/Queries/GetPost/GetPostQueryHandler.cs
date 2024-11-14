@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PostService.Domain.Constants;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -21,7 +22,7 @@ public class GetPostQueryHandler : IQueryHandler<GetPostQuery, Post>
 
         if (post == null)
         {
-            return Result<Post>.Failure(new Error("Post not found."));
+            return Result<Post>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
         return Result<Post>.Success(post);

@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
 using PostService.Application.Validators;
+using PostService.Domain.Constants;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -27,7 +28,7 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
         
         if (post == null)
         {
-            return Result<CommentDto>.Failure(new Error("Post not found."));
+            return Result<CommentDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
         
         var errorMessage = await _validator.ValidateResultAsync(command.CreateComment);

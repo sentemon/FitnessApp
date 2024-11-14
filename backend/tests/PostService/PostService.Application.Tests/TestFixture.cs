@@ -6,6 +6,9 @@ using PostService.Application.Commands.DeleteComment;
 using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.Commands.UpdatePost;
+using PostService.Application.Queries.GetAllComments;
+using PostService.Application.Queries.GetAllLikes;
+using PostService.Application.Queries.GetAllPosts;
 using PostService.Application.Queries.GetPost;
 using PostService.Persistence;
 using Testcontainers.PostgreSql;
@@ -25,7 +28,10 @@ public class TestFixture
     public readonly AddLikeCommandHandler AddLikeCommandHandler;
     public readonly DeleteLikeCommandHandler DeleteLikeCommandHandler;
 
-    internal readonly GetPostQueryHandler GetPostQueryHandler;
+    public readonly GetPostQueryHandler GetPostQueryHandler;
+    public readonly GetAllPostsQueryHandler GetAllPostsQueryHandler;
+    public readonly GetAllCommentsQueryHandler GetAllCommentsQueryHandler;
+    public readonly GetAllLikesQueryHandler GetAllLikesQueryHandler;
     
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
@@ -49,5 +55,8 @@ public class TestFixture
         DeleteLikeCommandHandler = serviceProvider.GetRequiredService<DeleteLikeCommandHandler>();
 
         GetPostQueryHandler = serviceProvider.GetRequiredService<GetPostQueryHandler>();
+        GetAllPostsQueryHandler = serviceProvider.GetRequiredService<GetAllPostsQueryHandler>();
+        GetAllCommentsQueryHandler = serviceProvider.GetRequiredService<GetAllCommentsQueryHandler>();
+        GetAllLikesQueryHandler = serviceProvider.GetRequiredService<GetAllLikesQueryHandler>();
     }
 }

@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "backend\PostService", "{84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}"
+    ProjectSection(SolutionItems) = preProject
+		backend\src\PostService\Dockerfile = backend\src\PostService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "backend\src\PostService\PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
 EndProject
@@ -33,7 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D5A1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection

@@ -5,8 +5,8 @@ networks:
 services:
   post-service:
     build:
-      context: ./
-      dockerfile: backend/src/PostService/Dockerfile
+      context: ./backend/src
+      dockerfile: PostService/Dockerfile
     image: sentemon/post-service:latest
     ports:
       - "8080:8080"

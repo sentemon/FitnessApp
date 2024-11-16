@@ -2,6 +2,12 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
+ARG ASPNETCORE_ENVIRONMENT
+ARG DB_CONNECTION_STRING
+
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+ENV ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 WORKDIR /src

@@ -11,8 +11,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: Host=postgres-posts;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=postgres
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
     depends_on:
       - postgres-posts
     networks:

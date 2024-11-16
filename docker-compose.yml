@@ -4,20 +4,21 @@ networks:
 
 services:
   post-service:
+    container_name: post-service
     build:
       context: ./backend/src
       dockerfile: PostService/Dockerfile
-    image: sentemon/post-service:latest
     ports:
       - "8080:8080"
     depends_on:
-      - postgres-posts
+      postgres-posts:
+        condition: service_healthy
     networks:
       - microservices
 
   postgres-posts:
-    image: postgres:15-alpine
     container_name: postgres-posts
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpasswordfordevelopment

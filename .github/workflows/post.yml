@@ -56,9 +56,10 @@ jobs:
         fi
         docker buildx build \
           --build-arg ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }} \
-          --build-arg DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }} \
+          --build-arg DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
           -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} \
-          -f ./backend/src/PostService/Dockerfile ./backend/src \
+          -f ./backend/src/PostService/Dockerfile \
+          ./backend/src
 
     - name: Push Docker image to Docker Hub
       if: startsWith(github.ref, 'refs/tags/')

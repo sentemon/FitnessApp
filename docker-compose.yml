@@ -10,9 +10,6 @@ services:
     image: sentemon/post-service:latest
     ports:
       - "8080:8080"
-    environment:
-      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-      ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
     depends_on:
       - postgres-posts
     networks:

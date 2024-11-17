@@ -86,7 +86,12 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: ${{ secrets.ASPNETCORE_ENVIRONMENT }}
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-          
+        
+      - name: Log all open ports
+        run: |
+            echo "Logging open ports on the machine..."
+            sudo ss -tuln
+            
       - name: Health Check
         run: |
           echo "Checking health..."

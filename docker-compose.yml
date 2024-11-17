@@ -5,6 +5,8 @@ networks:
 services:
   post-service:
     container_name: post-service
+    hostname: post-service
+    domainname: post-service
     build:
       context: ./backend/src
       dockerfile: PostService/Dockerfile

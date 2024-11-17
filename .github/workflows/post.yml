@@ -90,7 +90,7 @@ jobs:
       - name: Health Check
         run: |
           echo "Checking health..."
-          for i in {1..20}; do
-            curl --fail http://0.0.0.0:8080/health && break || sleep 5
+          for i in {1..10}; do
+            curl --fail http://post-service:8080/health && break || sleep 5
           done
-          curl --fail http://0.0.0.0:8080/health || exit 1
+          curl --fail http://post-service:8080/health || exit 1

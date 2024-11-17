@@ -86,17 +86,11 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: ${{ secrets.ASPNETCORE_ENVIRONMENT }}
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        
-      - name: Log all open ports
-        run: |
-            echo "Logging open ports on the machine..."
-            sudo ss -tuln
             
       - name: Health Check
         run: |
           echo "Checking health..."
-          sleep 30
           for i in {1..10}; do
-            curl --fail http://post-service:8080/health && break || sleep 5
+            curl --fail http://0.0.0.0:8080/health && break || sleep 5
           done
-          curl --fail http://post-service:8080/health || exit 1
+          curl --fail http://0.0.0.0:8080/health || exit 1

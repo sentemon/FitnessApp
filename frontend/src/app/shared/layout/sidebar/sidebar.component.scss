@@ -1,5 +1,6 @@
 .sidebar {
   background-color: #3A9F87;
+  color: #FFFFFF;
   height: 100vh;
   width: 20vw;
 }
@@ -10,13 +11,28 @@
   img {
     height: 50px;
     width: 50px;
+    margin: 15px 4px 15px 10px;
   }
 
-  h3 {
-    margin-left: 15px;
+  h2 {
+    font-size: 32px;
+    margin: 20px 10px;
   }
 }
 
 .options {
+  font-size: 32px;
   font-weight: 600;
+
+  div {
+    margin: 5% 10%;
+  }
+}
+
+.profile {
+  position: absolute;
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 30px 30px;
+  bottom: 0;
 }

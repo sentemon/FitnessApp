@@ -1,0 +1,22 @@
+.sidebar {
+  background-color: #3A9F87;
+  height: 100vh;
+  width: 20vw;
+}
+
+.logo {
+  display: flex;
+
+  img {
+    height: 50px;
+    width: 50px;
+  }
+
+  h3 {
+    margin-left: 15px;
+  }
+}
+
+.options {
+  font-weight: 600;
+}

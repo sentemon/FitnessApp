@@ -1,1 +1,16 @@
-<p>post-list works!</p>
+<div class="post" *ngFor="let post of posts">
+  <div class="content">
+    <header>
+      <h3>{{ post.title }}</h3>
+    </header>
+    <div class="media" *ngIf="post.contentType == ContentType.Image">
+      <img [src]="post.contentUrl" alt="Post Image" />
+    </div>
+    <div class="meta">
+      <span>{{ post.likeCount }} likes</span> |
+      <span>{{ post.commentCount }} comments</span> |
+      <span>{{ post.createdAt | date:'medium' }}</span>
+    </div>
+    <p>{{ post.description }}</p>
+  </div>
+</div>

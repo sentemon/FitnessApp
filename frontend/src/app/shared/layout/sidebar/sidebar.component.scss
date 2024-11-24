@@ -3,50 +3,67 @@
   color: #FFFFFF;
   height: 100vh;
   width: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 15px;
+  box-sizing: border-box;
 }
 
 .logo {
   display: flex;
+  align-items: center;
 
   img {
     height: 50px;
     width: 50px;
-    margin: 15px 4px 15px 10px;
+    margin: 10px;
   }
 
   h2 {
-    font-size: 32px;
-    margin: 20px 10px;
+    font-size: 28px;
 
     a {
-      text-decoration: none
+      text-decoration: none;
+      color: #FFFFFF;
     }
   }
 }
 
 .options {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 600;
+  list-style: none;
 
   li {
-    margin-top: 25px;
+    margin-top: 15px;
 
     a {
       text-decoration: none;
       color: #FFFFFF;
-      margin: 5% 10%;
+      display: block;
+      padding: 10px 0;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #FFD700;
+      }
     }
   }
 }
 
 .profile {
-  position: absolute;
   font-size: 32px;
   font-weight: 600;
-  margin: 0 0 30px 30px;
-  bottom: 0;
+  margin-top: auto;
+  text-align: left;
 
   a {
-    text-decoration: none
+    text-decoration: none;
+    color: #FFFFFF;
+
+    &:hover {
+      color: #FFD700;
+    }
   }
 }

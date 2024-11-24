@@ -21,7 +21,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
         
@@ -45,7 +45,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var id = Guid.Empty;
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
         
         // Act
         var command = new DeletePostCommand(id, userId);
@@ -70,7 +70,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid();
 
         var postCommand = new AddPostCommand(createPost, userId);

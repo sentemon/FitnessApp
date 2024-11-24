@@ -10,4 +10,6 @@ public record PostDto(
     ContentType ContentType,
     uint LikeCount,
     uint CommentCount,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    string UserImageUrl,
+    string Username);

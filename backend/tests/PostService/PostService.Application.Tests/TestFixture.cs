@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
@@ -10,6 +11,7 @@ using PostService.Application.Queries.GetAllComments;
 using PostService.Application.Queries.GetAllLikes;
 using PostService.Application.Queries.GetAllPosts;
 using PostService.Application.Queries.GetPost;
+using PostService.Domain.Entities;
 using PostService.Persistence;
 using Testcontainers.PostgreSql;
 
@@ -37,6 +39,8 @@ public class TestFixture
         .WithImage("postgres:15-alpine")
         .Build();
 
+    public User ExistingUser { get; }
+
     public TestFixture()
     {
         _postgreSqlContainer.StartAsync().Wait();
@@ -45,6 +49,8 @@ public class TestFixture
         var serviceProvider = _testStartup.Initialize(connectionString);
 
         PostDbContextFixture = serviceProvider.GetRequiredService<PostDbContext>();
+        
+        ApplyMigrations();
 
         AddPostCommandHandler = serviceProvider.GetRequiredService<AddPostCommandHandler>();
         UpdatePostCommandHandler = serviceProvider.GetRequiredService<UpdatePostCommandHandler>();
@@ -58,5 +64,39 @@ public class TestFixture
         GetAllPostsQueryHandler = serviceProvider.GetRequiredService<GetAllPostsQueryHandler>();
         GetAllCommentsQueryHandler = serviceProvider.GetRequiredService<GetAllCommentsQueryHandler>();
         GetAllLikesQueryHandler = serviceProvider.GetRequiredService<GetAllLikesQueryHandler>();
+        
+        ExistingUser = CreateExistingUser();
+    }
+    
+    private void ApplyMigrations()
+    {
+        using (var scope = PostDbContextFixture.Database.BeginTransaction())
+        {
+            try
+            {
+                PostDbContextFixture.Database.Migrate();
+                scope.Commit();
+            }
+            catch (Exception)
+            {
+                scope.Rollback();
+                throw;
+            }
+        }
+    }
+
+    private User CreateExistingUser()
+    {
+        var user = new User(
+            Guid.NewGuid(),
+            "First Name",
+            "Last Name",
+            "Username",
+            "");
+        
+        PostDbContextFixture.Users.Add(user);
+        PostDbContextFixture.SaveChanges();
+
+        return user;
     }
 }

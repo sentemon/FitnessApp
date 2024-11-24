@@ -29,6 +29,8 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
         {
             return Result<PostDto>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToUpdateThisPost));
         }
+
+        var user = await _context.Users.FirstAsync(u => u.Id == post.UserId);
         
         post.Update(command.UpdatePost.Title, command.UpdatePost.Description);
         await _context.SaveChangesAsync();
@@ -41,7 +43,9 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
             post.ContentType,
             post.LikeCount,
             post.CommentCount,
-            post.CreatedAt
+            post.CreatedAt,
+            user.ImageUrl,
+            user.Username
         );
 
         return Result<PostDto>.Success(postDto);

@@ -9,6 +9,7 @@ public static class ResponseMessages
     public const string PostNotFound = "Post not found.";
     public const string CommentNotFound = "Comment not found.";
     public const string LikeNotFound = "Like not found.";
+    public const string UserNotFound = "User not found";
     public const string UserHasNotLikedThisPostYet = "User has not liked this post yet.";
     public const string UserHasAlreadyLikedThisPost = "User has already liked this post.";
     public const string YouDoNotHavePermissionToUpdateThisPost = "You do not have permission to update this post.";

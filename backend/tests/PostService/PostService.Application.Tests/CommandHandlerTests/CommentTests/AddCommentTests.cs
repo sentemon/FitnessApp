@@ -21,7 +21,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandPost = new AddPostCommand(createPost, userId);
 
@@ -54,7 +54,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var postId = Guid.Empty;
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
         var content = "This is a comment";
         var createComment = new CreateCommentDto(postId, content);
 
@@ -79,7 +79,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandPost = new AddPostCommand(createPost, userId);
 
@@ -112,7 +112,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);

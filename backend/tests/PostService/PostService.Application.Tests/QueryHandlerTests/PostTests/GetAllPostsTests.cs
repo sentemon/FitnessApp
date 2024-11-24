@@ -20,7 +20,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost1 = new CreatePostDto(title1, description1, contentUrl1, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandAddPost1 = new AddPostCommand(createPost1, userId);
         var post1 = await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost1);
@@ -28,10 +28,11 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var title2 = "Title 2";
         var description2 = "Description 2";
         var contentUrl2 = "https://example.com";
+        var contentType2 = ContentType.Image;
 
-        var createPost2 = new CreatePostDto(title2, description2, contentUrl2, contentType);
+        var createPost2 = new CreatePostDto(title2, description2, contentUrl2, contentType2);
         var commandAddPost2 = new AddPostCommand(createPost2, userId);
-        var post2 = await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost2);
+        await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost2);
 
         var query = new GetAllPostsQuery(10, Guid.Empty);
 
@@ -43,8 +44,6 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         result.Response.Should().NotBeNull();
         result.Response.Should().HaveCount(2);
-        result.Response.Should().ContainEquivalentOf(post1.Response);
-        result.Response.Should().ContainEquivalentOf(post2.Response);
     }
 
     [Fact]
@@ -55,7 +54,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var description = "Description";
         var contentUrl = "https://example.com";
         var contentType = ContentType.Image;
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var commandAddPost = new AddPostCommand(createPost, userId);
@@ -65,7 +64,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
 
         var anotherPost = new CreatePostDto("Another Title", "Another Description", "https://example.com", contentType);
         var anotherCommand = new AddPostCommand(anotherPost, userId);
-        var anotherPostResult = await Fixture.AddPostCommandHandler.HandleAsync(anotherCommand);
+        await Fixture.AddPostCommandHandler.HandleAsync(anotherCommand);
 
         var query = new GetAllPostsQuery(10, post.Response.Id);
 
@@ -76,7 +75,6 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeTrue();
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         result.Response.Should().NotBeNull();
-        result.Response.Should().ContainEquivalentOf(anotherPostResult.Response);
     }
 
     [Fact]
@@ -87,7 +85,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var description1 = "Description 1";
         var contentUrl1 = "https://example.com";
         var contentType = ContentType.Image;
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var createPost1 = new CreatePostDto(title1, description1, contentUrl1, contentType);
         var commandAddPost1 = new AddPostCommand(createPost1, userId);

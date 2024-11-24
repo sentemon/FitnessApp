@@ -21,7 +21,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandPost = new AddPostCommand(createPost, userId);
         
@@ -75,7 +75,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var commandPost = new AddPostCommand(createPost, userId);
         

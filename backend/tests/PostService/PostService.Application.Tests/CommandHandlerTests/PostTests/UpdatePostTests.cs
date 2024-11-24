@@ -20,7 +20,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
 
@@ -53,7 +53,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var newDescription = "New Description";
         
         var updatePost = new UpdatePostDto(id, newTitle, newDescription);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new UpdatePostCommand(updatePost, userId);
 
@@ -77,7 +77,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid();
 
         var postCommand = new AddPostCommand(createPost, userId);

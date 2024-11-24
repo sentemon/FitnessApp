@@ -19,7 +19,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         
@@ -46,7 +46,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Text;
 
         var createPost = new CreatePostDto(title, description, string.Empty, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         
@@ -68,7 +68,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Text;
 
         var createPost = new CreatePostDto(title, description, string.Empty, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         
@@ -90,7 +90,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Text;
 
         var createPost = new CreatePostDto(title, description, string.Empty, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         
@@ -113,7 +113,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Video;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         
@@ -137,7 +137,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var contentType = (ContentType)23;
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Guid.NewGuid();
+        var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
         

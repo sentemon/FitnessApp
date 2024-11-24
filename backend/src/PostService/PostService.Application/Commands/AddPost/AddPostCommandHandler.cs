@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
 using PostService.Application.Validators;
+using PostService.Domain.Constants;
 using PostService.Domain.Entities;
 using PostService.Domain.Enums;
 using PostService.Persistence;
@@ -30,6 +32,13 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             return Result<PostDto>.Failure(new Error(errorMessage));
         }
 
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+        
+        if (user == null)
+        {
+            return Result<PostDto>.Failure(new Error(ResponseMessages.UserNotFound));
+        }
+
         var post = CreatePostForSpecifiedType(command);
 
         _context.Posts.Add(post);
@@ -43,7 +52,9 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             post.ContentType,
             post.LikeCount,
             post.CommentCount,
-            post.CreatedAt);
+            post.CreatedAt,
+            user.ImageUrl,
+            user.Username);
 
         return Result<PostDto>.Success(postDto);
     }

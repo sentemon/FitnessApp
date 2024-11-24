@@ -17,6 +17,10 @@
   h2 {
     font-size: 32px;
     margin: 20px 10px;
+
+    a {
+      text-decoration: none
+    }
   }
 }
 
@@ -24,8 +28,14 @@
   font-size: 32px;
   font-weight: 600;
 
-  div {
-    margin: 5% 10%;
+  li {
+    margin-top: 25px;
+
+    a {
+      text-decoration: none;
+      color: #FFFFFF;
+      margin: 5% 10%;
+    }
   }
 }
 
@@ -35,4 +45,8 @@
   font-weight: 600;
   margin: 0 0 30px 30px;
   bottom: 0;
+
+  a {
+    text-decoration: none
+  }
 }

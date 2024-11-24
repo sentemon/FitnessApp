@@ -68,7 +68,7 @@ jobs:
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}
         
   docker-compose:
-    needs: docker
+    needs: build
     runs-on: ubuntu-latest
     
     steps:

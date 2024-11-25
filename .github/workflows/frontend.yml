@@ -1,0 +1,42 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - frontend/** 
+      - .github/workflows/frontend.yml
+    branches:
+      - master
+      - develop
+    tags:
+      - 'v*'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Restore dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build Angular app
+        run: |
+          cd frontend
+          npm run build -- --configuration production
+
+#      - name: Run tests
+#        run: |
+#          cd frontend
+#          npm test -- --watch=false --code-coverage

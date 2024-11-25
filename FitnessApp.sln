@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostService", "backend\PostService", "{84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}"
-    ProjectSection(SolutionItems) = preProject
+				ProjectSection(SolutionItems) = preProject
 		backend\src\PostService\Dockerfile = backend\src\PostService\Dockerfile
-	EndProjectSection
+				EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Api", "backend\src\PostService\PostService.Api\PostService.Api.csproj", "{2E44C019-ED30-4671-A878-D2F7B6071024}"
 EndProject
@@ -32,6 +32,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\post.yml = .github\workflows\post.yml
+		.github\workflows\frontend.yml = .github\workflows\frontend.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"

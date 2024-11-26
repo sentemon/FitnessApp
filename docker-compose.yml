@@ -3,6 +3,19 @@ networks:
     driver: bridge
 
 services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      post-service:
+        condition: service_healthy
+    networks: 
+      - microservices
+  
   post-service:
     container_name: post-service
     build:

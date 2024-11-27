@@ -9,4 +9,6 @@ export interface Post {
   likeCount: number;
   commentCount: number;
   createdAt: Date;
+  username: string;
+  imageUrl: string;
 }

@@ -20,10 +20,18 @@
     header {
       width: 100%;
       text-align: left;
+      display: flex;
 
-      h3 {
-        margin: 0;
+      img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+      }
+
+      p {
+        margin: 10px;
         font-size: 24px;
+        font-weight: 600;
         color: #333;
       }
     }
@@ -47,6 +55,24 @@
       color: #888;
       display: flex;
       gap: 10px;
+
+      .like {
+        svg {
+          &:hover {
+            fill: #FF0000;
+          }
+        }
+
+      }
+
+      .comment {
+        svg {
+          &:hover {
+            fill: #000066;
+          }
+        }
+      }
+
     }
   }
 }

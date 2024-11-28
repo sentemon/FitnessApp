@@ -1,8 +1,9 @@
 <div class="post" *ngFor="let post of posts" xmlns="http://www.w3.org/1999/html">
   <div class="content">
     <header>
-      <img [src]="post.imageUrl" alt="Image">
+      <img class="image" [src]="post.imageUrl" alt="Image">
       <p>{{ post.username }}</p>
+      <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
     </header>
     <h3>{{ post.title }}</h3>
     <div class="media" *ngIf="post.contentType == ContentType.Image">
@@ -27,7 +28,7 @@
         {{ post.commentCount }}
       </span> |
 
-      <span>{{ post.createdAt | date:'medium' }}</span>
+      <span>{{ post.createdAt | date: "mediumDate" }}</span>
     </div>
     <p>{{ post.description }}</p>
   </div>

@@ -36,7 +36,7 @@ export class PostListComponent {
       commentCount: 34,
       contentType: ContentType.Image,
       contentUrl: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg", // No Copyright
-      createdAt: new Date(),
+      createdAt: new Date(2024, 10, 20),
       description: "I love swimming!",
       id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
       likeCount: 193,
@@ -48,7 +48,7 @@ export class PostListComponent {
       commentCount: 91,
       contentType: ContentType.Image,
       contentUrl: "https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg", // No Copyright
-      createdAt: new Date(),
+      createdAt: new Date(2024, 10, 19),
       description: "Yesterday's challenge was great",
       id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
       likeCount: 393,

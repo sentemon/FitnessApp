@@ -1,9 +1,9 @@
 .main {
   background-color: #B6DAD1;
-  height: 100%;
+  height: 100vh;
   width: 80vw;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 50px;
+  overflow-y: scroll;
 }

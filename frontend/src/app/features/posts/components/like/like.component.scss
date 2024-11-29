@@ -1,7 +1,11 @@
 .like {
+  cursor: pointer;
+
   svg {
-    &:hover {
-      fill: #FF0000;
-    }
+    transition: color 0.2s ease;
+  }
+
+  &:hover svg {
+    color: #000000;
   }
 }

@@ -4,6 +4,7 @@ import {ContentType} from "../../../../core/enums/content-type.enum";
 import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {PostService} from "../../services/post.service";
 import {LikeComponent} from "../like/like.component";
+import {CommentComponent} from "../comment/comment.component";
 
 @Component({
   selector: 'app-post-list',
@@ -13,7 +14,8 @@ import {LikeComponent} from "../like/like.component";
     NgIf,
     NgForOf,
     NgOptimizedImage,
-    LikeComponent
+    LikeComponent,
+    CommentComponent
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss'

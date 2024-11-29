@@ -3,6 +3,7 @@ import {Post} from "../../models/post.model";
 import {ContentType} from "../../../../core/enums/content-type.enum";
 import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {PostService} from "../../services/post.service";
+import {LikeComponent} from "../like/like.component";
 
 @Component({
   selector: 'app-post-list',
@@ -11,7 +12,8 @@ import {PostService} from "../../services/post.service";
     DatePipe,
     NgIf,
     NgForOf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    LikeComponent
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss'
@@ -28,5 +30,5 @@ export class PostListComponent implements OnInit{
       this.posts = posts;
     });
   }
-  
+
 }

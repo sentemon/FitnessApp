@@ -15,13 +15,13 @@ export class LikeComponent {
   @Input() post!: Post;
   isLiked: boolean = false;
 
-  userHasLiked(post: Post): boolean {
-    return this.isLiked;
-  }
-
-  toggleLike(post: Post): void {
+  toggleLike(): void {
     this.isLiked = !this.isLiked;
 
-    post.likeCount += this.isLiked ? 1 : -1;
+    if (this.isLiked) {
+      this.post.likeCount++;
+    } else {
+      this.post.likeCount--;
+    }
   }
 }

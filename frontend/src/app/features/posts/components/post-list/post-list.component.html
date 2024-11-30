@@ -3,6 +3,8 @@
     <header>
       <img class="image" [src]="post.imageUrl" alt="Image">
       <p>{{ post.username }}</p>
+      <span class="dot">•</span>
+      <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>
       <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
     </header>
     <h3>{{ post.title }}</h3>
@@ -12,8 +14,6 @@
     <div class="meta">
       <app-like [post]="post"></app-like>
       <app-comment [post]="post"></app-comment>
-
-      <span>{{ post.createdAt | date: "mediumDate" }}</span>
     </div>
     <p>{{ post.description }}</p>
   </div>

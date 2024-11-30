@@ -21,6 +21,7 @@
       width: 100%;
       text-align: left;
       display: flex;
+      align-items: center;
 
       .image {
         height: 50px;
@@ -32,7 +33,16 @@
         margin: 10px;
         font-size: 24px;
         font-weight: 600;
-        color: #333;
+        color: #333333;
+      }
+
+      .dot {
+        margin-right: 10px;
+        font-size: 32px;
+      }
+
+      .date {
+        color: #888888;
       }
 
       .see-more {
@@ -56,10 +66,11 @@
     }
 
     .meta {
-      font-size: 14px;
+      height: 100%;
+      font-size: 15px;
       color: #888;
       display: flex;
-      gap: 10px;
+      gap: 20px;
     }
   }
 }

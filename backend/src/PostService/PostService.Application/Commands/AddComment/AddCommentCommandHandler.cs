@@ -30,6 +30,13 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
         {
             return Result<CommentDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+
+        if (user == null)
+        {
+            return Result<CommentDto>.Failure(new Error(ResponseMessages.UserNotFound));
+        }
         
         var errorMessage = await _validator.ValidateResultAsync(command.CreateComment);
 
@@ -41,6 +48,7 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
         var comment = new Comment(
             command.CreateComment.PostId,
             command.UserId,
+            user.Username,
             command.CreateComment.Content);
 
         _context.Comments.Add(comment);

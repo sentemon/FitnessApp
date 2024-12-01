@@ -59,6 +59,7 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
             comment.Id,
             comment.PostId,
             comment.UserId,
+            comment.Username,
             comment.Content,
             comment.CreatedAt);
 

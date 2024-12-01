@@ -13,8 +13,14 @@
     </div>
     <div class="meta">
       <app-like [post]="post"></app-like>
-      <app-comment [post]="post"></app-comment>
+      <app-comment (click)="openModal(post)" [post]="post"></app-comment>
     </div>
     <p>{{ post.description }}</p>
   </div>
 </div>
+
+<app-post-modal
+  *ngIf="selectedPost"
+  [post]="selectedPost"
+  (close)="selectedPost = null"
+></app-post-modal>

@@ -1,0 +1,23 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ post.title }}</h2>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="post-content">
+        <p><strong>{{ post.username }}</strong> • {{ post.createdAt }}</p>
+        <img [src]="post.contentUrl" alt="Post Image" />
+        <p>{{ post.description }}</p>
+      </div>
+
+      <div class="comments">
+        <h3>Comments</h3>
+        <div *ngFor="let comment of comments" class="comment">
+          <p><strong>ToDo: Username</strong>: {{ comment.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

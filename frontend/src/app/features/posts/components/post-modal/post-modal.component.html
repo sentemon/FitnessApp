@@ -7,7 +7,7 @@
 
     <div class="modal-body">
       <div class="post-content">
-        <p><strong>{{ post.username }}</strong> • {{ post.createdAt }}</p>
+        <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <img [src]="post.contentUrl" alt="Post Image" />
         <p>{{ post.description }}</p>
       </div>
@@ -15,8 +15,20 @@
       <div class="comments">
         <h3>Comments</h3>
         <div *ngFor="let comment of comments" class="comment">
-          <p><strong>ToDo: Username</strong>: {{ comment.content }}</p>
+          <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
         </div>
+
+        <form (submit)="sendComment($event, commentInput.value)">
+          <input
+            #commentInput
+            type="text"
+            placeholder="Enter your comment..."
+            [(ngModel)]="newComment"
+            name="comment"
+            required
+          >
+          <button type="submit">Send</button>
+        </form>
       </div>
     </div>
   </div>

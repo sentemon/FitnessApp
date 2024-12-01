@@ -26,10 +26,6 @@
     justify-content: space-between;
     align-items: center;
 
-    h2 {
-      margin: 0;
-    }
-
     .close-btn {
       background: none;
       border: none;
@@ -60,17 +56,11 @@
       padding: 16px;
       border-radius: 8px;
 
-      h3 {
-        margin-top: 0;
-      }
-
       .comment {
         margin-bottom: 8px;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
       }
+
+
     }
   }
 }

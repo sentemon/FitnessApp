@@ -5,6 +5,8 @@ import {Comment} from "../../models/comment.model";
 import {CommentService} from "../../services/comment.service";
 import {FormsModule} from "@angular/forms";
 import {CreateCommentDto} from "../../requests/create-comment.dto";
+import {CommentComponent} from "../comment/comment.component";
+import {LikeComponent} from "../like/like.component";
 
 @Component({
   selector: 'app-post-modal',
@@ -13,7 +15,9 @@ import {CreateCommentDto} from "../../requests/create-comment.dto";
     NgIf,
     NgForOf,
     DatePipe,
-    FormsModule
+    FormsModule,
+    CommentComponent,
+    LikeComponent
   ],
   templateUrl: './post-modal.component.html',
   styleUrl: './post-modal.component.scss'
@@ -30,7 +34,7 @@ export class PostModalComponent implements OnInit {
 
   constructor(private commentService: CommentService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.commentService.getAllComments(this.post.id).subscribe(comments => {
       this.comments = comments;
     });
@@ -56,12 +60,8 @@ export class PostModalComponent implements OnInit {
       this.newComment = "";
     });
 
-    setTimeout(() => {
-      this.scrollToBottom()
+    setTimeout((): void => {
+      this.scrollAnchor.nativeElement.scrollIntoView({ behavior: "smooth" })
     }, 0);
-  }
-
-  scrollToBottom(): void {
-    this.scrollAnchor.nativeElement.scrollIntoView({ behavior: "smooth" })
   }
 }

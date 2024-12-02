@@ -49,6 +49,17 @@
       }
     }
 
+    .meta {
+      font-size: 15px;
+      color: #888;
+      display: flex;
+      gap: 20px;
+    }
+
+    .description {
+      margin-top: 5px;
+    }
+
     .comments-container {
       flex: 1;
       display: flex;

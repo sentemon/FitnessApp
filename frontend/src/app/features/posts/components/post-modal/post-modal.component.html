@@ -9,7 +9,12 @@
       <div class="post-content">
         <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <img [src]="post.contentUrl" alt="Post Image" />
-        <p>{{ post.description }}</p>
+        <div class="meta">
+          <!-- ToDo: fix opportunity to make infinity likes -->
+          <app-like [post]="post"></app-like>
+          <app-comment [post]="post"></app-comment>
+        </div>
+        <p class="description">{{ post.description }}</p>
       </div>
 
       <div class="comments-container">

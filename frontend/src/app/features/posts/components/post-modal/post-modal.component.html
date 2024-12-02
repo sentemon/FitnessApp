@@ -12,23 +12,28 @@
         <p>{{ post.description }}</p>
       </div>
 
-      <div class="comments">
-        <h3>Comments</h3>
-        <div *ngFor="let comment of comments" class="comment">
-          <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
+      <div class="comments-container">
+        <div class="comments">
+          <h3>Comments</h3>
+          <div *ngFor="let comment of comments" class="comment">
+            <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
+          </div>
+          <div #scrollAnchor></div>
         </div>
 
-        <form (submit)="sendComment($event, commentInput.value)">
-          <input
-            #commentInput
-            type="text"
-            placeholder="Enter your comment..."
-            [(ngModel)]="newComment"
-            name="comment"
-            required
-          >
-          <button type="submit">Send</button>
-        </form>
+        <div class="form-container">
+          <form (submit)="sendComment($event, commentInput.value)">
+            <input
+              #commentInput
+              type="text"
+              placeholder="Enter your comment..."
+              [(ngModel)]="newComment"
+              name="comment"
+              required
+            />
+            <button type="submit">Send</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

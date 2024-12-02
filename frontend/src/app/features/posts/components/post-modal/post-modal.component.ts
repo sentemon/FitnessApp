@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Post} from "../../models/post.model";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {Comment} from "../../models/comment.model";
@@ -19,6 +19,9 @@ import {CreateCommentDto} from "../../requests/create-comment.dto";
   styleUrl: './post-modal.component.scss'
 })
 export class PostModalComponent implements OnInit {
+  @ViewChild('commentsContainer') commentsContainer!: ElementRef;
+  @ViewChild('scrollAnchor') scrollAnchor!: ElementRef;
+
   @Input() post!: Post;
   @Output() close = new EventEmitter<void>();
 
@@ -52,5 +55,13 @@ export class PostModalComponent implements OnInit {
       this.comments.push(comment);
       this.newComment = "";
     });
+
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 0);
+  }
+
+  scrollToBottom(): void {
+    this.scrollAnchor.nativeElement.scrollIntoView({ behavior: "smooth" })
   }
 }

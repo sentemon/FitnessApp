@@ -26,6 +26,11 @@ services:
     depends_on:
       postgres-posts:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://post-service:8080/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - microservices
 

@@ -6,6 +6,7 @@ using PostService.Infrastructure;
 using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://0.0.0.0:8081");
 
 builder.Services
     .AddPersistenceServices(builder.Configuration)

@@ -22,12 +22,12 @@ services:
       context: ./backend/src
       dockerfile: PostService/Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       postgres-posts:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://post-service:8080/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://post-service:8081/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3

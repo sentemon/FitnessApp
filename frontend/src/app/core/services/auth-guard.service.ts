@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { KeycloakAuthGuard, KeycloakService } from "keycloak-angular";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
-import { isPlatformBrowser } from '@angular/common';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +20,16 @@ export class AuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.authenticated) {
-        await this.keycloakAngular.login({
-          redirectUri: window.location.origin + state.url
-        });
-        return false;
-      }
+    if (environment.devMode) {
       return true;
     }
-    return false;
+
+    if (!this.keycloakAngular.isLoggedIn()) {
+      await this.keycloakAngular.login({
+        redirectUri: window.location.origin + state.url
+      });
+      return false;
+    }
+    return true;
   }
 }

@@ -1,9 +1,14 @@
 import { KeycloakService } from 'keycloak-angular';
+import {environment} from "../environments/environment";
 
 const Keycloak = typeof window !== 'undefined' ? import('keycloak-js') : null;
 
 export function initKeycloak(keycloak: KeycloakService) {
-  if (Keycloak !== null) {
+  if (environment.devMode) {
+    return () => new Promise<boolean>((resolve) => resolve(true));
+  }
+
+  else if (Keycloak !== null) {
     return () =>
       keycloak.init({
         config: {
@@ -15,19 +20,14 @@ export function initKeycloak(keycloak: KeycloakService) {
           onLoad: 'login-required',
           checkLoginIframe: false,
         },
-        // enableBearerInterceptor: true,
-        // bearerPrefix: 'Bearer',
-      }).then(authenticated => {
-        console.log('Authenticated:', authenticated);
-        console.log('Token:', keycloak.getToken());
-      }).catch(error => {
-        console.log('Keycloak init error:', error);
+        enableBearerInterceptor: true,
+        bearerPrefix: 'Bearer',
       });
-  } else {
-    return () => {
-      return new Promise<Boolean>((resolve) => {
-        resolve(true);
-      });
-    };
   }
+
+  return () => {
+    return new Promise<Boolean>((resolve) => {
+      resolve(true);
+    });
+  };
 }

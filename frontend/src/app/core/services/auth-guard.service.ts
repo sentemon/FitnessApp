@@ -18,18 +18,15 @@ export class AuthGuard extends KeycloakAuthGuard {
 
   public override async isAccessAllowed(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean> {
-    if (environment.devMode) {
-      return true;
-    }
-
+    state: RouterStateSnapshot): Promise<boolean> {
     if (!this.keycloakAngular.isLoggedIn()) {
       await this.keycloakAngular.login({
         redirectUri: window.location.origin + state.url
       });
+
       return false;
     }
+
     return true;
   }
 }

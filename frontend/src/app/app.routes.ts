@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import {PostListComponent} from "./features/posts/components/post-list/post-list.component";
 import {AuthGuard} from "./core/services/auth-guard.service";
+import {AppComponent} from "./app.component";
 
 export const routes: Routes = [
-  { path: '', component: PostListComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' }
+  // { path: '', component: AppComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

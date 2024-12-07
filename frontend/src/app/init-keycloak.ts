@@ -1,4 +1,5 @@
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from "../environments/environment";
 
 const Keycloak = typeof window !== 'undefined' ? import('keycloak-js') : null;
 
@@ -7,13 +8,13 @@ export function initKeycloak(keycloak: KeycloakService) {
     return () =>
       keycloak.init({
         config: {
-          url: 'http://localhost:8080/',
-          realm: 'keycloak-angular-realm',
-          clientId: 'keycloak-angular-client'
+          url: environment.keycloak.url,
+          realm: environment.keycloak.realm,
+          clientId: environment.keycloak.clientId,
         },
         initOptions: {
-          onLoad: 'login-required',
-          checkLoginIframe: true,
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
         },
         enableBearerInterceptor: true,
         bearerPrefix: 'Bearer',

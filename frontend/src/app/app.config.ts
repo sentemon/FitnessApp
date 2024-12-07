@@ -15,6 +15,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(),
+    provideRouter(routes),
     provideHttpClient(),
     provideApollo(() => {
       const httpLink = inject(HttpLink);
@@ -37,7 +38,6 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },
-    provideRouter(routes)
+    }
   ]
 };

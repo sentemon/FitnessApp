@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
+      <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj" />
+      <ProjectReference Include="..\AuthService.Persistence\AuthService.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

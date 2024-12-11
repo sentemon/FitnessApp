@@ -5,7 +5,7 @@ EXPOSE 8081
 ARG ASPNETCORE_ENVIRONMENT
 ARG DB_CONNECTION_STRING
 
-ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_ENVIRONMENT=Docker
 ENV ConnectionStrings__DockerConnection=${DB_CONNECTION_STRING}
 
 RUN apt-get update && apt-get install -y curl && apt-get clean

@@ -2,12 +2,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8081
 
-ARG ASPNETCORE_ENVIRONMENT
-ARG DB_CONNECTION_STRING
-
-ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Docker}
-ENV ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING:-Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb}
-
 RUN apt-get update && apt-get install -y curl && apt-get clean
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

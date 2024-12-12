@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PostService.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, string? connectionString)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new ArgumentNullException(nameof(connectionString), "Connection String cannot be empty.");
+        }
         
         services.AddDbContext<PostDbContext>(options =>
             options.UseNpgsql(connectionString));

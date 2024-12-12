@@ -10,9 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
 
-var connectionString = builder.Environment.EnvironmentName == "Docker"
-    ? builder.Configuration[AppSettingsConstants.DockerConnection]
-    : builder.Configuration[AppSettingsConstants.DefaultConnection];
+var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 

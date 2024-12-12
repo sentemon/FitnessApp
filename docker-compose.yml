@@ -24,7 +24,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
     depends_on:
       postgres:
         condition: service_healthy

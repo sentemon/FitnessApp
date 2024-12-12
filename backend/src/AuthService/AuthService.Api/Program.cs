@@ -1,10 +1,14 @@
 using AuthService.Application;
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
 using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:8082");
+
+var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
+
+builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 
 builder.Services
     .AddPersistenceServices(builder.Configuration)

@@ -31,7 +31,6 @@ public class Comment
             throw new ArgumentException("Content cannot be empty or whitespace.", nameof(content));
         }
         
-        Id = Guid.NewGuid();
         PostId = postId;
         UserId = userId;
         Username = username;

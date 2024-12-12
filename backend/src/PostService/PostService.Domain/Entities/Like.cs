@@ -19,7 +19,6 @@ public class Like
             throw new ArgumentException("UserId cannot be empty.", nameof(userId));
         }
         
-        Id = Guid.NewGuid();
         PostId = postId;
         UserId = userId;
         CreatedAt = DateTime.UtcNow;

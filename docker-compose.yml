@@ -24,7 +24,7 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      postgres-posts:
+      postgres:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://post-service:8081/health || exit 1" ]
@@ -34,15 +34,14 @@ services:
     networks:
       - microservices
 
-  postgres-auth:
-    container_name: postgres-auth
+  postgres:
+    container_name: postgres
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpasswordfordevelopment
-      POSTGRES_DB: auth-db
     ports:
-      - "5433:5432"
+      - "5432:5432"
     restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -50,27 +49,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - auth-service-data:/var/lib/postgresql/data
-    networks:
-      - microservices
-  
-  postgres-posts:
-    container_name: postgres-posts
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpasswordfordevelopment
-      POSTGRES_DB: posts-db
-    ports:
-      - "5434:5432"
-    restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - post-service-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - microservices
   
@@ -90,5 +69,4 @@ services:
       - microservices
 
 volumes:
-  auth-service-data:
-  post-service-data:
+  postgres-data:

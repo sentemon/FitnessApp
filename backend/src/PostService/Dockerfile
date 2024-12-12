@@ -6,7 +6,7 @@ ARG ASPNETCORE_ENVIRONMENT
 ARG DB_CONNECTION_STRING
 
 ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Docker}
-ENV ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING:-Host=postgres-posts;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=posts-db}
+ENV ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING:-Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb}
 
 RUN apt-get update && apt-get install -y curl && apt-get clean
 

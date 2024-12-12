@@ -13,7 +13,6 @@ public class User
 
     public User(string externalId, string firstName, string lastName, string username, string email, string imageUrl)
     {
-        Id = Guid.NewGuid();
         ExternalId = externalId;
         FirstName = firstName;
         LastName = lastName;

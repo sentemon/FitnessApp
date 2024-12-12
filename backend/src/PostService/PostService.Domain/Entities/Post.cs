@@ -23,7 +23,6 @@ public class Post
         
         ValidateContent(contentType, title, description, contentUrl);
         
-        Id = Guid.NewGuid();
         UserId = userId;
         Title = title;
         Description = description;

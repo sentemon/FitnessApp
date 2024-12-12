@@ -2,11 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using PostService.Api.GraphQL.Mutations;
 using PostService.Api.GraphQL.Queries;
 using PostService.Application;
+using PostService.Domain.Constants;
 using PostService.Infrastructure;
 using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:8081");
+
+var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
+
+builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 
 builder.Services
     .AddPersistenceServices(builder.Configuration)

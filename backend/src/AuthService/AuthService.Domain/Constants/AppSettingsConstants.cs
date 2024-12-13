@@ -13,4 +13,6 @@ public static class AppSettingsConstants
     public const string KeycloakRealm = "Keycloak:Realm";
     public const string KeycloakClientId = "Keycloak:ClientId";
     public const string KeycloakClientSecret = "Keycloak:ClientSecret";
+    public const string AdminUsername = "Keycloak:AdminUsername";
+    public const string AdminPassword = "Keycloak:AdminPassword";
 }

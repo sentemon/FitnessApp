@@ -73,11 +73,7 @@ public class KeycloakService : IKeycloakService
             };
 
             var response = await _httpClient.PostAsJsonAsync($"admin/realms/{_realm}/users", keycloakUser);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"Failed to create user in Keycloak. StatusCode: {response.StatusCode}");
-            }
+            response.EnsureSuccessStatusCode();
 
             if (response.Headers.Location == null)
             {
@@ -112,10 +108,7 @@ public class KeycloakService : IKeycloakService
             };
 
             var response = await _httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"Login failed. StatusCode: {response.StatusCode}");
-            }
+            response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
             var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
@@ -128,7 +121,33 @@ public class KeycloakService : IKeycloakService
         }
     }
 
-    public void SetAccessToken(string? accessToken)
+    public async Task<bool> LogoutAsync(string refreshToken)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_realm}/protocol/openid-connect/logout")
+            {
+                Content = new FormUrlEncodedContent(new []
+                {
+                    new KeyValuePair<string, string>("client_id", _clientId),
+                    new KeyValuePair<string,string>("client_secret", _clientSecret),
+                    new KeyValuePair<string,string>("refresh_token", refreshToken)
+                })
+            };
+            
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    private void SetAccessToken(string? accessToken)
     {
         if (string.IsNullOrEmpty(accessToken))
         {
@@ -157,9 +176,38 @@ public class KeycloakService : IKeycloakService
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<AccessTokenResponse>(content);
+            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
 
             return tokenResponse?.AccessToken;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error while retrieving access token: {ex.Message}");
+        }
+    }
+    
+    private async Task<KeycloakTokenResponse?> GetTokenAsync(string username, string password)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_realm}/protocol/openid-connect/token")
+            {
+                Content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("grant_type", "password"),
+                    new KeyValuePair<string, string>("client_id", _clientId),
+                    new KeyValuePair<string, string>("username", username),
+                    new KeyValuePair<string, string>("password", password)
+                })
+            };
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
+
+            return tokenResponse;
         }
         catch (Exception ex)
         {

@@ -51,24 +51,24 @@ public class KeycloakService : IKeycloakService
         }
     }
 
-    public async Task<bool> RegisterAsync(string username, string email, string password, string? accessToken)
+    public async Task<User?> RegisterAsync(string firstName, string lastName, string username, string email, string password)
     {
         try
         {
-            if (string.IsNullOrEmpty(accessToken))
+            var accessToken = await GetAdminAccessTokenAsync(); 
+            
+            if (accessToken == null) 
             {
-                accessToken = await GetAdminAccessTokenAsync();
-                if (accessToken == null)
-                {
-                    Console.WriteLine("Failed to obtain access token.");
-                    return false;
-                }
+                Console.WriteLine("Failed to obtain access token."); 
+                return null;
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var keycloakUser = new
             {
+                firstName,
+                lastName,
                 username,
                 email,
                 enabled = true,
@@ -88,15 +88,22 @@ public class KeycloakService : IKeycloakService
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine($"Failed to create user in Keycloak. StatusCode: {response.StatusCode}");
-                return false;
+                return null;
             }
 
-            return true;
+            if (response.Headers.Location != null)
+            {
+                var userId = response.Headers.Location.Segments.Last();
+                return await GetUserByIdAsync(userId);
+            }
+
+            Console.WriteLine("User creation succeeded, but no Location header returned.");
+            return null;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Unexpected error while creating user: {ex.Message}");
-            return false;
+            return null;
         }
     }
 

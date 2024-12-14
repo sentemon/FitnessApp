@@ -5,7 +5,7 @@ namespace AuthService.Infrastructure.Interfaces;
 
 public interface IKeycloakService
 {
-    Task<User?> GetUserByIdAsync(string externalUserId);
+    Task<User?> GetUserByIdAsync(string id);
     Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password);
     Task<KeycloakTokenResponse> LoginAsync(string username, string password);
     Task<bool> LogoutAsync(string refreshToken);

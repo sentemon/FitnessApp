@@ -1,6 +1,7 @@
 using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
+using AuthService.Application.Queries.GetUserById;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthService.Application;
@@ -12,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<RegisterCommandHandler>();
         services.AddScoped<LoginCommandHandler>();
         services.AddScoped<LogoutCommandHandler>();
+        services.AddScoped<GetUserByIdQueryHandler>();
         
         return services;
     }

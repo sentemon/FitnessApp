@@ -26,7 +26,7 @@ public class KeycloakService : IKeycloakService
         _adminPassword = adminPassword;
     }
 
-    public async Task<User?> GetUserByIdAsync(string externalUserId)
+    public async Task<User?> GetUserByIdAsync(string id)
     {
         try
         {
@@ -34,7 +34,7 @@ public class KeycloakService : IKeycloakService
 
             SetAccessToken(accessToken);
             
-            var response = await _httpClient.GetAsync($"admin/realms/{_realm}/users/{externalUserId}");
+            var response = await _httpClient.GetAsync($"admin/realms/{_realm}/users/{id}");
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromJsonAsync<User>();

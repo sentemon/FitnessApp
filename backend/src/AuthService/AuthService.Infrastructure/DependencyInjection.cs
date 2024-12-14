@@ -15,6 +15,7 @@ public static class DependencyInjection
         var keycloakUrl = keycloakConfig[AppSettingsConstants.KeycloakUrl] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak URL is not configured.");
         var keycloakRealm = keycloakConfig[AppSettingsConstants.KeycloakRealm] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Realm is not configured.");
         var keycloakClientId = keycloakConfig[AppSettingsConstants.KeycloakClientId] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak ClientId is not configured.");
+        var keycloakClientSecret = keycloakConfig[AppSettingsConstants.KeycloakClientSecret] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Client Secret is not configured");
         var keycloakAdminUsername = keycloakConfig[AppSettingsConstants.AdminUsername] ?? throw new ArgumentNullException(nameof(keycloakConfig),"Keycloak Admin Username is not configured.");
         var keycloakAdminPassword = keycloakConfig[AppSettingsConstants.AdminPassword] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Admin Password is not configured.");
 
@@ -22,7 +23,7 @@ public static class DependencyInjection
         {
             client.BaseAddress = new Uri(keycloakUrl);
             
-            return new KeycloakService(client, keycloakRealm, keycloakAdminUsername, keycloakAdminPassword);
+            return new KeycloakService(client, keycloakRealm, keycloakClientId, keycloakClientSecret, keycloakAdminUsername, keycloakAdminPassword);
         });
 
         services.AddAuthentication(options =>

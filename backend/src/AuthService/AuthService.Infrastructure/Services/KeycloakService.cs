@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Interfaces;
+using AuthService.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Newtonsoft.Json;
 
@@ -31,13 +32,8 @@ public class KeycloakService : IKeycloakService
         try
         {
             var accessToken = await GetAdminAccessTokenAsync();
-            
-            if (accessToken == null)
-            {
-                throw new ArgumentNullException(nameof(accessToken), "Failed to obtain access token.");
-            }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            SetAccessToken(accessToken);
             
             var response = await _httpClient.GetAsync($"admin/realms/{_realm}/users/{externalUserId}");
             response.EnsureSuccessStatusCode();
@@ -46,8 +42,7 @@ public class KeycloakService : IKeycloakService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while retrieving user: {ex.Message}");
-            return null;
+            throw new Exception($"Error while retrieving user: {ex.Message}");
         }
     }
 
@@ -55,15 +50,9 @@ public class KeycloakService : IKeycloakService
     {
         try
         {
-            var accessToken = await GetAdminAccessTokenAsync(); 
+            var accessToken = await GetAdminAccessTokenAsync();
             
-            if (accessToken == null) 
-            {
-                Console.WriteLine("Failed to obtain access token."); 
-                return null;
-            }
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            SetAccessToken(accessToken);
 
             var keycloakUser = new
             {
@@ -87,27 +76,25 @@ public class KeycloakService : IKeycloakService
 
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Failed to create user in Keycloak. StatusCode: {response.StatusCode}");
-                return null;
+                throw new Exception($"Failed to create user in Keycloak. StatusCode: {response.StatusCode}");
             }
 
-            if (response.Headers.Location != null)
+            if (response.Headers.Location == null)
             {
-                var userId = response.Headers.Location.Segments.Last();
-                return await GetUserByIdAsync(userId);
+                throw new Exception("User creation succeeded, but no Location header returned.");
             }
 
-            Console.WriteLine("User creation succeeded, but no Location header returned.");
-            return null;
+            var userId = response.Headers.Location.Segments.Last(); 
+            return await GetUserByIdAsync(userId);
+            
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Unexpected error while creating user: {ex.Message}");
-            return null;
+            throw new Exception($"Unexpected error while creating user: {ex.Message}");
         }
     }
 
-    public async Task<string?> LoginAsync(string username, string password)
+    public async Task<KeycloakTokenResponse?> LoginAsync(string username, string password)
     {
         try
         {
@@ -127,23 +114,21 @@ public class KeycloakService : IKeycloakService
             var response = await _httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Login failed. StatusCode: {response.StatusCode}");
-                return null;
+                throw new Exception($"Login failed. StatusCode: {response.StatusCode}");
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<AccessTokenResponse>(content);
+            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
 
-            return tokenResponse?.AccessToken;
+            return tokenResponse;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error during login: {ex.Message}");
-            return null;
+            throw new Exception($"Error during login: {ex.Message}");
         }
     }
 
-    public void SetAccessToken(string accessToken)
+    public void SetAccessToken(string? accessToken)
     {
         if (string.IsNullOrEmpty(accessToken))
         {
@@ -178,8 +163,7 @@ public class KeycloakService : IKeycloakService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while retrieving access token: {ex.Message}");
-            return null;
+            throw new Exception($"Error while retrieving access token: {ex.Message}");
         }
     }
 }

@@ -3,8 +3,7 @@ using System.Net.Http.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -46,7 +45,7 @@ public class KeycloakService : IKeycloakService
         }
     }
 
-    public async Task<User?> RegisterAsync(string firstName, string lastName, string username, string email, string password)
+    public async Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password)
     {
         try
         {
@@ -81,8 +80,15 @@ public class KeycloakService : IKeycloakService
             }
 
             var userId = response.Headers.Location.Segments.Last(); 
-            return await GetUserByIdAsync(userId);
-            
+            var user = await GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Id: {userId} not found.");
+            }
+
+            return user;
+
         }
         catch (Exception ex)
         {
@@ -90,7 +96,7 @@ public class KeycloakService : IKeycloakService
         }
     }
 
-    public async Task<KeycloakTokenResponse?> LoginAsync(string username, string password)
+    public async Task<KeycloakTokenResponse> LoginAsync(string username, string password)
     {
         try
         {
@@ -111,7 +117,12 @@ public class KeycloakService : IKeycloakService
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
+            var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
+
+            if (tokenResponse == null)
+            {
+                throw new NullReferenceException();
+            }
 
             return tokenResponse;
         }
@@ -176,38 +187,9 @@ public class KeycloakService : IKeycloakService
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
+            var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
 
             return tokenResponse?.AccessToken;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error while retrieving access token: {ex.Message}");
-        }
-    }
-    
-    private async Task<KeycloakTokenResponse?> GetTokenAsync(string username, string password)
-    {
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_realm}/protocol/openid-connect/token")
-            {
-                Content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("grant_type", "password"),
-                    new KeyValuePair<string, string>("client_id", _clientId),
-                    new KeyValuePair<string, string>("username", username),
-                    new KeyValuePair<string, string>("password", password)
-                })
-            };
-
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<KeycloakTokenResponse>(content);
-
-            return tokenResponse;
         }
         catch (Exception ex)
         {

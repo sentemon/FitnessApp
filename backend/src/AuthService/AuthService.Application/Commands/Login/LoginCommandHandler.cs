@@ -17,11 +17,6 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
     {
         var token = await _keycloakService.LoginAsync(command.LoginDto.Username, command.LoginDto.Password);
 
-        if (token == null)
-        {
-            return Result<string>.Failure(new Error("Token cannot be null."));
-        }
-
         return Result<string>.Success(token.AccessToken);
     }
 }

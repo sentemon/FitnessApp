@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
 using AuthService.Domain.Entities;
+using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -8,14 +10,13 @@ public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
     private readonly ITokenService _tokenService;
-    private readonly string _realm;
+    private readonly KeycloakConfig _keycloakConfig;
 
-    public UserService(IHttpClientFactory httpClientFactory, ITokenService tokenService, string realm)
+    public UserService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IOptions<KeycloakConfig> keycloakConfig)
     {
         _httpClient = httpClientFactory.CreateClient("KeycloakClient");
         _tokenService = tokenService;
-        
-        _realm = realm;
+        _keycloakConfig = keycloakConfig.Value;
     }
 
     public async Task<User?> GetUserByIdAsync(string id)
@@ -26,7 +27,7 @@ public class UserService : IUserService
 
             _tokenService.SetAccessToken(accessToken);
             
-            var response = await _httpClient.GetAsync($"admin/realms/{_realm}/users/{id}");
+            var response = await _httpClient.GetAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}");
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromJsonAsync<User>();
@@ -53,7 +54,7 @@ public class UserService : IUserService
                 email
             };
 
-            var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_realm}/users/{id}", updateKeycloakUser);
+            var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}", updateKeycloakUser);
             response.EnsureSuccessStatusCode();
 
             var user = await GetUserByIdAsync(id);

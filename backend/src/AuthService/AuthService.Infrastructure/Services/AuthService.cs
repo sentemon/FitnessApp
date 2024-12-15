@@ -1,8 +1,10 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using AuthService.Domain.Entities;
+using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
+using Microsoft.Extensions.Options;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -11,19 +13,14 @@ public class AuthService : IAuthService
     private readonly HttpClient _httpClient;
     private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
-    private readonly string _realm;
-    private readonly string _clientId;
-    private readonly string _clientSecret;
+    private readonly KeycloakConfig _keycloakConfig;
 
-    public AuthService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IUserService userService, string realm, string clientId, string clientSecret)
+    public AuthService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IUserService userService, IOptions<KeycloakConfig> keycloakConfig)
     {
         _httpClient = httpClientFactory.CreateClient("KeycloakClient");
         _tokenService = tokenService;
         _userService = userService;
-        
-        _realm = realm;
-        _clientId = clientId;
-        _clientSecret = clientSecret;
+        _keycloakConfig = keycloakConfig.Value;
     }
 
     public async Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password)
@@ -52,7 +49,7 @@ public class AuthService : IAuthService
                 }
             };
 
-            var response = await _httpClient.PostAsJsonAsync($"admin/realms/{_realm}/users", keycloakUser);
+            var response = await _httpClient.PostAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users", keycloakUser);
             response.EnsureSuccessStatusCode();
 
             if (response.Headers.Location == null)
@@ -81,13 +78,13 @@ public class AuthService : IAuthService
     {
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_realm}/protocol/openid-connect/token")
+            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/token")
             {
                 Content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("grant_type", "password"),
-                    new KeyValuePair<string, string>("client_id", _clientId),
-                    new KeyValuePair<string, string>("client_secret", _clientSecret),
+                    new KeyValuePair<string, string>("client_id", _keycloakConfig.ClientId),
+                    new KeyValuePair<string, string>("client_secret", _keycloakConfig.ClientSecret),
                     new KeyValuePair<string, string>("scope", "web-origins"),
                     new KeyValuePair<string, string>("username", username),
                     new KeyValuePair<string, string>("password", password)
@@ -117,12 +114,12 @@ public class AuthService : IAuthService
     {
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_realm}/protocol/openid-connect/logout")
+            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/logout")
             {
                 Content = new FormUrlEncodedContent(new []
                 {
-                    new KeyValuePair<string, string>("client_id", _clientId),
-                    new KeyValuePair<string,string>("client_secret", _clientSecret),
+                    new KeyValuePair<string, string>("client_id", _keycloakConfig.ClientId),
+                    new KeyValuePair<string,string>("client_secret", _keycloakConfig.ClientSecret),
                     new KeyValuePair<string,string>("refresh_token", refreshToken)
                 })
             };

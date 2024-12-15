@@ -1,4 +1,5 @@
 using AuthService.Domain.Constants;
+using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,18 +11,20 @@ namespace AuthService.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfigurationSection keycloakConfig)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var keycloakUrl = keycloakConfig[AppSettingsConstants.KeycloakUrl] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak URL is not configured.");
-        var keycloakRealm = keycloakConfig[AppSettingsConstants.KeycloakRealm] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Realm is not configured.");
-        var keycloakClientId = keycloakConfig[AppSettingsConstants.KeycloakClientId] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak ClientId is not configured.");
-        var keycloakClientSecret = keycloakConfig[AppSettingsConstants.KeycloakClientSecret] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Client Secret is not configured");
-        var keycloakAdminUsername = keycloakConfig[AppSettingsConstants.AdminUsername] ?? throw new ArgumentNullException(nameof(keycloakConfig),"Keycloak Admin Username is not configured.");
-        var keycloakAdminPassword = keycloakConfig[AppSettingsConstants.AdminPassword] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Admin Password is not configured.");
+        services.Configure<KeycloakConfig>(configuration.GetSection(AppSettingsConstants.Keycloak));
+        
+        var keycloakConfig = configuration.GetSection(AppSettingsConstants.Keycloak).Get<KeycloakConfig>();
+        
+        if (keycloakConfig == null)
+        {
+            throw new ArgumentNullException(AppSettingsConstants.Keycloak, "Keycloak configuration is not found or is invalid.");
+        }
 
         services.AddHttpClient("KeycloakClient", client =>
         {
-            client.BaseAddress = new Uri(keycloakUrl);
+            client.BaseAddress = new Uri(keycloakConfig.Url);
         });
 
         services.AddScoped<IAuthService, Services.AuthService>();
@@ -35,14 +38,14 @@ public static class DependencyInjection
             })
             .AddJwtBearer(options =>
             {
-                options.Authority = $"{keycloakUrl}/realms/{keycloakRealm}";
-                options.Audience = keycloakClientId;
+                options.Authority = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}";
+                options.Audience = keycloakConfig.ClientId;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = $"{keycloakUrl}/realms/{keycloakRealm}",
+                    ValidIssuer = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}",
                     ValidateAudience = true,
-                    ValidAudience = keycloakClientId,
+                    ValidAudience = keycloakConfig.ClientId,
                     ValidateLifetime = true
                 };
 

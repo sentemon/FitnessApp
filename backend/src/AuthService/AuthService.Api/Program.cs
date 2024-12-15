@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
 var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
-var keycloakConfig = builder.Configuration.GetSection(AppSettingsConstants.Keycloak);
 var allowedOrigins = builder.Configuration.GetSection(AppSettingsConstants.AllowedOrigins).Get<string[]>();
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
@@ -30,7 +29,7 @@ builder.Services
 
 builder.Services
     .AddPersistenceServices(connectionString)
-    .AddInfrastructureServices(keycloakConfig)
+    .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices();
 
 var app = builder.Build();

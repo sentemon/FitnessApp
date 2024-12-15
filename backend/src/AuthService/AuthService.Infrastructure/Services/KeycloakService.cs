@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
@@ -49,9 +50,9 @@ public class KeycloakService : IKeycloakService
     {
         try
         {
-            var accessToken = await GetAdminAccessTokenAsync();
+            var adminAccessToken = await GetAdminAccessTokenAsync();
             
-            SetAccessToken(accessToken);
+            SetAccessToken(adminAccessToken);
 
             var keycloakUser = new
             {
@@ -155,6 +156,40 @@ public class KeycloakService : IKeycloakService
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<User> UpdateUserAsync(string id, string? firstName, string? lastName, string? username, string? email)
+    {
+        try
+        {
+            var adminAccessToken = await GetAdminAccessTokenAsync();
+
+            SetAccessToken(adminAccessToken);
+            
+            var updateKeycloakUser = new
+            {
+                firstName,
+                lastName,
+                username,
+                email
+            };
+
+            var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_realm}/users/{id}", updateKeycloakUser);
+            response.EnsureSuccessStatusCode();
+
+            var user = await GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new Exception("User not found in keycloak DB.");
+            }
+            
+            return user;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
         }
     }
 

@@ -20,4 +20,12 @@ public class User
         ImageUrl = imageUrl;
         CreatedAt = DateTime.UtcNow;
     }
+
+    public void Update(string? firstName, string? lastName, string? username, string? email)
+    {
+        FirstName = firstName ?? FirstName;
+        LastName = lastName ?? LastName;
+        Username = username ?? Username;
+        Email = email ?? Email;
+    }
 }

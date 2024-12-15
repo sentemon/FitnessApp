@@ -8,17 +8,17 @@ namespace AuthService.Application.Commands.Register;
 public class RegisterCommandHandler : ICommandHandler<RegisterCommand, string>
 {
     private readonly AuthDbContext _context;
-    private readonly IKeycloakService _keycloakService;
+    private readonly IAuthService _authService;
 
-    public RegisterCommandHandler(AuthDbContext context, IKeycloakService keycloakService)
+    public RegisterCommandHandler(AuthDbContext context, IAuthService authService)
     {
         _context = context;
-        _keycloakService = keycloakService;
+        _authService = authService;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(RegisterCommand command)
     {
-        var user = await _keycloakService.RegisterAsync(
+        var user = await _authService.RegisterAsync(
             command.RegisterDto.FirstName,
             command.RegisterDto.LastName,
             command.RegisterDto.Username, 
@@ -28,7 +28,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, string>
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        var token = await _keycloakService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
+        var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
         
         return Result<string>.Success(token.AccessToken);
     }

@@ -1,58 +1,38 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
+using System.Text.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
-using System.Text.Json;
 
 namespace AuthService.Infrastructure.Services;
 
-public class KeycloakService : IKeycloakService
+public class AuthService : IAuthService
 {
     private readonly HttpClient _httpClient;
+    private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
     private readonly string _realm;
     private readonly string _clientId;
     private readonly string _clientSecret;
-    private readonly string _adminUsername;
-    private readonly string _adminPassword;
 
-    public KeycloakService(HttpClient httpClient, string realm, string clientId, string clientSecret, string adminUsername, string adminPassword)
+    public AuthService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IUserService userService, string realm, string clientId, string clientSecret)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("KeycloakClient");
+        _tokenService = tokenService;
+        _userService = userService;
+        
         _realm = realm;
         _clientId = clientId;
         _clientSecret = clientSecret;
-        _adminUsername = adminUsername;
-        _adminPassword = adminPassword;
-    }
-
-    public async Task<User?> GetUserByIdAsync(string id)
-    {
-        try
-        {
-            var accessToken = await GetAdminAccessTokenAsync();
-
-            SetAccessToken(accessToken);
-            
-            var response = await _httpClient.GetAsync($"admin/realms/{_realm}/users/{id}");
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadFromJsonAsync<User>();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error while retrieving user: {ex.Message}");
-        }
     }
 
     public async Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password)
     {
         try
         {
-            var adminAccessToken = await GetAdminAccessTokenAsync();
+            var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
             
-            SetAccessToken(adminAccessToken);
+            _tokenService.SetAccessToken(adminAccessToken);
 
             var keycloakUser = new
             {
@@ -81,7 +61,7 @@ public class KeycloakService : IKeycloakService
             }
 
             var userId = response.Headers.Location.Segments.Last(); 
-            var user = await GetUserByIdAsync(userId);
+            var user = await _userService.GetUserByIdAsync(userId);
 
             if (user == null)
             {
@@ -96,7 +76,7 @@ public class KeycloakService : IKeycloakService
             throw new Exception($"Unexpected error while creating user: {ex.Message}");
         }
     }
-
+    
     public async Task<KeycloakTokenResponse> LoginAsync(string username, string password)
     {
         try
@@ -132,7 +112,7 @@ public class KeycloakService : IKeycloakService
             throw new Exception($"Error during login: {ex.Message}");
         }
     }
-
+    
     public async Task<bool> LogoutAsync(string refreshToken)
     {
         try
@@ -156,79 +136,6 @@ public class KeycloakService : IKeycloakService
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
-        }
-    }
-
-    public async Task<User> UpdateUserAsync(string id, string? firstName, string? lastName, string? username, string? email)
-    {
-        try
-        {
-            var adminAccessToken = await GetAdminAccessTokenAsync();
-
-            SetAccessToken(adminAccessToken);
-            
-            var updateKeycloakUser = new
-            {
-                firstName,
-                lastName,
-                username,
-                email
-            };
-
-            var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_realm}/users/{id}", updateKeycloakUser);
-            response.EnsureSuccessStatusCode();
-
-            var user = await GetUserByIdAsync(id);
-
-            if (user == null)
-            {
-                throw new Exception("User not found in keycloak DB.");
-            }
-            
-            return user;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
-
-    private void SetAccessToken(string? accessToken)
-    {
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            throw new ArgumentException("Access token cannot be null or empty.", nameof(accessToken));
-        }
-
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-    }
-
-    private async Task<string?> GetAdminAccessTokenAsync()
-    {
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/master/protocol/openid-connect/token")
-            {
-                Content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("grant_type", "password"),
-                    new KeyValuePair<string, string>("client_id", "admin-cli"),
-                    new KeyValuePair<string, string>("username", _adminUsername),
-                    new KeyValuePair<string, string>("password", _adminPassword)
-                })
-            };
-
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
-
-            return tokenResponse?.AccessToken;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error while retrieving access token: {ex.Message}");
         }
     }
 }

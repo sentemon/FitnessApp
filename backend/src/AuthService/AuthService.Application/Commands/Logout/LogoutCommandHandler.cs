@@ -6,16 +6,16 @@ namespace AuthService.Application.Commands.Logout;
 
 public class LogoutCommandHandler : ICommandHandler<LogoutCommand, string>
 {
-    private readonly IKeycloakService _keycloakService;
+    private readonly IAuthService _authService;
 
-    public LogoutCommandHandler(IKeycloakService keycloakService)
+    public LogoutCommandHandler(IAuthService authService)
     {
-        _keycloakService = keycloakService;
+        _authService = authService;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(LogoutCommand command)
     {
-        var result = await _keycloakService.LogoutAsync(command.RefreshToken);
+        var result = await _authService.LogoutAsync(command.RefreshToken);
 
         if (!result)
         {

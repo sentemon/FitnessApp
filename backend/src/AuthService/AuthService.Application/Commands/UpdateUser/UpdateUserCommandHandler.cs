@@ -8,18 +8,18 @@ namespace AuthService.Application.Commands.UpdateUser;
 
 public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, string>
 {
-    private readonly IKeycloakService _keycloakService;
+    private readonly IUserService _userService;
     private readonly AuthDbContext _context;
 
-    public UpdateUserCommandHandler(IKeycloakService keycloakService, AuthDbContext context)
+    public UpdateUserCommandHandler(IUserService userService, AuthDbContext context)
     {
-        _keycloakService = keycloakService;
+        _userService = userService;
         _context = context;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
-        var updatedUser = await _keycloakService.UpdateUserAsync(
+        var updatedUser = await _userService.UpdateUserAsync(
             command.Id,
             command.UpdateUserDto.FirstName,
             command.UpdateUserDto.LastName,

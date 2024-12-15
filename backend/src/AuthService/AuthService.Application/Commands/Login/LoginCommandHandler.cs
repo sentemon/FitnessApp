@@ -6,16 +6,16 @@ namespace AuthService.Application.Commands.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
 {
-    private readonly IKeycloakService _keycloakService;
+    private readonly IAuthService _authService;
 
-    public LoginCommandHandler(IKeycloakService keycloakService)
+    public LoginCommandHandler(IAuthService authService)
     {
-        _keycloakService = keycloakService;
+        _authService = authService;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(LoginCommand command)
     {
-        var token = await _keycloakService.LoginAsync(command.LoginDto.Username, command.LoginDto.Password);
+        var token = await _authService.LoginAsync(command.LoginDto.Username, command.LoginDto.Password);
 
         return Result<string>.Success(token.AccessToken);
     }

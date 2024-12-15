@@ -19,12 +19,14 @@ public static class DependencyInjection
         var keycloakAdminUsername = keycloakConfig[AppSettingsConstants.AdminUsername] ?? throw new ArgumentNullException(nameof(keycloakConfig),"Keycloak Admin Username is not configured.");
         var keycloakAdminPassword = keycloakConfig[AppSettingsConstants.AdminPassword] ?? throw new ArgumentNullException(nameof(keycloakConfig), "Keycloak Admin Password is not configured.");
 
-        services.AddHttpClient<IKeycloakService, KeycloakService>(client =>
+        services.AddHttpClient("KeycloakClient", client =>
         {
             client.BaseAddress = new Uri(keycloakUrl);
-            
-            return new KeycloakService(client, keycloakRealm, keycloakClientId, keycloakClientSecret, keycloakAdminUsername, keycloakAdminPassword);
         });
+
+        services.AddScoped<IAuthService, Services.AuthService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddAuthentication(options =>
             {

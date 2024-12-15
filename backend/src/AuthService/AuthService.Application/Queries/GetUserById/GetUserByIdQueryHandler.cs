@@ -7,16 +7,16 @@ namespace AuthService.Application.Queries.GetUserById;
 
 public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 {
-    private readonly IKeycloakService _keycloakService;
+    private readonly IUserService _userService;
 
-    public GetUserByIdQueryHandler(IKeycloakService keycloakService)
+    public GetUserByIdQueryHandler(IUserService userService)
     {
-        _keycloakService = keycloakService;
+        _userService = userService;
     }
 
     public async Task<IResult<UserDto, Error>> HandleAsync(GetUserByIdQuery query)
     {
-        var user = await _keycloakService.GetUserByIdAsync(query.Id);
+        var user = await _userService.GetUserByIdAsync(query.Id);
 
         if (user == null)
         {

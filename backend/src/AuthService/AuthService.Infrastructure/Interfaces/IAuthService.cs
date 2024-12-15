@@ -3,11 +3,9 @@ using AuthService.Infrastructure.Models;
 
 namespace AuthService.Infrastructure.Interfaces;
 
-public interface IKeycloakService
+public interface IAuthService
 {
-    Task<User?> GetUserByIdAsync(string id);
     Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password);
     Task<KeycloakTokenResponse> LoginAsync(string username, string password);
     Task<bool> LogoutAsync(string refreshToken);
-    Task<User> UpdateUserAsync(string id, string? firstName, string? lastName, string? username, string? email);
 }

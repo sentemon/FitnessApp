@@ -19,7 +19,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
-        var updatedUser = await _userService.UpdateUserAsync(
+        var updatedUser = await _userService.UpdateAsync(
             command.Id,
             command.UpdateUserDto.FirstName,
             command.UpdateUserDto.LastName,

@@ -1,7 +1,9 @@
 using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
+using AuthService.Application.Commands.SendVerifyEmail;
 using AuthService.Application.Commands.UpdateUser;
+using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.Queries.GetUserById;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +17,8 @@ public static class DependencyInjection
         services.AddScoped<LoginCommandHandler>();
         services.AddScoped<LogoutCommandHandler>();
         services.AddScoped<UpdateUserCommandHandler>();
+        services.AddScoped<SendVerifyEmailCommandHandler>();
+        services.AddScoped<VerifyEmailCommandHandler>();
         services.AddScoped<GetUserByIdQueryHandler>();
         
         return services;

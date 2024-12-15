@@ -58,7 +58,7 @@ public class AuthService : IAuthService
             }
 
             var userId = response.Headers.Location.Segments.Last(); 
-            var user = await _userService.GetUserByIdAsync(userId);
+            var user = await _userService.GetByIdAsync(userId);
 
             if (user == null)
             {
@@ -133,6 +133,28 @@ public class AuthService : IAuthService
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<bool> SendVerifyEmailAsync(string userId)
+    {
+        try
+        {
+            var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
+
+            _tokenService.SetAccessToken(adminAccessToken);
+            
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"admin/realms/{_keycloakConfig.Realm}/users/{userId}/send-verify-email");
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
         }
     }
 }

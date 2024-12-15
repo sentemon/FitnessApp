@@ -7,6 +7,7 @@ public class User
     public string LastName { get; private set; }
     public string Username { get; private set; }
     public string Email { get; private set; }
+    public bool EmailVerified { get; private set; }
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -17,6 +18,7 @@ public class User
         LastName = lastName;
         Username = username;
         Email = email;
+        EmailVerified = false;
         ImageUrl = imageUrl;
         CreatedAt = DateTime.UtcNow;
     }
@@ -27,5 +29,10 @@ public class User
         LastName = lastName ?? LastName;
         Username = username ?? Username;
         Email = email ?? Email;
+    }
+
+    public void VerifyEmail()
+    {
+        EmailVerified = true;
     }
 }

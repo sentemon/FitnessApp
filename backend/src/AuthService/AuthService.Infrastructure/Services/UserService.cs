@@ -19,7 +19,7 @@ public class UserService : IUserService
         _keycloakConfig = keycloakConfig.Value;
     }
 
-    public async Task<User?> GetUserByIdAsync(string id)
+    public async Task<User?> GetByIdAsync(string id)
     {
         try
         {
@@ -38,7 +38,7 @@ public class UserService : IUserService
         }
     }
     
-    public async Task<User> UpdateUserAsync(string id, string? firstName, string? lastName, string? username, string? email)
+    public async Task<User> UpdateAsync(string id, string? firstName, string? lastName, string? username, string? email)
     {
         try
         {
@@ -57,7 +57,7 @@ public class UserService : IUserService
             var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}", updateKeycloakUser);
             response.EnsureSuccessStatusCode();
 
-            var user = await GetUserByIdAsync(id);
+            var user = await GetByIdAsync(id);
 
             if (user == null)
             {

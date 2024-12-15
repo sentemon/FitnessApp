@@ -16,7 +16,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 
     public async Task<IResult<UserDto, Error>> HandleAsync(GetUserByIdQuery query)
     {
-        var user = await _userService.GetUserByIdAsync(query.Id);
+        var user = await _userService.GetByIdAsync(query.Id);
 
         if (user == null)
         {

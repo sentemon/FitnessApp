@@ -4,6 +4,6 @@ namespace AuthService.Infrastructure.Interfaces;
 
 public interface IUserService
 {
-    Task<User?> GetUserByIdAsync(string id);
-    Task<User> UpdateUserAsync(string id, string? firstName, string? lastName, string? username, string? email);
+    Task<User?> GetByIdAsync(string id);
+    Task<User> UpdateAsync(string id, string? firstName, string? lastName, string? username, string? email);
 }

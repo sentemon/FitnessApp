@@ -71,4 +71,30 @@ public class UserService : IUserService
             throw new Exception(e.Message);
         }
     }
+
+    public async Task<bool> ResetPasswordAsync(string id, string newPassword)
+    {
+        try
+        {
+            var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
+            
+            _tokenService.SetAccessToken(adminAccessToken);
+
+            var credentials = new
+            {
+                type = "password",
+                value = newPassword,
+                temporary = false
+            };
+
+            var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}/reset-password", credentials);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
 }

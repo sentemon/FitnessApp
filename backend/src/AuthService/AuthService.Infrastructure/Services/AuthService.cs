@@ -25,60 +25,50 @@ public class AuthService : IAuthService
 
     public async Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password)
     {
-        try
-        {
-            var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
-            
-            _tokenService.SetAccessToken(adminAccessToken);
+        var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-            var keycloakUser = new
+        _tokenService.SetAccessToken(adminAccessToken);
+
+        var keycloakUser = new
+        {
+            firstName,
+            lastName,
+            username,
+            email,
+            enabled = true,
+            credentials = new[]
             {
-                firstName,
-                lastName,
-                username,
-                email,
-                enabled = true,
-                credentials = new[]
+                new
                 {
-                    new
-                    {
-                        type = "password",
-                        value = password,
-                        temporary = false
-                    }
+                    type = "password",
+                    value = password,
+                    temporary = false
                 }
-            };
-
-            var response = await _httpClient.PostAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users", keycloakUser);
-            response.EnsureSuccessStatusCode();
-
-            if (response.Headers.Location == null)
-            {
-                throw new Exception("User creation succeeded, but no Location header returned.");
             }
+        };
 
-            var userId = response.Headers.Location.Segments.Last(); 
-            var user = await _userService.GetByIdAsync(userId);
+        var response = await _httpClient.PostAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users", keycloakUser);
+        response.EnsureSuccessStatusCode();
 
-            if (user == null)
-            {
-                throw new Exception($"User with Id: {userId} not found.");
-            }
-
-            return user;
-
-        }
-        catch (Exception ex)
+        if (response.Headers.Location == null)
         {
-            throw new Exception($"Unexpected error while creating user: {ex.Message}");
+            throw new Exception("User creation succeeded, but no Location header returned.");
         }
+
+        var userId = response.Headers.Location.Segments.Last();
+        var user = await _userService.GetByIdAsync(userId);
+
+        if (user == null)
+        {
+            throw new Exception($"User with Id: {userId} not found.");
+        }
+
+        return user;
     }
-    
+
     public async Task<KeycloakTokenResponse> LoginAsync(string username, string password)
     {
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/token")
+        var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/token")
             {
                 Content = new FormUrlEncodedContent(new[]
                 {
@@ -91,70 +81,51 @@ public class AuthService : IAuthService
                 })
             };
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
+        var content = await response.Content.ReadAsStringAsync();
+        var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
 
-            if (tokenResponse == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            return tokenResponse;
-        }
-        catch (Exception ex)
+        if (tokenResponse == null)
         {
-            throw new Exception($"Error during login: {ex.Message}");
+            throw new NullReferenceException();
         }
+
+        return tokenResponse;
     }
-    
+
     public async Task<bool> LogoutAsync(string refreshToken)
     {
-        try
+        var request = new HttpRequestMessage(HttpMethod.Post,
+            $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/logout")
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/{_keycloakConfig.Realm}/protocol/openid-connect/logout")
+            Content = new FormUrlEncodedContent(new[]
             {
-                Content = new FormUrlEncodedContent(new []
-                {
-                    new KeyValuePair<string, string>("client_id", _keycloakConfig.ClientId),
-                    new KeyValuePair<string,string>("client_secret", _keycloakConfig.ClientSecret),
-                    new KeyValuePair<string,string>("refresh_token", refreshToken)
-                })
-            };
-            
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+                new KeyValuePair<string, string>("client_id", _keycloakConfig.ClientId),
+                new KeyValuePair<string, string>("client_secret", _keycloakConfig.ClientSecret),
+                new KeyValuePair<string, string>("refresh_token", refreshToken)
+            })
+        };
 
-            return response.IsSuccessStatusCode;
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
 
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<bool> SendVerifyEmailAsync(string userId)
     {
-        try
-        {
-            var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
+        var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-            _tokenService.SetAccessToken(adminAccessToken);
-            
-            var request = new HttpRequestMessage(HttpMethod.Put,
-                $"admin/realms/{_keycloakConfig.Realm}/users/{userId}/send-verify-email");
+        _tokenService.SetAccessToken(adminAccessToken);
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"admin/realms/{_keycloakConfig.Realm}/users/{userId}/send-verify-email");
 
-            return response.IsSuccessStatusCode;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        return response.IsSuccessStatusCode;
     }
 }

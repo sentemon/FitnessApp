@@ -30,30 +30,23 @@ public class TokenService : ITokenService
 
     public async Task<string?> GetAdminAccessTokenAsync()
     {
-        try
+        var request = new HttpRequestMessage(HttpMethod.Post, $"realms/master/protocol/openid-connect/token")
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"realms/master/protocol/openid-connect/token")
+            Content = new FormUrlEncodedContent(new[]
             {
-                Content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("grant_type", "password"),
-                    new KeyValuePair<string, string>("client_id", "admin-cli"),
-                    new KeyValuePair<string, string>("username", _keycloakConfig.AdminUsername),
-                    new KeyValuePair<string, string>("password", _keycloakConfig.AdminPassword)
-                })
-            };
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("client_id", "admin-cli"),
+                new KeyValuePair<string, string>("username", _keycloakConfig.AdminUsername),
+                new KeyValuePair<string, string>("password", _keycloakConfig.AdminPassword)
+            })
+        };
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
+        var content = await response.Content.ReadAsStringAsync();
+        var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
 
-            return tokenResponse?.AccessToken;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error while retrieving access token: {ex.Message}");
-        }
+        return tokenResponse?.AccessToken;
     }
 }

@@ -89,7 +89,7 @@ public class AuthService : IAuthService
 
         if (tokenResponse == null)
         {
-            throw new NullReferenceException();
+            throw new NullReferenceException("Token Response cannot be null.");
         }
 
         return tokenResponse;

@@ -2,6 +2,7 @@ using AuthService.Application;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
 using AuthService.Persistence;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
     dbContext.Database.Migrate();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 // app.UseHttpsRedirection();
 

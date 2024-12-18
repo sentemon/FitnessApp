@@ -25,8 +25,7 @@ public static class DependencyInjection
         services.AddHttpClient("KeycloakClient", client =>
         {
             client.BaseAddress = new Uri(keycloakConfig.Url + "/");
-        })
-        .AddHttpMessageHandler<DelegatingHandler>();
+        });
 
         services.AddScoped<IAuthService, Services.AuthService>();
         services.AddScoped<ITokenService, TokenService>();

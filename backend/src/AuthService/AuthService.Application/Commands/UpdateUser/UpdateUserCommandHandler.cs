@@ -1,3 +1,4 @@
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
         if (user == null)
         {
-            return Result<string>.Failure(new Error("User not found"));
+            return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
         user.Update(
@@ -43,6 +44,6 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         
         await _context.SaveChangesAsync();
         
-        return Result<string>.Success("User updated successfully.");
+        return Result<string>.Success(ResponseMessages.UserUpdatedSuccessfully);
     }
 }

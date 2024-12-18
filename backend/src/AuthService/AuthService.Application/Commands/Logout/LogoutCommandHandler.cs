@@ -1,3 +1,4 @@
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -19,9 +20,9 @@ public class LogoutCommandHandler : ICommandHandler<LogoutCommand, string>
 
         if (!result)
         {
-            return Result<string>.Failure(new Error("Something was wrong."));
+            return Result<string>.Failure(new Error(ResponseMessages.ErrorDuringLogout));
         }
         
-        return Result<string>.Success("You logout successfully.");
+        return Result<string>.Success(ResponseMessages.LoggedOutSuccessfully);
     }
 }

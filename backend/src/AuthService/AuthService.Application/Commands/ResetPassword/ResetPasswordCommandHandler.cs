@@ -1,3 +1,4 @@
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -19,9 +20,9 @@ public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand,
 
         if (!result)
         {
-            return Result<string>.Failure(new Error("Something was wrong"));
+            return Result<string>.Failure(new Error(ResponseMessages.ErrorDuringResetPassword));
         }
         
-        return Result<string>.Success("You successfully updated password.");
+        return Result<string>.Success(ResponseMessages.PasswordUpdatedSuccessfully);
     }
 }

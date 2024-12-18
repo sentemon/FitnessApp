@@ -1,4 +1,5 @@
 using AuthService.Application.DTOs;
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -20,7 +21,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 
         if (user == null)
         {
-            return Result<UserDto>.Failure(new Error("User not found."));
+            return Result<UserDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
         var userDto = new UserDto(user.FirstName,

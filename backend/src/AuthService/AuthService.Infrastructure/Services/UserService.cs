@@ -73,9 +73,7 @@ public class UserService : IUserService
             temporary = false
         };
 
-        var response =
-            await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}/reset-password",
-                credentials);
+        var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}/reset-password", credentials);
         response.EnsureSuccessStatusCode();
 
         return response.IsSuccessStatusCode;

@@ -1,3 +1,4 @@
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,12 @@ public class VerifyEmailCommandHandler : ICommandHandler<VerifyEmailCommand, str
 
         if (user == null)
         {
-            return Result<string>.Failure(new Error("User not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
         user.VerifyEmail();
         await _context.SaveChangesAsync();
         
-        return Result<string>.Success("Email verified.");
+        return Result<string>.Success(ResponseMessages.EmailVerifiedSuccessfully);
     }
 }

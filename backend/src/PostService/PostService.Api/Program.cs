@@ -36,7 +36,7 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
-}
+} 
 
 // app.UseAuthentication();
 // app.UseAuthorization();

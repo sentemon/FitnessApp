@@ -11,5 +11,5 @@ import {MainComponent} from "./shared/layout/main/main.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Fitness App';
+  title = 'Fitness App'; 
 }

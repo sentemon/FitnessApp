@@ -1,3 +1,4 @@
+using AuthService.Api.GraphQL;
 using AuthService.Application;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
@@ -33,6 +34,12 @@ builder.Services
     .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices();
 
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddType(new UuidType());
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -49,5 +56,7 @@ app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGraphQL();
 
 app.Run();

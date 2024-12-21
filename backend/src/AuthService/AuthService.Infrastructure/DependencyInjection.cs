@@ -13,14 +13,19 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<KeycloakConfig>(configuration.GetSection(AppSettingsConstants.Keycloak));
+        var keycloakSection = configuration.GetSection(AppSettingsConstants.Keycloak);
         
-        var keycloakConfig = configuration.GetSection(AppSettingsConstants.Keycloak).Get<KeycloakConfig>();
+        services.Configure<KeycloakConfig>(keycloakSection);
         
-        if (keycloakConfig == null)
-        {
-            throw new ArgumentNullException(AppSettingsConstants.Keycloak, "Keycloak configuration is not found or is invalid.");
-        }
+        var keycloakConfig = new KeycloakConfig(
+            keycloakSection[AppSettingsConstants.KeycloakUrl],
+            keycloakSection[AppSettingsConstants.KeycloakRealm],
+            keycloakSection[AppSettingsConstants.KeycloakClientId],
+            keycloakSection[AppSettingsConstants.KeycloakClientSecret],
+            keycloakSection[AppSettingsConstants.AdminUsername],
+            keycloakSection[AppSettingsConstants.AdminPassword]);
+
+        services.AddSingleton(keycloakConfig);
 
         services.AddHttpClient("KeycloakClient", client =>
         {
@@ -51,6 +56,7 @@ public static class DependencyInjection
 
                 options.RequireHttpsMetadata = false;
             });
+        services.AddAuthorization();
         
         return services;
     }

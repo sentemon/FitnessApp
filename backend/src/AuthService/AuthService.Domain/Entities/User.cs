@@ -11,7 +11,7 @@ public class User
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public User(string id, string firstName, string lastName, string username, string email, string imageUrl)
+    public User(string id, string firstName, string lastName, string username, string email, string? imageUrl)
     {
         Id = id;
         FirstName = firstName;
@@ -19,7 +19,7 @@ public class User
         Username = username;
         Email = email;
         EmailVerified = false;
-        ImageUrl = imageUrl;
+        ImageUrl = imageUrl ?? string.Empty;
         CreatedAt = DateTime.UtcNow;
     }
 

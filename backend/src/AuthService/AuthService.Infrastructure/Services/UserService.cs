@@ -1,8 +1,8 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
-using Microsoft.Extensions.Options;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -12,19 +12,18 @@ public class UserService : IUserService
     private readonly ITokenService _tokenService;
     private readonly KeycloakConfig _keycloakConfig;
 
-    public UserService(IHttpClientFactory httpClientFactory, ITokenService tokenService,
-        IOptions<KeycloakConfig> keycloakConfig)
+    public UserService(IHttpClientFactory httpClientFactory, ITokenService tokenService, KeycloakConfig keycloakConfig)
     {
         _httpClient = httpClientFactory.CreateClient("KeycloakClient");
         _tokenService = tokenService;
-        _keycloakConfig = keycloakConfig.Value;
+        _keycloakConfig = keycloakConfig;
     }
 
     public async Task<User?> GetByIdAsync(string id)
     {
         var accessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-        _tokenService.SetAccessToken(accessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
         var response = await _httpClient.GetAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}");
         response.EnsureSuccessStatusCode();
@@ -36,7 +35,7 @@ public class UserService : IUserService
     {
         var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-        _tokenService.SetAccessToken(adminAccessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
 
         var updateKeycloakUser = new
         {
@@ -64,7 +63,7 @@ public class UserService : IUserService
     {
         var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-        _tokenService.SetAccessToken(adminAccessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
 
         var credentials = new
         {

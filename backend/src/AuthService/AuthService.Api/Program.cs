@@ -3,7 +3,6 @@ using AuthService.Application;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
 using AuthService.Persistence;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +28,8 @@ builder.Services
         });
     });
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices(builder.Configuration)
@@ -39,6 +40,9 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddType(new UuidType());
+    // .AddAuthorization();
+
+builder.Services.AddGraphQL();
 
 var app = builder.Build();
 
@@ -48,7 +52,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+// app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 // app.UseHttpsRedirection();
 

@@ -1,10 +1,10 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
-using Microsoft.Extensions.Options;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -15,19 +15,19 @@ public class AuthService : IAuthService
     private readonly IUserService _userService;
     private readonly KeycloakConfig _keycloakConfig;
 
-    public AuthService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IUserService userService, IOptions<KeycloakConfig> keycloakConfig)
+    public AuthService(IHttpClientFactory httpClientFactory, ITokenService tokenService, IUserService userService, KeycloakConfig keycloakConfig)
     {
         _httpClient = httpClientFactory.CreateClient("KeycloakClient");
         _tokenService = tokenService;
         _userService = userService;
-        _keycloakConfig = keycloakConfig.Value;
+        _keycloakConfig = keycloakConfig;
     }
 
     public async Task<User> RegisterAsync(string firstName, string lastName, string username, string email, string password)
     {
         var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-        _tokenService.SetAccessToken(adminAccessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
 
         var keycloakUser = new
         {
@@ -118,7 +118,7 @@ public class AuthService : IAuthService
     {
         var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
 
-        _tokenService.SetAccessToken(adminAccessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
 
         var request = new HttpRequestMessage(HttpMethod.Put,
             $"admin/realms/{_keycloakConfig.Realm}/users/{userId}/send-verify-email");

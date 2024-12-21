@@ -20,6 +20,11 @@ public class Mutation
         _httpContextAccessor = httpContextAccessor;
     }
 
+    public string Test(string name)
+    {
+        return name;
+    }
+
     public async Task<KeycloakTokenResponse> Register(RegisterDto input, [Service] RegisterCommandHandler registerCommandHandler)
     {
         var command = new RegisterCommand(input);

@@ -4,6 +4,7 @@ using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
 using AuthService.Application.Commands.ResetPassword;
 using AuthService.Application.Commands.SendVerifyEmail;
+using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
 using AuthService.Infrastructure.Models;
@@ -12,8 +13,7 @@ namespace AuthService.Api.GraphQL;
 
 public class Mutation
 {
-    private readonly IHttpContextAccessor _httpContextAccessor
-        ;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public Mutation(IHttpContextAccessor httpContextAccessor)
     {
@@ -92,6 +92,20 @@ public class Mutation
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var command = new VerifyEmailCommand(userId);
         var result = await verifyEmailCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> UpdateUser(UpdateUserDto input, [Service] UpdateUserCommandHandler updateUserCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new UpdateUserCommand(input, userId);
+        var result = await updateUserCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
         {

@@ -20,6 +20,11 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
+        if (command.Id == null)
+        {
+            return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+        
         var updatedUser = await _userService.UpdateAsync(
             command.Id,
             command.UpdateUserDto.FirstName,

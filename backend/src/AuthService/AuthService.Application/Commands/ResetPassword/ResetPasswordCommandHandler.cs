@@ -16,6 +16,11 @@ public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand,
 
     public async Task<IResult<string, Error>> HandleAsync(ResetPasswordCommand command)
     {
+        if (command.UserId == null)
+        {
+            return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+        
         var result = await _userService.ResetPasswordAsync(command.UserId, command.NewPassword);
 
         if (!result)

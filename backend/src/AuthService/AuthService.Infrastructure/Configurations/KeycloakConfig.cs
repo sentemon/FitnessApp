@@ -9,8 +9,6 @@ public class KeycloakConfig
     public string AdminUsername { get; }
     public string AdminPassword { get; }
     
-    public KeycloakConfig() {}
-    
     public KeycloakConfig(string? url, string? realm, string? clientId, string? clientSecret, string? adminUsername, string? adminPassword)
     {
         Url = url ?? throw new ArgumentNullException(nameof(url), "Keycloak URL is not configured.");

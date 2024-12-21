@@ -21,6 +21,11 @@ public class SendVerifyEmailCommandHandler : ICommandHandler<SendVerifyEmailComm
 
     public async Task<IResult<string, Error>> HandleAsync(SendVerifyEmailCommand command)
     {
+        if (command.UserId == null)
+        {
+            return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+        
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
 
         if (user == null)

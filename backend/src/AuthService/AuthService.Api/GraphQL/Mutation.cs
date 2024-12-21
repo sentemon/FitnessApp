@@ -3,6 +3,8 @@ using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
 using AuthService.Application.Commands.ResetPassword;
+using AuthService.Application.Commands.SendVerifyEmail;
+using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
 using AuthService.Infrastructure.Models;
 
@@ -66,6 +68,34 @@ public class Mutation
         if (!result.IsSuccess)
         {
             throw new GraphQLException(result.Error.Message);
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> SendVerifyEmail([Service] SendVerifyEmailCommandHandler sendVerifyEmailCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new SendVerifyEmailCommand(userId);
+        var result = await sendVerifyEmailCommandHandler.HandleAsync(command);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> VerifyEmail([Service] VerifyEmailCommandHandler verifyEmailCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new VerifyEmailCommand(userId);
+        var result = await verifyEmailCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
         }
 
         return result.Response;

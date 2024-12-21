@@ -1,11 +1,12 @@
 using AuthService.Infrastructure.Interfaces;
+using AuthService.Infrastructure.Models;
 using AuthService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
 namespace AuthService.Application.Commands.Register;
 
-public class RegisterCommandHandler : ICommandHandler<RegisterCommand, string>
+public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakTokenResponse>
 {
     private readonly AuthDbContext _context;
     private readonly IAuthService _authService;
@@ -16,7 +17,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, string>
         _authService = authService;
     }
 
-    public async Task<IResult<string, Error>> HandleAsync(RegisterCommand command)
+    public async Task<IResult<KeycloakTokenResponse, Error>> HandleAsync(RegisterCommand command)
     {
         var user = await _authService.RegisterAsync(
             command.RegisterDto.FirstName,
@@ -30,6 +31,6 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, string>
 
         var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
         
-        return Result<string>.Success(token.AccessToken);
+        return Result<KeycloakTokenResponse>.Success(token);
     }
 }

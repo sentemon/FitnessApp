@@ -2,12 +2,13 @@ using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
 using AuthService.Application.DTOs;
+using AuthService.Infrastructure.Models;
 
 namespace AuthService.Api.GraphQL;
 
 public class Mutation
 {
-    public async Task<string> Register(RegisterDto input, [Service] RegisterCommandHandler registerCommandHandler)
+    public async Task<KeycloakTokenResponse> Register(RegisterDto input, [Service] RegisterCommandHandler registerCommandHandler)
     {
         var command = new RegisterCommand(input);
         var result = await registerCommandHandler.HandleAsync(command);
@@ -16,12 +17,11 @@ public class Mutation
         {
             throw new GraphQLException(new Error(result.Error.Message));
         }
-        
-        // ToDo: return Keycloak Token Response 
+
         return result.Response;
     }
     
-    public async Task<string> Login(LoginDto input, [Service] LoginCommandHandler loginCommandHandler)
+    public async Task<KeycloakTokenResponse> Login(LoginDto input, [Service] LoginCommandHandler loginCommandHandler)
     {
         var command = new LoginCommand(input);
         var result = await loginCommandHandler.HandleAsync(command);
@@ -31,7 +31,6 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
         
-        // ToDo: return Keycloak Token Response 
         return result.Response;
     }
 

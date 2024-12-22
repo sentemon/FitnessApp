@@ -10,10 +10,11 @@ public class KeycloakTokenResponse
     [JsonPropertyName("expires_in")]
     public required long ExpiresIn { get; set; }
     
+    [JsonPropertyName("refresh_expires_in")]
+    public required long RefreshExpiresIn { get; set; }
+    
     [JsonPropertyName("refresh_token")]
     public required string RefreshToken { get; set; }
-    
-    public required long RefreshExpiresIn { get; set; }
     
     [JsonPropertyName("token_type")]
     public required string TokenType { get; set; }

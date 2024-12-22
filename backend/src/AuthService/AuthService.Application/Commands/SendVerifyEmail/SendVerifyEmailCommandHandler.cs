@@ -8,7 +8,7 @@ using Shared.Application.Common;
 
 namespace AuthService.Application.Commands.SendVerifyEmail;
 
-public class SendVerifyEmailCommandHandler : ICommandHandler<VerifyEmailCommand, string>
+public class SendVerifyEmailCommandHandler : ICommandHandler<SendVerifyEmailCommand, string>
 {
     private readonly AuthDbContext _context;
     private readonly IAuthService _authService;
@@ -19,8 +19,13 @@ public class SendVerifyEmailCommandHandler : ICommandHandler<VerifyEmailCommand,
         _authService = authService;
     }
 
-    public async Task<IResult<string, Error>> HandleAsync(VerifyEmailCommand command)
+    public async Task<IResult<string, Error>> HandleAsync(SendVerifyEmailCommand command)
     {
+        if (command.UserId == null)
+        {
+            return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+        
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
 
         if (user == null)

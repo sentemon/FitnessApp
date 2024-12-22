@@ -3,4 +3,4 @@ using Shared.Application.Abstractions;
 
 namespace AuthService.Application.Commands.UpdateUser;
 
-public record UpdateUserCommand(UpdateUserDto UpdateUserDto, string Id) : ICommand;
+public record UpdateUserCommand(UpdateUserDto UpdateUserDto, string? Id) : ICommand;

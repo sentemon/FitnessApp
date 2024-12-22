@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
@@ -13,14 +14,28 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<KeycloakConfig>(configuration.GetSection(AppSettingsConstants.Keycloak));
+        var keycloakSection = configuration.GetSection(AppSettingsConstants.Keycloak);
         
-        var keycloakConfig = configuration.GetSection(AppSettingsConstants.Keycloak).Get<KeycloakConfig>();
+        services.Configure<KeycloakConfig>(keycloakSection);
         
-        if (keycloakConfig == null)
-        {
-            throw new ArgumentNullException(AppSettingsConstants.Keycloak, "Keycloak configuration is not found or is invalid.");
-        }
+        var keycloakConfig = new KeycloakConfig(
+            keycloakSection[AppSettingsConstants.KeycloakUrl],
+            keycloakSection[AppSettingsConstants.KeycloakRealm],
+            keycloakSection[AppSettingsConstants.KeycloakClientId],
+            keycloakSection[AppSettingsConstants.KeycloakClientSecret],
+            keycloakSection[AppSettingsConstants.AdminUsername],
+            keycloakSection[AppSettingsConstants.AdminPassword],
+            keycloakSection[AppSettingsConstants.PublicKey]);
+        
+        var rsaSecurityKey = new RsaSecurityKey(
+            new RSAParameters
+            {
+                Modulus = Convert.FromBase64String(keycloakConfig.PublicKey),
+                Exponent = Convert.FromBase64String("AQAB")
+            }
+        );
+
+        services.AddSingleton(keycloakConfig);
 
         services.AddHttpClient("KeycloakClient", client =>
         {
@@ -39,18 +54,22 @@ public static class DependencyInjection
             .AddJwtBearer(options =>
             {
                 options.Authority = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}";
-                options.Audience = keycloakConfig.ClientId;
+                options.Audience = "account";
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidIssuer = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}",
                     ValidateAudience = true,
-                    ValidAudience = keycloakConfig.ClientId,
-                    ValidateLifetime = true
+                    ValidAudience = "account",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = rsaSecurityKey
                 };
 
                 options.RequireHttpsMetadata = false;
             });
+        services.AddAuthorization();
         
         return services;
     }

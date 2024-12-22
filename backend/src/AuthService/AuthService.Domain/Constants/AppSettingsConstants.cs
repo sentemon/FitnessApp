@@ -9,10 +9,11 @@ public static class AppSettingsConstants
     public const string DatabaseConnectionString = "DatabaseConnectionString";
 
     public const string Keycloak = "Keycloak";
-    public const string KeycloakUrl = "Keycloak:Url";
-    public const string KeycloakRealm = "Keycloak:Realm";
-    public const string KeycloakClientId = "Keycloak:ClientId";
-    public const string KeycloakClientSecret = "Keycloak:ClientSecret";
-    public const string AdminUsername = "Keycloak:AdminUsername";
-    public const string AdminPassword = "Keycloak:AdminPassword";
+    public const string KeycloakUrl = "Url";
+    public const string KeycloakRealm = "Realm";
+    public const string KeycloakClientId = "ClientId";
+    public const string KeycloakClientSecret = "ClientSecret";
+    public const string AdminUsername = "AdminUsername";
+    public const string AdminPassword = "AdminPassword";
+    public const string PublicKey = "PublicKey";
 }

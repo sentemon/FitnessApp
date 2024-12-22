@@ -15,4 +15,5 @@ public static class AppSettingsConstants
     public const string KeycloakClientSecret = "ClientSecret";
     public const string AdminUsername = "AdminUsername";
     public const string AdminPassword = "AdminPassword";
+    public const string PublicKey = "PublicKey";
 }

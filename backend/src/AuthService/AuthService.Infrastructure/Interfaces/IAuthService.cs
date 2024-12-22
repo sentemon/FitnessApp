@@ -9,4 +9,5 @@ public interface IAuthService
     Task<KeycloakTokenResponse> LoginAsync(string username, string password);
     Task<bool> LogoutAsync(string refreshToken);
     Task<bool> SendVerifyEmailAsync(string userId);
+    Task<bool> VerifyEmailAsync(string userId);
 }

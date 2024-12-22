@@ -128,4 +128,21 @@ public class AuthService : IAuthService
 
         return response.IsSuccessStatusCode;
     }
+    
+    public async Task<bool> VerifyEmailAsync(string userId)
+    {
+        var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
+
+        var updateEmailVerified = new
+        {
+            emailVerified = true
+        };
+
+        var response = await _httpClient.PutAsJsonAsync($"admin/realms/{_keycloakConfig.Realm}/users/{userId}", updateEmailVerified);
+        response.EnsureSuccessStatusCode();
+
+        return response.IsSuccessStatusCode;
+    }
 }

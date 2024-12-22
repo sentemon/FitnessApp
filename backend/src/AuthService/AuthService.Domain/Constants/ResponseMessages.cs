@@ -13,4 +13,5 @@ public static class ResponseMessages
     public const string ErrorDuringLogout = "An error occurred during logout.";
     public const string ErrorDuringResetPassword = "An error occurred during password reset.";
     public const string ErrorDuringSendVerifyEmail = "An error occurred while sending the verification email.";
+    public const string ErrorDuringVerifyEmail = "An error occurred while verifying the verification email.";
 }

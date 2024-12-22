@@ -6,6 +6,7 @@ using AuthService.Application.Commands.SendVerifyEmail;
 using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.Queries.GetUserById;
+using AuthService.Application.Queries.GetUserByUsername;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthService.Application;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<UpdateUserCommandHandler>();
         services.AddScoped<VerifyEmailCommandHandler>();
         services.AddScoped<GetUserByIdQueryHandler>();
+        services.AddScoped<GetUserByUsernameQueryHandler>();
         
         return services;
     }

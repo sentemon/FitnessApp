@@ -56,9 +56,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain", "backend\src\AuthService\AuthService.Domain\AuthService.Domain.csproj", "{C494E5BB-0B0C-43D6-82AD-27D1FC26FA29}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{CB2BFFE4-D7CD-47E0-B42A-150DF411B7E9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "backend\tests\AuthService", "{CB2BFFE4-D7CD-47E0-B42A-150DF411B7E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain.Tests", "backend\tests\AuthService.Domain.Tests\AuthService.Domain.Tests.csproj", "{528F427F-AFA0-409E-9ED1-AD630CA56BB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain.Tests", "backend\tests\AuthService\AuthService.Domain.Tests\AuthService.Domain.Tests.csproj", "{528F427F-AFA0-409E-9ED1-AD630CA56BB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

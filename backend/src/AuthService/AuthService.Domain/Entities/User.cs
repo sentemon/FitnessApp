@@ -11,7 +11,7 @@ public class User
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public User(string id, string firstName, string lastName, string username, string email, string? imageUrl)
+    public User(string id, string firstName, string lastName, string username, string email, string? imageUrl = null)
     {
         Id = id;
         FirstName = firstName;
@@ -23,12 +23,13 @@ public class User
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Update(string? firstName, string? lastName, string? username, string? email)
+    public void Update(string? firstName, string? lastName, string? username, string? email, string? imageUrl = null)
     {
         FirstName = firstName ?? FirstName;
         LastName = lastName ?? LastName;
         Username = username ?? Username;
         Email = email ?? Email;
+        ImageUrl = imageUrl ?? ImageUrl;
     }
 
     public void VerifyEmail()

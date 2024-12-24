@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Configurations;
 using AuthService.Infrastructure.Interfaces;
+using AuthService.Infrastructure.Models;
 
 namespace AuthService.Infrastructure.Services;
 
@@ -28,7 +29,22 @@ public class UserService : IUserService
         var response = await _httpClient.GetAsync($"admin/realms/{_keycloakConfig.Realm}/users/{id}");
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadFromJsonAsync<User>();
+        var keycloakUser = await response.Content.ReadFromJsonAsync<KeycloakUser>();
+
+        if (keycloakUser == null)
+        {
+            return null;
+        }
+
+        var user = User.Create(
+            keycloakUser.Id,
+            keycloakUser.FirstName,
+            keycloakUser.LastName,
+            keycloakUser.Username,
+            keycloakUser.Email
+            );
+
+        return user;
     }
 
     public async Task<User> UpdateAsync(string id, string? firstName, string? lastName, string? username, string? email)

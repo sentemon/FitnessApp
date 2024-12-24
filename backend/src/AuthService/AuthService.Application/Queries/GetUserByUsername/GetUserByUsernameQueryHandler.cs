@@ -18,7 +18,7 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
 
     public async Task<IResult<UserDto, Error>> HandleAsync(GetUserByUsernameQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == query.Username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.Value == query.Username);
 
         if (user == null)
         {
@@ -28,7 +28,7 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
         var userDto = new UserDto(
             user.FirstName,
             user.LastName,
-            user.Username,
+            user.Username.Value,
             string.Empty,
             user.ImageUrl);
 

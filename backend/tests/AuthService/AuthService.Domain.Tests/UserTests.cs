@@ -17,7 +17,7 @@ public class UserTests
         var email = "example@example.com";
         
         // Act
-        var user = new User(id, firstName, lastName, username, email);
+        var user = User.Create(id, firstName, lastName, username, email);
         
         // Assert
         user.Id.Should().Be(id);
@@ -39,7 +39,7 @@ public class UserTests
         var username = "example";
         var email = "example@example.com";
         
-        var user = new User(id, firstName, lastName, username, email);
+        var user = User.Create(id, firstName, lastName, username, email);
 
         var newFirstName = "Example New First Name";
         var newLastName = "Example New Last Name";

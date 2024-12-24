@@ -30,8 +30,8 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 
         var userDto = new UserDto(user.FirstName,
             user.LastName,
-            user.Username,
-            user.Email,
+            user.Username.Value,
+            user.Email.Value,
             user.ImageUrl);
 
         return Result<UserDto>.Success(userDto);

@@ -19,7 +19,6 @@ namespace PostService.Application.Tests;
 
 public class TestFixture
 {
-    private readonly TestStartup _testStartup = new();
     public readonly PostDbContext PostDbContextFixture;
     
     public readonly AddPostCommandHandler AddPostCommandHandler;
@@ -46,7 +45,8 @@ public class TestFixture
         _postgreSqlContainer.StartAsync().Wait();
 
         var connectionString = _postgreSqlContainer.GetConnectionString();
-        var serviceProvider = _testStartup.Initialize(connectionString);
+        
+        var serviceProvider = TestStartup.Initialize(connectionString);
 
         PostDbContextFixture = serviceProvider.GetRequiredService<PostDbContext>();
         

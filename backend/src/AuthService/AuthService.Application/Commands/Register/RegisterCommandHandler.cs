@@ -24,7 +24,8 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
             command.RegisterDto.LastName,
             command.RegisterDto.Username, 
             command.RegisterDto.Email,
-            command.RegisterDto.Password);
+            command.RegisterDto.Password
+        );
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();

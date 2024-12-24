@@ -5,4 +5,5 @@ public record KeycloakUser(
     string Username,
     string FirstName,
     string LastName,
-    string Email);
+    string Email
+);

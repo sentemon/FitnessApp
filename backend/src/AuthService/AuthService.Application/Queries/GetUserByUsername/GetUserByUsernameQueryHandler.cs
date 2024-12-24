@@ -30,7 +30,8 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
             user.LastName,
             user.Username.Value,
             string.Empty,
-            user.ImageUrl);
+            user.ImageUrl
+        );
 
         return Result<UserDto>.Success(userDto);
     }

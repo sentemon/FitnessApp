@@ -4,4 +4,5 @@ public record LikeDto(
     Guid Id,
     Guid PostId,
     Guid UserId,
-    DateTime CreatedAt);
+    DateTime CreatedAt
+);

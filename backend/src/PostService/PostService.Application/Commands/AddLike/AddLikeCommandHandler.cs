@@ -34,9 +34,7 @@ public class AddLikeCommandHandler : ICommandHandler<AddLikeCommand, LikeDto>
             return Result<LikeDto>.Failure(new Error(ResponseMessages.UserHasAlreadyLikedThisPost));
         }
             
-        var like = new Like(
-            command.PostId, 
-            command.UserId);
+        var like = new Like(command.PostId, command.UserId);
         
         _context.Likes.Add(like);
         
@@ -48,7 +46,8 @@ public class AddLikeCommandHandler : ICommandHandler<AddLikeCommand, LikeDto>
             like.Id,
             like.PostId,
             like.UserId,
-            like.CreatedAt);
+            like.CreatedAt
+        );
 
         return Result<LikeDto>.Success(likeDto);
     }

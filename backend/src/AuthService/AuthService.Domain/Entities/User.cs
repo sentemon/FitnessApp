@@ -28,13 +28,18 @@ public class User
     
     public static User Create(string id, string firstName, string lastName, string username, string email, string? imageUrl = null)
     {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new ArgumentException("Id cannot be null or empty.", nameof(id));
+        }
+        
         return new User(
-            id: id,
-            firstName: firstName,
-            lastName: lastName,
-            username: Username.Create(username),
-            email: Email.Create(email),
-            imageUrl: imageUrl
+            id,
+            firstName,
+            lastName,
+            Username.Create(username),
+            Email.Create(email),
+            imageUrl
         );
     }
 

@@ -19,7 +19,7 @@ public class Email
         Value = value;
     }
 
-    public static Email Create(string value) => new Email(value);
+    public static Email Create(string value) => new (value);
 
     public override string ToString() => Value;
 }

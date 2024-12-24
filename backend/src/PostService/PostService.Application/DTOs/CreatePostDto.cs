@@ -6,4 +6,5 @@ public record CreatePostDto(
     string Title,
     string Description,
     string ContentUrl,
-    ContentType ContentType);
+    ContentType ContentType
+);

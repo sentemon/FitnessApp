@@ -19,7 +19,7 @@ namespace PostService.Application.Tests;
 
 public class TestStartup
 {
-    public ServiceProvider Initialize(string connectionString)
+    public static ServiceProvider Initialize(string connectionString)
     {
         var serviceCollection = new ServiceCollection()
             .AddDbContext<PostDbContext>(options =>

@@ -12,4 +12,5 @@ public record PostDto(
     uint CommentCount,
     DateTime CreatedAt,
     string UserImageUrl,
-    string Username);
+    string Username
+);

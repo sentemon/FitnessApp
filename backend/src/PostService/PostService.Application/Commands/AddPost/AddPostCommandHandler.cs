@@ -54,7 +54,8 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             post.CommentCount,
             post.CreatedAt,
             user.ImageUrl,
-            user.Username);
+            user.Username
+        );
 
         return Result<PostDto>.Success(postDto);
     }

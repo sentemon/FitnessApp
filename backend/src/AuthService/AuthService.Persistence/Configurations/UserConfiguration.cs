@@ -10,16 +10,34 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
 
+        builder.Property(u => u.Id)
+            .IsRequired();
+
         builder.Property(u => u.FirstName)
+            .HasMaxLength(128)
             .IsRequired();
         
         builder.Property(u => u.LastName)
+            .HasMaxLength(128)
             .IsRequired();
+
+        builder.OwnsOne(u => u.Username, username =>
+        {
+            username.Property(u => u.Value)
+                .HasColumnName("Username")
+                .HasMaxLength(30)
+                .IsRequired();
+        });
         
-        builder.Property(u => u.Username)
-            .IsRequired();
+        builder.OwnsOne(u => u.Email, email =>
+        {
+            email.Property(e => e.Value)
+                .HasColumnName("Email")
+                .IsRequired()
+                .HasMaxLength(320);
+        });
         
-        builder.Property(u => u.Email)
+        builder.Property(u => u.EmailVerified)
             .IsRequired();
 
         builder.Property(u => u.CreatedAt)

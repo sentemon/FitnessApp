@@ -49,7 +49,8 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
             command.CreateComment.PostId,
             command.UserId,
             user.Username,
-            command.CreateComment.Content);
+            command.CreateComment.Content
+        );
 
         _context.Comments.Add(comment);
         post.IncrementCommentCount();
@@ -61,7 +62,8 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
             comment.UserId,
             comment.Username,
             comment.Content,
-            comment.CreatedAt);
+            comment.CreatedAt
+        );
 
         return Result<CommentDto>.Success(commentDto);
     }

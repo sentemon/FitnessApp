@@ -6,4 +6,5 @@ public record CommentDto(
     Guid UserId,
     string Username,
     string Content,
-    DateTime CreatedAt);
+    DateTime CreatedAt
+);

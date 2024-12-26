@@ -25,8 +25,8 @@ public class UserTests
         user.LastName.Should().Be(lastName);
         user.Username.Value.Should().Be(username);
         user.Email.Value.Should().Be(email);
-        user.EmailVerified.Should().Be(false);
-        user.ImageUrl.Should().Be(string.Empty);
+        user.EmailVerified.Should().BeFalse();
+        user.ImageUrl.Should().BeEmpty();
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class UserTests
         user.LastName.Should().Be(newLastName);
         user.Username.Value.Should().Be(newUsername);
         user.Email.Value.Should().Be(newEmail);
-        user.EmailVerified.Should().Be(false);
+        user.EmailVerified.Should().BeFalse();
         user.ImageUrl.Should().Be(imageUrl);
     }
 
@@ -79,8 +79,8 @@ public class UserTests
         user.LastName.Should().Be(lastName);
         user.Username.Value.Should().Be(username);
         user.Email.Value.Should().Be(email);
-        user.EmailVerified.Should().Be(true);
-        user.ImageUrl.Should().Be(string.Empty);
+        user.EmailVerified.Should().BeTrue();
+        user.ImageUrl.Should().BeEmpty();
     }
     
     [Fact]

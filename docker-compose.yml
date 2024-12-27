@@ -16,6 +16,27 @@ services:
     networks: 
       - microservices
   
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./backend/src
+      dockerfile: AuthService/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
+      Keycloak__Url: http://keycloak:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://auth-service:8082/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+  
   post-service:
     container_name: post-service
     build:

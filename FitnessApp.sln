@@ -45,6 +45,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{C7DC7946-2C31-4266-BF89-17E15C5B5A63}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\AuthService\Dockerfile = backend\src\AuthService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Api", "backend\src\AuthService\AuthService.Api\AuthService.Api.csproj", "{2C4FD2EA-8768-4327-891A-ECAC671FE611}"
 EndProject

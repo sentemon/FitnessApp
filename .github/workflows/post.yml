@@ -14,31 +14,24 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Run reusable Build and Test action
+        uses: ./.github/actions/build-and-test
         with:
-          dotnet-version: '8.x'
-
-      - name: Restore dependencies
-        run: dotnet restore ./FitnessApp.sln
-
-      - name: Build project
-        run: dotnet build --configuration Release ./FitnessApp.sln --no-restore
-
-      - name: Run tests
-        run: |
-          dotnet test ./backend/tests/PostService/PostService.Domain.Tests/PostService.Domain.Tests.csproj --configuration Release --no-build --verbosity normal
-          dotnet test ./backend/tests/PostService/PostService.Application.Tests/PostService.Application.Tests.csproj --configuration Release --no-build --verbosity normal
+          backendCsprojPath: ./backend/src/PostService/PostService.Presentation/PostService.Presentation.csproj
+          unitTestsProjectPath: ./backend/tests/PostService/PostService.Domain.Tests/PostService.Domain.Tests.csproj
+          integrationTestsProjectPath: ./backend/tests/PostService/PostService.Application.Tests/PostService.Application.Tests.csproj
+          buildConfiguration: Release
+          serviceName: PostService
 
   docker:
-    needs: build
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -64,25 +57,3 @@ jobs:
         run: |
           IMAGE_VERSION=${GITHUB_REF#refs/tags/}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}
-        
-  docker-compose:
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Build Docker Compose
-        run: docker compose build --no-cache
-          
-      - name: Start Docker Compose
-        run: docker compose up -d
-            
-      - name: Health Check
-        run: |
-          echo "Checking health..."
-          for i in {1..10}; do
-            curl --fail http://0.0.0.0:8081/health && break || sleep 5
-          done
-          curl --fail http://0.0.0.0:8081/health || exit 1

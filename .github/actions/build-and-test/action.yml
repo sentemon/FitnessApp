@@ -33,12 +33,12 @@ runs:
         dotnet-version: 8.0.x
 
     - name: Restore NuGet Packages
-      run: dotnet restore --verbosity minimal
+      run: dotnet restore ./FitnessApp.sln
       shell: bash
 
-    - name: Build .NET Project
+    - name: Build .NET Solution
       run: |
-        dotnet build "${{ inputs.backendCsprojPath }}" \
+        dotnet build ./FitnessApp.sln \
           --no-restore \
           --configuration "${{ inputs.buildConfiguration }}"
       shell: bash

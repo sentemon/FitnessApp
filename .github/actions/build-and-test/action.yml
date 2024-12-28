@@ -57,7 +57,7 @@ runs:
       run: |
         dotnet test "${{ inputs.integrationTestsProjectPath }}" \
           --configuration "${{ inputs.buildConfiguration }}" \
-          --no-build
+          --no-build \
           --verbosity normal
       shell: bash
 

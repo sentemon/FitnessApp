@@ -41,28 +41,30 @@ runs:
         dotnet build "${{ inputs.backendCsprojPath }}" \
           --no-restore \
           /p:ContinuousIntegrationBuild=true \
-          -c "${{ inputs.buildConfiguration }}"
+          --configuration "${{ inputs.buildConfiguration }}"
       shell: bash
 
     - name: Run Unit Tests
       if: ${{ inputs.unitTestsProjectPath != '' }}
       run: |
         dotnet test "${{ inputs.unitTestsProjectPath }}" \
-          -c "${{ inputs.buildConfiguration }}" \
-          --no-build
+          --configuration "${{ inputs.buildConfiguration }}" \
+          --no-build \
+          --verbosity normal
       shell: bash
 
     - name: Run Integration Tests
       if: ${{ inputs.integrationTestsProjectPath != '' }}
       run: |
         dotnet test "${{ inputs.integrationTestsProjectPath }}" \
-          -c "${{ inputs.buildConfiguration }}" \
+          --configuration "${{ inputs.buildConfiguration }}" \
           --no-build
+          --verbosity normal
       shell: bash
 
     - name: Publish .NET Project
       run: |
         dotnet publish "${{ inputs.backendCsprojPath }}" \
-          -c "${{ inputs.buildConfiguration }}" \
-          -o "publish"
+          --configuration "${{ inputs.buildConfiguration }}" \
+          --output "publish"
       shell: bash

@@ -24,7 +24,7 @@ jobs:
       - name: Run reusable Build and Test action
         uses: ./.github/actions/build-and-test
         with:
-          backendCsprojPath: ./backend/src/AuthService/AuthService.Api/PostService.Api.csproj
+          backendCsprojPath: ./backend/src/AuthService/AuthService.Api/AuthService.Api.csproj
           unitTestsProjectPath: ./backend/tests/AuthService/AuthService.Domain.Tests/AuthService.Domain.Tests.csproj
           buildConfiguration: Release
           serviceName: AuthService

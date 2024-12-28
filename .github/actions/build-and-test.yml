@@ -1,0 +1,68 @@
+name: Build and Test .NET Project
+description: Build, test, and publish a .NET project with configurable paths and settings.
+
+inputs:
+  backendCsprojPath:
+    description: Path to the .csproj file for the backend project.
+    required: true
+
+  unitTestsProjectPath:
+    description: Path to the unit tests project (optional).
+    required: false
+    default: ''
+
+  integrationTestsProjectPath:
+    description: Path to the integration tests project (optional).
+    required: false
+    default: ''
+
+  buildConfiguration:
+    description: Build configuration (Debug or Release).
+    required: true
+
+  serviceName:
+    description: Name of the service being built.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup .NET 8.0 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore NuGet Packages
+      run: dotnet restore --verbosity minimal
+      shell: bash
+
+    - name: Build .NET Project
+      run: |
+        dotnet build "${{ inputs.backendCsprojPath }}" \
+          --no-restore \
+          /p:ContinuousIntegrationBuild=true \
+          -c "${{ inputs.buildConfiguration }}"
+      shell: bash
+
+    - name: Run Unit Tests
+      if: ${{ inputs.unitTestsProjectPath != '' }}
+      run: |
+        dotnet test "${{ inputs.unitTestsProjectPath }}" \
+          -c "${{ inputs.buildConfiguration }}" \
+          --no-build
+      shell: bash
+
+    - name: Run Integration Tests
+      if: ${{ inputs.integrationTestsProjectPath != '' }}
+      run: |
+        dotnet test "${{ inputs.integrationTestsProjectPath }}" \
+          -c "${{ inputs.buildConfiguration }}" \
+          --no-build
+      shell: bash
+
+    - name: Publish .NET Project
+      run: |
+        dotnet publish "${{ inputs.backendCsprojPath }}" \
+          -c "${{ inputs.buildConfiguration }}" \
+          -o "publish"
+      shell: bash

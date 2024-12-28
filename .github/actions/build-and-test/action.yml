@@ -40,7 +40,6 @@ runs:
       run: |
         dotnet build "${{ inputs.backendCsprojPath }}" \
           --no-restore \
-          /p:ContinuousIntegrationBuild=true \
           --configuration "${{ inputs.buildConfiguration }}"
       shell: bash
 

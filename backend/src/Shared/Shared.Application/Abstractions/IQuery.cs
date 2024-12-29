@@ -1,5 +1,3 @@
 namespace Shared.Application.Abstractions;
 
-public interface IQuery
-{
-}
+public interface IQuery;

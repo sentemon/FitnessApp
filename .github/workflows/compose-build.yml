@@ -21,6 +21,14 @@ jobs:
             
         - name: Start Docker Compose
           run: docker compose up -d
+          
+        - name: Health Check AuthService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8082/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8082/health || exit 1
               
         - name: Health Check PostService
           run: |

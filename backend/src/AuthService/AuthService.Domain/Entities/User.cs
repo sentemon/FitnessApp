@@ -13,8 +13,6 @@ public class User
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private User() { }
-
     private User(string id, string firstName, string lastName, Username username, Email email, string? imageUrl = null)
     {
         Id = id;
@@ -56,4 +54,9 @@ public class User
     {
         EmailVerified = true;
     }
+    
+    #pragma warning disable CS8618
+    // Required by EF Core
+    private User() { }
+    #pragma warning restore CS8618
 }

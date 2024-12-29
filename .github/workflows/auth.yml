@@ -1,43 +1,42 @@
-name: Post Service CI/CD Pipeline
+name: Auth Service CI/CD Pipeline
 
 on:
-  push:
+  push: 
     paths:
       - backend/src/**
-      - .github/workflows/post.yml
+      - .github/workflows/auth.yml
     branches:
       - master
       - develop
     tags:
       - 'v*'
-  pull_request:
+  pull_request: 
     types: [opened, synchronize, reopened]
 
-jobs:
+jobs: 
   build-and-test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Run reusable Build and Test action
         uses: ./.github/actions/build-and-test
         with:
-          backendCsprojPath: ./backend/src/PostService/PostService.Api/PostService.Api.csproj
-          unitTestsProjectPath: ./backend/tests/PostService/PostService.Domain.Tests/PostService.Domain.Tests.csproj
-          integrationTestsProjectPath: ./backend/tests/PostService/PostService.Application.Tests/PostService.Application.Tests.csproj
+          backendCsprojPath: ./backend/src/AuthService/AuthService.Api/AuthService.Api.csproj
+          unitTestsProjectPath: ./backend/tests/AuthService/AuthService.Domain.Tests/AuthService.Domain.Tests.csproj
           buildConfiguration: Release
-          serviceName: PostService
-
+          serviceName: AuthService
+          
   docker:
     needs: build-and-test
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
@@ -49,11 +48,11 @@ jobs:
           fi
           docker buildx build \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION} \
-            -f ./backend/src/PostService/Dockerfile \
+            -f ./backend/src/AuthService/Dockerfile \
             ./backend/src
 
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           IMAGE_VERSION=${GITHUB_REF#refs/tags/}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/post-service:${IMAGE_VERSION}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:${IMAGE_VERSION}

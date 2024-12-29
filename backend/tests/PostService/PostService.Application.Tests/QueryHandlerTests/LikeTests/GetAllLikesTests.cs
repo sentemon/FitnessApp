@@ -30,8 +30,8 @@ public class GetAllLikesTests(TestFixture fixture) : TestBase(fixture)
 
         var postId = post.Response.Id;
         
-        var commandLike1 = new AddLikeCommand(postId, Guid.NewGuid());
-        var commandLike2 = new AddLikeCommand(postId, Guid.NewGuid());
+        var commandLike1 = new AddLikeCommand(postId, Guid.NewGuid().ToString());
+        var commandLike2 = new AddLikeCommand(postId, Guid.NewGuid().ToString());
 
         var like1 = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike1);
         var like2 = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike2);
@@ -84,7 +84,7 @@ public class GetAllLikesTests(TestFixture fixture) : TestBase(fixture)
 
         var postId = post.Response.Id;
 
-        var likes = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+        var likes = new List<string> { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
         foreach (var likeUserId in likes)
         {
             var commandLike = new AddLikeCommand(postId, likeUserId);

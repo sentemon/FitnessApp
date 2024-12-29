@@ -78,7 +78,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-        var anotherUserId = Guid.NewGuid();
+        var anotherUserId = Guid.NewGuid().ToString();
 
         var postCommand = new AddPostCommand(createPost, userId);
         

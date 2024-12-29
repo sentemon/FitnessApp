@@ -96,7 +96,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
 
         var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-        var anotherUserId = Guid.NewGuid();
+        var anotherUserId = Guid.NewGuid().ToString();
 
         var commandPost = new AddPostCommand(createPost, userId);
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);

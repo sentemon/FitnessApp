@@ -3,4 +3,4 @@ using Shared.Application.Abstractions;
 
 namespace PostService.Application.Commands.AddPost;
 
-public record AddPostCommand(CreatePostDto CreatePost, Guid UserId) : ICommand;
+public record AddPostCommand(CreatePostDto CreatePost, string UserId) : ICommand;

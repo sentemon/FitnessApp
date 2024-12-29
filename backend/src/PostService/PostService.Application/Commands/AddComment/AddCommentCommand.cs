@@ -3,4 +3,4 @@ using Shared.Application.Abstractions;
 
 namespace PostService.Application.Commands.AddComment;
 
-public record AddCommentCommand(CreateCommentDto CreateComment, Guid UserId) : ICommand;
+public record AddCommentCommand(CreateCommentDto CreateComment, string UserId) : ICommand;

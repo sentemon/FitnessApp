@@ -4,17 +4,17 @@ public class Like
 {
     public Guid Id { get; private set; }
     public Guid PostId { get; private set; }
-    public Guid UserId { get; private set; }
+    public string UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Like(Guid postId, Guid userId)
+    public Like(Guid postId, string userId)
     {
         if (postId == Guid.Empty)
         {
             throw new ArgumentException("PostId cannot be empty.", nameof(postId));
         }
         
-        if (userId == Guid.Empty)
+        if (string.IsNullOrEmpty(userId))
         {
             throw new ArgumentException("UserId cannot be empty.", nameof(userId));
         }

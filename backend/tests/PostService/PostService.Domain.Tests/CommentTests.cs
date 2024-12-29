@@ -11,7 +11,7 @@ public class CommentTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var username = "example";
         var content = "Content";
         var createdAt = DateTime.UtcNow;
@@ -32,7 +32,7 @@ public class CommentTests
     {
         // Arrange
         var postId = Guid.Empty;
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var username = "example";
         var content = "Content";
         
@@ -50,7 +50,7 @@ public class CommentTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.Empty;
+        var userId = string.Empty;
         var username = "example";
         var content = "Content";
         
@@ -68,7 +68,7 @@ public class CommentTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var username = "";
         var content = "Content";
         
@@ -86,7 +86,7 @@ public class CommentTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var username = "example";
         var content = "";
         

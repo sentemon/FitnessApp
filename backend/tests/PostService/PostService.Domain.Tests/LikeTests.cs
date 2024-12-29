@@ -11,7 +11,7 @@ public class LikeTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var createdAt = DateTime.UtcNow;
         
         // Act
@@ -28,7 +28,7 @@ public class LikeTests
     {
         // Arrange
         var postId = Guid.Empty;
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         
         // Act
         var act = () => new Like(postId, userId);
@@ -44,7 +44,7 @@ public class LikeTests
     {
         // Arrange
         var postId = Guid.NewGuid();
-        var userId = Guid.Empty;
+        var userId = string.Empty;
         
         // Act
         var act = () => new Like(postId, userId);

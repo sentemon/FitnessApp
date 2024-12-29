@@ -3,6 +3,6 @@ namespace PostService.Application.DTOs;
 public record LikeDto(
     Guid Id,
     Guid PostId,
-    Guid UserId,
+    string UserId,
     DateTime CreatedAt
 );

@@ -88,7 +88,7 @@ public class TestFixture
     private User CreateExistingUser()
     {
         var user = new User(
-            Guid.NewGuid(),
+            Guid.NewGuid().ToString(),
             "First Name",
             "Last Name",
             "Username",

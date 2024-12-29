@@ -5,7 +5,7 @@ namespace PostService.Domain.Entities;
 public class Post
 {
     public Guid Id { get; private set; }
-    public Guid UserId { get; private set; }
+    public string UserId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string ContentUrl { get; private set; }
@@ -14,9 +14,9 @@ public class Post
     public uint CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private Post(Guid userId, string title, string description, string contentUrl, ContentType contentType)
+    private Post(string userId, string title, string description, string contentUrl, ContentType contentType)
     {
-        if (userId == Guid.Empty)
+        if (string.IsNullOrEmpty(userId))
         {
             throw new ArgumentException("UserId cannot be empty.", nameof(userId));
         }
@@ -33,17 +33,17 @@ public class Post
         CreatedAt = DateTime.UtcNow;
     }
 
-    public static Post CreateTextPost(Guid userId, string title, string description)
+    public static Post CreateTextPost(string userId, string title, string description)
     {
         return new Post(userId, title, description, string.Empty, ContentType.Text);
     }
 
-    public static Post CreateImagePost(Guid userId, string contentUrl, string title = "", string description = "")
+    public static Post CreateImagePost(string userId, string contentUrl, string title = "", string description = "")
     {
         return new Post(userId, title, description, contentUrl, ContentType.Image);
     }
 
-    public static Post CreateVideoPost(Guid userId, string contentUrl, string title = "", string description = "")
+    public static Post CreateVideoPost(string userId, string contentUrl, string title = "", string description = "")
     {
         return new Post(userId, title, description, contentUrl, ContentType.Video);
     }

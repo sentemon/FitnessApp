@@ -11,7 +11,7 @@ public class PostTests
     public void CreateTextPost_ShouldInitializeFieldsCorrectly()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Sample Title";
         var description = "Sample Description";
 
@@ -33,7 +33,7 @@ public class PostTests
     public void CreateImagePost_ShouldInitializeFieldsCorrectly()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Sample Title";
         var description = "Sample Description";
         var contentUrl = "https://example.com/image.jpg";
@@ -56,7 +56,7 @@ public class PostTests
     public void CreateVideoPost_ShouldInitializeFieldsCorrectly()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Sample Title";
         var description = "Sample Description";
         var contentUrl = "https://example.com/video.mp4";
@@ -80,9 +80,10 @@ public class PostTests
     {
         // Arrange
         var post = Post.CreateTextPost(
-            Guid.NewGuid(), 
+            Guid.NewGuid().ToString(), 
             "Old Title", 
-            "Old Description");
+            "Old Description"
+        );
 
         var newTitle = "New Title";
         var newDescription = "New Description";
@@ -100,9 +101,10 @@ public class PostTests
     {
         // Arrange
         var post = Post.CreateTextPost(
-            Guid.NewGuid(),
+            Guid.NewGuid().ToString(),
             "Title", 
-            "Description");
+            "Description"
+        );
 
         // Act
         post.IncrementLikeCount();
@@ -116,9 +118,10 @@ public class PostTests
     {
         // Arrange
         var post = Post.CreateTextPost(
-            Guid.NewGuid(),
+            Guid.NewGuid().ToString(),
             "Title",
-            "Description");
+            "Description"
+        );
         
         post.IncrementLikeCount(); // Initial increment to avoid negative count
 
@@ -134,9 +137,10 @@ public class PostTests
     {
         // Arrange
         var post = Post.CreateTextPost(
-            Guid.NewGuid(), 
+            Guid.NewGuid().ToString(), 
             "Title", 
-            "Description");
+            "Description"
+        );
 
         // Act
         post.IncrementCommentCount();
@@ -150,9 +154,10 @@ public class PostTests
     {
         // Arrange
         var post = Post.CreateTextPost(
-            Guid.NewGuid(),
+            Guid.NewGuid().ToString(),
             "Title", 
-            "Description");
+            "Description"
+        );
         
         post.IncrementCommentCount(); // Initial increment to avoid negative count
 
@@ -167,7 +172,7 @@ public class PostTests
     public void CreateTextPost_ShouldThrowArgumentException_WhenUserIdIsEmpty()
     {
         // Arrange
-        var userId = Guid.Empty;
+        var userId = string.Empty;
         var title = "Title";
         var description = "Description";
         
@@ -184,7 +189,7 @@ public class PostTests
     public void CreateTextPost_ShouldThrowArgumentException_WhenTitleIsEmpty_ForTextContent()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "";
         var description = "Description";
         
@@ -201,7 +206,7 @@ public class PostTests
     public void CreateTextPost_ShouldThrowArgumentException_WhenDescriptionIsEmpty_ForTextContent()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Title";
         var description = "";
         
@@ -218,7 +223,7 @@ public class PostTests
     public void CreateImagePost_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForImageContent()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Title";
         var description = "Description";
         var contentUrl = "";
@@ -236,7 +241,7 @@ public class PostTests
     public void CreateVideoPost_ShouldThrowArgumentException_WhenContentUrlIsEmpty_ForVideoContent()
     {
         // Arrange
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid().ToString();
         var title = "Title";
         var description = "Description";
         var contentUrl = "";

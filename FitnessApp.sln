@@ -74,6 +74,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build-and-test", "build-and
 		.github\actions\build-and-test\action.yml = .github\actions\build-and-test\action.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.DTO", "backend\src\Shared.DTO\Shared.DTO.csproj", "{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{528F427F-AFA0-409E-9ED1-AD630CA56BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{528F427F-AFA0-409E-9ED1-AD630CA56BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{528F427F-AFA0-409E-9ED1-AD630CA56BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E44C019-ED30-4671-A878-D2F7B6071024} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
@@ -160,5 +166,6 @@ Global
 		{6EFF3C2A-91CF-4511-A60C-D542F1A939CD} = {D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}
 		{499BA3B4-A81F-4079-B256-CC04927BB06D} = {D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}
 		{BC8EDBE4-B8BD-4934-B096-0C2E1C1E84C7} = {499BA3B4-A81F-4079-B256-CC04927BB06D}
+		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF} = {112E9C63-BF62-49C1-AD19-03855535225B}
 	EndGlobalSection
 EndGlobal

@@ -9,13 +9,13 @@ public class User
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public User(string id, string firstName, string lastName, string username, string imageUrl)
+    public User(string id, string firstName, string lastName, string username, string imageUrl, DateTime createdAt)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
         Username = username;
         ImageUrl = imageUrl;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt;
     }
 }

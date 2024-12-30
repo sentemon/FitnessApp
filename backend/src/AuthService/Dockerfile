@@ -14,6 +14,7 @@ COPY AuthService/AuthService.Domain/AuthService.Domain.csproj AuthService/AuthSe
 COPY AuthService/AuthService.Infrastructure/AuthService.Infrastructure.csproj AuthService/AuthService.Infrastructure/
 COPY AuthService/AuthService.Persistence/AuthService.Persistence.csproj AuthService/AuthService.Persistence/
 COPY Shared/Shared.Application/Shared.Application.csproj Shared/Shared.Application/
+COPY Shared/Shared.DTO/Shared.DTO.csproj Shared/Shared.DTO/
 
 RUN dotnet restore AuthService/AuthService.Api/AuthService.Api.csproj
 

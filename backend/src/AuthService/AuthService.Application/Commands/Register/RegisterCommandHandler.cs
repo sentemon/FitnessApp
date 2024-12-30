@@ -1,8 +1,10 @@
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
 using AuthService.Persistence;
+using MassTransit;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.DTO;
 
 namespace AuthService.Application.Commands.Register;
 
@@ -10,11 +12,13 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
 {
     private readonly AuthDbContext _context;
     private readonly IAuthService _authService;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public RegisterCommandHandler(AuthDbContext context, IAuthService authService)
+    public RegisterCommandHandler(AuthDbContext context, IAuthService authService, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _authService = authService;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<IResult<KeycloakTokenResponse, Error>> HandleAsync(RegisterCommand command)
@@ -29,6 +33,15 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+
+        await _publishEndpoint.Publish(new UserCreatedEvent(
+            user.Id,
+            user.FirstName,
+            user.LastName,
+            user.Username.Value,
+            user.ImageUrl,
+            user.CreatedAt
+        ));
 
         var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
         

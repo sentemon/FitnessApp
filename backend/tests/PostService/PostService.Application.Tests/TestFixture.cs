@@ -92,7 +92,9 @@ public class TestFixture
             "First Name",
             "Last Name",
             "Username",
-            "");
+            string.Empty,
+            DateTime.Now
+        );
         
         PostDbContextFixture.Users.Add(user);
         PostDbContextFixture.SaveChanges();

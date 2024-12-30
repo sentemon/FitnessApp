@@ -36,7 +36,7 @@ public static class DependencyInjection
         {
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                configurator.Host(new Uri(rabbitMqHost), host =>
+                configurator.Host(rabbitMqHost, host =>
                 {
                     host.Username(rabbitMqUsername);
                     host.Password(rabbitMqPassword);

@@ -8,11 +8,27 @@ using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var allowedOrigins = builder.Configuration.GetSection(AppSettingsConstants.AllowedOrigins).Get<string[]>();
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
-
 var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
+
+builder.Services
+    .AddCors(options =>
+    {
+        options.AddPolicy("CorsPolicy", policyBuilder =>
+        {
+            policyBuilder
+                .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
+                    "Allowed Origin URLs are not configured."))
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddPersistenceServices(connectionString)
@@ -22,8 +38,11 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<Mutation>()
-    .AddType(new UuidType());
+    .AddMutationType<PostMutation>()
+    .AddType(new UuidType())
+    .AddType<UnsignedIntType>();
+
+builder.Services.AddGraphQL();
 
 var app = builder.Build();
 
@@ -36,10 +55,12 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
-} 
+}
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 

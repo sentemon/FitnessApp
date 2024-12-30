@@ -30,15 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Application.Tests", "backend\tests\PostService\PostService.Application.Tests\PostService.Application.Tests.csproj", "{5325FC87-0538-4AE1-8979-F9597F3FF466}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}"
-	ProjectSection(SolutionItems) = preProject
-	    .github\actions\build-and-test\action.yml = .github\actions\build-and-test\action.yml
-	    .github\workflows\auth.yml = .github\workflows\auth.yml
-		.github\workflows\post.yml = .github\workflows\post.yml
-		.github\workflows\frontend.yml = .github\workflows\frontend.yml
-		.github\workflows\compose-build.yml = .github\workflows\compose-build.yml
-	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{CE086396-E7FB-46F7-87A9-4570DBF43597}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
@@ -65,6 +58,21 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "backend\tests\AuthService", "{CB2BFFE4-D7CD-47E0-B42A-150DF411B7E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain.Tests", "backend\tests\AuthService\AuthService.Domain.Tests\AuthService.Domain.Tests.csproj", "{528F427F-AFA0-409E-9ED1-AD630CA56BB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{6EFF3C2A-91CF-4511-A60C-D542F1A939CD}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\auth.yml = .github\workflows\auth.yml
+		.github\workflows\compose-build.yml = .github\workflows\compose-build.yml
+		.github\workflows\frontend.yml = .github\workflows\frontend.yml
+		.github\workflows\post.yml = .github\workflows\post.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{499BA3B4-A81F-4079-B256-CC04927BB06D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build-and-test", "build-and-test", "{BC8EDBE4-B8BD-4934-B096-0C2E1C1E84C7}"
+	ProjectSection(SolutionItems) = preProject
+		.github\actions\build-and-test\action.yml = .github\actions\build-and-test\action.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,5 +157,8 @@ Global
 		{C494E5BB-0B0C-43D6-82AD-27D1FC26FA29} = {C7DC7946-2C31-4266-BF89-17E15C5B5A63}
 		{CB2BFFE4-D7CD-47E0-B42A-150DF411B7E9} = {2B7719FF-D7B4-4EFA-B3C5-2240EC19A1A5}
 		{528F427F-AFA0-409E-9ED1-AD630CA56BB8} = {CB2BFFE4-D7CD-47E0-B42A-150DF411B7E9}
+		{6EFF3C2A-91CF-4511-A60C-D542F1A939CD} = {D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}
+		{499BA3B4-A81F-4079-B256-CC04927BB06D} = {D5A12D19-86E3-4E83-8BF0-D9AF8C2477F3}
+		{BC8EDBE4-B8BD-4934-B096-0C2E1C1E84C7} = {499BA3B4-A81F-4079-B256-CC04927BB06D}
 	EndGlobalSection
 EndGlobal

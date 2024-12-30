@@ -33,7 +33,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices(builder.Configuration)
-    .AddApplicationServices();
+    .AddApplicationServices(builder.Configuration);
 
 builder.Services
     .AddGraphQLServer()

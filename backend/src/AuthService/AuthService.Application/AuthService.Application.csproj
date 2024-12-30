@@ -13,4 +13,8 @@
       <ProjectReference Include="..\AuthService.Persistence\AuthService.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
+    </ItemGroup>
+
 </Project>

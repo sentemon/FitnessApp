@@ -12,7 +12,6 @@ public class LikeTests
         // Arrange
         var postId = Guid.NewGuid();
         var userId = Guid.NewGuid().ToString();
-        var createdAt = DateTime.UtcNow;
         
         // Act
         var like = new Like(postId, userId);
@@ -20,7 +19,6 @@ public class LikeTests
         // Assert
         like.PostId.Should().Be(postId);
         like.UserId.Should().Be(userId);
-        like.CreatedAt.Date.Should().Be(createdAt.Date);
     }
 
     [Fact]

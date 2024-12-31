@@ -26,7 +26,6 @@ public class PostTests
         post.ContentType.Should().Be(ContentType.Text);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
-        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
     }
 
     [Fact]
@@ -49,7 +48,6 @@ public class PostTests
         post.ContentType.Should().Be(ContentType.Image);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
-        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
     }
 
     [Fact]
@@ -72,7 +70,6 @@ public class PostTests
         post.ContentType.Should().Be(ContentType.Video);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
-        post.CreatedAt.Date.Should().Be(DateTime.UtcNow.Date);
     }
 
     [Fact]

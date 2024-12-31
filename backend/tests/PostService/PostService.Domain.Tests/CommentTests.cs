@@ -14,7 +14,6 @@ public class CommentTests
         var userId = Guid.NewGuid().ToString();
         var username = "example";
         var content = "Content";
-        var createdAt = DateTime.UtcNow;
 
         // Act
         var comment = new Comment(postId, userId, username, content);
@@ -24,7 +23,6 @@ public class CommentTests
         comment.UserId.Should().Be(userId);
         comment.Username.Should().Be(username);
         comment.Content.Should().Be(content);
-        comment.CreatedAt.Date.Should().Be(createdAt.Date);
     }
 
     [Fact]

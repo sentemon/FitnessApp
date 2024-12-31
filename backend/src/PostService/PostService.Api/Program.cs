@@ -38,7 +38,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>()
+    .AddQueryType<PostQuery>()
     .AddMutationType<PostMutation>()
     .AddMutationType<CommentMutation>()
     .AddMutationType<LikeMutation>()

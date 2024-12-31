@@ -18,4 +18,12 @@ public class User
         ImageUrl = imageUrl;
         CreatedAt = createdAt;
     }
+    
+    public void Update(string? firstName, string? lastName, string? username, string? imageUrl = null)
+    {
+        FirstName = firstName ?? FirstName;
+        LastName = lastName ?? LastName;
+        Username = username ?? Username;
+        ImageUrl = imageUrl ?? ImageUrl;
+    }
 }

@@ -8,7 +8,7 @@ using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeleteComment;
 using PostService.Application.Commands.DeleteLike;
 using PostService.Application.Commands.UpdatePost;
-using PostService.Application.Events;
+using PostService.Application.Consumers;
 using PostService.Application.Queries.GetAllComments;
 using PostService.Application.Queries.GetAllLikes;
 using PostService.Application.Queries.GetAllPosts;
@@ -41,6 +41,7 @@ public static class DependencyInjection
         services.AddMassTransit(busConfigurator =>
         {
             busConfigurator.AddConsumer<UserCreatedEventConsumer>();
+            busConfigurator.AddConsumer<UserUpdatedEventConsumer>();
             
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
@@ -49,6 +50,8 @@ public static class DependencyInjection
                     host.Username(rabbitMqUsername);
                     host.Password(rabbitMqPassword);
                 });
+                
+                configurator.UseMessageRetry(r => r.Immediate(5));
                 
                 configurator.ConfigureEndpoints(context);
             });

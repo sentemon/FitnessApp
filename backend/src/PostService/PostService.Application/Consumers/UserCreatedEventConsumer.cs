@@ -3,7 +3,7 @@ using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.DTO;
 
-namespace PostService.Application.Events;
+namespace PostService.Application.Consumers;
 
 public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
 {

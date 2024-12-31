@@ -1,9 +1,11 @@
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Interfaces;
 using AuthService.Persistence;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.DTO;
 
 namespace AuthService.Application.Commands.UpdateUser;
 
@@ -11,11 +13,13 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 {
     private readonly IUserService _userService;
     private readonly AuthDbContext _context;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public UpdateUserCommandHandler(IUserService userService, AuthDbContext context)
+    public UpdateUserCommandHandler(IUserService userService, AuthDbContext context, IPublishEndpoint publishEndpoint)
     {
         _userService = userService;
         _context = context;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
@@ -48,6 +52,14 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         );
         
         await _context.SaveChangesAsync();
+
+        await _publishEndpoint.Publish(new UserUpdatedEvent(
+            user.Id,
+            user.FirstName,
+            user.LastName,
+            user.Username.Value,
+            user.ImageUrl
+        ));
         
         return Result<string>.Success(ResponseMessages.UserUpdatedSuccessfully);
     }

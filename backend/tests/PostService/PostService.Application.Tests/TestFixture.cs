@@ -93,7 +93,7 @@ public class TestFixture
             "Last Name",
             "Username",
             string.Empty,
-            DateTime.Now
+            DateTime.UtcNow
         );
         
         PostDbContextFixture.Users.Add(user);

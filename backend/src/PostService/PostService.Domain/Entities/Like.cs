@@ -21,6 +21,5 @@ public class Like
         
         PostId = postId;
         UserId = userId;
-        CreatedAt = DateTime.UtcNow;
     }
 }

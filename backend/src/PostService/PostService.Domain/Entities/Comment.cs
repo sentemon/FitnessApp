@@ -35,6 +35,5 @@ public class Comment
         UserId = userId;
         Username = username;
         Content = content;
-        CreatedAt = DateTime.UtcNow;
     }
 }

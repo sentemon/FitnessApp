@@ -30,7 +30,6 @@ public class Post
         ContentType = contentType;
         LikeCount = 0;
         CommentCount = 0;
-        CreatedAt = DateTime.UtcNow;
     }
 
     public static Post CreateTextPost(string userId, string title, string description)

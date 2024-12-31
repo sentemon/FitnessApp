@@ -3,6 +3,7 @@ using PostService.Api.GraphQL.Mutations;
 using PostService.Api.GraphQL.Queries;
 using PostService.Application;
 using PostService.Domain.Constants;
+using PostService.Domain.Entities;
 using PostService.Infrastructure;
 using PostService.Persistence;
 
@@ -39,6 +40,8 @@ builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<PostMutation>()
+    .AddMutationType<CommentMutation>()
+    .AddMutationType<LikeMutation>()
     .AddType(new UuidType())
     .AddType<UnsignedIntType>();
 

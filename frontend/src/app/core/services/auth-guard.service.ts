@@ -5,27 +5,7 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/ro
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard extends KeycloakAuthGuard {
+export class AuthGuard {
 
-  constructor(
-    protected override router: Router,
-    protected override keycloakAngular: KeycloakService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    super(router, keycloakAngular);
-  }
-
-  public override async isAccessAllowed(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> {
-    if (!this.keycloakAngular.isLoggedIn()) {
-      await this.keycloakAngular.login({
-        redirectUri: window.location.origin + state.url
-      });
-
-      return false;
-    }
-
-    return true;
-  }
+  constructor() {}
 }

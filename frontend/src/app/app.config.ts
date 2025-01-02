@@ -7,8 +7,6 @@ import {HTTP_INTERCEPTORS, provideHttpClient} from '@angular/common/http';
 import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { KeycloakService } from 'keycloak-angular';
-import {initKeycloak} from "./init-keycloak";
 import {AuthInterceptor} from "./core/services/auth-interceptor.service";
 
 export const appConfig: ApplicationConfig = {
@@ -27,13 +25,6 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
-    KeycloakService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initKeycloak,
-      deps: [KeycloakService],
-      multi: true
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

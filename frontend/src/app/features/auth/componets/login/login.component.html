@@ -1,0 +1,11 @@
+<div class="form">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <h1>Login to Fitness App</h1>
+    <div class="fields">
+      <input id="email" type="email" formControlName="email" placeholder="Email / Username" name="email" autocomplete="username" autocapitalize="off">
+      <input id="password" type="password" formControlName="password" placeholder="Password">
+    </div>
+    <button type="submit">Login</button>
+    <p>Don't have an account? <a routerLink="/register">Register</a></p>
+  </form>
+</div>

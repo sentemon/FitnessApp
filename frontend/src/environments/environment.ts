@@ -1,8 +1,4 @@
 export const environment = {
-  production: false,
-  keycloak: {
-    url: 'http://localhost:8080/',
-    realm: 'fitness-app-realm',
-    clientId: 'fitness-app-client',
-  },
+  auth_service: "http://localhost:8082/graphql",
+  production: false
 };

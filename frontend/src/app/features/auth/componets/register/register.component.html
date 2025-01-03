@@ -1,0 +1,15 @@
+<div class="form">
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <h1>Register to Fitness App</h1>
+    <div class="fields">
+      <input id="first-name" type="text" formControlName="firstName" placeholder="First Name" name="first-name">
+      <input id="last-name" type="text" formControlName="lastName" placeholder="Last Name" name="last-name">
+      <input id="username" type="text" formControlName="username" placeholder="Username" name="username">
+      <input id="email" type="email" formControlName="email" placeholder="Email" name="email" autocapitalize="off">
+      <input id="password" type="password" formControlName="password" placeholder="Password">
+      <input id="confirm-password" type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+    </div>
+    <button type="submit">Register</button>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </form>
+</div>

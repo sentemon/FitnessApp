@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
-import {AuthGuard} from "./core/services/auth-guard.service";
 import {AppComponent} from "./app.component";
+import {LoginComponent} from "./features/auth/componets/login/login.component";
+import {RegisterComponent} from "./features/auth/componets/register/register.component";
+import {ProfileComponent} from "./features/auth/componets/profile/profile.component";
 
 export const routes: Routes = [
   // { path: '', component: AppComponent, canActivate: [AuthGuard] },
+  { path: 'sentemon', component: ProfileComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

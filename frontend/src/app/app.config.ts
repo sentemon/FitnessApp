@@ -8,6 +8,7 @@ import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import {AuthInterceptor} from "./core/services/auth-interceptor.service";
+import {environment} from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
 
       return {
         link: httpLink.create({
-          uri: '<%= endpoint %>',
+          uri: environment.auth_service,
         }),
         cache: new InMemoryCache(),
       };

@@ -10,7 +10,7 @@ import {NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './../auth.scss'
 })
 export class LoginComponent {
   loginForm: FormGroup;

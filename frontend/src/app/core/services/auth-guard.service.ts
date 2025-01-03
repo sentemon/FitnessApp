@@ -1,6 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { KeycloakAuthGuard, KeycloakService } from "keycloak-angular";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'

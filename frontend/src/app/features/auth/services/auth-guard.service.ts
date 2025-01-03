@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Apollo} from "apollo-angular";
 import {map, Observable} from "rxjs";
-import {LOGIN} from "../requests/mutations";
+import {LOGIN, REGISTER} from "../requests/mutations";
 import {Token} from "../models/token.model";
 import {TokenResponse} from "../responses/token.response";
 
@@ -18,6 +18,15 @@ export class AuthGuardService {
       variables: { username, password }
     }).pipe(
       map(response => response.data?.login)
+    );
+  }
+
+  public register(firstName: string, lastName: string, username: string, email: string, password: string) : Observable<Token | undefined> {
+    return this.apollo.mutate<TokenResponse>({
+      mutation: REGISTER,
+      variables: { firstName, lastName, username, email, password }
+    }).pipe(
+      map(response => response.data?.register)
     );
   }
 }

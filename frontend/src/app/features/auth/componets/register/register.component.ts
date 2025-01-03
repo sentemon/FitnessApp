@@ -8,6 +8,7 @@ import {
   Validators
 } from "@angular/forms";
 import {RouterLink} from "@angular/router";
+import {AuthGuardService} from "../../services/auth-guard.service";
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ import {RouterLink} from "@angular/router";
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private authGuardService: AuthGuardService, private formBuilder: FormBuilder) {
     this.registerForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -35,8 +36,16 @@ export class RegisterComponent {
 
   onRegister() {
     if (this.registerForm.valid) {
-      // ToDo
-      console.log('Form Submitted:', this.registerForm.value);
+      // ToDo: save to cookie
+      this.authGuardService.register(
+        this.registerForm.value.firstName,
+        this.registerForm.value.lastName,
+        this.registerForm.value.username,
+        this.registerForm.value.email,
+        this.registerForm.value.password
+      ).subscribe(result => {
+        console.log(result);
+      });
     } else {
       // ToDo
       console.log('Form is invalid', this.registerForm.errors);

@@ -1,6 +1,6 @@
 <div class="form">
   <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <h1>Login to Fitness App</h1>
+    <h1>Register to Fitness App</h1>
     <div class="fields">
       <input id="first-name" type="text" formControlName="firstName" placeholder="First Name" name="first-name">
       <input id="last-name" type="text" formControlName="lastName" placeholder="Last Name" name="last-name">
@@ -9,6 +9,7 @@
       <input id="password" type="password" formControlName="password" placeholder="Password">
       <input id="confirm-password" type="password" formControlName="confirmPassword" placeholder="Confirm Password">
     </div>
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
   </form>
 </div>

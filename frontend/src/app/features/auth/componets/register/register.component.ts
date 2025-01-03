@@ -7,12 +7,14 @@ import {
   ValidationErrors,
   Validators
 } from "@angular/forms";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './register.component.html',
   styleUrl: './../auth.scss'

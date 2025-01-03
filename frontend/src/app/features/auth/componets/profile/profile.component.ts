@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component } from '@angular/core';
 import {UserService} from "../../services/user.service";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-profile',
@@ -9,13 +10,13 @@ import {UserService} from "../../services/user.service";
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-  user: any;
+  user?: User;
 
   constructor(private userService: UserService) { }
 
   getSentemon(): void {
-    this.userService.getUserByUsername("sentemon").subscribe(user => {
-      this.user = user;
+    this.userService.getUserByUsername("sentemon").subscribe(result => {
+      this.user = result;
     });
     console.log(this.user);
   }

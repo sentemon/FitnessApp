@@ -9,7 +9,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - "4200:80"
     depends_on:
       post-service:
         condition: service_healthy

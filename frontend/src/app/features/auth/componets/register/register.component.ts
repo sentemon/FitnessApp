@@ -34,21 +34,17 @@ export class RegisterComponent {
     }, { validators: this.passwordMatchValidator })
   }
 
-  onRegister() {
+  onRegister(): void {
     if (this.registerForm.valid) {
-      // ToDo: save to cookie
       this.authGuardService.register(
         this.registerForm.value.firstName,
         this.registerForm.value.lastName,
         this.registerForm.value.username,
         this.registerForm.value.email,
         this.registerForm.value.password
-      ).subscribe(result => {
-        console.log(result);
-      });
+      );
     } else {
-      // ToDo
-      console.log('Form is invalid', this.registerForm.errors);
+      console.error('Form is invalid', this.registerForm.errors);
     }
   }
 

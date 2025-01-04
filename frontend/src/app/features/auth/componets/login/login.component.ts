@@ -24,15 +24,12 @@ export class LoginComponent {
       password: ['', [Validators.required, Validators.minLength(6)]]
     })
   }
-  onLogin() {
+
+  onLogin(): void {
     if (this.loginForm.valid) {
-      // ToDo: save to cookie
-      this.authGuardService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(result => {
-        console.log(result);
-      });
+      this.authGuardService.login(this.loginForm.value.email, this.loginForm.value.password);
     } else {
-      // ToDo
-      console.log('Form is invalid', this.loginForm.errors);
+      console.error('Form is invalid', this.loginForm.errors);
     }
   }
 }

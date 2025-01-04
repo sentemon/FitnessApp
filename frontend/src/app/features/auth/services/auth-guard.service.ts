@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import { map } from "rxjs";
+import {map} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
-import {Token} from "../../../core/models/token.model";
 import {TokenResponse} from "../responses/token.response";
 import {TokenService} from "../../../core/services/token.service";
 
@@ -10,7 +9,6 @@ import {TokenService} from "../../../core/services/token.service";
   providedIn: 'root'
 })
 export class AuthGuardService {
-  private token?: Token;
 
   constructor(private apollo: Apollo, private tokenService: TokenService) { }
 
@@ -21,10 +19,12 @@ export class AuthGuardService {
     }).pipe(
       map(response => response.data?.login)
     ).subscribe(result => {
-      this.token = result;
+      if (result) {
+        this.tokenService.set(result);
+      } else {
+        console.error("Login failed: no token received.");
+      }
     });
-
-    this.tokenService.set(this.token);
   }
 
   public register(
@@ -40,9 +40,11 @@ export class AuthGuardService {
     }).pipe(
       map(response => response.data?.register)
     ).subscribe(result => {
-      this.token = result;
+      if (result) {
+        this.tokenService.set(result);
+      } else {
+        console.error("Register failed: no token received.");
+      }
     });
-
-    this.tokenService.set(this.token);
   }
 }

@@ -2,20 +2,17 @@ import { ApplicationConfig, provideZoneChangeDetection, inject } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient} from '@angular/common/http';
 import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import {ApolloLink, InMemoryCache} from '@apollo/client/core';
 import {environment} from "../environments/environment";
 import {setContext} from "@apollo/client/link/context";
-import {TokenService} from "./core/services/token.service";
 import {DOCUMENT} from "@angular/common";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideClientHydration(),
     provideRouter(routes),
     provideHttpClient(),
     provideApollo(() => {

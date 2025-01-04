@@ -11,3 +11,9 @@ export const GET_USER_BY_USERNAME = gql`
     }
   }
 `;
+
+export const IS_AUTHENTICATED = gql`
+  query IsAuthenticated {
+    isAuthenticated
+  }
+`

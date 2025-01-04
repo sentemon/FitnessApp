@@ -7,8 +7,8 @@ import {
   ValidationErrors,
   Validators
 } from "@angular/forms";
-import {RouterLink} from "@angular/router";
-import {AuthGuardService} from "../../services/auth-guard.service";
+import {Router, RouterLink} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-register',
@@ -23,7 +23,7 @@ import {AuthGuardService} from "../../services/auth-guard.service";
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private authGuardService: AuthGuardService, private formBuilder: FormBuilder) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
     this.registerForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -36,13 +36,19 @@ export class RegisterComponent {
 
   onRegister(): void {
     if (this.registerForm.valid) {
-      this.authGuardService.register(
+      this.authService.register(
         this.registerForm.value.firstName,
         this.registerForm.value.lastName,
         this.registerForm.value.username,
         this.registerForm.value.email,
         this.registerForm.value.password
-      );
+      ).subscribe(result => {
+        if (result) {
+          this.router.navigate(["/"]).then(r => console.log(r.valueOf()))
+        } else {
+          console.error("Something went wrong during registration.")
+        }
+      });
     } else {
       console.error('Form is invalid', this.registerForm.errors);
     }

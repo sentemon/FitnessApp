@@ -40,4 +40,6 @@ public class Query
 
         return result.Response;
     }
+    
+    public bool IsAuthenticated() => _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 }

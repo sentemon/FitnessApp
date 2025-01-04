@@ -13,12 +13,8 @@ export class TokenService {
     this.cookieService.get("token");
   }
 
-  set(token?: Token): void {
-    if (token) {
-      this.cookieService.set("token", token.accessToken, token.expiresIn);
-    } else {
-      console.error("Token cannot be empty or null.")
-    }
+  set(token: Token): void {
+    this.cookieService.set("token", token.accessToken, token.expiresIn);
   }
 
   delete(): void {

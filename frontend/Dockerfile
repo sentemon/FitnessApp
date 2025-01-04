@@ -1,25 +1,26 @@
 FROM node:20.17.0 AS build
 WORKDIR /app
 
-RUN npm install -g @angular/cli@18.2.12
-
 COPY package*.json ./
 RUN npm install
 
 COPY . .
+RUN npm run build --prod
 
-RUN npm run build -- --configuration production
+FROM nginx:1.21.3-alpine
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
 
-FROM node:20.17.0
-WORKDIR /app
-
-RUN npm install -g @angular/cli@18.2.12
-
-COPY --from=build /app/dist /app/dist
-COPY package*.json ./
-
-RUN npm install --production
-
-EXPOSE 4200
-# Todo: change the way to run
-CMD npx http-server ./dist/frontend --port 4200 --host 0.0.0.0
+RUN echo 'server {\
+    listen       80;\
+    listen  [::]:80;\
+    server_name  localhost;\
+    location / {\
+        root   /usr/share/nginx/html/browser;\
+        try_files $uri $uri/ /index.html;\
+        index  index.html index.htm;\
+    }\
+    error_page   500 502 503 504  /50x.html;\
+    location = /50x.html {\
+        root   /usr/share/nginx/html/browser;\
+    }\
+}' > /etc/nginx/conf.d/default.conf

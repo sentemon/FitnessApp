@@ -1,4 +1,4 @@
-import {Token} from "../models/token.model";
+import {Token} from "../../../core/models/token.model";
 
 export interface TokenResponse {
   login: Token

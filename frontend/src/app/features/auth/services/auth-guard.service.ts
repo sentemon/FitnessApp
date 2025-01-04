@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Apollo} from "apollo-angular";
 import {map, Observable} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
-import {Token} from "../models/token.model";
+import {Token} from "../../../core/models/token.model";
 import {TokenResponse} from "../responses/token.response";
 
 @Injectable({

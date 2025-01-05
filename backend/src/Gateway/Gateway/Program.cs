@@ -37,4 +37,6 @@ app.UseCors(CorsConstants.CorsPolicy);
 
 app.MapReverseProxy();
 
+app.MapGet("/health" ,() => Results.Ok("Healthy"));
+
 app.Run();

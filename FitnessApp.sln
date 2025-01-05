@@ -77,6 +77,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.DTO", "backend\src\Shared\Shared.DTO\Shared.DTO.csproj", "{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "backend\src\Gateway", "{DC9B9F00-24BF-4AD3-B45A-38BFCFC309D7}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\Gateway\Dockerfile = backend\src\Gateway\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "backend\src\Gateway\Gateway\Gateway.csproj", "{830B4F05-7C89-4C0F-B27D-B1008B605E79}"
 EndProject

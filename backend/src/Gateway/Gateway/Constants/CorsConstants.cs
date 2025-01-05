@@ -1,4 +1,4 @@
-namespace Gateway.Api.Constants;
+namespace Gateway.Constants;
 
 public class CorsConstants
 {

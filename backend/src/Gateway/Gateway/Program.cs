@@ -1,9 +1,10 @@
-using Gateway.Api.Constants;
+using Gateway.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var allowedOrigins = builder.Configuration.GetSection(AppSettingsConstants.AllowedOrigins).Get<string[]>();
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
+var reverseProxyConfig = builder.Configuration.GetSection(AppSettingsConstants.ReverseProxy);
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 
@@ -21,13 +22,19 @@ builder.Services
         });
     });
 
-var app = builder.Build();
+builder.Services
+    .AddReverseProxy()
+    .LoadFromConfig(reverseProxyConfig);
 
-app.UseCors(CorsConstants.CorsPolicy);
+var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+app.UseCors(CorsConstants.CorsPolicy);
+
+app.MapReverseProxy();
 
 app.Run();

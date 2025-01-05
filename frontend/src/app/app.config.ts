@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {provideHttpClient, withFetch} from '@angular/common/http';
 import { provideApollo } from 'apollo-angular';
-import {ApolloClient, ApolloLink, InMemoryCache} from '@apollo/client/core';
+import { ApolloLink, InMemoryCache} from '@apollo/client/core';
 import {setContext} from "@apollo/client/link/context";
 import {environment} from "../environments/environment";
 import {HttpLink} from "apollo-angular/http";
@@ -38,7 +38,6 @@ export const appConfig: ApplicationConfig = {
       const link = ApolloLink.from([
         authLink,
         httpLink.create({ uri: environment.auth_service }),
-        httpLink.create({ uri: environment.post_service })
       ]);
 
       return {

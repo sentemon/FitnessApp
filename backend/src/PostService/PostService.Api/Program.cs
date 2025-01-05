@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PostService.Api.GraphQL.Mutations;
-using PostService.Api.GraphQL.Queries;
+using PostService.Api.GraphQL;
 using PostService.Application;
 using PostService.Domain.Constants;
-using PostService.Domain.Entities;
 using PostService.Infrastructure;
 using PostService.Persistence;
 
@@ -38,12 +36,8 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<PostQuery>()
-    .AddQueryType<CommentQuery>()
-    .AddQueryType<LikeQuery>()
-    .AddMutationType<PostMutation>()
-    .AddMutationType<CommentMutation>()
-    .AddMutationType<LikeMutation>()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
     .AddType(new UuidType())
     .AddType<UnsignedIntType>();
 

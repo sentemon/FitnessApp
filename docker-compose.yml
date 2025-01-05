@@ -22,7 +22,7 @@ services:
       context: ./backend/src
       dockerfile: AuthService/Dockerfile
     ports:
-      - "8082:8082"
+      - "8001:8001"
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
       Keycloak__Url: http://keycloak:8080
@@ -30,7 +30,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://auth-service:8082/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://auth-service:8001/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -43,14 +43,14 @@ services:
       context: ./backend/src
       dockerfile: PostService/Dockerfile
     ports:
-      - "8081:8081"
+      - "8002:8002"
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://post-service:8081/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://post-service:8002/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3

@@ -11,8 +11,31 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      post-service:
+      gateway:
         condition: service_healthy
+    networks: 
+      - microservices
+  
+  gateway:
+    container_name: gateway
+    build:
+      context: ./backend/src
+      dockerfile: Gateway/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      ReverseProxy__Clusters__auth-service__Destinations__destination1__Address: http://auth-service:8001
+      ReverseProxy__Clusters__post-service__Destinations__destination1__Address: http://post-service:8002
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabittmq:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://gateway:8000/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks: 
       - microservices
   
@@ -22,15 +45,16 @@ services:
       context: ./backend/src
       dockerfile: AuthService/Dockerfile
     ports:
-      - "8082:8082"
+      - "8001:8001"
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
       Keycloak__Url: http://keycloak:8080
+      RabbitMq__Host: rabbitmq
     depends_on:
-      postgres:
+      gateway:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://auth-service:8082/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://auth-service:8001/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -43,14 +67,15 @@ services:
       context: ./backend/src
       dockerfile: PostService/Dockerfile
     ports:
-      - "8081:8081"
+      - "8002:8002"
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
+      RabbitMq__Host: rabbitmq
     depends_on:
-      postgres:
+      gateway:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://post-service:8081/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://post-service:8002/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -100,6 +125,11 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - microservices
 

@@ -4,13 +4,16 @@ import {map, Observable} from "rxjs";
 import {GET_USER_BY_USERNAME} from "../requests/queries";
 import {User} from "../models/user.model";
 import {QueryResponses} from "../responses/query.responses";
+import {ApolloLink} from "@apollo/client/core";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo) {
+    // apollo.client.setLink(ApolloLink.from())
+  }
 
   getUserByUsername(username: string): Observable<User> {
     return this.apollo.query<QueryResponses>({

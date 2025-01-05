@@ -6,13 +6,20 @@ import {TokenService} from "../../../core/services/token.service";
 import {MutationResponse} from "../responses/mutation.response";
 import {QueryResponses} from "../responses/query.responses";
 import {IS_AUTHENTICATED} from "../requests/queries";
+import {environment} from "../../../../environments/environment";
+import {InMemoryCache} from "@apollo/client/core";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private apollo: Apollo, private tokenService: TokenService) { }
+  constructor(private apollo: Apollo, private tokenService: TokenService) {
+    // apollo.create({
+    //   uri: environment.auth_service,
+    //   cache: new InMemoryCache()
+    // });
+  }
 
   public login(username: string, password: string): Observable<boolean> {
     return this.apollo.mutate<MutationResponse>({
@@ -60,7 +67,7 @@ export class AuthService {
 
 
   public isAuthenticated(): Observable<boolean> {
-    return  this.apollo.query<QueryResponses>({
+    return this.apollo.query<QueryResponses>({
       query: IS_AUTHENTICATED
     }).pipe(
       map(response => response.data.isAuthenticated));

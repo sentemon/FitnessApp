@@ -26,5 +26,7 @@ public class UserUpdatedEventConsumer : IConsumer<UserUpdatedEvent>
             @event.Username,
             @event.ImageUrl
         );
+
+        await _dbContext.SaveChangesAsync();
     }
 }

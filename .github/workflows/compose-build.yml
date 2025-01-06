@@ -26,14 +26,14 @@ jobs:
           run: |
             echo "Checking health..."
             for i in {1..10}; do
-              curl --fail http://0.0.0.0:8000/auth/health && break || sleep 5
+              curl --fail http://0.0.0.0:8001/health && break || sleep 5
             done
-            curl --fail http://0.0.0.0:8000/auth/health || exit 1
+            curl --fail http://0.0.0.0:8001/health || exit 1
               
         - name: Health Check PostService
           run: |
             echo "Checking health..."
             for i in {1..10}; do
-              curl --fail http://0.0.0.0:8000/post/health && break || sleep 5
+              curl --fail http://0.0.0.0:8002/health && break || sleep 5
             done
-            curl --fail http://0.0.0.0:8000/post/health || exit 1
+            curl --fail http://0.0.0.0:8002/health || exit 1

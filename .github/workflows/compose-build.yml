@@ -22,21 +22,18 @@ jobs:
         - name: Start Docker Compose
           run: docker compose up -d
           
-#          ToDo
-#        - name: Health Check AuthService
-#          run: |
-#            echo "Checking health..."
-#            for i in {1..10}; do
-#              curl --fail http://localhost:8000/auth/health && break || sleep 5
-#              curl --fail http://gateway:8000/auth/health && break || sleep 5
-#            done
-#            curl --fail http://localhost:8000/auth/health || exit 1
-#              
-#        - name: Health Check PostService
-#          run: |
-#            echo "Checking health..."
-#            for i in {1..10}; do
-#              curl --fail http://localhost:8000/post/health && break || sleep 5
-#              curl --fail http://gateway:8000/post/health && break || sleep 5
-#            done
-#            curl --fail http://localhost:8000/post/health || exit 1
+        - name: Health Check AuthService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/auth/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/auth/health || exit 1
+
+        - name: Health Check PostService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/post/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/post/health || exit 1

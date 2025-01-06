@@ -15,7 +15,6 @@ public static class AppSettingsConstants
     public const string KeycloakClientSecret = "ClientSecret";
     public const string AdminUsername = "AdminUsername";
     public const string AdminPassword = "AdminPassword";
-    public const string PublicKey = "PublicKey";
 
     public const string RabbitMqHost = "RabbitMq:Host";
     public const string RabbitMqUsername = "RabbitMq:Username";

@@ -12,11 +12,9 @@ public static class AppSettingsConstants
     public const string KeycloakUrl = "Url";
     public const string KeycloakRealm = "Realm";
     public const string KeycloakClientId = "ClientId";
-    public const string KeycloakClientUuid = "ClientUuid";
     public const string KeycloakClientSecret = "ClientSecret";
     public const string AdminUsername = "AdminUsername";
     public const string AdminPassword = "AdminPassword";
-    public const string PublicKey = "PublicKey";
 
     public const string RabbitMqHost = "RabbitMq:Host";
     public const string RabbitMqUsername = "RabbitMq:Username";

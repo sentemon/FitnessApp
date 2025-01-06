@@ -24,13 +24,12 @@ public static class DependencyInjection
             keycloakSection[AppSettingsConstants.KeycloakUrl],
             keycloakSection[AppSettingsConstants.KeycloakRealm],
             keycloakSection[AppSettingsConstants.KeycloakClientId],
-            keycloakSection[AppSettingsConstants.KeycloakClientUuid],
             keycloakSection[AppSettingsConstants.KeycloakClientSecret],
             keycloakSection[AppSettingsConstants.AdminUsername],
             keycloakSection[AppSettingsConstants.AdminPassword]
         );
 
-        // var rsaSecurityKey = GetRsaSecurityKeyFromKeycloak(keycloakConfig.Url, keycloakConfig.Realm);
+        var rsaSecurityKey = GetRsaSecurityKeyFromKeycloak(keycloakConfig.Url, keycloakConfig.Realm);
 
         services.AddSingleton(keycloakConfig);
 
@@ -64,7 +63,7 @@ public static class DependencyInjection
                     ValidAudience = "account",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = false,
-                    // IssuerSigningKey = rsaSecurityKey
+                    IssuerSigningKey = rsaSecurityKey,
                     SignatureValidator = (token, parameters) =>
                     {
                         var jwt = new JsonWebToken(token);

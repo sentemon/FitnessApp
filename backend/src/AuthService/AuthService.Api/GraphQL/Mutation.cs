@@ -20,17 +20,6 @@ public class Mutation
         _httpContextAccessor = httpContextAccessor;
     }
 
-    
-    /* ToDo: When all the services are running in the docker that's it
-       System.Net.Http.HttpClient.KeycloakClient.LogicalHandler[100]
-       2025-01-05 22:30:39       Start processing HTTP request POST http://keycloak:8080/realms/fitness-app-realm/protocol/openid-connect/token
-       2025-01-05 22:30:39 info: System.Net.Http.HttpClient.KeycloakClient.ClientHandler[100]
-       2025-01-05 22:30:39       Sending HTTP request POST http://keycloak:8080/realms/fitness-app-realm/protocol/openid-connect/token
-       2025-01-05 22:30:39 info: System.Net.Http.HttpClient.KeycloakClient.ClientHandler[101]
-       2025-01-05 22:30:39       Received HTTP response headers after 91.8503ms - 404
-       2025-01-05 22:30:39 info: System.Net.Http.HttpClient.KeycloakClient.LogicalHandler[101]
-       2025-01-05 22:30:39       End processing HTTP request after 100.8284ms - 404
-     */
     public async Task<KeycloakTokenResponse> Register(RegisterDto input, [Service] RegisterCommandHandler registerCommandHandler)
     {
         var command = new RegisterCommand(input);

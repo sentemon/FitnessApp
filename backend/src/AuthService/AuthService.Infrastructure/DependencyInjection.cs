@@ -29,8 +29,6 @@ public static class DependencyInjection
             keycloakSection[AppSettingsConstants.AdminPassword]
         );
 
-        var rsaSecurityKey = GetRsaSecurityKeyFromKeycloak(keycloakConfig.Url, keycloakConfig.Realm);
-
         services.AddSingleton(keycloakConfig);
 
         services.AddHttpClient("KeycloakClient", client =>
@@ -63,7 +61,6 @@ public static class DependencyInjection
                     ValidAudience = "account",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = false,
-                    IssuerSigningKey = rsaSecurityKey,
                     SignatureValidator = (token, parameters) =>
                     {
                         var jwt = new JsonWebToken(token);
@@ -79,47 +76,5 @@ public static class DependencyInjection
         services.AddAuthorization();
         
         return services;
-    }
-    
-    private static RsaSecurityKey GetRsaSecurityKeyFromKeycloak(string keycloakUrl, string realm)
-    {
-        using var httpClient = new HttpClient();
-        var certsUrl = $"{keycloakUrl}/realms/{realm}/protocol/openid-connect/certs";
-        var response = httpClient.GetStringAsync(certsUrl).Result;
-
-        var jwks = JsonDocument.Parse(response).RootElement;
-        var key = jwks.GetProperty("keys")[0];
-        
-        var modulusBase64 = key.GetProperty("n").GetString()?.Trim();
-        var exponentBase64 = key.GetProperty("e").GetString()?.Trim();
-        
-        if (string.IsNullOrEmpty(modulusBase64) || string.IsNullOrEmpty(exponentBase64))
-        {
-            throw new FormatException("Invalid modulus or exponent in the public key");
-        }
-
-        try
-        {
-            modulusBase64 = ConvertUrlBase64ToStandardBase64(modulusBase64);
-            exponentBase64 = ConvertUrlBase64ToStandardBase64(exponentBase64);
-
-            var modulus = Convert.FromBase64String(modulusBase64);
-            var exponent = Convert.FromBase64String(exponentBase64);
-
-            return new RsaSecurityKey(new RSAParameters
-            {
-                Modulus = modulus,
-                Exponent = exponent
-            });
-        }
-        catch (FormatException ex)
-        {
-            throw new FormatException("Base64 decoding failed for modulus or exponent", ex);
-        }
-    }
-
-    private static string ConvertUrlBase64ToStandardBase64(string urlBase64)
-    {
-        return urlBase64.Replace('-', '+').Replace('_', '/') + new string('=', (4 - urlBase64.Length % 4) % 4);
     }
 }

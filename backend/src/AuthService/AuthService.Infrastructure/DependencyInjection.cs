@@ -7,6 +7,7 @@ using AuthService.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Infrastructure;
@@ -29,7 +30,7 @@ public static class DependencyInjection
             keycloakSection[AppSettingsConstants.AdminPassword]
         );
 
-        var rsaSecurityKey = GetRsaSecurityKeyFromKeycloak(keycloakConfig.Url, keycloakConfig.Realm);
+        // var rsaSecurityKey = GetRsaSecurityKeyFromKeycloak(keycloakConfig.Url, keycloakConfig.Realm);
 
         services.AddSingleton(keycloakConfig);
 
@@ -51,19 +52,30 @@ public static class DependencyInjection
             {
                 options.Authority = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}";
                 options.Audience = "account";
-
+                options.RequireHttpsMetadata = false;
+                options.MetadataAddress = $"{keycloakConfig.Url}/realms/fitness-app-realm/.well-known/openid-configuration";
+                options.IncludeErrorDetails = true;
+                
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = $"{keycloakConfig.Url}/realms/{keycloakConfig.Realm}",
+                    ValidIssuer = $"http://localhost:8080/realms/{keycloakConfig.Realm}",
                     ValidateAudience = true,
                     ValidAudience = "account",
                     ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = rsaSecurityKey
-                };
+                    ValidateIssuerSigningKey = false,
+                    // IssuerSigningKey = rsaSecurityKey
+                    SignatureValidator = (token, parameters) =>
+                    {
+                        var jwt = new JsonWebToken(token);
+                        if (parameters.ValidateIssuer && parameters.ValidIssuer != jwt.Issuer)
+                        {
+                            return null;
+                        }
 
-                options.RequireHttpsMetadata = false;
+                        return jwt;
+                    }
+                };
             });
         services.AddAuthorization();
         

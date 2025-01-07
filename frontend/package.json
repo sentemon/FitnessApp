@@ -21,7 +21,6 @@
     "@apollo/client": "^3.11.10",
     "apollo-angular": "^8.0.0",
     "graphql": "^16.9.0",
-    "ngx-cookie-service": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

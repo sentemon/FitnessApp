@@ -32,10 +32,10 @@ public class Mutation
         
         _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
         {
-            HttpOnly = true,
-            Secure = true,
+            Path = "/",
+            HttpOnly = false,
+            Secure = false,
             SameSite = SameSiteMode.Strict,
-            Expires = DateTimeOffset.FromUnixTimeSeconds(result.Response.ExpiresIn)
         });
 
         return result.Response;
@@ -53,10 +53,10 @@ public class Mutation
         
         _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTimeOffset.FromUnixTimeSeconds(result.Response.ExpiresIn)
+            Path = "/",
+            HttpOnly = false,
+            Secure = false,
+            SameSite = SameSiteMode.Strict
         });
         
         return result.Response;

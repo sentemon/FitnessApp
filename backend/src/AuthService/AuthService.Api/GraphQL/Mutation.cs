@@ -29,6 +29,14 @@ public class Mutation
         {
             throw new GraphQLException(new Error(result.Error.Message));
         }
+        
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
+        {
+            Path = "/",
+            HttpOnly = false,
+            Secure = false,
+            SameSite = SameSiteMode.Strict,
+        });
 
         return result.Response;
     }
@@ -43,6 +51,14 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
         
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
+        {
+            Path = "/",
+            HttpOnly = false,
+            Secure = false,
+            SameSite = SameSiteMode.Strict
+        });
+        
         return result.Response;
     }
 
@@ -55,6 +71,8 @@ public class Mutation
         {
             throw new GraphQLException(new Error(result.Error.Message));
         }
+        
+        _httpContextAccessor.HttpContext?.Response.Cookies.Delete("token");
 
         return result.Response;
     }

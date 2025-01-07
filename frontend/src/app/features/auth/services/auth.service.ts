@@ -1,24 +1,27 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import {map, Observable} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
-import {TokenService} from "../../../core/services/token.service";
 import {MutationResponse} from "../responses/mutation.response";
 import {QueryResponses} from "../responses/query.responses";
 import {IS_AUTHENTICATED} from "../requests/queries";
-import {environment} from "../../../../environments/environment";
-import {InMemoryCache} from "@apollo/client/core";
+import {CookieService} from "../../../core/services/cookie.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuth());
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private apollo: Apollo, private tokenService: TokenService) {
-    // apollo.create({
-    //   uri: environment.auth_service,
-    //   cache: new InMemoryCache()
-    // });
+  constructor(private apollo: Apollo) { }
+
+  private checkAuth(): boolean {
+    let cookieService = inject(CookieService);
+    
+    const token = cookieService.get("token");
+
+    return token != "There is no cookie with key token.";
   }
 
   public login(username: string, password: string): Observable<boolean> {
@@ -30,9 +33,10 @@ export class AuthService {
         const token = response.data?.login;
 
         if (token) {
-          this.tokenService.set(token);
+          this.isAuthenticatedSubject.next(true);
           return true;
         } else {
+          this.isAuthenticatedSubject.next(false);
           console.error("Login failed: no token received.");
           return false;
         }
@@ -55,7 +59,6 @@ export class AuthService {
         const token = response.data?.register;
 
         if (token) {
-          this.tokenService.set(token);
           return true;
         } else {
           console.error("Registration failed: no token received.");
@@ -67,9 +70,10 @@ export class AuthService {
 
 
   public isAuthenticated(): Observable<boolean> {
-    return this.apollo.query<QueryResponses>({
-      query: IS_AUTHENTICATED
-    }).pipe(
-      map(response => response.data.isAuthenticated));
+    // return this.apollo.query<QueryResponses>({
+    //   query: IS_AUTHENTICATED
+    // }).pipe(
+    //   map(response => response.data.isAuthenticated));
+    return this.isAuthenticated$;
   }
 }

@@ -29,6 +29,14 @@ jobs:
               curl --fail http://0.0.0.0:8000/auth/health && break || sleep 5
             done
             curl --fail http://0.0.0.0:8000/auth/health || exit 1
+            
+        - name: Health Check FileService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/file/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/file/health || exit 1
 
         - name: Health Check PostService
           run: |

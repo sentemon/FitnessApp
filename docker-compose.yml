@@ -115,6 +115,18 @@ services:
     restart: always
     networks:
       - microservices
+    
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "10000:10000"
+    command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
+    restart: always
+    environment:
+      - AZURITE_ACCOUNTS=sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+    networks:
+      - microservices
   
   rabittmq:
     image: rabbitmq:4-management

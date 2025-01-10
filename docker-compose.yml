@@ -25,6 +25,7 @@ services:
       - "8000:8000"
     environment:
       ReverseProxy__Clusters__auth-service__Destinations__destination1__Address: http://auth-service:8001
+      ReverseProxy__Clusters__file-service__Destinations__destination1__Address: http://file-service:8004
       ReverseProxy__Clusters__post-service__Destinations__destination1__Address: http://post-service:8002
     depends_on:
       postgres:
@@ -55,6 +56,27 @@ services:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://auth-service:8001/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+  
+  file-service:
+    container_name: file-service
+    build:
+      context: ./backend/src
+      dockerfile: FileService/Dockerfile
+    ports:
+      - "8004:8004"
+    environment:
+      ConnectionStrings__DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
+      ConnectionStrings__AzureStorageConnectionString: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://azurite:10000/sentemon
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://file-service:8004/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -113,6 +135,18 @@ services:
       - "8080:8080"
     command: [ "start-dev" ]
     restart: always
+    networks:
+      - microservices
+    
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "10000:10000"
+    command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
+    restart: always
+    environment:
+      - AZURITE_ACCOUNTS=sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
     networks:
       - microservices
   

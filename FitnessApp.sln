@@ -65,6 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\compose-build.yml = .github\workflows\compose-build.yml
 		.github\workflows\frontend.yml = .github\workflows\frontend.yml
 		.github\workflows\post.yml = .github\workflows\post.yml
+		.github\workflows\file.yml = .github\workflows\file.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{499BA3B4-A81F-4079-B256-CC04927BB06D}"
@@ -82,6 +83,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "backend\src\Gate
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "backend\src\Gateway\Gateway\Gateway.csproj", "{830B4F05-7C89-4C0F-B27D-B1008B605E79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileService", "FileService", "{43F219C3-D6F8-4BA4-890D-4411CCEA3034}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\FileService\Dockerfile = backend\src\FileService\Dockerfile
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Api", "backend\src\FileService\FileService.Api\FileService.Api.csproj", "{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Domain", "backend\src\FileService\FileService.Domain\FileService.Domain.csproj", "{757BB459-C6FF-4286-BF77-BBA57C201731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Application", "backend\src\FileService\FileService.Application\FileService.Application.csproj", "{222CCDC4-3D79-4954-B7E0-736D474270D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Persistence", "backend\src\FileService\FileService.Persistence\FileService.Persistence.csproj", "{2F748171-33D6-484F-924C-21539C87483E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Infrastructure", "backend\src\FileService\FileService.Infrastructure\FileService.Infrastructure.csproj", "{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +169,26 @@ Global
 		{830B4F05-7C89-4C0F-B27D-B1008B605E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{830B4F05-7C89-4C0F-B27D-B1008B605E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{830B4F05-7C89-4C0F-B27D-B1008B605E79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{757BB459-C6FF-4286-BF77-BBA57C201731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{757BB459-C6FF-4286-BF77-BBA57C201731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{757BB459-C6FF-4286-BF77-BBA57C201731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{757BB459-C6FF-4286-BF77-BBA57C201731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222CCDC4-3D79-4954-B7E0-736D474270D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222CCDC4-3D79-4954-B7E0-736D474270D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222CCDC4-3D79-4954-B7E0-736D474270D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222CCDC4-3D79-4954-B7E0-736D474270D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F748171-33D6-484F-924C-21539C87483E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F748171-33D6-484F-924C-21539C87483E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F748171-33D6-484F-924C-21539C87483E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F748171-33D6-484F-924C-21539C87483E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E44C019-ED30-4671-A878-D2F7B6071024} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
@@ -180,5 +216,11 @@ Global
 		{334DF17C-BD69-47B9-B4D0-ACB5AD6223CF} = {112E9C63-BF62-49C1-AD19-03855535225B}
 		{DC9B9F00-24BF-4AD3-B45A-38BFCFC309D7} = {B7E4E4CF-E7A9-4DAC-807E-DFF17553BAE8}
 		{830B4F05-7C89-4C0F-B27D-B1008B605E79} = {DC9B9F00-24BF-4AD3-B45A-38BFCFC309D7}
+		{43F219C3-D6F8-4BA4-890D-4411CCEA3034} = {B7E4E4CF-E7A9-4DAC-807E-DFF17553BAE8}
+		{A42D3D0A-750D-4E69-ACD5-751D64BC50E9} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
+		{757BB459-C6FF-4286-BF77-BBA57C201731} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
+		{222CCDC4-3D79-4954-B7E0-736D474270D6} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
+		{2F748171-33D6-484F-924C-21539C87483E} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
+		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
 	EndGlobalSection
 EndGlobal

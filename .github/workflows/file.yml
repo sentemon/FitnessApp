@@ -1,34 +1,34 @@
-name: Auth Service CI/CD Pipeline
+name: File Service CI/CD Pipeline
 
 on:
-  push: 
+  push:
     paths:
       - backend/src/**
-      - .github/workflows/auth.yml
+      - .github/workflows/file.yml
     branches:
       - master
       - develop
     tags:
       - 'v*'
-  pull_request: 
+  pull_request:
     types: [opened, synchronize, reopened]
 
-jobs: 
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Run reusable Build and Test action
         uses: ./.github/actions/build-and-test
         with:
-          backendCsprojPath: ./backend/src/AuthService/AuthService.Api/AuthService.Api.csproj
-          unitTestsProjectPath: ./backend/tests/AuthService/AuthService.Domain.Tests/AuthService.Domain.Tests.csproj
+          backendCsprojPath: ./backend/src/FileService/FileService.Api/FileService.Api.csproj
+#          unitTestsProjectPath: ./backend/tests/FileService/FileService.Domain.Tests/FileService.Domain.Tests.csproj
           buildConfiguration: Release
-          serviceName: AuthService
-          
+          serviceName: FileService
+  
   docker:
     needs: build-and-test
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
@@ -47,12 +47,12 @@ jobs:
             IMAGE_VERSION=${GITHUB_REF#refs/tags/}
           fi
           docker buildx build \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:${IMAGE_VERSION} \
-            -f ./backend/src/AuthService/Dockerfile \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/file-service:${IMAGE_VERSION} \
+            -f ./backend/src/FileService/Dockerfile \
             ./backend/src
 
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           IMAGE_VERSION=${GITHUB_REF#refs/tags/}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:${IMAGE_VERSION}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/file-service:${IMAGE_VERSION}

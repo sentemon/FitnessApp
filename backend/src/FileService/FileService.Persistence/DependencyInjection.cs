@@ -1,19 +1,23 @@
+using FileService.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FileService.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, string? connectionString)
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        if (string.IsNullOrEmpty(connectionString))
+        var databaseConnectionString = configuration.GetConnectionString(AppSettingsConstants.DatabaseConnectionString);
+        
+        if (string.IsNullOrEmpty(databaseConnectionString))
         {
-            throw new ArgumentNullException(nameof(connectionString), "Connection String cannot be empty.");
+            throw new ArgumentNullException(nameof(databaseConnectionString), "Connection String cannot be empty.");
         }
         
         services.AddDbContext<FileDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(databaseConnectionString));
         return services;
     }
 }

@@ -1,15 +1,12 @@
 using FileService.Application;
-using FileService.Domain.Constants;
 using FileService.Infrastructure;
 using FileService.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
-
 builder.Services
-    .AddPersistenceServices(connectionString)
+    .AddPersistenceServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices();
 

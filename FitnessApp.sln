@@ -84,6 +84,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "backend\src\Gateway\Gateway\Gateway.csproj", "{830B4F05-7C89-4C0F-B27D-B1008B605E79}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileService", "FileService", "{43F219C3-D6F8-4BA4-890D-4411CCEA3034}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\FileService\Dockerfile = backend\src\FileService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Api", "backend\src\FileService\FileService.Api\FileService.Api.csproj", "{A42D3D0A-750D-4E69-ACD5-751D64BC50E9}"
 EndProject

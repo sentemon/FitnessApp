@@ -61,6 +61,27 @@ services:
     networks:
       - microservices
   
+  file-service:
+    container_name: file-service
+    build:
+      context: ./backend/src
+      dockerfile: FileService/Dockerfile
+    ports:
+      - "8004:8004"
+    environment:
+      ConnectionStrings__DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
+      ConnectionStrings__AzureStorageConnectionString: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://azurite:10000/sentemon;"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://file-service:8004/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+  
   post-service:
     container_name: post-service
     build:
@@ -125,7 +146,6 @@ services:
     restart: always
     environment:
       - AZURITE_ACCOUNTS=sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
-      - AzureStorageConnectionString=AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://azurite:10000/sentemon;"
     networks:
       - microservices
   

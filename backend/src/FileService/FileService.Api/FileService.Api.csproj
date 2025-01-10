@@ -11,4 +11,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FileService.Application\FileService.Application.csproj" />
+      <ProjectReference Include="..\FileService.Infrastructure\FileService.Infrastructure.csproj" />
+      <ProjectReference Include="..\FileService.Persistence\FileService.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -9,7 +9,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton(new BlobServiceClient(configuration.GetConnectionString(AppSettingsConstants.AzureStorageConnectionString)));
+        var azureStorageConnectionString = configuration.GetConnectionString(AppSettingsConstants.AzureStorageConnectionString);
+        
+        services.AddSingleton(new BlobServiceClient(azureStorageConnectionString));
         
         return services;
     }

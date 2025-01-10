@@ -10,14 +10,7 @@ public class FileConfiguration : IEntityTypeConfiguration<File>
     {
         builder.HasKey(f => f.Id);
 
-        builder.Property(f => f.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Property(f => f.Name)
-            .HasMaxLength(512)
-            .IsRequired();
-
-        builder.Property(f => f.BlobName)
+        builder.Property(f => f.BlobContainerName)
             .HasMaxLength(32)
             .IsRequired();
 

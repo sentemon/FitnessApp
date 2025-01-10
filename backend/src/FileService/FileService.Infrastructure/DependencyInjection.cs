@@ -1,5 +1,7 @@
 using Azure.Storage.Blobs;
 using FileService.Domain.Constants;
+using FileService.Infrastructure.Interfaces;
+using FileService.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,7 @@ public static class DependencyInjection
         var azureStorageConnectionString = configuration.GetConnectionString(AppSettingsConstants.AzureStorageConnectionString);
         
         services.AddSingleton(new BlobServiceClient(azureStorageConnectionString));
+        services.AddSingleton<IAzureBlobStorageService, AzureBlobStorageService>();
         
         return services;
     }

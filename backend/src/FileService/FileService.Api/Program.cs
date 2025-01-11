@@ -13,7 +13,7 @@ builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hos
 builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
-    .AddApplicationServices();
+    .AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 

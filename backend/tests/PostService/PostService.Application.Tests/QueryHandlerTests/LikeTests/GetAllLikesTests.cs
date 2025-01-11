@@ -15,20 +15,7 @@ public class GetAllLikesTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldReturnLikes_ForSpecifiedPost()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-
-        var postId = post.Response.Id;
+        var postId = Fixture.ExistingPost.Id;
         
         var commandLike1 = new AddLikeCommand(postId, Guid.NewGuid().ToString());
         var commandLike2 = new AddLikeCommand(postId, Guid.NewGuid().ToString());
@@ -69,20 +56,7 @@ public class GetAllLikesTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldLimitResults_ToSpecifiedFirstParameter()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-
-        var postId = post.Response.Id;
+        var postId = Fixture.ExistingPost.Id;
 
         var likes = new List<string> { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
         foreach (var likeUserId in likes)

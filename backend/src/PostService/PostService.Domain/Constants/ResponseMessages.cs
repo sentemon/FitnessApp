@@ -5,6 +5,8 @@ public static class ResponseMessages
     public const string YouSuccessfullyDeletedPost = "You successfully deleted post.";
     public const string YouSuccessfullyDeletedComment = "You successfully deleted comment.";
     public const string YouSuccessfullyDeletedLike = "You successfully deleted like.";
+
+    public const string UserIdIsNull = "User Id is null.";
     
     public const string PostNotFound = "Post not found.";
     public const string CommentNotFound = "Comment not found.";

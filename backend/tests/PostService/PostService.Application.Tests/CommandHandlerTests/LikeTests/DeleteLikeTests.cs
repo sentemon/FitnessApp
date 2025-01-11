@@ -16,20 +16,10 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldDeleteLikeFromPost_WhenDataIsValid()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
+        var postId = Fixture.ExistingPost.Id;
         
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-        
-        var commandLike = new AddLikeCommand(post.Response.Id, userId);
+        var commandLike = new AddLikeCommand(postId, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();
@@ -74,20 +64,12 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldFail_WhenUserHasNotLikedPost()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
         
-        var commandLike = new AddLikeCommand(post.Response.Id, userId);
+        var postId = Fixture.ExistingPost.Id;
+        
+        var commandLike = new AddLikeCommand(postId, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();

@@ -39,6 +39,7 @@ public class TestFixture
         .Build();
 
     public User ExistingUser { get; }
+    public Post ExistingPost { get; }
 
     public TestFixture()
     {
@@ -66,6 +67,7 @@ public class TestFixture
         GetAllLikesQueryHandler = serviceProvider.GetRequiredService<GetAllLikesQueryHandler>();
         
         ExistingUser = CreateExistingUser();
+        ExistingPost = CreateExistingPost();
     }
     
     private void ApplyMigrations()
@@ -100,5 +102,23 @@ public class TestFixture
         PostDbContextFixture.SaveChanges();
 
         return user;
+    }
+
+    private Post CreateExistingPost()
+    {
+        var contentUrl = "https://example.com";
+        
+        var post = Post.CreateImagePost(
+            ExistingUser.Id,
+            "Some Title",
+            "Some Description"
+        );
+
+        post.SetContentUrl(contentUrl);
+
+        PostDbContextFixture.Posts.Add(post);
+        PostDbContextFixture.SaveChanges();
+
+        return post;
     }
 }

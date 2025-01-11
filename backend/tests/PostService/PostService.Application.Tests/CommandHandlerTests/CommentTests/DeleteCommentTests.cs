@@ -16,27 +16,19 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldDeleteComment_WhenUserHasPermission()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
+        var postId = Fixture.ExistingPost.Id;
+        var postCommentCount = Fixture.ExistingPost.CommentCount;
 
         var content = "This is a comment";
         
-        var createComment = new CreateCommentDto(post.Response.Id, content);
+        var createComment = new CreateCommentDto(postId, content);
         
         var commandComment = new AddCommentCommand(createComment, userId);
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
         
-        var command = new DeleteCommentCommand(comment.Response.Id, post.Response.Id, userId);
+        var command = new DeleteCommentCommand(comment.Response.Id, postId, userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -51,29 +43,20 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         deletedComment.Should().BeNull();
 
         var updatedPost = await Fixture.PostDbContextFixture.Posts
-            .FirstAsync(p => p.Id == post.Response.Id);
-        updatedPost.CommentCount.Should().Be(0);
+            .FirstAsync(p => p.Id == postId);
+        updatedPost.CommentCount.Should().Be(postCommentCount);
     }
 
     [Fact]
     public async Task HandleAsync_ShouldFail_WhenCommentNotFound()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
+        var postId = Fixture.ExistingPost.Id;
 
         var id = Guid.Empty;
         
-        var deleteCommand = new DeleteCommentCommand(id, post.Response.Id, userId);
+        var deleteCommand = new DeleteCommentCommand(id, postId, userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(deleteCommand);
@@ -82,35 +65,26 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Comment not found.");
+        result.Error.Message.Should().Be("Comment not found.");
     }
 
     [Fact]
     public async Task HandleAsync_ShouldFail_WhenUserDoesNotHavePermissionToDeleteComment()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
+        var postId = Fixture.ExistingPost.Id;
 
         var content = "This is a comment";
         
-        var createComment = new CreateCommentDto(post.Response.Id, content);
+        var createComment = new CreateCommentDto(postId, content);
         
         var commandComment = new AddCommentCommand(createComment, userId);
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
 
-        var command = new DeleteCommentCommand(comment.Response.Id, post.Response.Id, anotherUserId);
+        var command = new DeleteCommentCommand(comment.Response.Id, postId, anotherUserId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -119,7 +93,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to delete this comment.");
+        result.Error.Message.Should().Be("You do not have permission to delete this comment.");
     }
 
     [Fact]
@@ -139,6 +113,6 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
 }

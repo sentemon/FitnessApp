@@ -15,20 +15,8 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldReturnComments_ForSpecifiedPost()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-
-        var postId = post.Response.Id;
+        var postId = Fixture.ExistingPost.Id;
 
         var commandComment1 = new AddCommentCommand(new CreateCommentDto(postId, "First comment"), userId);
         var commandComment2 = new AddCommentCommand(new CreateCommentDto(postId, "Second comment"), userId);
@@ -69,20 +57,8 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldLimitResults_ToSpecifiedFirstParameter()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-
-        var postId = post.Response.Id;
+        var postId = Fixture.ExistingPost.Id;
 
 
         var comments = new List<CreateCommentDto>

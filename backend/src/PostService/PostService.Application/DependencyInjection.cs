@@ -42,6 +42,7 @@ public static class DependencyInjection
         {
             busConfigurator.AddConsumer<UserCreatedEventConsumer>();
             busConfigurator.AddConsumer<UserUpdatedEventConsumer>();
+            busConfigurator.AddConsumer<PostUploadedEventConsumer>();
             
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {

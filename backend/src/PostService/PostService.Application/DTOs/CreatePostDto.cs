@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using PostService.Domain.Enums;
 
 namespace PostService.Application.DTOs;
@@ -5,6 +6,7 @@ namespace PostService.Application.DTOs;
 public record CreatePostDto(
     string Title,
     string Description,
-    string ContentUrl,
+    IFormFile File,
+    string FileContentType,
     ContentType ContentType
 );

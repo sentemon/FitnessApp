@@ -1,3 +1,4 @@
+using FileService.Application.Consumers;
 using FileService.Domain.Constants;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,8 @@ public static class DependencyInjection
         
         services.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.AddConsumer<PostUploadEventConsumer>();
+            
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
                 configurator.Host(rabbitMqHost, host =>

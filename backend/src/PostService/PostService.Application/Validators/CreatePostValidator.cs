@@ -23,8 +23,8 @@ public class CreatePostValidator : AbstractValidator<CreatePostDto>
 
         When(x => x.ContentType is ContentType.Image or ContentType.Video, () =>
         {
-            RuleFor(x => x.ContentUrl)
-                .NotEmpty().WithMessage("ContentUrl is required for video or image content.");
+            RuleFor(x => x.File)
+                .NotEmpty().WithMessage("File is required for video or image content.");
         });
     }
 }

@@ -2,10 +2,11 @@ using MassTransit;
 using PostService.Domain.Entities;
 using PostService.Persistence;
 using Shared.DTO;
+using Shared.DTO.Messages;
 
 namespace PostService.Application.Consumers;
 
-public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
+public class UserCreatedEventConsumer : IConsumer<UserCreatedEventMessage>
 {
     private readonly PostDbContext _dbContext;
 
@@ -14,7 +15,7 @@ public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
         _dbContext = dbContext;
     }
 
-    public async Task Consume(ConsumeContext<UserCreatedEvent> context)
+    public async Task Consume(ConsumeContext<UserCreatedEventMessage> context)
     {
         var @event = context.Message;
 

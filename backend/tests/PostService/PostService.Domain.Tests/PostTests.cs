@@ -35,16 +35,14 @@ public class PostTests
         var userId = Guid.NewGuid().ToString();
         var title = "Sample Title";
         var description = "Sample Description";
-        var contentUrl = "https://example.com/image.jpg";
 
         // Act
-        var post = Post.CreateImagePost(userId, contentUrl, title, description);
+        var post = Post.CreateImagePost(userId, title, description);
 
         // Assert
         post.UserId.Should().Be(userId);
         post.Title.Should().Be(title);
         post.Description.Should().Be(description);
-        post.ContentUrl.Should().Be(contentUrl);
         post.ContentType.Should().Be(ContentType.Image);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
@@ -57,16 +55,14 @@ public class PostTests
         var userId = Guid.NewGuid().ToString();
         var title = "Sample Title";
         var description = "Sample Description";
-        var contentUrl = "https://example.com/video.mp4";
 
         // Act
-        var post = Post.CreateVideoPost(userId, contentUrl, title, description);
+        var post = Post.CreateVideoPost(userId, title, description);
 
         // Assert
         post.UserId.Should().Be(userId);
         post.Title.Should().Be(title);
         post.Description.Should().Be(description);
-        post.ContentUrl.Should().Be(contentUrl);
         post.ContentType.Should().Be(ContentType.Video);
         post.LikeCount.Should().Be(0);
         post.CommentCount.Should().Be(0);
@@ -223,10 +219,12 @@ public class PostTests
         var userId = Guid.NewGuid().ToString();
         var title = "Title";
         var description = "Description";
-        var contentUrl = "";
+        var contentUrl = string.Empty;
+        
+        var post = Post.CreateImagePost(userId, title, description);
         
         // Act
-        var act = () => Post.CreateImagePost(userId, contentUrl, title, description);
+        var act = () => post.SetContentUrl(contentUrl);
 
         // Assert
         act.Should().ThrowExactly<ArgumentException>()
@@ -241,10 +239,12 @@ public class PostTests
         var userId = Guid.NewGuid().ToString();
         var title = "Title";
         var description = "Description";
-        var contentUrl = "";
+        var contentUrl = string.Empty;
+        
+        var post = Post.CreateVideoPost(userId, title, description);
         
         // Act
-        var act = () => Post.CreateVideoPost(userId, contentUrl, title, description);
+        var act = () => post.SetContentUrl(contentUrl);
 
         // Assert
         act.Should().ThrowExactly<ArgumentException>()

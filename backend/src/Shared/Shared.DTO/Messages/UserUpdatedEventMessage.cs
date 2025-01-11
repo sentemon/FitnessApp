@@ -1,6 +1,6 @@
-namespace Shared.DTO;
+namespace Shared.DTO.Messages;
 
-public record UserUpdatedEvent( 
+public record UserUpdatedEventMessage( 
     string Id,
     string FirstName,
     string LastName,

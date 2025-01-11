@@ -1,7 +1,7 @@
 namespace Shared.DTO.Messages;
 
 public record PostUploadEventMessage(
-    Stream? FileStream,
+    byte[] FileData,
     string? ContentType,
     Guid PostId,
     string UserId

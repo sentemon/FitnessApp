@@ -58,7 +58,7 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
 
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,
-            "http://localhost:8000/file/{id}" // ToDo
+            $"http://localhost:8004/files/{blobName}" // ToDo
         ));
 
         return Result<File>.Success(file);

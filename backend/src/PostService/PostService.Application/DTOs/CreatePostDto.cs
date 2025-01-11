@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using HotChocolate.Types;
 using PostService.Domain.Enums;
 
 namespace PostService.Application.DTOs;
@@ -6,7 +6,7 @@ namespace PostService.Application.DTOs;
 public record CreatePostDto(
     string Title,
     string Description,
-    IFormFile? File,
+    IFile? File,
     string? FileContentType,
     ContentType ContentType
 );

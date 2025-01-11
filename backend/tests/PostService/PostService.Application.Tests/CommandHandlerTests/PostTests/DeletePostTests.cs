@@ -30,7 +30,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
@@ -87,7 +87,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
         
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();

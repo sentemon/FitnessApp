@@ -51,7 +51,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         await _context.SaveChangesAsync();
 
         await _publishEndpoint.Publish(new PostUploadEventMessage(
-            command.CreatePost.File?.OpenReadStream(),
+            ReadFully(command.CreatePost.File?.OpenReadStream()),
             command.CreatePost.FileContentType,
             post.Id,
             post.UserId
@@ -85,5 +85,14 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             
             _ => throw new InvalidOperationException("Unsupported content type.")
         };
+    }
+    
+    
+    private static byte[] ReadFully(Stream? input)
+    { 
+        using var ms = new MemoryStream();
+        input?.CopyTo(ms);
+        
+        return ms.ToArray();
     }
 }

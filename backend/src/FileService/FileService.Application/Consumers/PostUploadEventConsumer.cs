@@ -18,8 +18,10 @@ public class PostUploadEventConsumer : IConsumer<PostUploadEventMessage>
     {
         var @event = context.Message;
 
+        var fileStream = new MemoryStream(@event.FileData);
+
         var command = new UploadPostCommand(new UploadPostFileDto(
-                @event.FileStream,
+                fileStream,
                 @event.ContentType,
                 @event.PostId
             ),

@@ -21,5 +21,6 @@ public class PostUploadedEventConsumer : IConsumer<PostUploadedEventMessage>
         var post = await _dbContext.Posts.FirstAsync(p => p.Id == @event.PostId);
         
         post.SetContentUrl(@event.ContentUrl);
+        await _dbContext.SaveChangesAsync();
     }
 }

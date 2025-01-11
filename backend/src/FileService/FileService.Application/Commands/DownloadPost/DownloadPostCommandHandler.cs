@@ -17,7 +17,7 @@ public class DownloadPostCommandHandler : ICommandHandler<DownloadPostCommand, B
 
     public async Task<IResult<BlobInfo, Error>> HandleAsync(DownloadPostCommand command)
     {
-        var blobInfo = await _azureBlobStorageService.DownloadAsync(command.Id, BlobContainerNamesConstants.PostPhotos);
+        var blobInfo = await _azureBlobStorageService.DownloadAsync(command.BlobName, BlobContainerNamesConstants.PostPhotos);
 
         return Result<BlobInfo>.Success(blobInfo);
     }

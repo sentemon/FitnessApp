@@ -26,9 +26,9 @@ using (var scope = app.Services.CreateScope())
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
-app.MapGet("/files/{id:guid}", async (Guid id, DownloadPostCommandHandler downloadPostCommandHandler) =>
+app.MapGet("/files/{blobName}", async (string blobName, DownloadPostCommandHandler downloadPostCommandHandler) =>
 {
-    var command = new DownloadPostCommand(id);
+    var command = new DownloadPostCommand(blobName);
 
     var result = await downloadPostCommandHandler.HandleAsync(command);
 

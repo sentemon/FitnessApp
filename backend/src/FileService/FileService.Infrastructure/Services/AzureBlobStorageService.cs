@@ -14,10 +14,10 @@ public class AzureBlobStorageService : IAzureBlobStorageService
         _blobServiceClient = blobServiceClient;
     }
 
-    public async Task<BlobInfo> DownloadAsync(Guid id, string containerName)
+    public async Task<BlobInfo> DownloadAsync(string blobName, string containerName)
     {
         var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-        var blobClient = blobContainerClient.GetBlobClient(id.ToString());
+        var blobClient = blobContainerClient.GetBlobClient(blobName);
 
         var blobDownloadInfo = await blobClient.DownloadAsync();
 

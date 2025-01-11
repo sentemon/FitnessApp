@@ -29,7 +29,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -66,7 +66,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         
         var contentType = ContentType.Text;
         
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -141,7 +141,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
             ContentType = "text/plain"
         };
 
-        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), file.ContentType, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);

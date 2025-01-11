@@ -26,7 +26,17 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
     {
         if (command.UserId == null)
         {
-            return Result<File>.Failure(new Error("User Id is null"));
+            return Result<File>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+
+        if (command.UploadPostFileDto.FileStream == null)
+        {
+            return Result<File>.Failure(new Error(ResponseMessages.FileStreamIsNull));
+        }
+        
+        if (command.UploadPostFileDto.ContentType == null)
+        {
+            return Result<File>.Failure(new Error(ResponseMessages.ContentTypeNull));
         }
         
         var blobName = await _azureBlobStorageService.UploadAsync(

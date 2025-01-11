@@ -1,4 +1,5 @@
 using FileService.Application;
+using FileService.Application.Commands.DownloadPost;
 using FileService.Domain.Constants;
 using FileService.Infrastructure;
 using FileService.Persistence;
@@ -24,5 +25,19 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
+
+app.MapGet("/files/{id:guid}", async (Guid id, DownloadPostCommandHandler downloadPostCommandHandler) =>
+{
+    var command = new DownloadPostCommand(id);
+
+    var result = await downloadPostCommandHandler.HandleAsync(command);
+
+    if (!result.IsSuccess)
+    {
+        return Results.NotFound(result.Error.Message);
+    }
+
+    return Results.File(result.Response.Content, result.Response.ContentType);
+});
 
 app.Run();

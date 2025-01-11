@@ -51,7 +51,7 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         await _context.SaveChangesAsync();
 
         await _publishEndpoint.Publish(new PostUploadEventMessage(
-            command.CreatePost.File.OpenReadStream(),
+            command.CreatePost.File?.OpenReadStream(),
             command.CreatePost.FileContentType,
             post.Id,
             post.UserId

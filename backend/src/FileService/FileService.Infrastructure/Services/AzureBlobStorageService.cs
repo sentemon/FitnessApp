@@ -24,13 +24,13 @@ public class AzureBlobStorageService : IAzureBlobStorageService
         return new BlobInfo(blobDownloadInfo.Value.Content, blobDownloadInfo.Value.ContentType);
     }
 
-    public async Task<Guid> UploadAsync(string containerName, Stream stream, string contentType)
+    public async Task<string> UploadAsync(string containerName, Stream stream, string contentType)
     {
         var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
         await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
-        var blobName = Guid.NewGuid();
-        var blobClient = blobContainerClient.GetBlobClient(blobName.ToString());
+        var blobName = Guid.NewGuid().ToString();
+        var blobClient = blobContainerClient.GetBlobClient(blobName);
         
         await blobClient.UploadAsync(stream, new BlobHttpHeaders
         {

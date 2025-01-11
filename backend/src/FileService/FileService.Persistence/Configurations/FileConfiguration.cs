@@ -10,6 +10,12 @@ public class FileConfiguration : IEntityTypeConfiguration<File>
     {
         builder.HasKey(f => f.Id);
 
+        builder.Property(f => f.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(f => f.BlobName)
+            .IsRequired();
+
         builder.Property(f => f.BlobContainerName)
             .HasMaxLength(32)
             .IsRequired();
@@ -20,8 +26,14 @@ public class FileConfiguration : IEntityTypeConfiguration<File>
         builder.Property(f => f.OwnerId)
             .IsRequired();
 
+        builder.Property(f => f.ForeignEntityId)
+            .IsRequired();
+
         builder.Property(f => f.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .ValueGeneratedOnAdd();
+        
+        builder.HasIndex(f => new { f.BlobContainerName, f.BlobName })
+            .IsUnique();
     }
 }

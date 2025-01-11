@@ -10,4 +10,11 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
+      <ProjectReference Include="..\FileService.Domain\FileService.Domain.csproj" />
+      <ProjectReference Include="..\FileService.Infrastructure\FileService.Infrastructure.csproj" />
+      <ProjectReference Include="..\FileService.Persistence\FileService.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

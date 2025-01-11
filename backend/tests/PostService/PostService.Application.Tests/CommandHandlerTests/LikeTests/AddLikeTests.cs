@@ -2,9 +2,6 @@ using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.Commands.AddLike;
-using PostService.Application.Commands.AddPost;
-using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.LikeTests;
@@ -54,7 +51,7 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
     
     [Fact]
@@ -75,7 +72,7 @@ public class AddLikeTests(TestFixture fixture) : TestBase(fixture)
         secondResult.IsSuccess.Should().BeFalse();
         secondResult.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         secondResult.Response.Should().BeNull();
-        secondResult.Error?.Message.Should().Be("User has already liked this post.");
+        secondResult.Error.Message.Should().Be("User has already liked this post.");
         
         var likedPost = await Fixture.PostDbContextFixture.Posts
             .FirstAsync(p => p.Id == postId);

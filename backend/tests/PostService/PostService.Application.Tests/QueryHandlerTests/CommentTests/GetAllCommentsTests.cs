@@ -1,10 +1,8 @@
 using System.Net;
 using FluentAssertions;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.DTOs;
 using PostService.Application.Queries.GetAllComments;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.QueryHandlerTests.CommentTests;

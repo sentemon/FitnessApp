@@ -2,10 +2,8 @@ using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.Commands.DeleteComment;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.CommentTests;

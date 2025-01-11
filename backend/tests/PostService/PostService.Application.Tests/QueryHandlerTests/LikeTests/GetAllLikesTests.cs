@@ -1,10 +1,7 @@
 using System.Net;
 using FluentAssertions;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.AddLike;
-using PostService.Application.DTOs;
 using PostService.Application.Queries.GetAllLikes;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.QueryHandlerTests.LikeTests;

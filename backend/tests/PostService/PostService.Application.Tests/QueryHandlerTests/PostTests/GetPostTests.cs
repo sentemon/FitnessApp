@@ -67,6 +67,6 @@ public class GetPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
 }

@@ -1,11 +1,8 @@
 using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.Commands.AddComment;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.CommentTests;
@@ -59,7 +56,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
 
     [Fact]

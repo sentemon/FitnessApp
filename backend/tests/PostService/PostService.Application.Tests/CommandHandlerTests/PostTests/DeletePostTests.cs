@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +66,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
     
     [Fact]
@@ -108,6 +107,6 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to delete this post.");
+        result.Error.Message.Should().Be("You do not have permission to delete this post.");
     }
 }

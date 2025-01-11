@@ -2,10 +2,7 @@ using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.Commands.AddLike;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeleteLike;
-using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.LikeTests;
@@ -57,7 +54,7 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Like not found.");
+        result.Error.Message.Should().Be("Like not found.");
     }
     
     [Fact]
@@ -83,6 +80,6 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("User has not liked this post yet.");
+        result.Error.Message.Should().Be("User has not liked this post yet.");
     }
 }

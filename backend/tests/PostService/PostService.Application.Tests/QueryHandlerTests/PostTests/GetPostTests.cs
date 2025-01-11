@@ -1,7 +1,5 @@
 using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.DTOs;
 using PostService.Application.Queries.GetPost;
@@ -18,15 +16,10 @@ public class GetPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        await using var stream = new MemoryStream();
-        var file = new FormFile(stream, 0, stream.Length, "file", "file")
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = "image/png"
-        };
+        var file = Fixture.ExistingFile;
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var commandAddPost = new AddPostCommand(createPost, userId);

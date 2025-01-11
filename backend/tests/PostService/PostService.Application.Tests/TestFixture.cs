@@ -1,5 +1,7 @@
+using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
@@ -40,6 +42,7 @@ public class TestFixture
 
     public User ExistingUser { get; }
     public Post ExistingPost { get; }
+    public IFile ExistingFile { get; }
 
     public TestFixture()
     {
@@ -68,6 +71,7 @@ public class TestFixture
         
         ExistingUser = CreateExistingUser();
         ExistingPost = CreateExistingPost();
+        ExistingFile = CreateMockFile();
     }
     
     private void ApplyMigrations()
@@ -120,5 +124,18 @@ public class TestFixture
         PostDbContextFixture.SaveChanges();
 
         return post;
+    }
+    
+    private IFile CreateMockFile()
+    {
+        var fileName = "test-image.jpg";
+        var contentType = "image/jpeg";
+
+        var mockFile = new Mock<IFile>();
+        mockFile.Setup(f => f.Name).Returns(fileName);
+        mockFile.Setup(f => f.ContentType).Returns(contentType);
+        mockFile.Setup(f => f.OpenReadStream()).Returns(new MemoryStream([1, 2, 3]));
+
+        return mockFile.Object;
     }
 }

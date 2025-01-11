@@ -1,7 +1,5 @@
 using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.DTOs;
 using PostService.Domain.Enums;
@@ -17,19 +15,13 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        await using var stream = new MemoryStream([1, 2, 3]);
-        var fileName = "file.jpg";
         var contentTypeFile = "image/jpeg";
 
-        var file = new FormFile(stream, 0, stream.Length, "file", fileName)
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = contentTypeFile
-        };
+        var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -54,19 +46,13 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
     {
         var title = "";
         var description = "Description";
-        await using var stream = new MemoryStream([1, 2, 3]);
-        var fileName = "aaa.txt";
         var contentTypeFile = "text/plain";
 
-        var file = new FormFile(stream, 0, stream.Length, "file", fileName)
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = contentTypeFile
-        };
+        var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Text;
         
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -133,15 +119,9 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var description = "Description";
         var contentType = (ContentType)23;
 
-        await using var stream = new MemoryStream();
-        var fileName = "invalid_file.txt";
-        var file = new FormFile(stream, 0, stream.Length, "file", fileName)
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = "text/plain"
-        };
+        var file = Fixture.ExistingFile;
 
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);

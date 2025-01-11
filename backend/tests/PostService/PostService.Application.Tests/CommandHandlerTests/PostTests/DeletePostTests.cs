@@ -1,7 +1,5 @@
 using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeletePost;
 using PostService.Application.DTOs;
@@ -18,19 +16,13 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        await using var stream = new MemoryStream([1, 2, 3]);
-        var fileName = "file.jpg";
         var contentTypeFile = "image/jpeg";
 
-        var file = new FormFile(stream, 0, stream.Length, "file", fileName)
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = contentTypeFile
-        };
+        var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
@@ -75,19 +67,13 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        await using var stream = new MemoryStream([1, 2, 3]);
-        var fileName = "file.jpg";
         var contentTypeFile = "image/jpeg";
 
-        var file = new FormFile(stream, 0, stream.Length, "file", fileName)
-        {
-            Headers = new HeaderDictionary(),
-            ContentType = contentTypeFile
-        };
+        var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file.OpenReadStream(), contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
         
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();

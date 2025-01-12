@@ -9,6 +9,7 @@
     <ItemGroup>
       <PackageReference Include="MassTransit" Version="8.0.0" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
@@ -18,12 +19,6 @@
       <ProjectReference Include="..\FileService.Domain\FileService.Domain.csproj" />
       <ProjectReference Include="..\FileService.Infrastructure\FileService.Infrastructure.csproj" />
       <ProjectReference Include="..\FileService.Persistence\FileService.Persistence.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.6\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>

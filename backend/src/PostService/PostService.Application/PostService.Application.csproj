@@ -11,6 +11,7 @@
       <PackageReference Include="HotChocolate.Types.Scalars.Upload" Version="14.0.0" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -18,12 +19,6 @@
       <ProjectReference Include="..\..\Shared\Shared.DTO\Shared.DTO.csproj" />
       <ProjectReference Include="..\PostService.Domain\PostService.Domain.csproj" />
       <ProjectReference Include="..\PostService.Persistence\PostService.Persistence.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.StaticFiles">
-        <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.6\Microsoft.AspNetCore.StaticFiles.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>

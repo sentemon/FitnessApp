@@ -13,7 +13,9 @@ COPY PostService/PostService.Application/PostService.Application.csproj PostServ
 COPY PostService/PostService.Domain/PostService.Domain.csproj PostService/PostService.Domain/
 COPY PostService/PostService.Infrastructure/PostService.Infrastructure.csproj PostService/PostService.Infrastructure/
 COPY PostService/PostService.Persistence/PostService.Persistence.csproj PostService/PostService.Persistence/
+
 COPY Shared/Shared.Application/Shared.Application.csproj Shared/Shared.Application/
+COPY Shared/Shared.Authentication/Shared.Authentication.csproj Shared/Shared.Authentication/
 COPY Shared/Shared.DTO/Shared.DTO.csproj Shared/Shared.DTO/
 
 RUN dotnet restore PostService/PostService.Api/PostService.Api.csproj

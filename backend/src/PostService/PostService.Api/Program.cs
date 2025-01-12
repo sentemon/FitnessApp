@@ -31,7 +31,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddPersistenceServices(connectionString)
-    .AddInfrastructureServices()
+    .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
 
 builder.Services
@@ -56,6 +56,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 

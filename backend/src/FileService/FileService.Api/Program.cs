@@ -1,5 +1,5 @@
 using FileService.Application;
-using FileService.Application.Commands.DownloadPost;
+using FileService.Application.Queries.DownloadPost;
 using FileService.Domain.Constants;
 using FileService.Infrastructure;
 using FileService.Persistence;
@@ -26,11 +26,11 @@ using (var scope = app.Services.CreateScope())
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
-app.MapGet("/files/{blobName}", async (string blobName, DownloadPostCommandHandler downloadPostCommandHandler) =>
+app.MapGet("/files/{blobName}", async (string blobName, DownloadPostQueryHandler downloadPostQueryHandler) =>
 {
-    var command = new DownloadPostCommand(blobName);
+    var command = new DownloadPostQuery(blobName);
 
-    var result = await downloadPostCommandHandler.HandleAsync(command);
+    var result = await downloadPostQueryHandler.HandleAsync(command);
 
     if (!result.IsSuccess)
     {

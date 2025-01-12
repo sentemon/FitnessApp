@@ -40,10 +40,10 @@ public class AzureBlobStorageService : IAzureBlobStorageService
         return blobName;
     }
 
-    public async Task DeleteAsync(Guid id, string containerName)
+    public async Task DeleteAsync(string blobName, string containerName)
     {
         var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-        var blobClient = blobContainerClient.GetBlobClient(id.ToString());
+        var blobClient = blobContainerClient.GetBlobClient(blobName);
 
         await blobClient.DeleteIfExistsAsync();
     }

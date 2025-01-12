@@ -16,13 +16,12 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentTypeFile = "image/jpeg";
 
         var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
@@ -67,13 +66,11 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentTypeFile = "image/jpeg";
-
         var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();

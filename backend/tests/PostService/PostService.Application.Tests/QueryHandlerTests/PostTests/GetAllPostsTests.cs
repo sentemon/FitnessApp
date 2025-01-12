@@ -22,7 +22,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var file1 = Fixture.ExistingFile;
         var contentType1 = ContentType.Image;
 
-        var createPost1 = new CreatePostDto(title1, description1, file1, file1.ContentType, contentType1);
+        var createPost1 = new CreatePostDto(title1, description1, file1, contentType1);
         var userId = Fixture.ExistingUser.Id;
 
         var commandAddPost1 = new AddPostCommand(createPost1, userId);
@@ -33,7 +33,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var file2 = Fixture.ExistingFile;
         var contentType2 = ContentType.Image;
 
-        var createPost2 = new CreatePostDto(title2, description2, file2, file2.ContentType, contentType2);
+        var createPost2 = new CreatePostDto(title2, description2, file2, contentType2);
         var commandAddPost2 = new AddPostCommand(createPost2, userId);
         await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost2);
 
@@ -59,13 +59,13 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
         var userId = Fixture.ExistingUser.Id;
 
-        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var commandAddPost = new AddPostCommand(createPost, userId);
         
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost);
         post.Response.Should().NotBeNull();
 
-        var anotherPost = new CreatePostDto("Another Title", "Another Description", file, file.ContentType, contentType);
+        var anotherPost = new CreatePostDto("Another Title", "Another Description", file, contentType);
         var anotherCommand = new AddPostCommand(anotherPost, userId);
         await Fixture.AddPostCommandHandler.HandleAsync(anotherCommand);
 
@@ -90,7 +90,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var contentType = ContentType.Image;
         var userId = Fixture.ExistingUser.Id;
 
-        var createPost1 = new CreatePostDto(title1, description1, file1, file1.ContentType, contentType);
+        var createPost1 = new CreatePostDto(title1, description1, file1, contentType);
         var commandAddPost1 = new AddPostCommand(createPost1, userId);
         await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost1);
 
@@ -98,7 +98,7 @@ public class GetAllPostsTests(TestFixture fixture) : TestBase(fixture)
         var description2 = "Description 2";
         var file2 = Fixture.ExistingFile;
 
-        var createPost2 = new CreatePostDto(title2, description2, file2, file2.ContentType, contentType);
+        var createPost2 = new CreatePostDto(title2, description2, file2, contentType);
         var commandAddPost2 = new AddPostCommand(createPost2, userId);
         await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost2);
 

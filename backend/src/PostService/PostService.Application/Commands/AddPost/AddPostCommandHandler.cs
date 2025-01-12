@@ -2,6 +2,7 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
+using PostService.Application.Extensions;
 using PostService.Application.Validators;
 using PostService.Domain.Constants;
 using PostService.Domain.Entities;
@@ -50,9 +51,17 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         _context.Posts.Add(post);
         await _context.SaveChangesAsync();
 
+        if (command.CreatePost.ContentType == ContentType.Text && command.CreatePost.File != null ||
+            command.CreatePost.ContentType != ContentType.Text && command.CreatePost.File == null)
+        {
+            return Result<PostDto>.Failure(new Error(ResponseMessages.InvalidFileState));
+        }
+
+        var fileContentType = FileExtension.GetContentType(command.CreatePost.File);
+
         await _publishEndpoint.Publish(new PostUploadEventMessage(
             ReadFully(command.CreatePost.File?.OpenReadStream()),
-            command.CreatePost.FileContentType,
+            fileContentType,
             post.Id,
             post.UserId
         ));

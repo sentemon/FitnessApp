@@ -20,4 +20,10 @@
       <ProjectReference Include="..\PostService.Persistence\PostService.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.StaticFiles">
+        <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.6\Microsoft.AspNetCore.StaticFiles.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

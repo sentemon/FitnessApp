@@ -17,4 +17,6 @@ public static class ResponseMessages
     public const string YouDoNotHavePermissionToUpdateThisPost = "You do not have permission to update this post.";
     public const string YouDoNotHavePermissionToDeleteThisPost = "You do not have permission to delete this post.";
     public const string YouDoNotHavePermissionToDeleteThisComment = "You do not have permission to delete this comment.";
+
+    public const string InvalidFileState = "Invalid file state for the given content type.";
 }

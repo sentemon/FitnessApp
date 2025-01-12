@@ -15,13 +15,12 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentTypeFile = "image/jpeg";
 
         var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -46,13 +45,12 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
     {
         var title = "";
         var description = "Description";
-        var contentTypeFile = "text/plain";
 
         var file = Fixture.ExistingFile;
         
         var contentType = ContentType.Text;
         
-        var createPost = new CreatePostDto(title, description, file, contentTypeFile, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -74,7 +72,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var description = "";
         var contentType = ContentType.Text;
 
-        var createPost = new CreatePostDto(title, description, null, null, contentType);
+        var createPost = new CreatePostDto(title, description, null, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -96,7 +94,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var description = "";
         var contentType = ContentType.Text;
 
-        var createPost = new CreatePostDto(title, description, null, null, contentType);
+        var createPost = new CreatePostDto(title, description, null, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -121,7 +119,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
 
         var file = Fixture.ExistingFile;
 
-        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);

@@ -7,6 +7,5 @@ public record CreatePostDto(
     string Title,
     string Description,
     IFile? File,
-    string? FileContentType,
     ContentType ContentType
 );

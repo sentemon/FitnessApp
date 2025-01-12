@@ -19,7 +19,7 @@ public class GetPostTests(TestFixture fixture) : TestBase(fixture)
         var file = Fixture.ExistingFile;
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, file, file.ContentType, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var commandAddPost = new AddPostCommand(createPost, userId);

@@ -1,6 +1,6 @@
-namespace Shared.DTO;
+namespace Shared.DTO.Messages;
 
-public record UserCreatedEvent(
+public record UserCreatedEventMessage(
     string Id,
     string FirstName,
     string LastName,

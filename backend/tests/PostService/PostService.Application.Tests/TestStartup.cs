@@ -1,6 +1,8 @@
 using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
@@ -21,6 +23,11 @@ public class TestStartup
 {
     public static ServiceProvider Initialize(string connectionString)
     {
+        var publishEndpointMock = new Mock<IPublishEndpoint>();
+        publishEndpointMock
+            .Setup(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
         var serviceCollection = new ServiceCollection()
             .AddDbContext<PostDbContext>(options =>
             {
@@ -38,7 +45,8 @@ public class TestStartup
             .AddScoped<GetPostQueryHandler>()
             .AddScoped<GetAllPostsQueryHandler>()
             .AddScoped<GetAllCommentsQueryHandler>()
-            .AddScoped<GetAllLikesQueryHandler>();
+            .AddScoped<GetAllLikesQueryHandler>()
+            .AddSingleton(publishEndpointMock.Object);
 
         return serviceCollection.BuildServiceProvider();
     }

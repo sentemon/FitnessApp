@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net;
 using FluentAssertions;
 using PostService.Application.Commands.AddPost;
@@ -17,10 +16,12 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
+
+        var file = Fixture.ExistingFile;
+        
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var postCommand = new AddPostCommand(createPost, userId);
@@ -28,7 +29,6 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Act
         var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
 
-        Debug.Assert(post.Response != null, "post.Response != null");
         var command = new DeletePostCommand(post.Response.Id, userId);
         
         // Act
@@ -57,7 +57,7 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
     
     [Fact]
@@ -66,10 +66,12 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
+        var file = Fixture.ExistingFile;
+        
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
+        
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
 
@@ -88,6 +90,6 @@ public class DeletePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to delete this post.");
+        result.Error.Message.Should().Be("You do not have permission to delete this post.");
     }
 }

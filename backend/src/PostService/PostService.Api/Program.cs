@@ -31,7 +31,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddPersistenceServices(connectionString)
-    .AddInfrastructureServices()
+    .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
 
 builder.Services
@@ -39,7 +39,8 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddType(new UuidType())
-    .AddType<UnsignedIntType>();
+    .AddType<UnsignedIntType>()
+    .AddType<UploadType>();
 
 builder.Services.AddGraphQL();
 
@@ -55,6 +56,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 

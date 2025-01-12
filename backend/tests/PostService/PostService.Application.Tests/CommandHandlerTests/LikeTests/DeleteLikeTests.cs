@@ -2,10 +2,7 @@ using System.Net;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.Commands.AddLike;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.DeleteLike;
-using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.LikeTests;
@@ -16,20 +13,10 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldDeleteLikeFromPost_WhenDataIsValid()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
-
-        var commandPost = new AddPostCommand(createPost, userId);
+        var postId = Fixture.ExistingPost.Id;
         
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
-        
-        var commandLike = new AddLikeCommand(post.Response.Id, userId);
+        var commandLike = new AddLikeCommand(postId, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();
@@ -67,27 +54,19 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Like not found.");
+        result.Error.Message.Should().Be("Like not found.");
     }
     
     [Fact]
     public async Task HandleAsync_ShouldFail_WhenUserHasNotLikedPost()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
-
-        var commandPost = new AddPostCommand(createPost, userId);
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(commandPost);
-        post.Response.Should().NotBeNull();
         
-        var commandLike = new AddLikeCommand(post.Response.Id, userId);
+        var postId = Fixture.ExistingPost.Id;
+        
+        var commandLike = new AddLikeCommand(postId, userId);
         
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();
@@ -101,6 +80,6 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("User has not liked this post yet.");
+        result.Error.Message.Should().Be("User has not liked this post yet.");
     }
 }

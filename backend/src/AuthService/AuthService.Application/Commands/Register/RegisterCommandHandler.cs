@@ -5,6 +5,7 @@ using MassTransit;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.DTO;
+using Shared.DTO.Messages;
 
 namespace AuthService.Application.Commands.Register;
 
@@ -34,7 +35,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        await _publishEndpoint.Publish(new UserCreatedEvent(
+        await _publishEndpoint.Publish(new UserCreatedEventMessage(
             user.Id,
             user.FirstName,
             user.LastName,

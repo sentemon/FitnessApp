@@ -14,19 +14,19 @@ public class Post
     public uint CommentCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private Post(string userId, string title, string description, string contentUrl, ContentType contentType)
+    private Post(string userId, string title, string description, ContentType contentType)
     {
         if (string.IsNullOrEmpty(userId))
         {
             throw new ArgumentException("UserId cannot be empty.", nameof(userId));
         }
         
-        ValidateContent(contentType, title, description, contentUrl);
+        ValidateContent(contentType, title, description);
         
         UserId = userId;
         Title = title;
         Description = description;
-        ContentUrl = contentUrl;
+        ContentUrl = string.Empty;
         ContentType = contentType;
         LikeCount = 0;
         CommentCount = 0;
@@ -34,22 +34,22 @@ public class Post
 
     public static Post CreateTextPost(string userId, string title, string description)
     {
-        return new Post(userId, title, description, string.Empty, ContentType.Text);
+        return new Post(userId, title, description, ContentType.Text);
     }
 
-    public static Post CreateImagePost(string userId, string contentUrl, string title = "", string description = "")
+    public static Post CreateImagePost(string userId, string title = "", string description = "")
     {
-        return new Post(userId, title, description, contentUrl, ContentType.Image);
+        return new Post(userId, title, description, ContentType.Image);
     }
 
-    public static Post CreateVideoPost(string userId, string contentUrl, string title = "", string description = "")
+    public static Post CreateVideoPost(string userId, string title = "", string description = "")
     {
-        return new Post(userId, title, description, contentUrl, ContentType.Video);
+        return new Post(userId, title, description, ContentType.Video);
     }
     
     public void Update(string title, string description)
     {
-        ValidateContent(ContentType, title, description, ContentUrl);
+        ValidateContent(ContentType, title, description);
         
         Title = title;
         Description = description;
@@ -61,24 +61,28 @@ public class Post
     public void IncrementLikeCount() => LikeCount++;
     public void DecrementLikeCount() => LikeCount--;
     
-    private static void ValidateContent(ContentType contentType, string title, string description, string contentUrl)
+    public void SetContentUrl(string contentUrl)
     {
-        if (contentType == ContentType.Text)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-            {
-                throw new ArgumentException("Title cannot be empty for text content.", nameof(title));
-            }
-
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                throw new ArgumentException("Description cannot be empty for text content.", nameof(description));
-            }
-        }
-
-        else if ((contentType == ContentType.Image || contentType == ContentType.Video) && string.IsNullOrWhiteSpace(contentUrl))
+        if (ContentType is ContentType.Image or ContentType.Video && string.IsNullOrWhiteSpace(contentUrl))
         {
             throw new ArgumentException("ContentUrl is required for image or video content.", nameof(contentUrl));
+        }
+        
+        ContentUrl = contentUrl;
+    }
+    
+    private static void ValidateContent(ContentType contentType, string title, string description)
+    {
+        if (contentType != ContentType.Text) return;
+        
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            throw new ArgumentException("Title cannot be empty for text content.", nameof(title));
+        }
+    
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            throw new ArgumentException("Description cannot be empty for text content.", nameof(description));
         }
     }
 }

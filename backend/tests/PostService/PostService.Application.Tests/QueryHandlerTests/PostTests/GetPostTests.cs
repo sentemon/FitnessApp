@@ -16,16 +16,15 @@ public class GetPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
+        var file = Fixture.ExistingFile;
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var commandAddPost = new AddPostCommand(createPost, userId);
 
         var post = await Fixture.AddPostCommandHandler.HandleAsync(commandAddPost);
-        post.Response.Should().NotBeNull();
         
         var query = new GetPostQuery(post.Response.Id);
         
@@ -61,6 +60,6 @@ public class GetPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
 }

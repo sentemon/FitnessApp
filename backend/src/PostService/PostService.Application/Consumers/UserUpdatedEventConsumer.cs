@@ -2,10 +2,11 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using PostService.Persistence;
 using Shared.DTO;
+using Shared.DTO.Messages;
 
 namespace PostService.Application.Consumers;
 
-public class UserUpdatedEventConsumer : IConsumer<UserUpdatedEvent>
+public class UserUpdatedEventConsumer : IConsumer<UserUpdatedEventMessage>
 {
     private readonly PostDbContext _dbContext;
 
@@ -14,7 +15,7 @@ public class UserUpdatedEventConsumer : IConsumer<UserUpdatedEvent>
         _dbContext = dbContext;
     }
 
-    public async Task Consume(ConsumeContext<UserUpdatedEvent> context)
+    public async Task Consume(ConsumeContext<UserUpdatedEventMessage> context)
     {
         var @event = context.Message;
 

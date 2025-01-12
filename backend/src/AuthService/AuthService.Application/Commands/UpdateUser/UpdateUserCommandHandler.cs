@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.DTO;
+using Shared.DTO.Messages;
 
 namespace AuthService.Application.Commands.UpdateUser;
 
@@ -53,7 +54,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         
         await _context.SaveChangesAsync();
 
-        await _publishEndpoint.Publish(new UserUpdatedEvent(
+        await _publishEndpoint.Publish(new UserUpdatedEventMessage(
             user.Id,
             user.FirstName,
             user.LastName,

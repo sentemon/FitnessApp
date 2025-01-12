@@ -1,5 +1,7 @@
+using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PostService.Application.Commands.AddComment;
 using PostService.Application.Commands.AddLike;
 using PostService.Application.Commands.AddPost;
@@ -39,6 +41,8 @@ public class TestFixture
         .Build();
 
     public User ExistingUser { get; }
+    public Post ExistingPost { get; }
+    public IFile ExistingFile { get; }
 
     public TestFixture()
     {
@@ -66,6 +70,8 @@ public class TestFixture
         GetAllLikesQueryHandler = serviceProvider.GetRequiredService<GetAllLikesQueryHandler>();
         
         ExistingUser = CreateExistingUser();
+        ExistingPost = CreateExistingPost();
+        ExistingFile = CreateMockFile();
     }
     
     private void ApplyMigrations()
@@ -100,5 +106,36 @@ public class TestFixture
         PostDbContextFixture.SaveChanges();
 
         return user;
+    }
+
+    private Post CreateExistingPost()
+    {
+        var contentUrl = "https://example.com";
+        
+        var post = Post.CreateImagePost(
+            ExistingUser.Id,
+            "Some Title",
+            "Some Description"
+        );
+
+        post.SetContentUrl(contentUrl);
+
+        PostDbContextFixture.Posts.Add(post);
+        PostDbContextFixture.SaveChanges();
+
+        return post;
+    }
+    
+    private IFile CreateMockFile()
+    {
+        var fileName = "test-image.jpg";
+        var contentType = "image/jpeg";
+
+        var mockFile = new Mock<IFile>();
+        mockFile.Setup(f => f.Name).Returns(fileName);
+        mockFile.Setup(f => f.ContentType).Returns(contentType);
+        mockFile.Setup(f => f.OpenReadStream()).Returns(new MemoryStream([1, 2, 3]));
+
+        return mockFile.Object;
     }
 }

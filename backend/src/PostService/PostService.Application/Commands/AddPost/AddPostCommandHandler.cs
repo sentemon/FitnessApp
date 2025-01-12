@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using PostService.Application.DTOs;
+using PostService.Application.Extensions;
 using PostService.Application.Validators;
 using PostService.Domain.Constants;
 using PostService.Domain.Entities;
@@ -9,17 +11,22 @@ using PostService.Persistence;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.Application.Extensions;
+using Shared.DTO.Messages;
 
 namespace PostService.Application.Commands.AddPost;
 
 public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
 {
     private readonly PostDbContext _context;
+    private readonly IPublishEndpoint _publishEndpoint;
+    
     private readonly IValidator<CreatePostDto> _validator;
 
-    public AddPostCommandHandler(PostDbContext context)
+    public AddPostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint)
     {
         _context = context;
+        _publishEndpoint = publishEndpoint;
+        
         _validator = new CreatePostValidator();
     }
 
@@ -39,10 +46,25 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             return Result<PostDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
-        var post = CreatePostForSpecifiedType(command);
+        var post = CreatePostForSpecifiedType(command, user.Id);
 
         _context.Posts.Add(post);
         await _context.SaveChangesAsync();
+
+        if (command.CreatePost.ContentType == ContentType.Text && command.CreatePost.File != null ||
+            command.CreatePost.ContentType != ContentType.Text && command.CreatePost.File == null)
+        {
+            return Result<PostDto>.Failure(new Error(ResponseMessages.InvalidFileState));
+        }
+
+        var fileContentType = FileExtension.GetContentType(command.CreatePost.File);
+
+        await _publishEndpoint.Publish(new PostUploadEventMessage(
+            ReadFully(command.CreatePost.File?.OpenReadStream()),
+            fileContentType,
+            post.Id,
+            post.UserId
+        ));
         
         var postDto = new PostDto(
             post.Id,
@@ -60,17 +82,26 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         return Result<PostDto>.Success(postDto);
     }
 
-    private static Post CreatePostForSpecifiedType(AddPostCommand command)
+    private static Post CreatePostForSpecifiedType(AddPostCommand command, string userId)
     {
         return command.CreatePost.ContentType switch
         {
-            ContentType.Text => Post.CreateTextPost(command.UserId, command.CreatePost.Title, command.CreatePost.Description),
+            ContentType.Text => Post.CreateTextPost(userId, command.CreatePost.Title, command.CreatePost.Description),
             
-            ContentType.Image => Post.CreateImagePost(command.UserId, command.CreatePost.ContentUrl, command.CreatePost.Title, command.CreatePost.Description),
+            ContentType.Image => Post.CreateImagePost(userId, command.CreatePost.Title, command.CreatePost.Description),
             
-            ContentType.Video => Post.CreateVideoPost(command.UserId, command.CreatePost.ContentUrl, command.CreatePost.Title, command.CreatePost.Description),
+            ContentType.Video => Post.CreateVideoPost(userId, command.CreatePost.Title, command.CreatePost.Description),
             
             _ => throw new InvalidOperationException("Unsupported content type.")
         };
+    }
+    
+    
+    private static byte[] ReadFully(Stream? input)
+    { 
+        using var ms = new MemoryStream();
+        input?.CopyTo(ms);
+        
+        return ms.ToArray();
     }
 }

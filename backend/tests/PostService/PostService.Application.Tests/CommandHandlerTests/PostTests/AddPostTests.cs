@@ -15,10 +15,12 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
+
+        var file = Fixture.ExistingFile;
+        
         var contentType = ContentType.Image;
 
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -32,20 +34,23 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         result.Response.Should().NotBeNull();
         result.Response.Title.Should().Be(title);
         result.Response.Description.Should().Be(description);
-        result.Response.ContentUrl.Should().Be(contentUrl);
-        result.Response.ContentType.Should().Be(contentType);
+        result.Response.ContentType.Should().Be(ContentType.Image);
         result.Response.LikeCount.Should().Be(0);
         result.Response.CommentCount.Should().Be(0);
     }
+
 
     [Fact]
     public async Task HandleAsync_ShouldFail_WhenTitleIsEmpty_ForTextContentType()
     {
         var title = "";
         var description = "Description";
-        var contentType = ContentType.Text;
 
-        var createPost = new CreatePostDto(title, description, string.Empty, contentType);
+        var file = Fixture.ExistingFile;
+        
+        var contentType = ContentType.Text;
+        
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -57,7 +62,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Title is required for text content.");
+        result.Error.Message.Should().Be("Title is required for text content.");
     }
     
     [Fact]
@@ -67,7 +72,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var description = "";
         var contentType = ContentType.Text;
 
-        var createPost = new CreatePostDto(title, description, string.Empty, contentType);
+        var createPost = new CreatePostDto(title, description, null, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -79,7 +84,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Description is required for text content.");
+        result.Error.Message.Should().Be("Description is required for text content.");
     }
     
     [Fact]
@@ -89,7 +94,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         var description = "";
         var contentType = ContentType.Text;
 
-        var createPost = new CreatePostDto(title, description, string.Empty, contentType);
+        var createPost = new CreatePostDto(title, description, null, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -101,30 +106,7 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Title is required for text content.; Description is required for text content.");
-    }
-    
-    [Fact]
-    public async Task HandleAsync_ShouldFail_WhenContentUrlIsEmpty_ForImageOrVideoContentType()
-    {
-        var title = "Title";
-        var description = "Descriprion";
-        var contentUrl = "";
-        var contentType = ContentType.Video;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Fixture.ExistingUser.Id;
-
-        var command = new AddPostCommand(createPost, userId);
-        
-        // Act
-        var result = await Fixture.AddPostCommandHandler.HandleAsync(command);
-        
-        // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("ContentUrl is required for video or image content.");
+        result.Error.Message.Should().Be("Title is required for text content.; Description is required for text content.");
     }
     
     [Fact]
@@ -133,10 +115,11 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Title";
         var description = "Description";
-        var contentUrl = "https://example.com";
         var contentType = (ContentType)23;
 
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
+        var file = Fixture.ExistingFile;
+
+        var createPost = new CreatePostDto(title, description, file, contentType);
         var userId = Fixture.ExistingUser.Id;
 
         var command = new AddPostCommand(createPost, userId);
@@ -148,6 +131,6 @@ public class AddPostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("ContentType must be one of the following: Text, Image, Video.");
+        result.Error.Message.Should().Be("ContentType must be one of the following: Text, Image, Video.");
     }
 }

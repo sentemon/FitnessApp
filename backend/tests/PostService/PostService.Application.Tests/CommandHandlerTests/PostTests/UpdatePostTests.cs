@@ -1,9 +1,7 @@
 using System.Net;
 using FluentAssertions;
-using PostService.Application.Commands.AddPost;
 using PostService.Application.Commands.UpdatePost;
 using PostService.Application.DTOs;
-using PostService.Domain.Enums;
 using Xunit;
 
 namespace PostService.Application.Tests.CommandHandlerTests.PostTests;
@@ -14,23 +12,16 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldUpdatePost_WhenDataIsValid()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
         var userId = Fixture.ExistingUser.Id;
+        var post = Fixture.ExistingPost;
 
-        var postCommand = new AddPostCommand(createPost, userId);
-
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
-        post.Response.Should().NotBeNull();
+        var contentUrl = "https://example.com";
+        post.SetContentUrl(contentUrl);
         
         var newTitle = "New Title";
         var newDescription = "New Description";
         
-        var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
+        var updatePost = new UpdatePostDto(post.Id, newTitle, newDescription);
 
         var command = new UpdatePostCommand(updatePost, userId);
 
@@ -64,31 +55,23 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("Post not found.");
+        result.Error.Message.Should().Be("Post not found.");
     }
     
     [Fact]
     public async Task HandleAsync_ShouldFail_WhenUserIdDoesNotMatch()
     {
         // Arrange
-        var title = "Title";
-        var description = "Description";
-        var contentUrl = "https://example.com";
-        var contentType = ContentType.Image;
-
-        var createPost = new CreatePostDto(title, description, contentUrl, contentType);
-        var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
+        var post = Fixture.ExistingPost;
 
-        var postCommand = new AddPostCommand(createPost, userId);
-        
-        var post = await Fixture.AddPostCommandHandler.HandleAsync(postCommand);
-        post.Response.Should().NotBeNull();
+        var contentUrl = "https://example.com";
+        post.SetContentUrl(contentUrl);
 
         var newTitle = "New Title";
         var newDescription = "New Description";
         
-        var updatePost = new UpdatePostDto(post.Response.Id, newTitle, newDescription);
+        var updatePost = new UpdatePostDto(post.Id, newTitle, newDescription);
         
         var command = new UpdatePostCommand(updatePost, anotherUserId);
         
@@ -99,6 +82,6 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         result.IsSuccess.Should().BeFalse();
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
-        result.Error?.Message.Should().Be("You do not have permission to update this post.");
+        result.Error.Message.Should().Be("You do not have permission to update this post.");
     }
 }

@@ -8,8 +8,10 @@
 
     <ItemGroup>
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+      <PackageReference Include="HotChocolate.Types.Scalars.Upload" Version="14.0.0" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>

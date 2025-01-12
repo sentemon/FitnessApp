@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Persistence", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Infrastructure", "backend\src\FileService\FileService.Infrastructure\FileService.Infrastructure.csproj", "{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Authentication", "backend\src\Shared\Shared.Authentication\Shared.Authentication.csproj", "{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -189,6 +191,10 @@ Global
 		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E44C019-ED30-4671-A878-D2F7B6071024} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
@@ -222,5 +228,6 @@ Global
 		{222CCDC4-3D79-4954-B7E0-736D474270D6} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
 		{2F748171-33D6-484F-924C-21539C87483E} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
 		{4938EBCD-F47E-4ABF-AD79-A5DEB42341DA} = {43F219C3-D6F8-4BA4-890D-4411CCEA3034}
+		{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399} = {112E9C63-BF62-49C1-AD19-03855535225B}
 	EndGlobalSection
 EndGlobal

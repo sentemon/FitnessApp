@@ -3,22 +3,24 @@ namespace FileService.Domain.Entities;
 public class File
 {
     public Guid Id { get; private set; }
-    public string Name { get; private set; }
     public string BlobName { get; private set; }
+    public string BlobContainerName { get; private set; }
     public long Size { get; private set; }
     public string OwnerId { get; private set; }
+    public Guid ForeignEntityId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private File(string name, string blobName, long size, string ownerId)
+    private File(string blobName, string blobContainerName, long size, string ownerId, Guid foreignEntityId)
     {
-        Name = name;
         BlobName = blobName;
+        BlobContainerName = blobContainerName;
         Size = size;
         OwnerId = ownerId;
+        ForeignEntityId = foreignEntityId;
     }
 
-    public static File CreateFile(string name, string blobName, long size, string ownerId)
+    public static File CreateFile(string blobName, string blobContainerName, long size, string ownerId, Guid foreignEntityId)
     {
-        return new File(name, blobName, size, ownerId);
+        return new File(blobName, blobContainerName, size, ownerId, foreignEntityId);
     }
 }

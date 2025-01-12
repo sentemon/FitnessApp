@@ -19,6 +19,11 @@ public class AddLikeCommandHandler : ICommandHandler<AddLikeCommand, LikeDto>
 
     public async Task<IResult<LikeDto, Error>> HandleAsync(AddLikeCommand command)
     {
+        if (command.UserId == null)
+        {
+            return Result<LikeDto>.Failure(new Error(ResponseMessages.UserIdIsNull));
+        }
+        
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.PostId);
 
         if (post == null)

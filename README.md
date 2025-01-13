@@ -53,7 +53,7 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 - **Challenge Service:** Supports fitness challenges.
 - **Trainer Service:** Connects users with trainers and personalized plans.
 - **Chat Service:** Enables personal and group communication.
-- **Notification Service:** fill
+- **Notification Service:** Sends in-app, email, and push notifications.
 - **File Storage Service:** Manages file uploads and storage via Azurite.
 - **Frontend (Angular):** Modern, responsive user interface.
 - **Keycloak:** External identity and access management solution.

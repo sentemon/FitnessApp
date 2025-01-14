@@ -9,16 +9,6 @@ import {PostModalComponent} from "../post-modal/post-modal.component";
 
 @Component({
   selector: 'app-post-list',
-  standalone: true,
-  imports: [
-    DatePipe,
-    NgIf,
-    NgForOf,
-    NgOptimizedImage,
-    LikeComponent,
-    CommentComponent,
-    PostModalComponent
-  ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss'
 })

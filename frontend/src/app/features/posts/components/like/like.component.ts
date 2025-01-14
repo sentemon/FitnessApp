@@ -4,10 +4,6 @@ import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-like',
-  standalone: true,
-  imports: [
-    NgClass
-  ],
   templateUrl: './like.component.html',
   styleUrl: './like.component.scss'
 })

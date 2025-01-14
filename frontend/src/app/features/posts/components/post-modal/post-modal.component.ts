@@ -10,15 +10,6 @@ import {LikeComponent} from "../like/like.component";
 
 @Component({
   selector: 'app-post-modal',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    DatePipe,
-    FormsModule,
-    CommentComponent,
-    LikeComponent
-  ],
   templateUrl: './post-modal.component.html',
   styleUrl: './post-modal.component.scss'
 })

@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Apollo} from "apollo-angular";
+import {Apollo, ApolloBase} from "apollo-angular";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
@@ -9,10 +9,14 @@ import {CookieService} from "../../../core/services/cookie.service";
   providedIn: 'root'
 })
 export class AuthService {
+  private authClient: ApolloBase;
+
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuth());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo) {
+    this.authClient = apollo.use("auth");
+  }
 
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
@@ -23,9 +27,9 @@ export class AuthService {
   }
 
   public login(username: string, password: string): Observable<boolean> {
-    return this.apollo.mutate<MutationResponse>({
+    return this.authClient.mutate<MutationResponse>({
       mutation: LOGIN,
-      variables: { username, password }
+      variables: { username, password },
     }).pipe(
       map(response => {
         const token = response.data?.login;
@@ -49,7 +53,7 @@ export class AuthService {
     email: string,
     password: string
   ): Observable<boolean> {
-    return this.apollo.mutate<MutationResponse>({
+    return this.authClient.mutate<MutationResponse>({
       mutation: REGISTER,
       variables: { firstName, lastName, username, email, password }
     }).pipe(

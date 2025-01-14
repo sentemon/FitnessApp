@@ -11,9 +11,7 @@ import {ApolloLink} from "@apollo/client/core";
 })
 export class UserService {
 
-  constructor(private apollo: Apollo) {
-    // apollo.client.setLink(ApolloLink.from())
-  }
+  constructor(private apollo: Apollo) { }
 
   getUserByUsername(username: string): Observable<User> {
     return this.apollo.query<QueryResponses>({

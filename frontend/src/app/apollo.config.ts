@@ -1,8 +1,8 @@
 import { ApolloClientOptions, InMemoryCache, ApolloLink, HttpLink } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
-import { environment } from '../environments/environment';
 import {inject} from "@angular/core";
 import {CookieService} from "./core/services/cookie.service";
+import {environment} from "../environments/environment";
 
 export function createApolloClientOptions(): ApolloClientOptions<any> {
   const cookieService = inject(CookieService);

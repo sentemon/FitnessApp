@@ -3,8 +3,6 @@ import {Apollo} from "apollo-angular";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
-import {QueryResponses} from "../responses/query.responses";
-import {IS_AUTHENTICATED} from "../requests/queries";
 import {CookieService} from "../../../core/services/cookie.service";
 
 @Injectable({
@@ -18,7 +16,7 @@ export class AuthService {
 
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
-    
+
     const token = cookieService.get("token");
 
     return token != "There is no cookie with key token.";
@@ -70,10 +68,6 @@ export class AuthService {
 
 
   public isAuthenticated(): Observable<boolean> {
-    // return this.apollo.query<QueryResponses>({
-    //   query: IS_AUTHENTICATED
-    // }).pipe(
-    //   map(response => response.data.isAuthenticated));
     return this.isAuthenticated$;
   }
 }

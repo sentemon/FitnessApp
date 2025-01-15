@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LayoutComponent} from "./shared/layout/layout.component";
 import {AuthGuard} from "./core/services/auth-guard.service";
 import {LoginComponent} from "./features/auth/componets/login/login.component";
 import {RegisterComponent} from "./features/auth/componets/register/register.component";
 import {ProfileComponent} from "./features/auth/componets/profile/profile.component";
+import {CreatePostComponent} from "./features/posts/components/create-post/create-post.component";
+import {PostListComponent} from "./features/posts/components/post-list/post-list.component";
 
 const routes: Routes = [
-  {path: '', component: LayoutComponent, canActivate: [AuthGuard] },
+  {path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'sentemon', component: ProfileComponent },
+  { path: 'create-post', component: CreatePostComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

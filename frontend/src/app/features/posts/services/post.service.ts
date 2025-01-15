@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import {CreatePostDto} from "../requests/create-post.dto";
 import {map, Observable, of} from "rxjs";
@@ -83,15 +83,26 @@ export class PostService {
       map(response => {
         let posts = response.data.allPost;
 
-        console.log("Error:" + response);
-
         return existingPosts.concat(posts);
       })
     );
   }
 
   createPost(createPost: CreatePostDto): Observable<Post> {
-    throw new Error();
+    let post: Post = {
+      commentCount: 45,
+      contentType: ContentType.Image,
+      contentUrl: "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      createdAt: new Date(2025, 1, 20),
+      description: "I like lifting!",
+      id: "",
+      likeCount: 43,
+      title: "",
+      userImageUrl: "assets/profile.svg",
+      username: "example"
+    }
+
+    return of(post);
   }
 
   updatePost(updatePost: UpdatePostDto): Observable<Post> {

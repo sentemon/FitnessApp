@@ -9,9 +9,9 @@ namespace PostService.Api.GraphQL;
 
 public class Query
 {
-    public async Task<PostDto> GetPost(Guid id, [Service] GetPostQueryHandler getPostQueryHandler)
+    public async Task<PostDto> GetPost(string id, [Service] GetPostQueryHandler getPostQueryHandler)
     {
-        var query = new GetPostQuery(id);
+        var query = new GetPostQuery(Guid.Parse(id));
 
         var result = await getPostQueryHandler.HandleAsync(query);
 
@@ -37,9 +37,9 @@ public class Query
         return result.Response;
     }
     
-    public async Task<IList<Comment>> GetAllComments(Guid postId, int first, [Service] GetAllCommentsQueryHandler getAllCommentsQueryHandler)
+    public async Task<IList<Comment>> GetAllComments(string postId, int first, [Service] GetAllCommentsQueryHandler getAllCommentsQueryHandler)
     {
-        var query = new GetAllCommentsQuery(postId, first);
+        var query = new GetAllCommentsQuery(Guid.Parse(postId), first);
 
         var result = await getAllCommentsQueryHandler.HandleAsync(query);
 
@@ -51,9 +51,9 @@ public class Query
         return result.Response;
     }
     
-    public async Task<IList<Like>> GetAllLikes(Guid postId, int first, [Service] GetAllLikesQueryHandler getAllLikesQueryHandler)
+    public async Task<IList<Like>> GetAllLikes(string postId, int first, [Service] GetAllLikesQueryHandler getAllLikesQueryHandler)
     {
-        var query = new GetAllLikesQuery(postId, first);
+        var query = new GetAllLikesQuery(Guid.Parse(postId), first);
 
         var result = await getAllLikesQueryHandler.HandleAsync(query);
 
@@ -64,6 +64,4 @@ public class Query
 
         return result.Response;
     }
-
-    public string Test() => "Hello World";
 }

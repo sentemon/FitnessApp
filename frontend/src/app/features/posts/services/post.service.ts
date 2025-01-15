@@ -1,24 +1,43 @@
 import { Injectable } from '@angular/core';
-import {Apollo} from "apollo-angular";
+import {Apollo, ApolloBase} from "apollo-angular";
 import {CreatePostDto} from "../requests/create-post.dto";
-import {Observable, of} from "rxjs";
+import {map, Observable, of} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
+import {GET_ALL_POSTS, GET_POST} from "../requests/queries.graphql";
+import {ApolloQueryResult} from "@apollo/client";
+import {QueryResponse} from "../graphql/query.response";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
+  private postClient: ApolloBase;
 
-  constructor(private apollo: Apollo) { }
-
-  getPost(id: string): Observable<Post> {
-    throw new Error();
+  constructor(private apollo: Apollo) {
+    this.postClient = apollo.use("posts");
   }
 
-  getAllPosts(): Observable<Post[]> {
-    return of([
+  getPost(id: string): Observable<Post | ApolloQueryResult<QueryResponse>> {
+    return this.postClient.query<QueryResponse>({
+      query: GET_POST,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        const post = response.data.post;
+
+        if (post) {
+          return post;
+        }
+
+        return response;
+      })
+    );
+  }
+
+  getAllPosts(first: number, lastPostId: string): Observable<Post[]> {
+    let existingPosts: Post[] = [
       {
         commentCount: 4,
         contentType: ContentType.Image,
@@ -29,7 +48,7 @@ export class PostService {
         likeCount: 56,
         title: "Title",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "assets/profile.svg"
       },
       {
         commentCount: 34,
@@ -41,7 +60,7 @@ export class PostService {
         likeCount: 193,
         title: "",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "assets/profile.svg"
       },
       {
         commentCount: 91,
@@ -53,9 +72,22 @@ export class PostService {
         likeCount: 393,
         title: "Title",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "assets/profile.svg"
       }
-    ]);
+    ];
+
+    return this.postClient.query<QueryResponse>({
+      query: GET_ALL_POSTS,
+      variables: { first, lastPostId }
+    }).pipe(
+      map(response => {
+        let posts = response.data.allPost;
+
+        console.log("Error:" + response);
+
+        return existingPosts.concat(posts);
+      })
+    );
   }
 
   createPost(createPost: CreatePostDto): Observable<Post> {

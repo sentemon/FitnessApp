@@ -1,7 +1,7 @@
 <div class="post" *ngFor="let post of posts" xmlns="http://www.w3.org/1999/html">
   <div class="content">
     <header>
-      <img class="image" [src]="post.imageUrl" alt="Image">
+      <img class="image" [src]="post.userImageUrl" alt="Image">
       <p>{{ post.username }}</p>
       <span class="dot">•</span>
       <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>

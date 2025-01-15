@@ -60,7 +60,7 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
         await _context.SaveChangesAsync();
 
         var request = _httpContextAccessor.HttpContext?.Request;
-        var host = $"{request?.Scheme}://{request?.Host}";
+        var host = $"{request?.Scheme}://{request?.Host}"; // ToDo: fix incorrect url
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,

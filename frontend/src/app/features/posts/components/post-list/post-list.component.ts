@@ -21,7 +21,7 @@ export class PostListComponent implements OnInit{
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.postService.getAllPosts().subscribe(posts => {
+    this.postService.getAllPosts(10, "4bb6a384-e0d7-43df-844f-efb017c02d7d").subscribe(posts => {
       this.posts = posts;
     });
   }

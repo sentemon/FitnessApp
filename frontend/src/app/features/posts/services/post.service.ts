@@ -72,7 +72,7 @@ export class PostService {
         likeCount: 393,
         title: "Title",
         username: "example",
-        userImageUrl: "assets/profile.svg"
+        userImageUrl: "http://localhost:8000/file/files/1d7ce09a-e88b-424f-854c-516b739426dd"
       }
     ];
 

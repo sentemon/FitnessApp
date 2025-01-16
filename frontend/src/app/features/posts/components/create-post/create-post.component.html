@@ -1,1 +1,11 @@
-<button>Create Post</button>
+<form [formGroup]="postForm" (ngSubmit)="submitPost()" >
+  <h1>New Post</h1>
+  <div>
+    <label>Post Type:</label>
+    <select>
+      <option [value]="ContentType.Text">Text</option>
+      <option [value]="ContentType.Image">Image</option>
+      <option [value]="ContentType.Video">Video</option>
+    </select>
+  </div>
+</form>

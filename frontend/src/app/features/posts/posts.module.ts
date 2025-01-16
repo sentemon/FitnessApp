@@ -4,7 +4,7 @@ import {CommentComponent} from "./components/comment/comment.component";
 import {LikeComponent} from "./components/like/like.component";
 import {PostListComponent} from "./components/post-list/post-list.component";
 import {PostModalComponent} from "./components/post-modal/post-modal.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import {SharedModule} from "../../shared/shared.module";
 
@@ -25,6 +25,7 @@ import {SharedModule} from "../../shared/shared.module";
     CommonModule,
     FormsModule,
     SharedModule,
+    ReactiveFormsModule,
   ]
 })
 export class PostsModule { }

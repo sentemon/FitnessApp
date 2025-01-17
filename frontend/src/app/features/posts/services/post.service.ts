@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {map, Observable, of} from "rxjs";
+import {BehaviorSubject, map, Observable, of, Subscription, tap} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
@@ -14,28 +14,15 @@ import {QueryResponse} from "../graphql/query.response";
 export class PostService {
   private postClient: ApolloBase;
 
+  private postsSubject = new BehaviorSubject<Post[]>([]);
+  private posts$ = this.postsSubject.asObservable();
+
   constructor(private apollo: Apollo) {
     this.postClient = apollo.use("posts");
-  }
 
-  getPost(id: string): Observable<Post | ApolloQueryResult<QueryResponse>> {
-    return this.postClient.query<QueryResponse>({
-      query: GET_POST,
-      variables: { id }
-    }).pipe(
-      map(response => {
-        const post = response.data.post;
+    let first = 10;
+    let lastPostId = "4bb6a384-e0d7-43df-844f-efb017c02d7d";
 
-        if (post) {
-          return post;
-        }
-
-        return response;
-      })
-    );
-  }
-
-  getAllPosts(first: number, lastPostId: string): Observable<Post[]> {
     let existingPosts: Post[] = [
       {
         commentCount: 4,
@@ -75,14 +62,35 @@ export class PostService {
       }
     ];
 
-    return this.postClient.query<QueryResponse>({
+    this.postClient.query<QueryResponse>({
       query: GET_ALL_POSTS,
       variables: { first, lastPostId }
     }).pipe(
-      map(response => {
-        let posts = response.data.allPost;
+      tap(response => {
+        let posts = existingPosts.concat(response.data.allPost);
 
-        return existingPosts.concat(posts);
+        posts.forEach(post => this.addPost(post));
+      })
+    ).subscribe();
+  }
+
+  getAllPosts() {
+    return this.posts$;
+  }
+
+  getPost(id: string): Observable<Post | ApolloQueryResult<QueryResponse>> {
+    return this.postClient.query<QueryResponse>({
+      query: GET_POST,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        const post = response.data.post;
+
+        if (post) {
+          return post;
+        }
+
+        return response;
       })
     );
   }
@@ -102,6 +110,10 @@ export class PostService {
     }
 
     return of(post);
+  }
+
+  addPost(newPost: Post) {
+    this.postsSubject.next([newPost, ...this.postsSubject.value]);
   }
 
   updatePost(updatePost: UpdatePostDto): Observable<Post> {

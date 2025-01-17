@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {CommentComponent} from "./components/comment/comment.component";
 import {LikeComponent} from "./components/like/like.component";
 import {PostListComponent} from "./components/post-list/post-list.component";
@@ -26,6 +26,7 @@ import {SharedModule} from "../../shared/shared.module";
     FormsModule,
     SharedModule,
     ReactiveFormsModule,
+    NgOptimizedImage,
   ]
 })
 export class PostsModule { }

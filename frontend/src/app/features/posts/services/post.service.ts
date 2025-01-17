@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {CreatePostDto} from "../requests/create-post.dto";
 import {map, Observable, of} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
@@ -88,7 +87,7 @@ export class PostService {
     );
   }
 
-  createPost(createPost: CreatePostDto): Observable<Post> {
+  createPost(title: string, description: string, contentType: ContentType, contentFile: File | null): Observable<Post> {
     let post: Post = {
       commentCount: 45,
       contentType: ContentType.Image,

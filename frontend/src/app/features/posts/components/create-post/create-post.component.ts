@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ContentType} from "../../../../core/enums/content-type.enum";
 import {PostService} from "../../services/post.service";
+import {Post} from "../../models/post.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-post',
@@ -12,7 +14,9 @@ export class CreatePostComponent {
   postForm!: FormGroup;
   protected contentTypes = ContentType;
 
-  constructor(private fb: FormBuilder, private postService: PostService) {
+  @Output() newPostCreated = new EventEmitter<Post>();
+
+  constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
     this.postForm = fb.group({
       title: "",
       description: "",
@@ -22,7 +26,10 @@ export class CreatePostComponent {
   }
 
   submitPost() {
-    this.postService.createPost(this.title, this.description, this.contentType, this.file);
+    this.postService.createPost(this.title, this.description, this.contentType, this.file).subscribe(response => {
+      this.newPostCreated.emit(response);
+      this.router.navigate(["/"]);
+    });
   }
 
   protected get title(): string {

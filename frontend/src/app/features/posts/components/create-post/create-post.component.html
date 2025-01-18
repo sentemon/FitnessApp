@@ -1,63 +1,80 @@
-<div>
-  <form [formGroup]="postForm" (ngSubmit)="submitPost()" >
-    <h1>New Post</h1>
-    <div>
-      <label>Post Type:</label>
-      <select formControlName="contentType">
-        <option [value]="contentTypes.Text">Text</option>
-        <option [value]="contentTypes.Image">Image</option>
-        <option [value]="contentTypes.Video">Video</option>
-      </select>
-    </div>
+<div class="common">
+  <div class="new-post">
+    <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+      <h1>New Post</h1>
 
-    <div *ngIf="contentType == contentTypes.Text; else imageTemplate">
-      <h4>Title</h4>
-      <input formControlName="title" type="text" required>
-
-      <h4>Description</h4>
-      <input formControlName="description" type="text" required>
-    </div>
-
-    <ng-template #imageTemplate >
-      <div *ngIf="contentType == contentTypes.Image; else videoTemplate">
-        <h4>Title (optional)</h4>
-        <input formControlName="title" type="text">
-
-        <h4>Description (optional)</h4>
-        <input formControlName="description" type="text">
-
-        <h4>Upload image</h4>
-        <input type="file" required>
+      <div class="form-group">
+        <label>Post Type:</label>
+        <select formControlName="contentType">
+          <option [value]="contentTypes.TEXT">Text</option>
+          <option [value]="contentTypes.IMAGE">Image</option>
+          <option [value]="contentTypes.VIDEO">Video</option>
+        </select>
       </div>
-    </ng-template>
 
-    <ng-template #videoTemplate>
-      <div>
-        <h4>Title (optional)</h4>
-        <input formControlName="title" type="text">
+      <div *ngIf="contentType == contentTypes.TEXT; else imageTemplate">
+        <div class="form-group">
+          <h4>Title</h4>
+          <input formControlName="title" type="text" required />
+        </div>
 
-        <h4>Description (optional)</h4>
-        <input formControlName="description" type="text">
-
-        <h4>Upload video</h4>
-        <input type="file" (change)="postForm.patchValue({ file: $event.target })" required>
+        <div class="form-group">
+          <h4>Description</h4>
+          <input formControlName="description" type="text" required />
+        </div>
       </div>
-    </ng-template>
 
-    <button type="submit">Create</button>
-  </form>
+      <ng-template #imageTemplate>
+        <div *ngIf="contentType == contentTypes.IMAGE; else videoTemplate">
+          <div class="form-group">
+            <h4>Title (optional)</h4>
+            <input formControlName="title" type="text" />
+          </div>
 
-  <div>
+          <div class="form-group">
+            <h4>Description (optional)</h4>
+            <input formControlName="description" type="text" />
+          </div>
+
+          <div class="form-group">
+            <h4>Upload image</h4>
+            <input id="file" type="file" (change)="onChange($event)" required />
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #videoTemplate>
+        <div class="form-group">
+          <h4>Title (optional)</h4>
+          <input formControlName="title" type="text" />
+        </div>
+
+        <div class="form-group">
+          <h4>Description (optional)</h4>
+          <input formControlName="description" type="text" />
+        </div>
+
+        <div class="form-group">
+          <h4>Upload video</h4>
+<!--          <input formControlName="file" type="file" (change)="onChange($event)" required />-->
+        </div>
+      </ng-template>
+
+      <button type="submit" class="submit-button">Create</button>
+    </form>
+  </div>
+
+  <div class="preview">
     <h1>Preview</h1>
-    <div>
-      <img src="">
-      <p>username</p>
-      <p>date</p>
-      <h3>title: {{ title }}</h3>
-      <img [src]="file">
-      <p>likes</p>
-      <p>comments</p>
-      <p>description: {{ description }}</p>
+    <div class="post-preview">
+      <img src="" alt="Preview Image" />
+      <p class="username">username</p>
+      <p class="date">date</p>
+      <h3 class="post-title">Title: {{ title }}</h3>
+      <img [src]="contentUrl" alt="Content" />
+      <p class="likes">Likes</p>
+      <p class="comments">Comments</p>
+      <p class="description">Description: {{ description }}</p>
     </div>
   </div>
 </div>

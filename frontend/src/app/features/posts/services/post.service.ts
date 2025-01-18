@@ -1,12 +1,14 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {BehaviorSubject, map, Observable, of, Subscription, tap} from "rxjs";
+import {BehaviorSubject, map, Observable, tap} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
-import {GET_ALL_POSTS, GET_POST} from "../requests/queries.graphql";
+import {GET_ALL_POSTS, GET_POST} from "../graphql/queries.graphql";
 import {ApolloQueryResult} from "@apollo/client";
 import {QueryResponse} from "../graphql/query.response";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {CREATE_POST} from "../graphql/mutations.graphql";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ export class PostService {
   private postsSubject = new BehaviorSubject<Post[]>([]);
   private posts$ = this.postsSubject.asObservable();
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private http: HttpClient) {
     this.postClient = apollo.use("posts");
 
     let first = 10;
@@ -26,7 +28,7 @@ export class PostService {
     let existingPosts: Post[] = [
       {
         commentCount: 4,
-        contentType: ContentType.Image,
+        contentType: ContentType.IMAGE,
         contentUrl: "https://www.istockphoto.com/resources/images/PhotoFTLP/P5-NOV-iStock-2158268393.jpg", // No Copyright
         createdAt: new Date(),
         description: "the men play football",
@@ -38,7 +40,7 @@ export class PostService {
       },
       {
         commentCount: 34,
-        contentType: ContentType.Image,
+        contentType: ContentType.IMAGE,
         contentUrl: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg", // No Copyright
         createdAt: new Date(2024, 10, 20),
         description: "I love swimming!",
@@ -50,7 +52,7 @@ export class PostService {
       },
       {
         commentCount: 91,
-        contentType: ContentType.Image,
+        contentType: ContentType.IMAGE,
         contentUrl: "https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg", // No Copyright
         createdAt: new Date(2024, 10, 19),
         description: "Yesterday's challenge was great",
@@ -95,21 +97,36 @@ export class PostService {
     );
   }
 
-  createPost(title: string, description: string, contentType: ContentType, contentFile: File | null): Observable<Post> {
-    let post: Post = {
-      commentCount: 45,
-      contentType: ContentType.Image,
-      contentUrl: "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      createdAt: new Date(2025, 1, 20),
-      description: "I like lifting!",
-      id: "",
-      likeCount: 43,
-      title: "",
-      userImageUrl: "assets/profile.svg",
-      username: "example"
-    }
+  createPost(title: string, description: string, contentType: ContentType, contentFile: File): Observable<any> {
+    const formData = new FormData();
 
-    return of(post);
+    const operations = JSON.stringify({
+      query: `mutation CreatePost($title: String!, $description: String!, $file: Upload!) {
+        createPost(input: { title: $title, description: $description, contentType: IMAGE, file: $file }) {
+          id title description contentUrl contentType likeCount commentCount createdAt userImageUrl username
+        }
+      }`,
+      variables: {
+        title: title,
+        description: description,
+        // contentType: ,
+        file: null
+      },
+    });
+
+    const map = JSON.stringify({
+      '0': ['variables.file']
+    });
+
+    formData.append("operations", operations);
+    formData.append("map", map);
+
+    formData.append('0', contentFile);
+
+    // Отправляем запрос
+    return this.http.post("http://localhost:8000/post/graphql", formData, {
+      headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
+    });
   }
 
   addPost(newPost: Post) {

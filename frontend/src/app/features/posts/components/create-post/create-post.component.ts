@@ -12,12 +12,15 @@ import {Router} from "@angular/router";
 export class CreatePostComponent {
   postForm!: FormGroup;
   protected contentTypes = ContentType;
+  private file!: File;
+
+  private url!: string;
 
   constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
     this.postForm = fb.group({
       title: "",
       description: "",
-      contentType: ContentType.Text,
+      contentType: ContentType.TEXT,
       file: null
     })
   }
@@ -41,7 +44,18 @@ export class CreatePostComponent {
     return this.postForm.get("contentType")?.value;
   }
 
-  protected get file(): File {
-    return this.postForm.get("file")?.value;
+  protected onChange(event: any): void {
+    const target = event.target;
+    const file = target.files?.item(0);
+
+    if (file) {
+      this.file = file;
+
+      this.url = URL.createObjectURL(file);
+    }
+  }
+
+  protected get contentUrl(): string {
+    return this.url;
   }
 }

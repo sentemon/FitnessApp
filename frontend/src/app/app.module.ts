@@ -10,7 +10,8 @@ import {AuthModule} from "./features/auth/auth.module";
 import {PostsModule} from "./features/posts/posts.module";
 import {SharedModule} from "./shared/shared.module";
 import {graphql} from "./graphql.config";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor} from "./core/services/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,11 @@ import {HttpClientModule} from "@angular/common/http";
       provide: APOLLO_NAMED_OPTIONS,
       deps: [HttpLink],
       useFactory: graphql
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]

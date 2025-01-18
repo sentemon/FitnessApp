@@ -9,6 +9,7 @@ import {ApolloQueryResult} from "@apollo/client";
 import {QueryResponse} from "../graphql/query.response";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CREATE_POST} from "../graphql/mutations.graphql";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class PostService {
     let existingPosts: Post[] = [
       {
         commentCount: 4,
-        contentType: ContentType.IMAGE,
+        contentType: ContentType.Image,
         contentUrl: "https://www.istockphoto.com/resources/images/PhotoFTLP/P5-NOV-iStock-2158268393.jpg", // No Copyright
         createdAt: new Date(),
         description: "the men play football",
@@ -40,7 +41,7 @@ export class PostService {
       },
       {
         commentCount: 34,
-        contentType: ContentType.IMAGE,
+        contentType: ContentType.Image,
         contentUrl: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg", // No Copyright
         createdAt: new Date(2024, 10, 20),
         description: "I love swimming!",
@@ -52,7 +53,7 @@ export class PostService {
       },
       {
         commentCount: 91,
-        contentType: ContentType.IMAGE,
+        contentType: ContentType.Image,
         contentUrl: "https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg", // No Copyright
         createdAt: new Date(2024, 10, 19),
         description: "Yesterday's challenge was great",
@@ -101,15 +102,11 @@ export class PostService {
     const formData = new FormData();
 
     const operations = JSON.stringify({
-      query: `mutation CreatePost($title: String!, $description: String!, $file: Upload!) {
-        createPost(input: { title: $title, description: $description, contentType: IMAGE, file: $file }) {
-          id title description contentUrl contentType likeCount commentCount createdAt userImageUrl username
-        }
-      }`,
+      query: CREATE_POST,
       variables: {
         title: title,
         description: description,
-        // contentType: ,
+        contentType: contentType,
         file: null
       },
     });
@@ -123,8 +120,7 @@ export class PostService {
 
     formData.append('0', contentFile);
 
-    // Отправляем запрос
-    return this.http.post("http://localhost:8000/post/graphql", formData, {
+    return this.http.post(environment.post_service, formData, {
       headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
     });
   }

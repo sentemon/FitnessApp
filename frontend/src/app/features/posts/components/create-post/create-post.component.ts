@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ContentType} from "../../../../core/enums/content-type.enum";
 import {PostService} from "../../services/post.service";
 import {Router} from "@angular/router";
+import {Post} from "../../models/post.model";
 
 @Component({
   selector: 'app-create-post',
@@ -19,10 +20,10 @@ export class CreatePostComponent {
   constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
     this.postForm = fb.group({
       title: "",
-      description: "",
-      contentType: ContentType.TEXT,
-      file: null
-    })
+        description: "",
+        contentType: ContentType.Text,
+        file: null
+    });
   }
 
   submitPost() {
@@ -30,6 +31,17 @@ export class CreatePostComponent {
       this.postService.addPost(response);
       this.router.navigate(["/"]);
     });
+  }
+
+  protected onChange(event: any): void {
+    const target = event.target;
+    const file = target.files?.item(0);
+
+    if (file) {
+      this.file = file;
+
+      this.url = URL.createObjectURL(file);
+    }
   }
 
   protected get title(): string {
@@ -44,18 +56,9 @@ export class CreatePostComponent {
     return this.postForm.get("contentType")?.value;
   }
 
-  protected onChange(event: any): void {
-    const target = event.target;
-    const file = target.files?.item(0);
-
-    if (file) {
-      this.file = file;
-
-      this.url = URL.createObjectURL(file);
-    }
-  }
-
   protected get contentUrl(): string {
     return this.url;
   }
+
+  protected readonly Date = Date;
 }

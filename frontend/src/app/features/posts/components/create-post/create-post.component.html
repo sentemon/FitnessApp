@@ -6,13 +6,13 @@
       <div class="form-group">
         <label>Post Type:</label>
         <select formControlName="contentType">
-          <option [value]="contentTypes.TEXT">Text</option>
-          <option [value]="contentTypes.IMAGE">Image</option>
-          <option [value]="contentTypes.VIDEO">Video</option>
+          <option [value]="contentTypes.Text">Text</option>
+          <option [value]="contentTypes.Image">Image</option>
+          <option [value]="contentTypes.Video">Video</option>
         </select>
       </div>
 
-      <div *ngIf="contentType == contentTypes.TEXT; else imageTemplate">
+      <div *ngIf="contentType == contentTypes.Text; else imageTemplate">
         <div class="form-group">
           <h4>Title</h4>
           <input formControlName="title" type="text" required />
@@ -25,7 +25,7 @@
       </div>
 
       <ng-template #imageTemplate>
-        <div *ngIf="contentType == contentTypes.IMAGE; else videoTemplate">
+        <div *ngIf="contentType == contentTypes.Image; else videoTemplate">
           <div class="form-group">
             <h4>Title (optional)</h4>
             <input formControlName="title" type="text" />
@@ -56,7 +56,7 @@
 
         <div class="form-group">
           <h4>Upload video</h4>
-<!--          <input formControlName="file" type="file" (change)="onChange($event)" required />-->
+          <input type="file" (change)="onChange($event)" required />
         </div>
       </ng-template>
 
@@ -65,16 +65,25 @@
   </div>
 
   <div class="preview">
-    <h1>Preview</h1>
-    <div class="post-preview">
-      <img src="" alt="Preview Image" />
-      <p class="username">username</p>
-      <p class="date">date</p>
-      <h3 class="post-title">Title: {{ title }}</h3>
-      <img [src]="contentUrl" alt="Content" />
-      <p class="likes">Likes</p>
-      <p class="comments">Comments</p>
-      <p class="description">Description: {{ description }}</p>
+    <div class="post">
+      <div class="content">
+        <header>
+          <img class="image" [src]="contentUrl">
+          <p>username</p>
+          <span class="dot">•</span>
+          <span class="date">{{ Date.now() | date: "mediumDate" }}</span>
+          <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
+        </header>
+        <h3>{{ title }}</h3>
+        <div class="media">
+          <img [src]="contentUrl" />
+        </div>
+        <div class="meta">
+          <app-like></app-like>
+          <app-comment></app-comment>
+        </div>
+        <p>{{ description }}</p>
+      </div>
     </div>
   </div>
 </div>

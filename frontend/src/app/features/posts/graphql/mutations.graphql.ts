@@ -1,11 +1,9 @@
-import gql from "graphql-tag";
-
-export const CREATE_POST = gql`
-  mutation CreatePost($title: String!, $description: String!, $file: Upload) {
+export const CREATE_POST = `
+  mutation CreatePost($title: String!, $description: String!, $contentType: ContentType! $file: Upload) {
     createPost(input: {
       title: $title,
       description: $description,
-      contentType: IMAGE,
+      contentType: $contentType,
       file: $file
     }) {
       id

@@ -8,7 +8,7 @@
       <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
     </header>
     <h3>{{ post.title }}</h3>
-    <div class="media" *ngIf="post.contentType == ContentType.Image">
+    <div class="media">
       <img [src]="post.contentUrl" alt="Post Image" />
     </div>
     <div class="meta">

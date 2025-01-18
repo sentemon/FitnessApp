@@ -7,6 +7,7 @@ import {PostModalComponent} from "./components/post-modal/post-modal.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import {SharedModule} from "../../shared/shared.module";
+import {PostService} from "./services/post.service";
 
 
 
@@ -27,6 +28,9 @@ import {SharedModule} from "../../shared/shared.module";
     SharedModule,
     ReactiveFormsModule,
     NgOptimizedImage,
+  ],
+  providers: [
+    PostService
   ]
 })
 export class PostsModule { }

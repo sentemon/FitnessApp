@@ -3,6 +3,9 @@
   margin-top: 25px;
 
   .new-post {
+    position: absolute;
+    left: 20vw;
+    margin-left: 25px;
     margin-right: 100px;
 
     form {
@@ -27,7 +30,7 @@
       }
 
       h4 {
-        margin: 20px auto;
+        margin-top: 20px;
       }
 
       .title-input, .description-input {
@@ -44,7 +47,6 @@
 
       label[for=file-image], label[for=file-video] {
         display: grid;
-        grid-auto-flow: column;
         justify-items: center;
         align-content: center;
         color: black;
@@ -61,6 +63,10 @@
       }
 
       .submit-button {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        width: 10em;
         appearance: none;
         border: 0.2em solid #1F2833;
         background: hsl(0 0 0/0);
@@ -78,6 +84,10 @@
   }
 
   .preview {
+    //position: absolute;
+    //left: auto;
+    //right: auto;
+
     .post {
       height: auto;
       width: 750px;

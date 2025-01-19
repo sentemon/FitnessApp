@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Post} from "../../models/post.model";
 import {PostService} from "../../services/post.service";
+import {ContentType} from "../../../../core/enums/content-type.enum";
 
 @Component({
   selector: 'app-post-list',
@@ -22,4 +23,6 @@ export class PostListComponent implements OnInit {
   openModal(post: Post): void {
     this.selectedPost = post;
   }
+
+  protected readonly ContentType = ContentType;
 }

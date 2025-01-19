@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ContentType} from "../../../../core/enums/content-type.enum";
 import {PostService} from "../../services/post.service";
 import {Router} from "@angular/router";
-import {Post} from "../../models/post.model";
 
 @Component({
   selector: 'app-create-post',
@@ -21,7 +20,7 @@ export class CreatePostComponent {
     this.postForm = fb.group({
       title: "",
         description: "",
-        contentType: ContentType.Text,
+        contentType: ContentType.Image,
         file: null
     });
   }
@@ -61,4 +60,5 @@ export class CreatePostComponent {
   }
 
   protected readonly Date = Date;
+  protected readonly ContentType = ContentType;
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Post} from "../../models/post.model";
 import {PostService} from "../../services/post.service";
 import {ContentType} from "../../../../core/enums/content-type.enum";
+import {UserService} from "../../../auth/services/user.service";
 
 @Component({
   selector: 'app-post-list',
@@ -10,19 +11,42 @@ import {ContentType} from "../../../../core/enums/content-type.enum";
 })
 export class PostListComponent implements OnInit {
   posts: Post[] = [];
-  selectedPost: Post | null = null;
+  selectedPostForModal: Post | null = null;
+  selectedPostForOptions: Post | null = null;
+  currentUsername!: string;
 
-  constructor(private postService: PostService) { }
+  protected readonly ContentType = ContentType;
+
+  constructor(private postService: PostService, private userService: UserService) {
+
+  }
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(response => {
       this.posts = response
     });
+
+    this.userService.getCurrentUser().subscribe(result => {
+      this.currentUsername = result.username
+      console.log(this.posts);
+      console.log(result);
+    });
+  }
+
+  deletePost(postId: string) {
+    this.postService.deletePost(postId).subscribe(result => {
+      this.posts = this.posts.filter(post => post.id !== postId);
+      console.log(result);
+    });
+
+    this.selectedPostForOptions = null;
   }
 
   openModal(post: Post): void {
-    this.selectedPost = post;
+    this.selectedPostForModal = post;
   }
 
-  protected readonly ContentType = ContentType;
+  openOptions(post: Post): void {
+    this.selectedPostForOptions = post;
+  }
 }

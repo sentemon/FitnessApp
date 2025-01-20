@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import {SharedModule} from "../../shared/shared.module";
 import {PostService} from "./services/post.service";
+import { PostOptionsComponent } from './components/post-options/post-options.component';
 
 
 
@@ -18,6 +19,7 @@ import {PostService} from "./services/post.service";
     PostListComponent,
     PostModalComponent,
     CreatePostComponent,
+    PostOptionsComponent,
   ],
   exports: [
     PostListComponent

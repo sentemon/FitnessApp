@@ -21,7 +21,6 @@ export const GET_ALL_POSTS = gql`
   query AllPost($first: Int!, $lastPostId: String!) {
     allPost(first: $first, lastPostId: $lastPostId) {
       id
-      userId
       title
       description
       contentUrl
@@ -29,6 +28,8 @@ export const GET_ALL_POSTS = gql`
       likeCount
       commentCount
       createdAt
+      userImageUrl
+      username
     }
   }
 `;

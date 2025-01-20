@@ -8,8 +8,9 @@ import {GET_ALL_POSTS, GET_POST} from "../graphql/queries.graphql";
 import {ApolloQueryResult} from "@apollo/client";
 import {QueryResponse} from "../graphql/query.response";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {CREATE_POST} from "../graphql/mutations.graphql";
+import {CREATE_POST, DELETE_POST} from "../graphql/mutations.graphql";
 import {environment} from "../../../../environments/environment";
+import {MutationResponse} from "../graphql/mutation.response";
 
 @Injectable({
   providedIn: 'root'
@@ -133,7 +134,14 @@ export class PostService {
     throw new Error();
   }
 
-  deletePost(id: string): string {
-    throw new Error();
+  deletePost(id: string): Observable<string | undefined> {
+    return this.postClient.mutate<MutationResponse>({
+      mutation: DELETE_POST,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        return response.data?.deletePost;
+      })
+    );
   }
 }

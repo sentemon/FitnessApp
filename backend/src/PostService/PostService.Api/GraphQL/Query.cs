@@ -23,7 +23,7 @@ public class Query
         return result.Response;
     }
     
-    public async Task<IList<Post>> GetAllPost(int first, string lastPostId, [Service] GetAllPostsQueryHandler getAllPostsQueryHandler)
+    public async Task<IList<PostDto>> GetAllPost(int first, string lastPostId, [Service] GetAllPostsQueryHandler getAllPostsQueryHandler)
     {
         var query = new GetAllPostsQuery(first, Guid.Parse(lastPostId));
 

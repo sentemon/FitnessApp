@@ -1,3 +1,5 @@
+import gql from "graphql-tag";
+
 export const CREATE_POST = `
   mutation CreatePost($title: String!, $description: String!, $contentType: ContentType! $file: Upload) {
     createPost(input: {
@@ -17,5 +19,11 @@ export const CREATE_POST = `
       userImageUrl
       username
     }
+  }
+`;
+
+export const DELETE_POST = gql`
+  mutation DeletePost($id: String!) {
+    deletePost(id: $id)
   }
 `;

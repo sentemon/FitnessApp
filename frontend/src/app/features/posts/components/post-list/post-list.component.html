@@ -5,7 +5,14 @@
       <p>{{ post.username }}</p>
       <span class="dot">•</span>
       <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>
-      <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
+      <img class="see-more"
+           *ngIf="post.username == currentUsername"
+           (click)="openOptions(post)"
+           [src]="'assets/more.svg'"
+           height="40px"
+           width="40px"
+           alt="see more..."
+      >
     </header>
     <h3>{{ post.title }}</h3>
     <div class="media">
@@ -20,7 +27,14 @@
 </div>
 
 <app-post-modal
-  *ngIf="selectedPost"
-  [post]="selectedPost"
-  (close)="selectedPost = null"
+  *ngIf="selectedPostForModal"
+  [post]="selectedPostForModal"
+  (close)="selectedPostForModal = null"
 ></app-post-modal>
+
+<app-post-options
+  *ngIf="selectedPostForOptions"
+  [post]="selectedPostForOptions"
+  (close)="selectedPostForOptions = null"
+  (delete)="deletePost($event)"
+></app-post-options>

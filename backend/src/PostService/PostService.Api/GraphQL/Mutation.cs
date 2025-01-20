@@ -49,10 +49,10 @@ public class Mutation
         return result.Response;
     }
 
-    public async Task<string> DeletePost(Guid id, [Service] DeletePostCommandHandler deletePostCommandHandler)
+    public async Task<string> DeletePost(string id, [Service] DeletePostCommandHandler deletePostCommandHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var command = new DeletePostCommand(id, userId);
+        var command = new DeletePostCommand(Guid.Parse(id), userId);
 
         var result = await deletePostCommandHandler.HandleAsync(command);
 

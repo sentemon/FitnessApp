@@ -28,8 +28,6 @@ export class PostListComponent implements OnInit {
 
     this.userService.getCurrentUser().subscribe(result => {
       this.currentUsername = result.username
-      console.log(this.posts);
-      console.log(result);
     });
   }
 

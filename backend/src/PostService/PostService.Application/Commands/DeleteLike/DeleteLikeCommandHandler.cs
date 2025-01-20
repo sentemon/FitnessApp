@@ -17,7 +17,7 @@ public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, strin
 
     public async Task<IResult<string, Error>> HandleAsync(DeleteLikeCommand command)
     {
-        var like = await _context.Likes.FirstOrDefaultAsync(l => l.Id == command.Id);
+        var like = await _context.Likes.FirstOrDefaultAsync(l => l.PostId == command.PostId);
 
         if (like == null)
         {

@@ -21,7 +21,7 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();
         
-        var command = new DeleteLikeCommand(like.Response.Id, like.Response.PostId, like.Response.UserId);
+        var command = new DeleteLikeCommand(like.Response.PostId, like.Response.UserId);
         
         // Act 
         var result = await Fixture.DeleteLikeCommandHandler.HandleAsync(command);
@@ -41,11 +41,10 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldFail_WhenLikeNotFound()
     {
         // Arrange
-        var nonExistentLikeId = Guid.Empty;
         var postId = Guid.NewGuid();
         var userId = Fixture.ExistingUser.Id;
 
-        var command = new DeleteLikeCommand(nonExistentLikeId, postId, userId);
+        var command = new DeleteLikeCommand(postId, userId);
 
         // Act
         var result = await Fixture.DeleteLikeCommandHandler.HandleAsync(command);
@@ -71,7 +70,7 @@ public class DeleteLikeTests(TestFixture fixture) : TestBase(fixture)
         var like = await Fixture.AddLikeCommandHandler.HandleAsync(commandLike);
         like.Response.Should().NotBeNull();
         
-        var command = new DeleteLikeCommand(like.Response.Id, like.Response.PostId, anotherUserId);
+        var command = new DeleteLikeCommand(like.Response.PostId, anotherUserId);
 
         // Act
         var result = await Fixture.DeleteLikeCommandHandler.HandleAsync(command);

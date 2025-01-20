@@ -27,3 +27,27 @@ export const DELETE_POST = gql`
     deletePost(id: $id)
   }
 `;
+
+
+export const ADD_LIKE = gql`
+  mutation AddLike($postId: String!) {
+    addLike(postId: $postId) {
+      id
+      postId
+      userId
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_LIKE = gql`
+  mutation DeleteLike($postId: String!) {
+    deleteLike(postId: $postId)
+  }
+`;
+
+export const IS_POST_LIKED = gql`
+  query IsPostLiked($postId: String!) {
+    isPostLiked(postId: $postId)
+  }
+`;

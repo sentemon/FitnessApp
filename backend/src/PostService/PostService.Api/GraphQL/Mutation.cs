@@ -79,10 +79,10 @@ public class Mutation
         return result.Response;
     }
     
-    public async Task<string> DeleteComment(Guid id, Guid postId, [Service] DeleteCommentCommandHandler deleteCommentCommandHandler)
+    public async Task<string> DeleteComment(string id, Guid postId, [Service] DeleteCommentCommandHandler deleteCommentCommandHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var command = new DeleteCommentCommand(id, postId, userId);
+        var command = new DeleteCommentCommand(Guid.Parse(id), postId, userId);
 
         var result = await deleteCommentCommandHandler.HandleAsync(command);
 
@@ -94,10 +94,10 @@ public class Mutation
         return result.Response;
     }
     
-    public async Task<LikeDto> AddLike(Guid postId, [Service] AddLikeCommandHandler addLikeCommandHandler)
+    public async Task<LikeDto> AddLike(string postId, [Service] AddLikeCommandHandler addLikeCommandHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var command = new AddLikeCommand(postId, userId);
+        var command = new AddLikeCommand(Guid.Parse(postId), userId);
 
         var result = await addLikeCommandHandler.HandleAsync(command);
 
@@ -109,10 +109,10 @@ public class Mutation
         return result.Response;
     }
     
-    public async Task<string> DeleteLike(Guid id, Guid postId, [Service] DeleteLikeCommandHandler deleteLikeCommandHandler)
+    public async Task<string> DeleteLike(string postId, [Service] DeleteLikeCommandHandler deleteLikeCommandHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var command = new DeleteLikeCommand(id, postId, userId);
+        var command = new DeleteLikeCommand(Guid.Parse(postId), userId);
 
         var result = await deleteLikeCommandHandler.HandleAsync(command);
 

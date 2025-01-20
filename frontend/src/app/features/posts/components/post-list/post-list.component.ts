@@ -23,7 +23,7 @@ export class PostListComponent implements OnInit {
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(response => {
-      this.posts = response
+      this.posts = [...response];
     });
 
     this.userService.getCurrentUser().subscribe(result => {
@@ -46,5 +46,12 @@ export class PostListComponent implements OnInit {
 
   openOptions(post: Post): void {
     this.selectedPostForOptions = post;
+  }
+
+  updatePost(updatedPost: Post): void {
+    const index = this.posts.findIndex(post => post.id === updatedPost.id);
+    if (index !== -1) {
+      this.posts[index] = updatedPost;
+    }
   }
 }

@@ -1,14 +1,23 @@
+using System.Security.Claims;
 using PostService.Application.DTOs;
 using PostService.Application.Queries.GetAllComments;
 using PostService.Application.Queries.GetAllLikes;
 using PostService.Application.Queries.GetAllPosts;
 using PostService.Application.Queries.GetPost;
+using PostService.Application.Queries.IsPostLiked;
 using PostService.Domain.Entities;
 
 namespace PostService.Api.GraphQL;
 
 public class Query
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public Query(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+
     public async Task<PostDto> GetPost(string id, [Service] GetPostQueryHandler getPostQueryHandler)
     {
         var query = new GetPostQuery(Guid.Parse(id));
@@ -56,6 +65,21 @@ public class Query
         var query = new GetAllLikesQuery(Guid.Parse(postId), first);
 
         var result = await getAllLikesQueryHandler.HandleAsync(query);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<bool> IsPostLiked(string postId, [Service] IsPostLikedQueryHandler isPostLikedQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var query = new IsPostLikedQuery(Guid.Parse(postId), userId);
+        
+        var result = await isPostLikedQueryHandler.HandleAsync(query);
 
         if (!result.IsSuccess)
         {

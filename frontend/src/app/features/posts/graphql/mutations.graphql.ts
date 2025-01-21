@@ -46,6 +46,18 @@ export const CREATE_COMMENT = gql`
   }
 `;
 
+export const GET_ALL_COMMENTS = gql`
+  query AllComments($postId: String!, $first: Int!) {
+    allComments(postId: $postId, first: $first) {
+      id
+      postId
+      userId
+      username
+      content
+      createdAt
+    }
+  }
+`;
 
 export const ADD_LIKE = gql`
   mutation AddLike($postId: String!) {

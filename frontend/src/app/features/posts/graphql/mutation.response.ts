@@ -6,6 +6,7 @@ export interface MutationResponse {
   createPost: Post;
   deletePost: string;
 
+  allComments: Comment[];
   createComment: Comment;
 
   addLike: Like;

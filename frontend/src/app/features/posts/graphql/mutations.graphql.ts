@@ -28,6 +28,24 @@ export const DELETE_POST = gql`
   }
 `;
 
+export const CREATE_COMMENT = gql`
+  mutation CreateComment($postId: String!, $content: String!) {
+    createComment(
+      input: {
+        postId: $postId
+        content: $content
+      }
+    ) {
+      id
+      postId
+      userId
+      username
+      content
+      createdAt
+    }
+  }
+`;
+
 
 export const ADD_LIKE = gql`
   mutation AddLike($postId: String!) {

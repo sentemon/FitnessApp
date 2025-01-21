@@ -1,12 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Post} from "../../models/post.model";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {Comment} from "../../models/comment.model";
 import {CommentService} from "../../services/comment.service";
-import {FormsModule} from "@angular/forms";
-import {CreateCommentDto} from "../../requests/create-comment.dto";
-import {CommentComponent} from "../comment/comment.component";
-import {LikeComponent} from "../like/like.component";
 
 @Component({
   selector: 'app-post-modal',
@@ -41,12 +36,7 @@ export class PostModalComponent implements OnInit {
     if (commentContent.trim() === "")
       return;
 
-    const newCommentDto: CreateCommentDto = {
-      postId: this.post.id,
-      content: commentContent
-    }
-
-    this.commentService.addComment(newCommentDto).subscribe(comment =>{
+    this.commentService.addComment(this.post.id, commentContent).subscribe(comment =>{
       this.comments.push(comment);
       this.newComment = "";
     });

@@ -30,6 +30,7 @@
   *ngIf="selectedPostForModal"
   [post]="selectedPostForModal"
   (close)="selectedPostForModal = null"
+  (postChange)="updatePost($event)"
 ></app-post-modal>
 
 <app-post-options

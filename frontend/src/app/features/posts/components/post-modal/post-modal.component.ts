@@ -13,6 +13,8 @@ export class PostModalComponent implements OnInit {
   @ViewChild('scrollAnchor') scrollAnchor!: ElementRef;
 
   @Input() post!: Post;
+  @Output() postChange = new EventEmitter<Post>();
+
   @Output() close = new EventEmitter<void>();
 
   comments: Comment[] = [];
@@ -30,7 +32,7 @@ export class PostModalComponent implements OnInit {
     this.close.emit();
   }
 
-  sendComment(event: SubmitEvent, commentContent: string) {
+  sendComment(event: SubmitEvent, commentContent: string): void {
     event.preventDefault();
 
     if (commentContent.trim() === "")
@@ -38,11 +40,21 @@ export class PostModalComponent implements OnInit {
 
     this.commentService.addComment(this.post.id, commentContent).subscribe(comment =>{
       this.comments.push(comment);
+      const updatedPost = { ...this.post, commentCount: this.post.commentCount + 1 };
+
+      this.post = updatedPost
+      this.postChange.emit(updatedPost);
+
       this.newComment = "";
     });
 
     setTimeout((): void => {
       this.scrollAnchor.nativeElement.scrollIntoView({ behavior: "smooth" })
     }, 0);
+  }
+
+  updatePost(updatedPost: Post): void {
+    this.post = updatedPost;
+    this.postChange.emit(updatedPost);
   }
 }

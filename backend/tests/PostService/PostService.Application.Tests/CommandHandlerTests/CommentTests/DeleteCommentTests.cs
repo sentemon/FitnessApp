@@ -15,7 +15,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
         var postCommentCount = Fixture.ExistingPost.CommentCount;
 
         var content = "This is a comment";
@@ -26,7 +26,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
         
-        var command = new DeleteCommentCommand(comment.Response.Id, postId, userId);
+        var command = new DeleteCommentCommand(comment.Response.Id, Guid.Parse(postId), userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -41,7 +41,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         deletedComment.Should().BeNull();
 
         var updatedPost = await Fixture.PostDbContextFixture.Posts
-            .FirstAsync(p => p.Id == postId);
+            .FirstAsync(p => p.Id == Guid.Parse(postId));
         updatedPost.CommentCount.Should().Be(postCommentCount);
     }
 
@@ -72,7 +72,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
         var content = "This is a comment";
         
@@ -82,7 +82,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
 
-        var command = new DeleteCommentCommand(comment.Response.Id, postId, anotherUserId);
+        var command = new DeleteCommentCommand(comment.Response.Id, Guid.Parse(postId), anotherUserId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);

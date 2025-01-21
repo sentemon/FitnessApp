@@ -1,7 +1,7 @@
 namespace PostService.Application.DTOs;
 
 public record UpdatePostDto(
-    Guid Id, 
+    string Id, 
     string Title,
     string Description
 );

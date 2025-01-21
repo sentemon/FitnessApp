@@ -14,7 +14,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
         var commandComment1 = new AddCommentCommand(new CreateCommentDto(postId, "First comment"), userId);
         var commandComment2 = new AddCommentCommand(new CreateCommentDto(postId, "Second comment"), userId);
@@ -22,7 +22,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
         var comment1 = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment1);
         var comment2 = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment2);
         
-        var query = new GetAllCommentsQuery(postId);
+        var query = new GetAllCommentsQuery(Guid.Parse(postId));
 
         // Act
         var result = await Fixture.GetAllCommentsQueryHandler.HandleAsync(query);
@@ -56,7 +56,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
 
         var comments = new List<CreateCommentDto>
@@ -72,7 +72,7 @@ public class GetAllCommentsTests(TestFixture fixture) : TestBase(fixture)
             await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         }
 
-        var query = new GetAllCommentsQuery(postId, First: 2);
+        var query = new GetAllCommentsQuery(Guid.Parse(postId), First: 2);
 
         // Act
         var result = await Fixture.GetAllCommentsQueryHandler.HandleAsync(query);

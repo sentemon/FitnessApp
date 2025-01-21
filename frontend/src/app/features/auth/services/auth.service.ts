@@ -61,8 +61,10 @@ export class AuthService {
         const token = response.data?.register;
 
         if (token) {
+          this.isAuthenticatedSubject.next(true);
           return true;
         } else {
+          this.isAuthenticatedSubject.next(false);
           console.error("Registration failed: no token received.");
           return false;
         }

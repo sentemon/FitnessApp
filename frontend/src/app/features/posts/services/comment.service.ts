@@ -3,7 +3,7 @@ import {map, Observable} from "rxjs";
 import {Comment} from "../models/comment.model";
 import {Apollo, ApolloBase} from "apollo-angular";
 import {MutationResponse} from "../graphql/mutation.response";
-import {CREATE_COMMENT, GET_ALL_COMMENTS} from "../graphql/mutations.graphql";
+import {CREATE_COMMENT, DELETE_COMMENT, GET_ALL_COMMENTS} from "../graphql/mutations.graphql";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,10 @@ export class CommentService {
     this.postClient = apollo.use("posts");
   }
 
-  public getAllComments(postId: string): Observable<Comment[]> {
+  public getAllComments(postId: string, first: number): Observable<Comment[]> {
     return this.postClient.mutate<MutationResponse>({
       mutation: GET_ALL_COMMENTS,
-      variables: { postId, first: 10 }
+      variables: { postId, first }
     }).pipe(
       map(response => {
         return response.data!.allComments;
@@ -33,6 +33,17 @@ export class CommentService {
     }).pipe(
       map(response => {
         return response.data!.createComment;
+      })
+    )
+  }
+
+  deleteComment(id: string): Observable<string> {
+    return this.postClient.mutate<MutationResponse>({
+      mutation: DELETE_COMMENT,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        return response.data!.deleteComment;
       })
     )
   }

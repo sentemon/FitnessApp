@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {Post} from "../../models/post.model";
 import {Comment} from "../../models/comment.model";
 import {CommentService} from "../../services/comment.service";
+import {UserService} from "../../../auth/services/user.service";
 
 @Component({
   selector: 'app-post-modal',
@@ -20,11 +21,17 @@ export class PostModalComponent implements OnInit {
   comments: Comment[] = [];
   newComment: string = "";
 
-  constructor(private commentService: CommentService) { }
+  protected currentUsername!: string;
+
+  constructor(private commentService: CommentService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.commentService.getAllComments(this.post.id).subscribe(comments => {
+    this.commentService.getAllComments(this.post.id, 25).subscribe(comments => {
       this.comments = comments;
+    });
+
+    this.userService.getCurrentUser().subscribe(result => {
+      this.currentUsername = result.username;
     });
   }
 
@@ -38,9 +45,9 @@ export class PostModalComponent implements OnInit {
     if (commentContent.trim() === "")
       return;
 
-    this.commentService.addComment(this.post.id, commentContent).subscribe(comment =>{
+    this.commentService.addComment(this.post.id, commentContent).subscribe(comment => {
       this.comments.push(comment);
-      const updatedPost = { ...this.post, commentCount: this.post.commentCount + 1 };
+      const updatedPost = {...this.post, commentCount: this.post.commentCount + 1};
 
       this.post = updatedPost
       this.postChange.emit(updatedPost);
@@ -49,8 +56,18 @@ export class PostModalComponent implements OnInit {
     });
 
     setTimeout((): void => {
-      this.scrollAnchor.nativeElement.scrollIntoView({ behavior: "smooth" })
+      this.scrollAnchor.nativeElement.scrollIntoView({behavior: "smooth"})
     }, 0);
+  }
+
+  deleteComment(id: string) {
+    this.commentService.deleteComment(id).subscribe(() => {
+      this.comments = this.comments.filter(comment => comment.id !== id);
+
+      const updatedPost = {...this.post, commentCount: this.post.commentCount - 1};
+      this.post = updatedPost
+      this.postChange.emit(updatedPost);
+    });
   }
 
   updatePost(updatedPost: Post): void {

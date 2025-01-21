@@ -46,6 +46,12 @@ export const CREATE_COMMENT = gql`
   }
 `;
 
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($id: String!) {
+    deleteComment(id: $id)
+  }
+`;
+
 export const GET_ALL_COMMENTS = gql`
   query AllComments($postId: String!, $first: Int!) {
     allComments(postId: $postId, first: $first) {

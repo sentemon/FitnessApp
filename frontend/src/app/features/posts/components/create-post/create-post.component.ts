@@ -27,7 +27,7 @@ export class CreatePostComponent {
 
   submitPost() {
     this.postService.createPost(this.title, this.description, this.contentType, this.file).subscribe(response => {
-      this.postService.addPost(response);
+      this.postService.addPost({ ...response, contentUrl: this.contentUrl });
       this.router.navigate(["/"]);
     });
   }

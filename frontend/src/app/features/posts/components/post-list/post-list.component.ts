@@ -32,9 +32,8 @@ export class PostListComponent implements OnInit {
   }
 
   deletePost(postId: string) {
-    this.postService.deletePost(postId).subscribe(result => {
+    this.postService.deletePost(postId).subscribe(() => {
       this.posts = this.posts.filter(post => post.id !== postId);
-      console.log(result);
     });
 
     this.selectedPostForOptions = null;

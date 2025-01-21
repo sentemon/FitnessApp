@@ -39,7 +39,7 @@ export class RegisterComponent {
         this.registerForm.value.password
       ).subscribe(result => {
         if (result) {
-          this.router.navigate(["/"]).then(r => console.log(r.valueOf()))
+          this.router.navigate(["/"]);
         } else {
           console.error("Something went wrong during registration.")
         }

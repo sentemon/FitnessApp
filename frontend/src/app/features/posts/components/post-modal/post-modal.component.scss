@@ -44,6 +44,8 @@
       img {
         width: 100%;
         height: auto;
+        object-fit: cover;
+        aspect-ratio: 16 / 9;
         margin-bottom: 16px;
         border-radius: 8px;
       }
@@ -74,6 +76,18 @@
         flex: 1;
         padding: 16px;
         overflow-y: auto;
+
+        .comment {
+          display: flex;
+
+          .delete {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+            cursor: pointer;
+            margin-left: auto;
+          }
+        }
       }
 
       .form-container {

@@ -8,6 +8,7 @@ export interface MutationResponse {
 
   allComments: Comment[];
   createComment: Comment;
+  deleteComment: string;
 
   addLike: Like;
   deleteLike: string;

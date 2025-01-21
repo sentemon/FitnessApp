@@ -18,7 +18,7 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
 
     public async Task<IResult<PostDto, Error>> HandleAsync(UpdatePostCommand command)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.UpdatePost.Id);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == Guid.Parse(command.UpdatePost.Id));
 
         if (post == null)
         {

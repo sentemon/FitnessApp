@@ -24,7 +24,7 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
 
     public async Task<IResult<CommentDto, Error>> HandleAsync(AddCommentCommand command)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.CreateComment.PostId);
+        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == Guid.Parse(command.CreateComment.PostId));
         
         if (post == null)
         {
@@ -46,8 +46,8 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand, Comme
         }
         
         var comment = new Comment(
-            command.CreateComment.PostId,
-            command.UserId,
+            post.Id,
+            post.UserId,
             user.Username,
             command.CreateComment.Content
         );

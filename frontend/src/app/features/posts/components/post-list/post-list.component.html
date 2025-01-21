@@ -1,18 +1,25 @@
 <div class="post" *ngFor="let post of posts" xmlns="http://www.w3.org/1999/html">
   <div class="content">
     <header>
-      <img class="image" [src]="post.imageUrl" alt="Image">
+      <img class="image" [src]="post.userImageUrl ?? 'assets/profile.svg'">
       <p>{{ post.username }}</p>
       <span class="dot">•</span>
       <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>
-      <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
+      <img class="see-more"
+           *ngIf="post.username == currentUsername"
+           (click)="openOptions(post)"
+           [src]="'assets/more.svg'"
+           height="40px"
+           width="40px"
+           alt="see more..."
+      >
     </header>
     <h3>{{ post.title }}</h3>
-    <div class="media" *ngIf="post.contentType == ContentType.Image">
-      <img [src]="post.contentUrl" alt="Post Image" />
+    <div class="media">
+      <img *ngIf="post.contentType == ContentType.Image || post.contentType == ContentType.Video" [src]="post.contentUrl"/>
     </div>
     <div class="meta">
-      <app-like [post]="post"></app-like>
+      <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
       <app-comment (click)="openModal(post)" [post]="post"></app-comment>
     </div>
     <p>{{ post.description }}</p>
@@ -20,7 +27,15 @@
 </div>
 
 <app-post-modal
-  *ngIf="selectedPost"
-  [post]="selectedPost"
-  (close)="selectedPost = null"
+  *ngIf="selectedPostForModal"
+  [post]="selectedPostForModal"
+  (close)="selectedPostForModal = null"
+  (postChange)="updatePost($event)"
 ></app-post-modal>
+
+<app-post-options
+  *ngIf="selectedPostForOptions"
+  [post]="selectedPostForOptions"
+  (close)="selectedPostForOptions = null"
+  (delete)="deletePost($event)"
+></app-post-options>

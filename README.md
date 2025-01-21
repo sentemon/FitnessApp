@@ -108,17 +108,9 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
   ```bash
   docker-compose up
   ```
-  
-### Setting Up Keycloak Realm
-
-1. Import the realm configuration from `./keycloak/fitness-app-realm.json`.
-2. Configure realm by `localhost:8080`.
-
-> **Note:** Automating Keycloak setup is planned for future releases.
 
 ---
 
 ## Future Plans
 
 - **Kubernetes Support:** Planned deployment and orchestration.
-- **Automated Realm Configuration:** To streamline Keycloak setup.

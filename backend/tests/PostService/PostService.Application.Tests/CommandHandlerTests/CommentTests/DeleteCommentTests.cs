@@ -15,7 +15,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
         var postCommentCount = Fixture.ExistingPost.CommentCount;
 
         var content = "This is a comment";
@@ -26,7 +26,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
         
-        var command = new DeleteCommentCommand(comment.Response.Id, postId, userId);
+        var command = new DeleteCommentCommand(comment.Response.Id, userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -41,7 +41,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         deletedComment.Should().BeNull();
 
         var updatedPost = await Fixture.PostDbContextFixture.Posts
-            .FirstAsync(p => p.Id == postId);
+            .FirstAsync(p => p.Id == Guid.Parse(postId));
         updatedPost.CommentCount.Should().Be(postCommentCount);
     }
 
@@ -50,11 +50,10 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
 
         var id = Guid.Empty;
         
-        var deleteCommand = new DeleteCommentCommand(id, postId, userId);
+        var deleteCommand = new DeleteCommentCommand(id, userId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(deleteCommand);
@@ -72,7 +71,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var userId = Fixture.ExistingUser.Id;
         var anotherUserId = Guid.NewGuid().ToString();
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
         var content = "This is a comment";
         
@@ -82,7 +81,7 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         var comment = await Fixture.AddCommentCommandHandler.HandleAsync(commandComment);
         comment.Response.Should().NotBeNull();
 
-        var command = new DeleteCommentCommand(comment.Response.Id, postId, anotherUserId);
+        var command = new DeleteCommentCommand(comment.Response.Id, anotherUserId);
 
         // Act
         var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
@@ -92,25 +91,5 @@ public class DeleteCommentTests(TestFixture fixture) : TestBase(fixture)
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         result.Response.Should().BeNull();
         result.Error.Message.Should().Be("You do not have permission to delete this comment.");
-    }
-
-    [Fact]
-    public async Task HandleAsync_ShouldFail_WhenPostNotFound()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var postId = Guid.Empty;
-        var userId = Fixture.ExistingUser.Id;
-
-        var command = new DeleteCommentCommand(id, postId, userId);
-
-        // Act
-        var result = await Fixture.DeleteCommentCommandHandler.HandleAsync(command);
-
-        // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        result.Response.Should().BeNull();
-        result.Error.Message.Should().Be("Post not found.");
     }
 }

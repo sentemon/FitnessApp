@@ -10,8 +10,7 @@
         <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <img [src]="post.contentUrl" alt="Post Image" />
         <div class="meta">
-          <!-- ToDo: fix opportunity to make infinity likes -->
-          <app-like [post]="post"></app-like>
+          <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
           <app-comment [post]="post"></app-comment>
         </div>
         <p class="description">{{ post.description }}</p>
@@ -22,6 +21,7 @@
           <h3>Comments</h3>
           <div *ngFor="let comment of comments" class="comment">
             <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
+            <span class="delete" (click)="deleteComment(comment.id)" *ngIf="comment.username === this.currentUsername">×</span>
           </div>
           <div #scrollAnchor></div>
         </div>

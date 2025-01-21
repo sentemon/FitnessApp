@@ -1,0 +1,90 @@
+<div class="common">
+  <div class="new-post">
+    <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+      <div *ngIf="contentType == ContentType.Video"><h1>In progress</h1></div>
+      <h1>New Post</h1>
+
+      <div class="form-group">
+        <label>Post Type:</label>
+        <select formControlName="contentType">
+          <option [value]="contentTypes.Text">Text</option>
+          <option [value]="contentTypes.Image">Image</option>
+          <option [value]="contentTypes.Video">Video</option>
+        </select>
+      </div>
+
+      <div *ngIf="contentType == contentTypes.Text; else imageTemplate">
+        <div class="form-group">
+          <h4>Title</h4>
+          <input class="title-input" formControlName="title" type="text" required />
+        </div>
+
+        <div class="form-group">
+          <h4>Description</h4>
+          <input class="description-input" formControlName="description" type="text" required />
+        </div>
+      </div>
+
+      <ng-template #imageTemplate>
+        <div *ngIf="contentType == contentTypes.Image; else videoTemplate">
+          <div class="form-group">
+            <h4>Title (optional)</h4>
+            <input class="title-input" formControlName="title" type="text" />
+          </div>
+
+          <div class="form-group">
+            <h4>Description (optional)</h4>
+            <input class="description-input" formControlName="description" type="text" />
+          </div>
+
+          <div class="form-group">
+            <input id="file-image" type="file" (change)="onChange($event)" required />
+            <label for="file-image">Upload Image</label>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #videoTemplate>
+        <div class="form-group">
+          <h4>Title (optional)</h4>
+          <input class="title-input" formControlName="title" type="text" />
+        </div>
+
+        <div class="form-group">
+          <h4>Description (optional)</h4>
+          <input class="description-input" formControlName="description" type="text" />
+        </div>
+
+        <div class="form-group">
+          <input id="file-video" type="file" (change)="onChange($event)" required />
+          <label for="file-video">Upload Video</label>
+        </div>
+      </ng-template>
+
+      <button type="submit" class="submit-button">Create</button>
+    </form>
+  </div>
+
+  <div class="preview">
+    <div class="post">
+      <div class="content">
+        <header>
+          <img class="image" src="assets/profile.svg" alt="">
+          <p>username</p>
+          <span class="dot">•</span>
+          <span class="date">{{ Date.now() | date: "mediumDate" }}</span>
+          <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
+        </header>
+        <h3>{{ title }}</h3>
+        <div class="media">
+          <img *ngIf="contentType == ContentType.Image || contentType == ContentType.Video" [src]="contentUrl"  alt=""/>
+        </div>
+        <div class="meta">
+          <app-like></app-like>
+          <app-comment></app-comment>
+        </div>
+        <p>{{ description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

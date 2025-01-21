@@ -17,13 +17,6 @@ public class DeleteCommentCommandHandler : ICommandHandler<DeleteCommentCommand,
 
     public async Task<IResult<string, Error>> HandleAsync(DeleteCommentCommand command)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == command.PostId);
-
-        if (post == null)
-        {
-            return Result<string>.Failure(new Error(ResponseMessages.PostNotFound));
-        }
-        
         var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == command.Id);
 
         if (comment == null)
@@ -35,6 +28,8 @@ public class DeleteCommentCommandHandler : ICommandHandler<DeleteCommentCommand,
         {
             return Result<string>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToDeleteThisComment));
         }
+        
+        var post = await _context.Posts.FirstAsync(p => p.Id == comment.PostId);
         
         post.DecrementCommentCount();
         _context.Remove(comment);

@@ -1,24 +1,33 @@
-import { Injectable } from '@angular/core';
-import {Apollo} from "apollo-angular";
-import {CreatePostDto} from "../requests/create-post.dto";
-import {Observable, of} from "rxjs";
+import {Injectable} from '@angular/core';
+import {Apollo, ApolloBase} from "apollo-angular";
+import {BehaviorSubject, map, Observable, tap} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
+import {GET_ALL_POSTS, GET_POST} from "../graphql/queries.graphql";
+import {ApolloQueryResult} from "@apollo/client";
+import {QueryResponse} from "../graphql/query.response";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {CREATE_POST, DELETE_POST} from "../graphql/mutations.graphql";
+import {environment} from "../../../../environments/environment";
+import {MutationResponse} from "../graphql/mutation.response";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
+  private postClient: ApolloBase;
 
-  constructor(private apollo: Apollo) { }
+  private postsSubject = new BehaviorSubject<Post[]>([]);
+  private posts$ = this.postsSubject.asObservable();
 
-  getPost(id: string): Observable<Post> {
-    throw new Error();
-  }
+  constructor(private apollo: Apollo, private http: HttpClient) {
+    this.postClient = apollo.use("posts");
 
-  getAllPosts(): Observable<Post[]> {
-    return of([
+    let first = 10;
+    let lastPostId = "4bb6a384-e0d7-43df-844f-efb017c02d7d";
+
+    let existingPosts: Post[] = [
       {
         commentCount: 4,
         contentType: ContentType.Image,
@@ -29,7 +38,7 @@ export class PostService {
         likeCount: 56,
         title: "Title",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "assets/profile.svg"
       },
       {
         commentCount: 34,
@@ -41,7 +50,7 @@ export class PostService {
         likeCount: 193,
         title: "",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "assets/profile.svg"
       },
       {
         commentCount: 91,
@@ -53,20 +62,86 @@ export class PostService {
         likeCount: 393,
         title: "Title",
         username: "example",
-        imageUrl: "assets/profile.svg"
+        userImageUrl: "http://localhost:8000/file/files/1d7ce09a-e88b-424f-854c-516b739426dd"
       }
-    ]);
+    ];
+
+    this.postClient.query<QueryResponse>({
+      query: GET_ALL_POSTS,
+      variables: { first, lastPostId }
+    }).pipe(
+      tap(response => {
+        let posts = existingPosts.concat(response.data.allPost);
+
+        posts.forEach(post => this.addPost(post));
+      })
+    ).subscribe();
   }
 
-  createPost(createPost: CreatePostDto): Observable<Post> {
-    throw new Error();
+  getAllPosts() {
+    return this.posts$;
+  }
+
+  getPost(id: string): Observable<Post | ApolloQueryResult<QueryResponse>> {
+    return this.postClient.query<QueryResponse>({
+      query: GET_POST,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        const post = response.data.post;
+
+        if (post) {
+          return post;
+        }
+
+        return response;
+      })
+    );
+  }
+
+  createPost(title: string, description: string, contentType: ContentType, contentFile: File): Observable<any> {
+    const formData = new FormData();
+
+    const operations = JSON.stringify({
+      query: CREATE_POST,
+      variables: {
+        title: title,
+        description: description,
+        contentType: contentType,
+        file: null
+      },
+    });
+
+    const map = JSON.stringify({
+      '0': ['variables.file']
+    });
+
+    formData.append("operations", operations);
+    formData.append("map", map);
+
+    formData.append('0', contentFile);
+
+    return this.http.post(environment.post_service, formData, {
+      headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
+    });
+  }
+
+  addPost(newPost: Post) {
+    this.postsSubject.next([newPost, ...this.postsSubject.value]);
   }
 
   updatePost(updatePost: UpdatePostDto): Observable<Post> {
     throw new Error();
   }
 
-  deletePost(id: string): string {
-    throw new Error();
+  deletePost(id: string): Observable<string | undefined> {
+    return this.postClient.mutate<MutationResponse>({
+      mutation: DELETE_POST,
+      variables: { id }
+    }).pipe(
+      map(response => {
+        return response.data?.deletePost;
+      })
+    );
   }
 }

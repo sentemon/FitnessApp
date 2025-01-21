@@ -1,27 +1,39 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Post} from "../../models/post.model";
-import {NgClass} from "@angular/common";
+import {LikeService} from "../../services/like.service";
 
 @Component({
   selector: 'app-like',
-  standalone: true,
-  imports: [
-    NgClass
-  ],
   templateUrl: './like.component.html',
   styleUrl: './like.component.scss'
 })
-export class LikeComponent {
+export class LikeComponent implements OnInit {
   @Input() post!: Post;
+  @Output() likeChange = new EventEmitter<Post>();
+
   isLiked: boolean = false;
 
-  toggleLike(): void {
-    this.isLiked = !this.isLiked;
+  constructor(private likeService: LikeService) { }
 
-    if (this.isLiked) {
-      this.post.likeCount++;
+  ngOnInit(): void {
+    this.likeService.isPostLiked(this.post.id).subscribe(isLiked => {
+      this.isLiked = isLiked;
+    });
+  }
+
+  toggleLike(): void {
+    if (!this.isLiked) {
+      this.likeService.addLike(this.post.id).subscribe(() => {
+        this.isLiked = true;
+        const updatedPost = {...this.post, likeCount: this.post.likeCount + 1 }
+        this.likeChange.emit(updatedPost);
+      });
     } else {
-      this.post.likeCount--;
+      this.likeService.deleteLike(this.post.id).subscribe(() => {
+        this.isLiked = false;
+        const updatedPost = {...this.post, likeCount: this.post.likeCount - 1 }
+        this.likeChange.emit(updatedPost);
+      });
     }
   }
 }

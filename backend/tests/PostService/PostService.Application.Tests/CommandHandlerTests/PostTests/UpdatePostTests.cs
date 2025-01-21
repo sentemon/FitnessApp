@@ -21,7 +21,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var newTitle = "New Title";
         var newDescription = "New Description";
         
-        var updatePost = new UpdatePostDto(post.Id, newTitle, newDescription);
+        var updatePost = new UpdatePostDto(post.Id.ToString(), newTitle, newDescription);
 
         var command = new UpdatePostCommand(updatePost, userId);
 
@@ -39,7 +39,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
     [Fact] public async Task HandleAsync_ShouldFail_WhenPostDoesNotExist()
     {
         // Arrange
-        var id = Guid.Empty;
+        var id = Guid.Empty.ToString();
         var newTitle = "New Title";
         var newDescription = "New Description";
         
@@ -71,7 +71,7 @@ public class UpdatePostTests(TestFixture fixture) : TestBase(fixture)
         var newTitle = "New Title";
         var newDescription = "New Description";
         
-        var updatePost = new UpdatePostDto(post.Id, newTitle, newDescription);
+        var updatePost = new UpdatePostDto(post.Id.ToString(), newTitle, newDescription);
         
         var command = new UpdatePostCommand(updatePost, anotherUserId);
         

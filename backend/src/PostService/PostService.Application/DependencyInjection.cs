@@ -14,6 +14,7 @@ using PostService.Application.Queries.GetAllComments;
 using PostService.Application.Queries.GetAllLikes;
 using PostService.Application.Queries.GetAllPosts;
 using PostService.Application.Queries.GetPost;
+using PostService.Application.Queries.IsPostLiked;
 using PostService.Domain.Constants;
 
 namespace PostService.Application;
@@ -36,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<GetAllPostsQueryHandler>();
         services.AddScoped<GetAllCommentsQueryHandler>();
         services.AddScoped<GetAllLikesQueryHandler>();
+        services.AddScoped<IsPostLikedQueryHandler>();
         
         var rabbitMqHost = configuration[AppSettingsConstants.RabbitMqHost] ?? throw new ArgumentException("RabbitMQ Host is not configured.");
         var rabbitMqUsername = configuration[AppSettingsConstants.RabbitMqUsername] ?? throw new ArgumentException("RabbitMQ Username is not configured.");

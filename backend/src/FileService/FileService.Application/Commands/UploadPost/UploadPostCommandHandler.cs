@@ -58,9 +58,8 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
 
         _context.Add(file);
         await _context.SaveChangesAsync();
-
-        var request = _httpContextAccessor.HttpContext?.Request;
-        var host = $"{request?.Scheme}://{request?.Host}";
+        
+        const string host = "http://localhost:8000";
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,

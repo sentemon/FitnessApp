@@ -1,5 +1,7 @@
-<router-outlet />
-<!--<div class="layout">-->
-<!--  <app-sidebar></app-sidebar>-->
-<!--  <app-main></app-main>-->
-<!--</div>-->
+<div class="layout" *ngIf="authService.isAuthenticated() | async; else loginPage">
+  <app-layout></app-layout>
+</div>
+
+<ng-template #loginPage>
+  <router-outlet></router-outlet>
+</ng-template>

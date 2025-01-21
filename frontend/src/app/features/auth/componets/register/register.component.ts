@@ -12,11 +12,6 @@ import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    RouterLink
-  ],
   templateUrl: './register.component.html',
   styleUrl: './../auth.scss'
 })
@@ -44,7 +39,7 @@ export class RegisterComponent {
         this.registerForm.value.password
       ).subscribe(result => {
         if (result) {
-          this.router.navigate(["/"]).then(r => console.log(r.valueOf()))
+          this.router.navigate(["/"]);
         } else {
           console.error("Something went wrong during registration.")
         }

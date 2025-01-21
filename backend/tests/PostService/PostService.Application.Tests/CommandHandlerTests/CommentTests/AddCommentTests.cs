@@ -14,7 +14,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
         var postCommentCount = Fixture.ExistingPost.CommentCount;
 
         var content = "This is a comment";
@@ -34,7 +34,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         result.Response.UserId.Should().Be(userId);
 
         var commentedPost = await Fixture.PostDbContextFixture.Posts
-            .FirstAsync(p => p.Id == postId);
+            .FirstAsync(p => p.Id == Guid.Parse(postId));
         commentedPost.CommentCount.Should().Be(postCommentCount + 1);
     }
 
@@ -43,7 +43,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Guid.Empty;
+        var postId = Guid.Empty.ToString();
         var content = "This is a comment";
         var createComment = new CreateCommentDto(postId, content);
 
@@ -63,7 +63,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     public async Task HandleAsync_ShouldFail_WhenCommentTooLong()
     {
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
         var content = new string('*', 513);
         
@@ -86,7 +86,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
     {
         // Arrange
         var userId = Fixture.ExistingUser.Id;
-        var postId = Fixture.ExistingPost.Id;
+        var postId = Fixture.ExistingPost.Id.ToString();
 
         var content = "This is the first comment";
         
@@ -110,7 +110,7 @@ public class AddCommentTests(TestFixture fixture) : TestBase(fixture)
         secondResult.Response.Content.Should().Be(secondContent);
 
         var commentedPost = await Fixture.PostDbContextFixture.Posts
-            .FirstAsync(p => p.Id == postId);
+            .FirstAsync(p => p.Id == Guid.Parse(postId));
         commentedPost.CommentCount.Should().Be(2);
     }
 }

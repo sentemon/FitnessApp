@@ -1,0 +1,23 @@
+.post-options {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  .post-options, button {
+    position: fixed;
+    width: 40%;
+    height: 5%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+    border: none;
+    border-radius: 2em;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}

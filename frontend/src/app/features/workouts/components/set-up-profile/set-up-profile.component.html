@@ -1,0 +1,74 @@
+<div class="onboarding">
+  <div class="welcome-screen step">
+    <h1>Welcome to Your Fitness Journey!</h1>
+    <p>Let’s set up your profile to personalize your experience.</p>
+    <button class="btn primary">Get Started</button>
+  </div>
+
+  <div class="personal-info step">
+    <h2>Tell us about yourself</h2>
+    <form>
+      <div class="field">
+        <label for="weight">Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Enter your weight" />
+      </div>
+      <div class="field">
+        <label for="height">Height (cm)</label>
+        <input type="number" id="height" placeholder="Enter your height" />
+      </div>
+      <div class="field">
+        <label for="dob">Date of Birth (optional)</label>
+        <input type="date" id="dob" />
+      </div>
+      <button class="btn primary">Next</button>
+    </form>
+  </div>
+
+  <div class="fitness-goal step">
+    <h2>What’s your primary goal?</h2>
+    <form>
+      <label><input type="radio" name="goal" value="lose-weight" /> Lose weight</label>
+      <label><input type="radio" name="goal" value="gain-muscle" /> Gain muscle</label>
+      <label><input type="radio" name="goal" value="stay-fit" /> Stay fit</label>
+      <button class="btn primary">Next</button>
+    </form>
+  </div>
+
+  <div class="activity-level step">
+    <h2>How active are you in your daily life?</h2>
+    <form>
+      <label><input type="radio" name="activity" value="sedentary" /> Sedentary (little or no exercise)</label>
+      <label><input type="radio" name="activity" value="lightly-active" /> Lightly active (1-3 days/week)</label>
+      <label><input type="radio" name="activity" value="moderately-active" /> Moderately active (3-5 days/week)</label>
+      <label><input type="radio" name="activity" value="very-active" /> Very active (6-7 days/week)</label>
+      <button class="btn primary">Next</button>
+    </form>
+  </div>
+
+  <div class="workout-type step">
+    <h2>What type of workouts do you enjoy?</h2>
+    <form>
+      <label><input type="checkbox" value="cardio" /> Cardio</label>
+      <label><input type="checkbox" value="strength" /> Strength training</label>
+      <label><input type="checkbox" value="yoga" /> Yoga</label>
+      <label><input type="checkbox" value="hiit" /> HIIT</label>
+      <label><input type="checkbox" value="other" /> Other</label>
+      <button class="btn primary">Next</button>
+    </form>
+  </div>
+
+  <div class="summary step">
+    <h2>Review Your Profile</h2>
+    <ul>
+      <li><strong>Weight:</strong> 75 kg</li>
+      <li><strong>Height:</strong> 180 cm</li>
+      <li><strong>Goal:</strong> Gain muscle</li>
+      <li><strong>Activity Level:</strong> Moderately active</li>
+      <li><strong>Preferred Workouts:</strong> Strength training, Cardio</li>
+    </ul>
+    <div class="actions">
+      <button class="btn secondary">Edit</button>
+      <button class="btn primary">Confirm</button>
+    </div>
+  </div>
+</div>

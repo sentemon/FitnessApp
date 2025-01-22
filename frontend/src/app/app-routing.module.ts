@@ -6,6 +6,7 @@ import {RegisterComponent} from "./features/auth/componets/register/register.com
 import {ProfileComponent} from "./features/auth/componets/profile/profile.component";
 import {CreatePostComponent} from "./features/posts/components/create-post/create-post.component";
 import {PostListComponent} from "./features/posts/components/post-list/post-list.component";
+import {SetUpProfileComponent} from "./features/workouts/components/set-up-profile/set-up-profile.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'sentemon', component: ProfileComponent },
   { path: 'create-post', component: CreatePostComponent },
+  { path: 'setup-profile', component: SetUpProfileComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

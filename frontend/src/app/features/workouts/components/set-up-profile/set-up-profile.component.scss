@@ -1,0 +1,125 @@
+.steps {
+  display: block;
+  min-width: 50vw;
+  margin: 30px 0;
+  font-weight: bold;
+
+  // doesn't work
+  // ---
+  .p-steps {
+    color: red;
+    background-color: red !important;
+    .p-steps-list {
+      background-color: #f0f0f0;
+
+      .p-steps-item {
+        color: #333;
+      }
+
+      .p-steps-item-active {
+        font-weight: bold;
+        color: #3498db;
+      }
+
+      .p-steps-item-link {
+        text-decoration: underline;
+      }
+    }
+  }
+  // ---
+}
+
+
+.onboarding {
+  position: relative;
+  padding: 50px;
+
+  .step {
+    position: relative;
+    height: 25rem;
+
+
+    h1, h2 {
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+
+    p {
+      padding-bottom: 30px;
+    }
+
+    .btn {
+      width: 200px;
+      height: 50px;
+      background: #3498db;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #ffffff;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      bottom: 150px;
+
+      &.back {
+        right: 220px;
+        bottom: 150px;
+        background: #e91e63;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    form {
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .flex {
+        display: flex;
+        gap: 10px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: #343a40;
+        }
+
+        input, select {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+        }
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        margin-bottom: 10px;
+
+        strong {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

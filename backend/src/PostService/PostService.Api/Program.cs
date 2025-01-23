@@ -7,25 +7,10 @@ using PostService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var allowedOrigins = builder.Configuration.GetSection(AppSettingsConstants.AllowedOrigins).Get<string[]>();
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
 var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
-
-builder.Services
-    .AddCors(options =>
-    {
-        options.AddPolicy("CorsPolicy", policyBuilder =>
-        {
-            policyBuilder
-                .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
-                    "Allowed Origin URLs are not configured."))
-                .AllowCredentials()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-    });
 
 builder.Services.AddHttpContextAccessor();
 
@@ -56,10 +41,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
-
-app.UseStaticFiles();
-
-app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

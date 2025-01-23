@@ -6,10 +6,12 @@ import {Button} from "primeng/button";
 import {FormsModule} from "@angular/forms";
 import {Password} from "primeng/password";
 import {Steps} from "primeng/steps";
+import { WorkoutComponent } from './components/workout/workout.component';
 
 @NgModule({
   declarations: [
-    SetUpProfileComponent
+    SetUpProfileComponent,
+    WorkoutComponent
   ],
   imports: [
     StepperModule,

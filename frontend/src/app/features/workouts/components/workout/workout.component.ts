@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrl: './workout.component.scss'
 })
 export class WorkoutComponent {
+  user = {
+    firstName: "Ivan"
+  };
 
 }

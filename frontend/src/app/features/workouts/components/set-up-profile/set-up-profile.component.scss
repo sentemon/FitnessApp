@@ -39,8 +39,15 @@
     height: 25rem;
 
 
-    h1, h2 {
-      font-weight: 700;
+    h1 {
+      font-weight: bold;
+      color: black;
+      //font-size: 90px;
+    }
+
+    h2 {
+      font-weight: bold;
+      //font-size: 48px;
       margin-bottom: 20px;
       color: #343a40;
     }

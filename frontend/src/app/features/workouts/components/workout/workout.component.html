@@ -2,6 +2,12 @@
   <h1>Welcome back {{ user.firstName }}!</h1>
   <h2>Ready for toady's workout?</h2>
 
+  <div class="goal">
+    <h2>Goal: {{ "Lose 5kg" }}</h2>
+    <div class="status-bar-goal">{{ "%" }}</div>
+    <div class="status-bar-done"></div>
+  </div>
+
   <div class="new-training">
     <h3>Want to add new training?</h3>
     <button>></button>

@@ -56,6 +56,4 @@ export class SetUpProfileComponent implements OnInit{
       this.activeIndex--;
     }
   }
-
-  protected readonly Event = Event;
 }

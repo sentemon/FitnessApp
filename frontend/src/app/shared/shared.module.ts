@@ -4,12 +4,14 @@ import {MainComponent} from "./layout/main/main.component";
 import {SideBarComponent} from "./layout/sidebar/sidebar.component";
 import {LayoutComponent} from "./layout/layout.component";
 import {RouterOutlet} from "@angular/router";
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     MainComponent,
-    SideBarComponent
+    SideBarComponent,
+    NotFoundComponent
   ],
   exports: [
     LayoutComponent

@@ -69,4 +69,8 @@ export class WorkoutService {
   public getAllWorkouts(): Observable<Workout[]> {
     return of(this.workouts);
   }
+
+  public getWorkoutByUrl(url: string): Observable<Workout | undefined> {
+    return of(this.workouts.find(w => w.url === url));
+  }
 }

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Workout} from "../../models/workout.model";
+import {WorkoutService} from "../../services/workout.service";
 
 @Component({
   selector: 'app-workout',
@@ -7,11 +9,20 @@ import {ActivatedRoute} from "@angular/router";
   styleUrl: './workout.component.scss'
 })
 export class WorkoutComponent implements OnInit {
-  workoutName: string = "";
+  workout!: Workout;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => this.workoutName = params["workout-name"]);
+    this.route.params.subscribe(params => {
+      const workoutUrl = params["workout-name"];
+      this.workoutService.getWorkoutByUrl(workoutUrl).subscribe(result => {
+        if (result) {
+          this.workout = result
+        } else {
+          this.router.navigate(["/not-found"]);
+        }
+      })
+    });
   }
 }

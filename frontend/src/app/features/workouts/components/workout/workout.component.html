@@ -1,11 +1,17 @@
-<div class="workout">
-  <h1>Welcome back {{ user.firstName }}!</h1>
-  <h2>Ready for toady's workout?</h2>
+<div class="workouts">
+  <div class="flex">
+    <div class="welcome">
+      <h1>Welcome back {{ user.firstName }}!</h1>
+      <h2>Ready for toady's workout?</h2>
+    </div>
 
-  <div class="goal">
-    <h2>Goal: {{ "Lose 5kg" }}</h2>
-    <div class="status-bar-goal">{{ "%" }}</div>
-    <div class="status-bar-done"></div>
+    <div class="goal">
+      <h2>Goal: {{ "Lose 5kg" }}</h2>
+      <div class="status-bar-goal"></div>
+      <div class="status-bar-done">
+        <p>{{ "50%" }}</p>
+      </div>
+    </div>
   </div>
 
   <div class="new-training">
@@ -13,14 +19,14 @@
     <button>></button>
   </div>
 
-  <div class="workouts" *ngFor="let workout of workouts">
-    <div class="workout">
-      <img [src]="workout.imageUrl ?? 'default'" alt="">
+  <div class="workouts-list">
+    <div class="workout" *ngFor="let workout of workouts">
+      <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
       <div class="time">
         Time: {{ workout.time }} min
       </div>
       <p>{{ workout.level }}</p>
-      <h1>{{ workout.title }}</h1>
+      <h3>{{ workout.title }}</h3>
       <p>{{ workout.description }}</p>
     </div>
   </div>

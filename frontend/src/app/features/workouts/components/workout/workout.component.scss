@@ -3,19 +3,122 @@
   width: 100%;
 }
 
-.workout {
-  //background-color: red;
+.workouts {
+  //background-color: rebeccapurple;
 
-  h1 {
+  .flex {
     display: flex;
-    font-weight: bold;
-    font-size: 48px;
-    justify-content: left;
-    align-items: start;
-    //background-color: #007bff;
+    justify-content: space-between;
+
+    .welcome {
+      margin-top: 20px;
+      margin-left: 20px;
+
+      h1 {
+        font-weight: bold;
+        font-size: 48px;
+      }
+    }
+
+
+    .goal {
+      position: relative;
+      margin-top: 20px;
+      margin-right: 130px;
+
+      .status-bar-goal {
+        height: 20px;
+        width: 200px;
+        background-color: #FFFFFF;
+        border-radius: 30px;
+        position: absolute;
+        z-index: 100;
+      }
+
+      .status-bar-done {
+        height: 20px;
+        width: 100px;
+        background-color: #3498DB;
+        border-radius: 30px;
+        position: absolute;
+        z-index: 200;
+
+        p {
+          text-align: center;
+          color: #FFFFFF;
+          font-weight: bold;
+        }
+      }
+    }
   }
 
   .new-training {
     display: flex;
+    background-color: #33CC99;
+    height: 70px;
+    width: 400px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 20px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+
+    button {
+      border: none;
+      border-radius: 30px;
+      height: 50px;
+      width: 80px;
+      margin-left: 10px;
+      font-size: 36px;
+      font-weight: bold;
+      background-color: #007BFF;
+      color: #FFFFFF;
+
+      &:hover {
+        background-color: #3498DB;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .workouts-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+
+    .workout {
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .time {
+        margin-top: 8px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      h3 {
+        margin: 12px 0;
+        font-size: 1.2rem;
+      }
+
+      p {
+        color: #777;
+        font-size: 0.9rem;
+      }
+    }
   }
 }

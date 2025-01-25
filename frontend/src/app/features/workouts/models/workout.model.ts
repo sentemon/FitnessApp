@@ -6,5 +6,6 @@ export interface Workout {
   description: string;
   time: number;
   level: Level;
+  url: string;
   imageUrl: string;
 }

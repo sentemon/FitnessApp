@@ -4,8 +4,6 @@
 }
 
 .workouts-list {
-  //background-color: rebeccapurple;
-
   .flex {
     display: flex;
     justify-content: space-between;
@@ -86,7 +84,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    padding: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    justify-items: center;
 
     .workout {
       background: #FFFFFF;
@@ -97,27 +97,34 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      max-width: 300px;
+      width: 100%;
 
-      img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-      }
+      a {
+        text-decoration: none;
+        color: inherit;
 
-      .time {
-        margin-top: 8px;
-        font-weight: bold;
-        color: #555;
-      }
+        img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
 
-      h3 {
-        margin: 12px 0;
-        font-size: 1.2rem;
-      }
+        .time {
+          margin-top: 8px;
+          font-weight: bold;
+          color: #555;
+        }
 
-      p {
-        color: #777;
-        font-size: 0.9rem;
+        h3 {
+          margin: 12px 0;
+          font-size: 1.2rem;
+        }
+
+        p {
+          color: #777;
+          font-size: 0.9rem;
+        }
       }
     }
   }

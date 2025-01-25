@@ -3,7 +3,7 @@ import {WorkoutService} from "../../services/workout.service";
 import {Workout} from "../../models/workout.model";
 
 @Component({
-  selector: 'app-workout',
+  selector: 'app-workouts-list',
   templateUrl: './workouts-list.component.html',
   styleUrl: './workouts-list.component.scss'
 })

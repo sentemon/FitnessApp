@@ -3,12 +3,14 @@ import { SetUpProfileComponent } from './components/set-up-profile/set-up-profil
 import { StepperModule } from 'primeng/stepper';
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Steps} from "primeng/steps";
-import { WorkoutsListComponent } from './components/workout/workouts-list.component';
+import { WorkoutsListComponent } from './components/workouts-list/workouts-list.component';
+import { WorkoutComponent } from './components/workout/workout.component';
 
 @NgModule({
   declarations: [
     SetUpProfileComponent,
-    WorkoutsListComponent
+    WorkoutsListComponent,
+    WorkoutComponent
   ],
   imports: [
     StepperModule,

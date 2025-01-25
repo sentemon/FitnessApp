@@ -14,6 +14,7 @@ export class WorkoutService {
       description: 'This session will get your heart rate up and strengthen your core and upper body.',
       time: 35,
       level: Level.Advanced,
+      url: 'boxing',
       imageUrl: ''
     },
     {
@@ -22,14 +23,16 @@ export class WorkoutService {
       description: 'This session will focus on your side body and full body integration to leave you feeling strong!',
       time: 30,
       level: Level.Beginner,
+      url: 'core-pilates',
       imageUrl: ''
     },
     {
       id: '3',
       title: 'Dumbbells HIIT',
-      description: "In this workout, you'll challenge your body and target every major muscle group one by one leaving your feeling fully satisfied.",
+      description: "In this workouts-list, you'll challenge your body and target every major muscle group one by one leaving your feeling fully satisfied.",
       time: 35,
       level: Level.AllLevels,
+      url: 'dumbblles-hiit',
       imageUrl: ''
     },
     {
@@ -38,6 +41,7 @@ export class WorkoutService {
       description: 'A guided gratitude meditation and focus on manifesting more optimism and positivity in your life.',
       time: 20,
       level: Level.AllLevels,
+      url: 'gratitude-meditation',
       imageUrl: ''
     },
     {
@@ -46,14 +50,16 @@ export class WorkoutService {
       description: 'This session focuses on alignment and balance.',
       time: 35,
       level: Level.Beginner,
+      url: 'vinyasa-yoga',
       imageUrl: ''
     },
     {
       id: '6',
       title: 'Full-body HIIT',
-      description: 'Grab your sneakers and get ready for a cardio infused full-body workout.',
+      description: 'Grab your sneakers and get ready for a cardio infused full-body workouts-list.',
       time: 35,
       level: Level.Intermediate,
+      url: 'full-body-hiit',
       imageUrl: ''
     }
   ];

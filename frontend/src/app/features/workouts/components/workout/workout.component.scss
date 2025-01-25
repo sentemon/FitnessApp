@@ -18,19 +18,4 @@
   .new-training {
     display: flex;
   }
-
-  .todays-progress {
-    .ellipse {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      background: conic-gradient(
-          #FF0 0%,
-          #FF0 75%,
-          #FFF 75%,
-          #FFF 100%
-      );
-      border-radius: 50%;
-    }
-  }
 }

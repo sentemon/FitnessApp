@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SetUpProfileComponent } from './components/set-up-profile/set-up-profile.component';
 import { StepperModule } from 'primeng/stepper';
-import {NgClass, NgIf, NgStyle} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Button} from "primeng/button";
 import {FormsModule} from "@angular/forms";
 import {Password} from "primeng/password";
@@ -17,7 +17,8 @@ import { WorkoutComponent } from './components/workout/workout.component';
     StepperModule,
     Steps,
     NgIf,
-    NgStyle
+    NgStyle,
+    NgForOf
   ]
 })
 export class WorkoutsModule { }

@@ -13,8 +13,15 @@
     <button>></button>
   </div>
 
-  <div class="todays-progress">
-    <h3>Today's progress: 2700/3000kcal</h3>
-    <div class="ellipse"></div>
+  <div class="workouts" *ngFor="let workout of workouts">
+    <div class="workout">
+      <img [src]="workout.imageUrl ?? 'default'" alt="">
+      <div class="time">
+        Time: {{ workout.time }} min
+      </div>
+      <p>{{ workout.level }}</p>
+      <h1>{{ workout.title }}</h1>
+      <p>{{ workout.description }}</p>
+    </div>
   </div>
 </div>

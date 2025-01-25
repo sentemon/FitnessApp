@@ -4,10 +4,10 @@ import {Workout} from "../../models/workout.model";
 
 @Component({
   selector: 'app-workout',
-  templateUrl: './workout.component.html',
-  styleUrl: './workout.component.scss'
+  templateUrl: './workouts-list.component.html',
+  styleUrl: './workouts-list.component.scss'
 })
-export class WorkoutComponent implements OnInit {
+export class WorkoutsListComponent implements OnInit {
   workouts: Workout[] = [];
   user = {
     firstName: "Ivan"

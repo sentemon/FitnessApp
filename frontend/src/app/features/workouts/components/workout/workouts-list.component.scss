@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.workouts {
+.workouts-list {
   //background-color: rebeccapurple;
 
   .flex {
@@ -82,7 +82,7 @@
     }
   }
 
-  .workouts-list {
+  .workouts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;

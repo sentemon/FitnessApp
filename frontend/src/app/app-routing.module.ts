@@ -7,7 +7,7 @@ import {ProfileComponent} from "./features/auth/componets/profile/profile.compon
 import {CreatePostComponent} from "./features/posts/components/create-post/create-post.component";
 import {PostListComponent} from "./features/posts/components/post-list/post-list.component";
 import {SetUpProfileComponent} from "./features/workouts/components/set-up-profile/set-up-profile.component";
-import {WorkoutComponent} from "./features/workouts/components/workout/workout.component";
+import {WorkoutsListComponent} from "./features/workouts/components/workout/workouts-list.component";
 import {SetUpGuard} from "./features/workouts/services/set-up.guard";
 
 const routes: Routes = [
@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'sentemon', component: ProfileComponent },
   { path: 'create-post', component: CreatePostComponent },
-  { path: 'workout', component: WorkoutComponent, canActivate: [SetUpGuard] },
+  { path: 'workouts', component: WorkoutsListComponent, canActivate: [SetUpGuard] },
   { path: 'setup-profile', component: SetUpProfileComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

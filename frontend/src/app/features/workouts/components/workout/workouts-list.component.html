@@ -1,4 +1,4 @@
-<div class="workouts">
+<div class="workouts-list">
   <div class="flex">
     <div class="welcome">
       <h1>Welcome back {{ user.firstName }}!</h1>
@@ -19,7 +19,7 @@
     <button>></button>
   </div>
 
-  <div class="workouts-list">
+  <div class="workouts">
     <div class="workout" *ngFor="let workout of workouts">
       <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
       <div class="time">

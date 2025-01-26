@@ -15,6 +15,18 @@ export class WorkoutService {
       time: 35,
       level: Level.Advanced,
       url: 'boxing',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     },
     {
@@ -24,6 +36,18 @@ export class WorkoutService {
       time: 30,
       level: Level.Beginner,
       url: 'core-pilates',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     },
     {
@@ -33,6 +57,18 @@ export class WorkoutService {
       time: 35,
       level: Level.AllLevels,
       url: 'dumbblles-hiit',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     },
     {
@@ -42,6 +78,18 @@ export class WorkoutService {
       time: 20,
       level: Level.AllLevels,
       url: 'gratitude-meditation',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     },
     {
@@ -51,6 +99,18 @@ export class WorkoutService {
       time: 35,
       level: Level.Beginner,
       url: 'vinyasa-yoga',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     },
     {
@@ -60,6 +120,18 @@ export class WorkoutService {
       time: 35,
       level: Level.Intermediate,
       url: 'full-body-hiit',
+      exercises: [
+        {
+          id: '1',
+          name: 'Jab-Cross Combo',
+          sets: [{ reps: 10, weight: 0 }]
+        },
+        {
+          id: '2',
+          name: 'Speed Bag',
+          sets: [{ reps: 3, weight: 0 }]
+        }
+      ],
       imageUrl: ''
     }
   ];

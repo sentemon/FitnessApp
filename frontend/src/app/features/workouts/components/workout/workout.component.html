@@ -1,1 +1,48 @@
-<h1>{{ workout.title }}</h1>
+<div class="workout">
+  <h1>{{ workout.title }}</h1>
+  <p>{{ workout.description }}</p>
+
+  <div class="exercises">
+    <h2>Exercises</h2>
+    <div class="exercise" *ngFor="let exercise of workout.exercises; let i = index">
+      <h3>{{ exercise.name }}</h3>
+
+      <ul>
+        <li *ngFor="let set of exercise.sets; let j = index">
+          Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg
+        </li>
+      </ul>
+
+      <form (submit)="addSet(i)">
+        <input
+          type="number"
+          [(ngModel)]="newSet.reps"
+          placeholder="Reps"
+          name="reps"
+          required
+        />
+        <input
+          type="number"
+          [(ngModel)]="newSet.weight"
+          placeholder="Weight (kg)"
+          name="weight"
+        />
+        <button type="submit">Add Set</button>
+      </form>
+    </div>
+  </div>
+
+<!--  <div class="add-exercise">-->
+<!--    <h2>Add New Exercise</h2>-->
+<!--    <form (submit)="addExercise()">-->
+<!--      <input-->
+<!--        type="text"-->
+<!--        [(ngModel)]="newExerciseName"-->
+<!--        placeholder="Exercise Name"-->
+<!--        name="exerciseName"-->
+<!--        required-->
+<!--      />-->
+<!--      <button type="submit">Add Exercise</button>-->
+<!--    </form>-->
+<!--  </div>-->
+</div>

@@ -6,12 +6,15 @@ import {Steps} from "primeng/steps";
 import { WorkoutsListComponent } from './components/workouts-list/workouts-list.component';
 import { WorkoutComponent } from './components/workout/workout.component';
 import {FormsModule} from "@angular/forms";
+import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
+import {RouterLink} from "@angular/router";
 
 @NgModule({
   declarations: [
     SetUpProfileComponent,
     WorkoutsListComponent,
-    WorkoutComponent
+    WorkoutComponent,
+    NewWorkoutComponent
   ],
   imports: [
     StepperModule,
@@ -20,6 +23,7 @@ import {FormsModule} from "@angular/forms";
     NgStyle,
     NgForOf,
     FormsModule,
+    RouterLink,
   ]
 })
 export class WorkoutsModule { }

@@ -16,12 +16,12 @@
 
   <div class="new-training">
     <h3>Want to add new training?</h3>
-    <button>></button>
+    <button [routerLink]="'new'">></button>
   </div>
 
   <div class="workouts">
     <div class="workout" *ngFor="let workout of workouts">
-      <a [href]="'workouts/' + workout.url">
+      <a [routerLink]="workout.url">
         <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
         <div class="time">
           Time: {{ workout.time }} min

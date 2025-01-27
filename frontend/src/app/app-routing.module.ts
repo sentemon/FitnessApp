@@ -11,6 +11,7 @@ import {WorkoutsListComponent} from "./features/workouts/components/workouts-lis
 import {SetUpGuard} from "./features/workouts/services/set-up.guard";
 import {WorkoutComponent} from "./features/workouts/components/workout/workout.component";
 import {NotFoundComponent} from "./shared/not-found/not-found.component";
+import {NewWorkoutComponent} from "./features/workouts/components/new-workout/new-workout.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'sentemon', component: ProfileComponent },
   { path: 'create-post', component: CreatePostComponent },
   { path: 'workouts', component: WorkoutsListComponent, canActivate: [SetUpGuard] },
+  { path: 'workouts/new', component: NewWorkoutComponent },
   { path: 'workouts/:workout-name', component: WorkoutComponent },
   { path: 'setup-profile', component: SetUpProfileComponent },
   { path: 'not-found', component: NotFoundComponent },

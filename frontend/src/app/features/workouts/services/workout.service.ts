@@ -7,7 +7,6 @@ import {Observable, of} from "rxjs";
   providedIn: 'root'
 })
 export class WorkoutService {
-  // @ts-ignore
   private workouts: Workout[] = [
     {
       id: '1',
@@ -16,6 +15,7 @@ export class WorkoutService {
       time: 35,
       level: Level.Advanced,
       url: 'boxing',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -47,6 +47,7 @@ export class WorkoutService {
       time: 30,
       level: Level.Beginner,
       url: 'core-pilates',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -78,6 +79,7 @@ export class WorkoutService {
       time: 35,
       level: Level.AllLevels,
       url: 'dumbblles-hiit',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -109,6 +111,7 @@ export class WorkoutService {
       time: 20,
       level: Level.AllLevels,
       url: 'gratitude-meditation',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -140,6 +143,7 @@ export class WorkoutService {
       time: 35,
       level: Level.Beginner,
       url: 'vinyasa-yoga',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -171,6 +175,7 @@ export class WorkoutService {
       time: 35,
       level: Level.Intermediate,
       url: 'full-body-hiit',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -203,6 +208,7 @@ export class WorkoutService {
       level: Level.Intermediate,
       url: 'full-body-workout',
       imageUrl: '',
+      isCustom: false,
       exercises: [
         {
           id: '1',
@@ -259,5 +265,21 @@ export class WorkoutService {
 
   public getWorkoutByUrl(url: string): Observable<Workout | undefined> {
     return of(this.workouts.find(w => w.url === url));
+  }
+
+  public create(title: string, description: string, time: number, level: Level): Observable<Workout> {
+    const newWorkout: Workout = {
+      id: 'id' + Date.now(),
+      title: 'some title',
+      description: 'some desc',
+      time: 30,
+      level: level,
+      url: title.toLowerCase().split(" ").join("-"),
+      exercises: [],
+      imageUrl: '',
+      isCustom: true
+    };
+
+    return of(newWorkout);
   }
 }

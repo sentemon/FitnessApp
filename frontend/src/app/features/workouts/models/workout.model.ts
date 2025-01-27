@@ -10,4 +10,6 @@ export interface Workout {
   url: string;
   exercises: Exercise[];
   imageUrl: string;
+  isCustom: boolean;
+  userId?: string;
 }

@@ -1,93 +1,70 @@
 .workout {
   padding: 1.5rem;
-  background-color: #f9f9f9;
-  border-radius: 1rem;
   max-width: 600px;
   margin: 2rem auto;
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-  h1,
-  h2,
-  h3 {
+  h1 {
+    text-align: center;
     color: #333;
   }
 
-  .exercises {
-    margin-top: 1.5rem;
-  }
-
   .exercise {
+    margin: 1.5rem 0;
     padding: 1rem;
     background: #fff;
-    margin-bottom: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
     ul {
-      margin: 0.5rem 0;
       padding: 0;
       list-style: none;
-    }
 
-    li {
-      background: #f0f0f0;
-      margin: 0.25rem 0;
-      padding: 0.5rem;
-      border-radius: 0.25rem;
-    }
-
-    form {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-
-      input {
-        flex: 1;
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 0.25rem;
-      }
+        border-bottom: 1px solid #ddd;
 
-      button {
-        padding: 0.5rem 1rem;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 0.25rem;
-        cursor: pointer;
-      }
+        &:last-child {
+          border-bottom: none;
+        }
 
-      button:hover {
-        background-color: #0056b3;
+        &.completed {
+          background-color: #d4edda;
+          color: #155724;
+          text-decoration: line-through;
+        }
+
+        button {
+          padding: 0.5rem 1rem;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 0.25rem;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #0056b3;
+        }
+
+        span {
+          color: #28a745;
+          font-weight: bold;
+        }
       }
     }
   }
 
-  //.add-exercise {
-  //  margin-top: 2rem;
-  //
-  //  form {
-  //    display: flex;
-  //    gap: 0.5rem;
-  //
-  //    input {
-  //      flex: 1;
-  //      padding: 0.5rem;
-  //      border: 1px solid #ccc;
-  //      border-radius: 0.25rem;
-  //    }
-  //
-  //    button {
-  //      padding: 0.5rem 1rem;
-  //      background-color: #28a745;
-  //      color: #fff;
-  //      border: none;
-  //      border-radius: 0.25rem;
-  //      cursor: pointer;
-  //    }
-  //
-  //    button:hover {
-  //      background-color: #218838;
-  //    }
-  //  }
-  //}
+  .workout-completed {
+    margin-top: 2rem;
+    text-align: center;
+    color: #28a745;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
 }

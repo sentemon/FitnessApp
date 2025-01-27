@@ -2,47 +2,21 @@
   <h1>{{ workout.title }}</h1>
   <p>{{ workout.description }}</p>
 
-  <div class="exercises">
-    <h2>Exercises</h2>
-    <div class="exercise" *ngFor="let exercise of workout.exercises; let i = index">
-      <h3>{{ exercise.name }}</h3>
+  <div *ngFor="let exercise of workout.exercises; let i = index" class="exercise">
+    <h2>{{ exercise.name }}</h2>
 
-      <ul>
-        <li *ngFor="let set of exercise.sets; let j = index">
-          Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg
-        </li>
-      </ul>
-
-      <form (submit)="addSet(i)">
-        <input
-          type="number"
-          [(ngModel)]="newSet.reps"
-          placeholder="Reps"
-          name="reps"
-          required
-        />
-        <input
-          type="number"
-          [(ngModel)]="newSet.weight"
-          placeholder="Weight (kg)"
-          name="weight"
-        />
-        <button type="submit">Add Set</button>
-      </form>
-    </div>
+    <ul>
+      <li *ngFor="let set of exercise.sets; let j = index" [class.completed]="set.completed">
+        Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg
+        <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">
+          Completed
+        </button>
+        <span *ngIf="set.completed">✅ Completed</span>
+      </li>
+    </ul>
   </div>
 
-<!--  <div class="add-exercise">-->
-<!--    <h2>Add New Exercise</h2>-->
-<!--    <form (submit)="addExercise()">-->
-<!--      <input-->
-<!--        type="text"-->
-<!--        [(ngModel)]="newExerciseName"-->
-<!--        placeholder="Exercise Name"-->
-<!--        name="exerciseName"-->
-<!--        required-->
-<!--      />-->
-<!--      <button type="submit">Add Exercise</button>-->
-<!--    </form>-->
-<!--  </div>-->
+  <div *ngIf="isWorkoutCompleted()" class="workout-completed">
+    <h3>Congratulations! Workout is finished! 🎉</h3>
+  </div>
 </div>

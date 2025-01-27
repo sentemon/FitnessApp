@@ -19,12 +19,18 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
@@ -40,12 +46,18 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
@@ -61,12 +73,18 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
@@ -82,12 +100,18 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
@@ -103,12 +127,18 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
@@ -124,15 +154,55 @@ export class WorkoutService {
         {
           id: '1',
           name: 'Jab-Cross Combo',
-          sets: [{ reps: 10, weight: 0 }]
+          sets: [{
+            reps: 10, weight: 0,
+            completed: false
+          }]
         },
         {
           id: '2',
           name: 'Speed Bag',
-          sets: [{ reps: 3, weight: 0 }]
+          sets: [{
+            reps: 3, weight: 0,
+            completed: false
+          }]
         }
       ],
       imageUrl: ''
+    },
+    {
+      id: '7',
+      title: 'Full Body Workout',
+      description: 'A complete full-body workout for strength and endurance.',
+      time: 0,
+      level: Level.Intermediate,
+      url: 'full-body-workout',
+      imageUrl: '',
+      exercises: [
+        {
+          id: '1',
+          name: 'Push-Ups',
+          sets: [
+            {reps: 15, weight: 0, completed: false},
+            {reps: 15, weight: 0, completed: false}
+          ]
+        },
+        {
+          id: '2',
+          name: 'Squats',
+          sets: [
+            {reps: 20, weight: 0, completed: false},
+            {reps: 20, weight: 0, completed: false}
+          ]
+        },
+        {
+          id: '3',
+          name: 'Plank',
+          sets: [
+            {reps: 1, weight: 0, completed: false}
+          ]
+        }
+      ],
     }
   ];
 

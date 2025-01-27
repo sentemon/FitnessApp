@@ -8,7 +8,7 @@ import {Observable, of} from "rxjs";
 export class ExerciseService {
   constructor() { }
 
-  addExercise(name: string): Observable<Exercise> {
+  add(name: string): Observable<Exercise> {
     const newExercise: Exercise = {
       id: name,
       name: name,
@@ -16,5 +16,9 @@ export class ExerciseService {
     }
 
     return of(newExercise);
+  }
+
+  delete(id: string): Observable<string> {
+    return of("");
   }
 }

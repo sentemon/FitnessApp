@@ -3,4 +3,5 @@ export interface Set {
   reps: number;
   weight: number;
   completed: boolean;
+  exerciseId: string;
 }

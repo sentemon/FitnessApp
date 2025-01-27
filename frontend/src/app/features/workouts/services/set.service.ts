@@ -21,7 +21,8 @@ export class SetService {
       id: 'newId' + Date.now(),
       reps: reps,
       weight: weight,
-      completed: false
+      completed: false,
+      exerciseId: exerciseId
     };
 
     return of(newSet);

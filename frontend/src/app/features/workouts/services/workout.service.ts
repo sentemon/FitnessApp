@@ -23,7 +23,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '1'
+            id: '1',
+            exerciseId: '1'
           }]
         },
         {
@@ -32,7 +33,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '2'
+            id: '2',
+            exerciseId: '2'
           }]
         }
       ],
@@ -52,7 +54,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '3'
+            id: '3',
+            exerciseId: '1'
           }]
         },
         {
@@ -61,7 +64,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '4'
+            id: '4',
+            exerciseId: '2'
           }]
         }
       ],
@@ -81,7 +85,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '5'
+            id: '5',
+            exerciseId: '1'
           }]
         },
         {
@@ -90,7 +95,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '6'
+            id: '6',
+            exerciseId: '2'
           }]
         }
       ],
@@ -110,7 +116,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '7'
+            id: '7',
+            exerciseId: '1'
           }]
         },
         {
@@ -119,7 +126,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '8'
+            id: '8',
+            exerciseId: '2'
           }]
         }
       ],
@@ -139,7 +147,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '34'
+            id: '34',
+            exerciseId: '1'
           }]
         },
         {
@@ -148,7 +157,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '9'
+            id: '9',
+            exerciseId: '2'
           }]
         }
       ],
@@ -168,7 +178,8 @@ export class WorkoutService {
           sets: [{
             reps: 10, weight: 0,
             completed: false,
-            id: '10'
+            id: '10',
+            exerciseId: '1'
           }]
         },
         {
@@ -177,7 +188,8 @@ export class WorkoutService {
           sets: [{
             reps: 3, weight: 0,
             completed: false,
-            id: '11'
+            id: '11',
+            exerciseId: '2'
           }]
         }
       ],
@@ -198,11 +210,13 @@ export class WorkoutService {
           sets: [
             {
               reps: 15, weight: 0, completed: false,
-              id: '12'
+              id: '12',
+              exerciseId: '1'
             },
             {
               reps: 15, weight: 0, completed: false,
-              id: '13'
+              id: '13',
+              exerciseId: '1'
             }
           ]
         },
@@ -212,11 +226,13 @@ export class WorkoutService {
           sets: [
             {
               reps: 20, weight: 0, completed: false,
-              id: '14'
+              id: '14',
+              exerciseId: '2'
             },
             {
               reps: 20, weight: 0, completed: false,
-              id: '15'
+              id: '15',
+              exerciseId: '2'
             }
           ]
         },
@@ -226,7 +242,8 @@ export class WorkoutService {
           sets: [
             {
               reps: 1, weight: 0, completed: false,
-              id: '16'
+              id: '16',
+              exerciseId: '3'
             }
           ]
         }

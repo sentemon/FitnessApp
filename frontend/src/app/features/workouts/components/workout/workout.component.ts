@@ -4,6 +4,8 @@ import {Workout} from "../../models/workout.model";
 import {WorkoutService} from "../../services/workout.service";
 import {SetService} from "../../services/set.service";
 import {Set} from "../../models/set.model";
+import {ExerciseService} from "../../services/exercise.service";
+import {Exercise} from "../../models/exercise.model";
 
 @Component({
   selector: 'app-workout',
@@ -12,9 +14,18 @@ import {Set} from "../../models/set.model";
 })
 export class WorkoutComponent implements OnInit {
   workout!: Workout;
+  newExerciseName: string = '';
+  newSet: Set = {
+    id: '',
+    reps: 0,
+    weight: 0,
+    completed: false,
+    exerciseId: ''
+  }
 
   constructor(
     private workoutService: WorkoutService,
+    private exerciseService: ExerciseService,
     private setService: SetService,
     private route: ActivatedRoute,
     private router: Router
@@ -43,13 +54,34 @@ export class WorkoutComponent implements OnInit {
     this.setService.markAsUncompleted(set.id).subscribe(result => set.completed = !result);
   }
 
+  addExercise(newExerciseName: string): void {
+    const tempId = "temp" + Date.now();
+    const newExercise: Exercise = {
+      id: tempId,
+      name: newExerciseName,
+      sets: []
+    };
+
+    this.workout.exercises.push(newExercise);
+    this.newExerciseName = '';
+
+    const exercise = this.workout.exercises.find(e => e.id === tempId)!;
+    this.exerciseService.add(newExerciseName).subscribe(result => exercise.id = result.id);
+  }
+
+  deleteExercise(id: string): void {
+    this.workout.exercises = this.workout.exercises.filter(e => e.id !== id);
+    this.exerciseService.delete(id).subscribe();
+  }
+
   addSet(exerciseId: string, reps: number, weight: number): void {
     const tempId = "temp" + Date.now();
     const newSet: Set = {
       id: tempId,
       reps: reps,
       weight: weight,
-      completed: false
+      completed: false,
+      exerciseId: exerciseId
     };
 
     const exercise = this.workout.exercises.find(e => e.id === exerciseId);
@@ -59,6 +91,7 @@ export class WorkoutComponent implements OnInit {
     }
 
     exercise.sets.push(newSet);
+    this.newSet = { completed: false, exerciseId: "", id: "", reps: 0, weight: 0 }
 
     this.setService.add(exerciseId, reps, weight).subscribe(response => {
       const set = exercise.sets.find(s => s.id === tempId);
@@ -84,9 +117,10 @@ export class WorkoutComponent implements OnInit {
 
 
   isWorkoutCompleted(): boolean {
-    return this.workout.exercises.every(exercise =>
-      exercise.sets.length > 0 &&
-      exercise.sets.every(set => set.completed)
-    );
+    return this.workout.exercises.length > 0 &&
+      this.workout.exercises.every(exercise =>
+        exercise.sets.length > 0 &&
+        exercise.sets.every(set => set.completed)
+      );
   }
 }

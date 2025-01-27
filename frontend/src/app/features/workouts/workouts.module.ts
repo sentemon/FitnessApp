@@ -5,6 +5,7 @@ import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Steps} from "primeng/steps";
 import { WorkoutsListComponent } from './components/workouts-list/workouts-list.component';
 import { WorkoutComponent } from './components/workout/workout.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { WorkoutComponent } from './components/workout/workout.component';
     NgIf,
     NgStyle,
     NgForOf,
+    FormsModule,
   ]
 })
 export class WorkoutsModule { }

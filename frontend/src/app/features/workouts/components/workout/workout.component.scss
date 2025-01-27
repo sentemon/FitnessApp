@@ -2,59 +2,134 @@
   padding: 1.5rem;
   max-width: 600px;
   margin: 2rem auto;
-  background-color: #f9f9f9;
+  background-color: #fdfdfd;
   border-radius: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-  h1 {
-    text-align: center;
-    color: #333;
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .workout-header {
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .add-exercise {
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+      }
+    }
   }
 
   .exercise {
     margin: 1.5rem 0;
-    padding: 1rem 1rem 3rem 1rem;
+    padding: 1rem 1rem 2rem 1rem;
     background: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    .add-set {
-      margin: 5px;
-      float: right;
+    .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h2 {
+        font-size: 1.2rem;
+        color: #333;
+        margin: 0;
+      }
+
+      .delete-exercise {
+        font-size: 1.5rem;
+        font-weight: bold;
+        border: none;
+        color: #e63946;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #d62839;
+        }
+      }
     }
 
-    ul {
+    .sets {
       padding: 0;
       list-style: none;
 
-      button {
-        padding: 0.5rem 1rem;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 0.25rem;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-
-      li {
+      .set {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.5rem;
-        border-bottom: 1px solid #ddd;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid #f0f0f0;
 
-        p {
-          a {
-            cursor: pointer;
-            color: red;
-            margin-left: 20px;
-            font-size: 20px;
-            font-weight: bold;
+        .set-info {
+          display: flex;
+
+          p {
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
           }
+
+          .delete-set {
+            cursor: pointer;
+            color: #e63946;
+            margin-left: 15px;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: color 0.2s;
+
+            &:hover {
+              color: #d62839;
+            }
+          }
+        }
+
+        .set-actions {
+
         }
 
         &:last-child {
@@ -62,15 +137,43 @@
         }
 
         &.completed {
-          background-color: #d4edda;
-          color: #155724;
-          //text-decoration: line-through;
+          background-color: #e6f7e6;
+          color: #2d6a4f;
+
+          p {
+            text-decoration: line-through;
+          }
         }
 
         span {
           color: #28a745;
           font-weight: bold;
           cursor: pointer;
+          transition: color 0.2s;
+
+          &:hover {
+            color: #218838;
+          }
+        }
+      }
+    }
+
+    .add-set {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+
+      input {
+        width: 80px;
+        padding: 0.4rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        text-align: center;
+
+        &:focus {
+          border-color: #007bff;
+          outline: none;
+          box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
         }
       }
     }
@@ -80,7 +183,11 @@
     margin-top: 2rem;
     text-align: center;
     color: #28a745;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    background-color: #f1f9f1;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }

@@ -43,7 +43,7 @@ export class WorkoutComponent implements OnInit {
     this.setService.markAsUncompleted(set.id).subscribe(result => set.completed = !result);
   }
 
-  addSet(exerciseId: string, reps: number, weight: number) {
+  addSet(exerciseId: string, reps: number, weight: number): void {
     const tempId = "temp" + Date.now();
     const newSet: Set = {
       id: tempId,
@@ -70,7 +70,23 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
+  deleteSet(setId: string): void {
+    const exercise = this.workout.exercises.find(e => e.sets.some(s => s.id === setId));
+
+    if (exercise) {
+      exercise.sets = exercise.sets.filter(s => s.id !== setId);
+    } else {
+      console.error(`Set with ID ${setId} not found.`);
+    }
+
+    this.setService.delete(setId).subscribe();
+  }
+
+
   isWorkoutCompleted(): boolean {
-    return this.workout.exercises.every(exercise => exercise.sets.every(set => set.completed));
+    return this.workout.exercises.every(exercise =>
+      exercise.sets.length > 0 &&
+      exercise.sets.every(set => set.completed)
+    );
   }
 }

@@ -26,4 +26,8 @@ export class SetService {
 
     return of(newSet);
   }
+
+  delete(id: string): Observable<boolean> {
+    return of(true);
+  }
 }

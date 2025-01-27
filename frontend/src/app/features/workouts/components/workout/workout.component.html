@@ -7,10 +7,10 @@
 
     <ul>
       <li *ngFor="let set of exercise.sets; let j = index" [class.completed]="set.completed">
-        Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg
-        <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">
-          Completed
-        </button>
+        <p>Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg
+          <a (click)="deleteSet(set.id)">×</a>
+        </p>
+        <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">Completed</button>
         <span *ngIf="set.completed" (click)="markSetAsUncompleted(i, j)">✅ Completed</span>
       </li>
       <button (click)="addSet(exercise.id, 3, 3)" class="add-set">Add</button>

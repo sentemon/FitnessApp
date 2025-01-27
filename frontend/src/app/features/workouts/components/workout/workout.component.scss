@@ -47,6 +47,16 @@
         padding: 0.5rem;
         border-bottom: 1px solid #ddd;
 
+        p {
+          a {
+            cursor: pointer;
+            color: red;
+            margin-left: 20px;
+            font-size: 20px;
+            font-weight: bold;
+          }
+        }
+
         &:last-child {
           border-bottom: none;
         }
@@ -54,7 +64,7 @@
         &.completed {
           background-color: #d4edda;
           color: #155724;
-          text-decoration: line-through;
+          //text-decoration: line-through;
         }
 
         span {

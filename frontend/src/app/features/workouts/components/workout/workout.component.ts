@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Workout} from "../../models/workout.model";
 import {WorkoutService} from "../../services/workout.service";
+import {SetService} from "../../services/set.service";
 
 @Component({
   selector: 'app-workout',
@@ -11,7 +12,12 @@ import {WorkoutService} from "../../services/workout.service";
 export class WorkoutComponent implements OnInit {
   workout!: Workout;
 
-  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private workoutService: WorkoutService,
+    private setService: SetService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -27,7 +33,13 @@ export class WorkoutComponent implements OnInit {
   }
 
   markSetAsCompleted(exerciseIndex: number, setIndex: number): void {
-    this.workout.exercises[exerciseIndex].sets[setIndex].completed = true;
+    const set = this.workout.exercises[exerciseIndex].sets[setIndex];
+    this.setService.markAsCompleted(set.id).subscribe(result => set.completed = result);
+  }
+
+  markSetAsUncompleted(exerciseIndex: number, setIndex: number): void {
+    const set = this.workout.exercises[exerciseIndex].sets[setIndex];
+    this.setService.markAsCompleted(set.id).subscribe(result => set.completed = !result);
   }
 
   isWorkoutCompleted(): boolean {

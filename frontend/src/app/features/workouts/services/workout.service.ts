@@ -7,6 +7,7 @@ import {Observable, of} from "rxjs";
   providedIn: 'root'
 })
 export class WorkoutService {
+  // @ts-ignore
   private workouts: Workout[] = [
     {
       id: '1',
@@ -21,7 +22,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '1'
           }]
         },
         {
@@ -29,7 +31,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '2'
           }]
         }
       ],
@@ -48,7 +51,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '3'
           }]
         },
         {
@@ -56,7 +60,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '4'
           }]
         }
       ],
@@ -75,7 +80,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '5'
           }]
         },
         {
@@ -83,7 +89,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '6'
           }]
         }
       ],
@@ -102,7 +109,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '7'
           }]
         },
         {
@@ -110,7 +118,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '8'
           }]
         }
       ],
@@ -129,7 +138,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '34'
           }]
         },
         {
@@ -137,7 +147,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '9'
           }]
         }
       ],
@@ -156,7 +167,8 @@ export class WorkoutService {
           name: 'Jab-Cross Combo',
           sets: [{
             reps: 10, weight: 0,
-            completed: false
+            completed: false,
+            id: '10'
           }]
         },
         {
@@ -164,7 +176,8 @@ export class WorkoutService {
           name: 'Speed Bag',
           sets: [{
             reps: 3, weight: 0,
-            completed: false
+            completed: false,
+            id: '11'
           }]
         }
       ],
@@ -183,23 +196,38 @@ export class WorkoutService {
           id: '1',
           name: 'Push-Ups',
           sets: [
-            {reps: 15, weight: 0, completed: false},
-            {reps: 15, weight: 0, completed: false}
+            {
+              reps: 15, weight: 0, completed: false,
+              id: '12'
+            },
+            {
+              reps: 15, weight: 0, completed: false,
+              id: '13'
+            }
           ]
         },
         {
           id: '2',
           name: 'Squats',
           sets: [
-            {reps: 20, weight: 0, completed: false},
-            {reps: 20, weight: 0, completed: false}
+            {
+              reps: 20, weight: 0, completed: false,
+              id: '14'
+            },
+            {
+              reps: 20, weight: 0, completed: false,
+              id: '15'
+            }
           ]
         },
         {
           id: '3',
           name: 'Plank',
           sets: [
-            {reps: 1, weight: 0, completed: false}
+            {
+              reps: 1, weight: 0, completed: false,
+              id: '16'
+            }
           ]
         }
       ],

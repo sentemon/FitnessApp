@@ -1,5 +1,5 @@
 export interface Set {
-  // id: string;
+  id: string;
   reps: number;
   weight: number;
   completed: boolean;

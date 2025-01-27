@@ -11,7 +11,7 @@
         <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">
           Completed
         </button>
-        <span *ngIf="set.completed">✅ Completed</span>
+        <span *ngIf="set.completed" (click)="markSetAsUncompleted(i, j)">✅ Completed</span>
       </li>
     </ul>
   </div>

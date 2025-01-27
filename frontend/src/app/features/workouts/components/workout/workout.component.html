@@ -13,6 +13,7 @@
         </button>
         <span *ngIf="set.completed" (click)="markSetAsUncompleted(i, j)">✅ Completed</span>
       </li>
+      <button (click)="addSet(exercise.id, 3, 3)" class="add-set">Add</button>
     </ul>
   </div>
 

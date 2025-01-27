@@ -13,14 +13,32 @@
 
   .exercise {
     margin: 1.5rem 0;
-    padding: 1rem;
+    padding: 1rem 1rem 3rem 1rem;
     background: #fff;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
+    .add-set {
+      margin: 5px;
+      float: right;
+    }
+
     ul {
       padding: 0;
       list-style: none;
+
+      button {
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
 
       li {
         display: flex;
@@ -37,19 +55,6 @@
           background-color: #d4edda;
           color: #155724;
           text-decoration: line-through;
-        }
-
-        button {
-          padding: 0.5rem 1rem;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          border-radius: 0.25rem;
-          cursor: pointer;
-        }
-
-        button:hover {
-          background-color: #0056b3;
         }
 
         span {

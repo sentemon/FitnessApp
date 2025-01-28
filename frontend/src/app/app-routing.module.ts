@@ -18,11 +18,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'sentemon', component: ProfileComponent },
-  { path: 'create-post', component: CreatePostComponent },
-  { path: 'workouts', component: WorkoutsListComponent, canActivate: [SetUpGuard] },
-  { path: 'workouts/new', component: NewWorkoutComponent },
-  { path: 'workouts/:workout-name', component: WorkoutComponent },
-  { path: 'setup-profile', component: SetUpProfileComponent },
+  { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },
+  { path: 'workouts', component: WorkoutsListComponent, canActivate: [AuthGuard, SetUpGuard] },
+  { path: 'workouts/new', component: NewWorkoutComponent, canActivate: [AuthGuard] },
+  { path: 'workouts/:workout-name', component: WorkoutComponent, canActivate: [AuthGuard] },
+  { path: 'setup-profile', component: SetUpProfileComponent, canActivate: [AuthGuard] },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

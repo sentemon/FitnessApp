@@ -1,3 +1,26 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.back {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  width: 4rem;
+  margin-top: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  text-align: center;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
 .workout {
   padding: 1.5rem;
   max-width: 600px;

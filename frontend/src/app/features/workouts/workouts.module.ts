@@ -9,13 +9,17 @@ import {FormsModule} from "@angular/forms";
 import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
 import {RouterLink} from "@angular/router";
 import {SharedModule} from "../../shared/shared.module";
+import { SetComponent } from './components/set/set.component';
+import { ExerciseComponent } from './components/exercise/exercise.component';
 
 @NgModule({
   declarations: [
     SetUpProfileComponent,
     WorkoutsListComponent,
     WorkoutComponent,
-    NewWorkoutComponent
+    NewWorkoutComponent,
+    SetComponent,
+    ExerciseComponent
   ],
   imports: [
     StepperModule,

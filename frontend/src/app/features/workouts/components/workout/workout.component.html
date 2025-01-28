@@ -1,98 +1,14 @@
 <app-back></app-back>
 
-<div class="workout" *ngIf="!workout.isCustom; else customWorkout">
+<div class="workout">
   <header class="workout-header">
     <h1>{{ workout.title }}</h1>
     <p>{{ workout.description }}</p>
   </header>
 
-  <section *ngFor="let exercise of workout.exercises; let i = index" class="exercise">
-    <header class="exercise-header">
-      <h2>{{ exercise.name }}</h2>
-    </header>
-
-    <ul class="sets">
-      <li
-        *ngFor="let set of exercise.sets; let j = index"
-        [class.completed]="set.completed"
-        class="set"
-      >
-        <div class="set-info">
-          <p>Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
-        </div>
-        <div class="set-actions">
-          <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">Mark as Completed</button>
-          <span *ngIf="set.completed" (click)="markSetAsUncompleted(i, j)">✅ Completed</span>
-        </div>
-      </li>
-    </ul>
-  </section>
+  <app-exercise [workout]="workout"></app-exercise>
 
   <div *ngIf="isWorkoutCompleted()" class="workout-completed">
     <h3>🎉 Congratulations! Your workout is completed! 🎉</h3>
   </div>
 </div>
-
-<ng-template #customWorkout>
-  <div class="workout">
-    <header class="workout-header">
-      <h1>{{ workout.title }}</h1>
-      <p>{{ workout.description }}</p>
-    </header>
-
-    <section class="add-exercise">
-      <input type="text" placeholder="New Exercise Name" [(ngModel)]="newExerciseName" />
-      <button (click)="addExercise(newExerciseName)" [disabled]="newExerciseName.length === 0">Add Exercise</button>
-    </section>
-
-    <section *ngFor="let exercise of workout.exercises; let i = index" class="exercise">
-      <header class="exercise-header">
-        <h2>{{ exercise.name }}</h2>
-        <a class="delete-exercise" (click)="deleteExercise(exercise.id)">×</a>
-      </header>
-
-      <ul class="sets">
-        <li
-          *ngFor="let set of exercise.sets; let j = index"
-          [class.completed]="set.completed"
-          class="set"
-        >
-          <div class="set-info">
-            <p>Set {{ j + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
-            <a class="delete-set" (click)="deleteSet(set.id)">×</a>
-          </div>
-          <div class="set-actions">
-            <button *ngIf="!set.completed" (click)="markSetAsCompleted(i, j)">Mark as Completed</button>
-            <span *ngIf="set.completed" (click)="markSetAsUncompleted(i, j)">✅ Completed</span>
-          </div>
-        </li>
-      </ul>
-
-      <div class="add-set">
-        <input
-          type="number"
-          placeholder="Reps"
-          [(ngModel)]="newSet.reps"
-          min="1"
-          class="set-input"
-        />
-        <input
-          type="number"
-          placeholder="Weight (kg)"
-          [(ngModel)]="newSet.weight"
-          min="0"
-          class="set-input"
-        />
-        <button
-          (click)="addSet(exercise.id, newSet.reps, newSet.weight)"
-          [disabled]="!newSet.reps || newSet.reps < 1 || newSet.weight < 0">
-          + Add Set
-        </button>
-      </div>
-    </section>
-
-    <div *ngIf="isWorkoutCompleted()" class="workout-completed">
-      <h3>🎉 Congratulations! Your workout is completed! 🎉</h3>
-    </div>
-  </div>
-</ng-template>

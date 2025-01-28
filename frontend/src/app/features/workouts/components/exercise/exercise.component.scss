@@ -1,0 +1,71 @@
+.add-exercise {
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+    }
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.exercise {
+  margin: 1.5rem 0;
+  padding: 1rem 1rem 2rem 1rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+      font-size: 1.2rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .delete-exercise {
+      font-size: 1.5rem;
+      font-weight: bold;
+      border: none;
+      color: #e63946;
+      cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #d62839;
+      }
+    }
+  }
+}

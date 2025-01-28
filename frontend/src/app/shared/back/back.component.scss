@@ -1,10 +1,12 @@
 .back {
+  position: sticky;
+  top: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
   padding: 0.5rem 1rem;
   background-color: #007bff;
   color: #fff;
   width: 4rem;
-  margin-top: 20px;
-  margin-left: 20px;
   cursor: pointer;
   border: none;
   border-radius: 0.25rem;

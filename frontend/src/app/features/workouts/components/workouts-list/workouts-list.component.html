@@ -20,16 +20,17 @@
   </div>
 
   <div class="workouts">
-    <div class="workout" *ngFor="let workout of workouts">
-      <a [routerLink]="workout.url">
-        <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
-        <div class="time">
-          Time: {{ workout.time }} min
-        </div>
-        <p>{{ workout.level }}</p>
-        <h3>{{ workout.title }}</h3>
-        <p>{{ workout.description }}</p>
-      </a>
+    <div class="workout new-workout" [routerLink]="'new'">
+      <p>Create Workout</p>
+    </div>
+    <div [routerLink]="workout.url" class="workout" *ngFor="let workout of workouts">
+      <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
+      <div class="time">
+        Time: {{ workout.time }} min
+      </div>
+      <p>{{ workout.level }}</p>
+      <h3>{{ workout.title }}</h3>
+      <p>{{ workout.description }}</p>
     </div>
   </div>
 </div>

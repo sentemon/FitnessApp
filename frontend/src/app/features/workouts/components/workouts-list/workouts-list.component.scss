@@ -72,6 +72,7 @@
       font-weight: bold;
       background-color: #007BFF;
       color: #FFFFFF;
+      transition: filter 0.3s ease;
 
       &:hover {
         background-color: #3498DB;
@@ -99,32 +100,44 @@
       text-align: center;
       max-width: 300px;
       width: 100%;
+      cursor: pointer;
 
-      a {
-        text-decoration: none;
-        color: inherit;
-
-        img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 8px;
-        }
-
-        .time {
-          margin-top: 8px;
-          font-weight: bold;
-          color: #555;
-        }
-
-        h3 {
-          margin: 12px 0;
-          font-size: 1.2rem;
-        }
+      &.new-workout {
+        display: flex;
+        justify-content: center;
+        outline: 2px dashed #616161;
+        outline-offset: -16px;
 
         p {
-          color: #777;
-          font-size: 0.9rem;
+          font-size: 26px;
+          font-weight: normal;
         }
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .time {
+        margin-top: 8px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      h3 {
+        margin: 12px 0;
+        font-size: 1.2rem;
+      }
+
+      p {
+        color: #777;
+        font-size: 0.9rem;
+      }
+
+      &:hover {
+        filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3))
       }
     }
   }

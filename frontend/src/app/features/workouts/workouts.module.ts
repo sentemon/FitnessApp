@@ -8,6 +8,7 @@ import { WorkoutComponent } from './components/workout/workout.component';
 import {FormsModule} from "@angular/forms";
 import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
 import {RouterLink} from "@angular/router";
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {RouterLink} from "@angular/router";
     NgForOf,
     FormsModule,
     RouterLink,
+    SharedModule,
   ]
 })
 export class WorkoutsModule { }

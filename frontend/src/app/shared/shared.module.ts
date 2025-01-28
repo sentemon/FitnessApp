@@ -5,16 +5,19 @@ import {SideBarComponent} from "./layout/sidebar/sidebar.component";
 import {LayoutComponent} from "./layout/layout.component";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import { NotFoundComponent } from './not-found/not-found.component';
+import { BackComponent } from './back/back.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     MainComponent,
     SideBarComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    BackComponent
   ],
   exports: [
-    LayoutComponent
+    LayoutComponent,
+    BackComponent
   ],
   imports: [
     CommonModule,

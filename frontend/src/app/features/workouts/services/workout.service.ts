@@ -208,7 +208,7 @@ export class WorkoutService {
       level: Level.Intermediate,
       url: 'full-body-workout',
       imageUrl: '',
-      isCustom: false,
+      isCustom: true,
       exercises: [
         {
           id: '1',

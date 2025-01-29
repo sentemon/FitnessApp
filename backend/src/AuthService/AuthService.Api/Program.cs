@@ -9,24 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
 var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
-var allowedOrigins = builder.Configuration.GetSection(AppSettingsConstants.AllowedOrigins).Get<string[]>();
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
-
-// ToDo: move to extension method
-builder.Services
-    .AddCors(options =>
-    {
-        options.AddPolicy("CorsPolicy", policyBuilder =>
-        {
-            policyBuilder
-                .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
-                    "Allowed Origin URLs are not configured."))
-                .AllowCredentials()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-    });
 
 builder.Services.AddHttpContextAccessor();
 
@@ -55,8 +39,6 @@ using (var scope = app.Services.CreateScope())
 // app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 // app.UseHttpsRedirection();
-
-app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

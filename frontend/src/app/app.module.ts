@@ -12,6 +12,7 @@ import {SharedModule} from "./shared/shared.module";
 import {graphql} from "./graphql.config";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/services/auth.interceptor";
+import {WorkoutsModule} from "./features/workouts/workouts.module";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {AuthInterceptor} from "./core/services/auth.interceptor";
     AppRoutingModule,
     AuthModule,
     PostsModule,
+    WorkoutsModule,
     SharedModule,
     HttpClientModule,
     ApolloModule

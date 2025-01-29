@@ -1,0 +1,36 @@
+<div class="workouts-list">
+  <div class="flex">
+    <div class="welcome">
+      <h1>Welcome back {{ user.firstName }}!</h1>
+      <h2>Ready for toady's workout?</h2>
+    </div>
+
+    <div class="goal">
+      <h2>Goal: {{ "Lose 5kg" }}</h2>
+      <div class="status-bar-goal"></div>
+      <div class="status-bar-done">
+        <p>{{ "50%" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="new-training">
+    <h3>Want to add new training?</h3>
+    <button [routerLink]="'new'">></button>
+  </div>
+
+  <div class="workouts">
+    <div class="workout new-workout" [routerLink]="'create'">
+      <p>Create Workout</p>
+    </div>
+    <div [routerLink]="workout.url" class="workout" *ngFor="let workout of workouts">
+      <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
+      <div class="time">
+        Time: {{ workout.time }} min
+      </div>
+      <p>{{ workout.level }}</p>
+      <h3>{{ workout.title }}</h3>
+      <p>{{ workout.description }}</p>
+    </div>
+  </div>
+</div>

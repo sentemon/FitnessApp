@@ -36,6 +36,7 @@ public class Mutation
             HttpOnly = false,
             Secure = false,
             SameSite = SameSiteMode.Strict,
+            MaxAge = TimeSpan.FromSeconds(result.Response.ExpiresIn)
         });
 
         return result.Response;
@@ -56,7 +57,8 @@ public class Mutation
             Path = "/",
             HttpOnly = false,
             Secure = false,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.Strict,
+            MaxAge = TimeSpan.FromSeconds(result.Response.ExpiresIn)
         });
         
         return result.Response;

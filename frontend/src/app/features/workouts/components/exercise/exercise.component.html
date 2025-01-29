@@ -1,0 +1,12 @@
+<section class="add-exercise" *ngIf="workout.isCustom">
+  <input type="text" placeholder="New Exercise Name" [(ngModel)]="newExerciseName" />
+  <button (click)="addExercise(newExerciseName)" [disabled]="newExerciseName.length === 0">Add Exercise</button>
+</section>
+
+<section *ngFor="let exercise of workout.exercises; let i = index" class="exercise">
+  <header class="exercise-header">
+    <h2>{{ exercise.name }}</h2>
+    <a class="delete-exercise" (click)="deleteExercise(exercise.id)" *ngIf="workout.isCustom">×</a>
+  </header>
+  <app-set [workout]="workout" [exercise]="exercise"></app-set>
+</section>

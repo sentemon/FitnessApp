@@ -1,0 +1,38 @@
+<ul class="sets">
+  <li
+    *ngFor="let set of exercise.sets; let i = index"
+    [class.completed]="set.completed"
+    class="set"
+  >
+    <div class="set-info">
+      <p>Set {{ i + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
+      <a class="delete-set" (click)="deleteSet(set.id)" *ngIf="workout.isCustom">×</a>
+    </div>
+    <div class="set-actions">
+      <button *ngIf="!set.completed" (click)="markSetAsCompleted(i)">Mark as Completed</button>
+      <span *ngIf="set.completed" (click)="markSetAsUncompleted(i)">✅ Completed</span>
+    </div>
+  </li>
+</ul>
+
+<div class="add-set" *ngIf="workout.isCustom">
+  <input
+    type="number"
+    placeholder="Reps"
+    [(ngModel)]="newSet.reps"
+    min="1"
+    class="set-input"
+  />
+  <input
+    type="number"
+    placeholder="Weight (kg)"
+    [(ngModel)]="newSet.weight"
+    min="0"
+    class="set-input"
+  />
+  <button
+    (click)="addSet(exercise.id, newSet.reps, newSet.weight)"
+    [disabled]="!newSet.reps || newSet.reps < 1 || newSet.weight < 0">
+    + Add Set
+  </button>
+</div>

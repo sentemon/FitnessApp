@@ -1,3 +1,8 @@
+@import 'app/core/styles/variables';
+@import 'app/core/styles/mixins';
+@import 'app/core/styles/typography';
+@import 'app/shared/styles/buttons';
+
 * {
   font-family: Montserrat, serif;
   margin: 0;

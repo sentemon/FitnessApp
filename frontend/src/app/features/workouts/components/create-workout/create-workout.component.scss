@@ -1,0 +1,170 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.create-workout {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .workout-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    p {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .workout-input {
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #007bff;
+      }
+    }
+
+    #file-image {
+      display: none;
+    }
+
+    label {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  .create-exercise {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .exercise-header {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+
+      p {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+
+      .exercise-input {
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+    }
+
+    .create-set {
+      margin-top: 20px;
+
+      .set-header {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+
+        p {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
+          margin: 0;
+          align-self: center;
+        }
+
+        .set-input {
+          padding: 10px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          font-size: 16px;
+          outline: none;
+          transition: border-color 0.3s ease;
+
+          &:focus {
+            border-color: #007bff;
+          }
+        }
+      }
+
+      .set-button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+
+        &:hover {
+          background: linear-gradient(135deg, #0056b3, #007bff);
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .exercise-button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #28a745, #218838);
+      color: white;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #218838, #28a745);
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}

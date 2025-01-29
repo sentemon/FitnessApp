@@ -11,6 +11,7 @@ import {RouterLink} from "@angular/router";
 import {SharedModule} from "../../shared/shared.module";
 import { SetComponent } from './components/set/set.component';
 import { ExerciseComponent } from './components/exercise/exercise.component';
+import { CreateWorkoutComponent } from './components/create-workout/create-workout.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ExerciseComponent } from './components/exercise/exercise.component';
     WorkoutComponent,
     NewWorkoutComponent,
     SetComponent,
-    ExerciseComponent
+    ExerciseComponent,
+    CreateWorkoutComponent
   ],
   imports: [
     StepperModule,

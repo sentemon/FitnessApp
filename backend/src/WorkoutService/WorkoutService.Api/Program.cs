@@ -1,13 +1,19 @@
 using WorkoutService.Api.GraphQL;
 using WorkoutService.Application;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Infrastructure;
 using WorkoutService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
+var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
+
+builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
+
 builder.Services
-    .AddPersistenceServices()
-    .AddInfrastructureServices()
+    .AddPersistenceServices(connectionString)
+    .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices();
 
 builder.Services

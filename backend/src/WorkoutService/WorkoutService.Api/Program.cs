@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WorkoutService.Api.GraphQL;
 using WorkoutService.Application;
 using WorkoutService.Domain.Constants;
@@ -24,6 +25,12 @@ builder.Services
 builder.Services.AddGraphQL();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<WorkoutDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // app.UseHttpsRedirection();
 

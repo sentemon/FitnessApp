@@ -11,6 +11,9 @@ public class Exercise
     
     public IReadOnlyCollection<Set> Sets => _sets.AsReadOnly();
     private readonly IList<Set> _sets = [];
+    
+    private readonly IList<WorkoutExercise> _workoutExercises = [];
+    public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises.AsReadOnly();
 
     private Exercise(string name, DifficultyLevel level, string userId)
     {

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WorkoutService.Persistence;
@@ -10,6 +11,9 @@ public static class DependencyInjection
         {
             throw new ArgumentNullException(nameof(connectionString), "Connection String cannot be empty.");
         }
+
+        services.AddDbContext<WorkoutDbContext>(options =>
+            options.UseNpgsql(connectionString));
         
         return services;
     }

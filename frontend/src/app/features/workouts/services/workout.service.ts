@@ -282,4 +282,8 @@ export class WorkoutService {
 
     return of(newWorkout);
   }
+
+  getAllWorkoutsTitle(): Observable<string[]> {
+    return of(this.workouts.map(w => w.title));
+  }
 }

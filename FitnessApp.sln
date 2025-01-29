@@ -102,6 +102,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Authentication", "backend\src\Shared\Shared.Authentication\Shared.Authentication.csproj", "{3D6AACD8-2067-4D54-8D97-1E3A6A3B9399}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkoutService", "WorkoutService", "{DD27D65A-AAAD-4B57-90BE-2C9941E4DFFE}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\WorkoutService\Dockerfile = backend\src\WorkoutService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Api", "backend\src\WorkoutService\WorkoutService.Api\WorkoutService.Api.csproj", "{DC0FB37A-0129-4F92-ABB6-A7AB679B3645}"
 EndProject

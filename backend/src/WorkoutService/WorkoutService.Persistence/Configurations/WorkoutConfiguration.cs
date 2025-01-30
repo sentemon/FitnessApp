@@ -18,7 +18,7 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
         builder.Property(w => w.Description)
             .HasMaxLength(500);
             
-        builder.Property(w => w.Time)
+        builder.Property(w => w.DurationInMinutes)
             .IsRequired();
             
         builder.Property(w => w.Level)

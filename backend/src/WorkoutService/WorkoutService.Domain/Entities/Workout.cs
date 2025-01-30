@@ -7,7 +7,7 @@ public class Workout
     public Guid Id { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public int Time { get; private set; }
+    public uint DurationInMinutes { get; private set; }
     public DifficultyLevel Level { get; private set; }
     public string Url { get; }
     public string ImageUrl { get; private set; }
@@ -17,20 +17,20 @@ public class Workout
     private readonly IList<WorkoutExercise> _workoutExercises = [];
     public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises.AsReadOnly();
 
-    private Workout(string title, string description, int time, DifficultyLevel level, string userId)
+    private Workout(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
     {
         Title = title;
         Description = description;
-        Time = time;
+        DurationInMinutes = durationInMinutes;
         Level = level;
         UserId = userId;
         Url = string.Join("-", Title.ToLower().Split(" "));
         IsCustom = true;
     }
 
-    public static Workout Create(string title, string description, int time, DifficultyLevel level, string userId)
+    public static Workout Create(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
     {
-        return new Workout(title, description, time, level, userId);
+        return new Workout(title, description, durationInMinutes, level, userId);
     }
 
     public void AddExercise(Exercise exercise)
@@ -38,7 +38,7 @@ public class Workout
         if (_workoutExercises.Any(we => we.ExerciseId == exercise.Id))
             throw new InvalidOperationException("This exercise is already added to the workout.");
 
-        var workoutExercise = new WorkoutExercise(this.Id, exercise.Id);
+        var workoutExercise = new WorkoutExercise(Id, exercise.Id);
         _workoutExercises.Add(workoutExercise);
     }
 

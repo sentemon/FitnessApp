@@ -6,7 +6,7 @@ namespace WorkoutService.Application.DTOs;
 public record WorkoutDto(
     string Title,
     string Description,
-    int Time,
+    uint DurationInMinutes,
     DifficultyLevel Level,
     IFile? File,
     ExerciseDto[] Exercises

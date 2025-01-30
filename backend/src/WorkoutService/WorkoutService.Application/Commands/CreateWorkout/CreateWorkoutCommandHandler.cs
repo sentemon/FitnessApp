@@ -17,20 +17,40 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 
     public async Task<IResult<WorkoutDto, Error>> HandleAsync(CreateWorkoutCommand command)
     {
-        // ToDo: checks
+        if (string.IsNullOrWhiteSpace(command.WorkoutDto.Title) || command.WorkoutDto.Title.Length > 100)
+        {
+            return Result<WorkoutDto>.Failure(new Error("Title of workout cannot be empty or longer than 100 characters."));
+        }
+        
+        if (string.IsNullOrWhiteSpace(command.WorkoutDto.Description) || command.WorkoutDto.Description.Length > 500)
+        {
+            return Result<WorkoutDto>.Failure(new Error("Description of workout cannot be empty or longer than 500 characters."));
+        }
 
+        if (command.UserId is null)
+        {
+            return Result<WorkoutDto>.Failure(new Error("UserId cannot be null."));
+        }
+        
         var workout = Workout.Create(
             command.WorkoutDto.Title,
             command.WorkoutDto.Description,
-            command.WorkoutDto.Time,
+            command.WorkoutDto.DurationInMinutes,
             command.WorkoutDto.Level,
             command.UserId
         );
 
         foreach (var exerciseDto in command.WorkoutDto.Exercises)
         {
+            if (string.IsNullOrWhiteSpace(exerciseDto.Name))
+            {
+                return Result<WorkoutDto>.Failure(new Error("Name of exercise cannot be empty"));
+            }
+            
             var exercise = Exercise.Create(exerciseDto.Name, exerciseDto.Level, command.UserId);
             workout.AddExercise(exercise);
+            
+            await _dbContext.SaveChangesAsync();
             
             foreach (var setDto in exerciseDto.Sets)
             {
@@ -45,7 +65,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         var workoutDto = new WorkoutDto(
             workout.Title,
             workout.Description,
-            workout.Time,
+            workout.DurationInMinutes,
             workout.Level,
             null,
             command.WorkoutDto.Exercises

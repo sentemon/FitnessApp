@@ -7,7 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="HotChocolate.Types.Scalars.Upload" Version="14.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
+      <ProjectReference Include="..\WorkoutService.Domain\WorkoutService.Domain.csproj" />
+      <ProjectReference Include="..\WorkoutService.Persistence\WorkoutService.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

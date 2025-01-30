@@ -14,6 +14,7 @@ public class WorkoutDbContext : DbContext
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
     public DbSet<Set> Sets { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +22,6 @@ public class WorkoutDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ExerciseConfiguration());
         modelBuilder.ApplyConfiguration(new WorkoutExerciseConfiguration());
         modelBuilder.ApplyConfiguration(new SetConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 }

@@ -12,6 +12,7 @@ public class Workout
     public string Url { get; }
     public string ImageUrl { get; private set; }
     public bool IsCustom { get; private set; }
+    public User User { get; private set; }
     public string UserId { get; private set; }
     
     private readonly IList<WorkoutExercise> _workoutExercises = [];

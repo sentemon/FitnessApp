@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using WorkoutService.Application.DTOs;
@@ -31,6 +32,13 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         {
             return Result<WorkoutDto>.Failure(new Error("UserId cannot be null."));
         }
+
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+
+        if (user is null)
+        {
+            return Result<WorkoutDto>.Failure(new Error("User not found."));
+        }
         
         var workout = Workout.Create(
             command.WorkoutDto.Title,
@@ -49,6 +57,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             
             var exercise = Exercise.Create(exerciseDto.Name, exerciseDto.Level, command.UserId);
             workout.AddExercise(exercise);
+            user.AddExercise(exercise);
             
             await _dbContext.SaveChangesAsync();
             
@@ -58,7 +67,9 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
                 exercise.AddSet(set);
             }
         }
-
+        
+        user.AddWorkout(workout);
+        
         _dbContext.Workouts.Add(workout);
         await _dbContext.SaveChangesAsync();
         

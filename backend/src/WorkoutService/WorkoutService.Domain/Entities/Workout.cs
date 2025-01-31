@@ -9,7 +9,7 @@ public class Workout
     public string Description { get; private set; }
     public uint DurationInMinutes { get; private set; }
     public DifficultyLevel Level { get; private set; }
-    public string Url { get; }
+    public string Url { get; private set; }
     public string ImageUrl { get; private set; }
     public bool IsCustom { get; private set; }
     public User User { get; private set; }
@@ -32,6 +32,15 @@ public class Workout
     public static Workout Create(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
     {
         return new Workout(title, description, durationInMinutes, level, userId);
+    }
+
+    public void Update(string title, string description, uint durationInMinutes, DifficultyLevel level)
+    {
+        Title = title;
+        Description = description;
+        DurationInMinutes = durationInMinutes;
+        Level = level;
+        Url = string.Join("-", Title.ToLower().Split(" "));
     }
 
     public void AddExercise(Exercise exercise)

@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Application.Validators;
 using WorkoutService.Domain.Entities;
 using WorkoutService.Persistence;
 
@@ -9,23 +11,23 @@ namespace WorkoutService.Application.Commands.CreateWorkout;
 
 public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand, WorkoutDto>
 {
-    private readonly WorkoutDbContext _dbContext;
+    private readonly WorkoutDbContext _context;
 
-    public CreateWorkoutCommandHandler(WorkoutDbContext dbContext)
+    private readonly IValidator<WorkoutDto> _validator;
+
+    public CreateWorkoutCommandHandler(WorkoutDbContext context)
     {
-        _dbContext = dbContext;
+        _context = context;
+        _validator = new CreateWorkoutValidator();
     }
 
     public async Task<IResult<WorkoutDto, Error>> HandleAsync(CreateWorkoutCommand command)
     {
-        if (string.IsNullOrWhiteSpace(command.WorkoutDto.Title) || command.WorkoutDto.Title.Length > 100)
+        var errors = await _validator.ValidateAsync(command.WorkoutDto);
+
+        if (!errors.IsValid)
         {
-            return Result<WorkoutDto>.Failure(new Error("Title of workout cannot be empty or longer than 100 characters."));
-        }
-        
-        if (string.IsNullOrWhiteSpace(command.WorkoutDto.Description) || command.WorkoutDto.Description.Length > 500)
-        {
-            return Result<WorkoutDto>.Failure(new Error("Description of workout cannot be empty or longer than 500 characters."));
+            return Result<WorkoutDto>.Failure(new Error(errors.Errors.ToString() ?? "Validation failed."));
         }
 
         if (command.UserId is null)
@@ -33,7 +35,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             return Result<WorkoutDto>.Failure(new Error("UserId cannot be null."));
         }
 
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
 
         if (user is null)
         {
@@ -59,7 +61,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             workout.AddExercise(exercise);
             user.AddExercise(exercise);
             
-            await _dbContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             
             foreach (var setDto in exerciseDto.Sets)
             {
@@ -70,8 +72,8 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         
         user.AddWorkout(workout);
         
-        _dbContext.Workouts.Add(workout);
-        await _dbContext.SaveChangesAsync();
+        _context.Workouts.Add(workout);
+        await _context.SaveChangesAsync();
         
         var workoutDto = new WorkoutDto(
             workout.Title,

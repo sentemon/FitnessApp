@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using WorkoutService.Application.DTOs;
+using WorkoutService.Application.Validators;
 using WorkoutService.Persistence;
 
 namespace WorkoutService.Application.Commands.UpdateWorkout;
@@ -9,21 +12,22 @@ public class UpdateWorkoutCommandHandler : ICommandHandler<UpdateWorkoutCommand,
 {
     private readonly WorkoutDbContext _context;
 
+    private readonly IValidator<UpdateWorkoutDto> _validator;
+
     public UpdateWorkoutCommandHandler(WorkoutDbContext context)
     {
         _context = context;
+
+        _validator = new UpdateWorkoutValidator();
     }
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateWorkoutCommand command)
     {
-        if (string.IsNullOrWhiteSpace(command.UpdateWorkoutDto.Title) || command.UpdateWorkoutDto.Title.Length > 100)
+        var errors = await _validator.ValidateAsync(command.UpdateWorkoutDto);
+
+        if (!errors.IsValid)
         {
-            return Result<string>.Failure(new Error("Title of workout cannot be empty or longer than 100 characters."));
-        }
-        
-        if (string.IsNullOrWhiteSpace(command.UpdateWorkoutDto.Description) || command.UpdateWorkoutDto.Description.Length > 500)
-        {
-            return Result<string>.Failure(new Error("Description of workout cannot be empty or longer than 500 characters."));
+            return Result<string>.Failure(new Error(errors.Errors.ToString() ?? "Validation failed."));
         }
 
         var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.Id == Guid.Parse(command.UpdateWorkoutDto.Id));

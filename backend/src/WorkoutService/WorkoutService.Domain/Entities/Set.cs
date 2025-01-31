@@ -22,10 +22,8 @@ public class Set
         return new Set(reps, weight, exerciseId);
     }
 
-    public void MarkCompleted()
-    {
-        Completed = true;
-    }
+    public void MarkAsCompleted() => Completed = true;
+    public void MarkAsUncompleted() => Completed = false;
     
 #pragma warning disable CS8618 
     // EF Core

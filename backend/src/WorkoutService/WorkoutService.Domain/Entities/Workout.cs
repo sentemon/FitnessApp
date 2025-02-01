@@ -42,6 +42,8 @@ public class Workout
         Level = level;
         Url = string.Join("-", Title.ToLower().Split(" "));
     }
+    
+    public void SetImageUrl(string imageUrl) => ImageUrl = imageUrl;
 
     public void AddExercise(Exercise exercise)
     {
@@ -59,11 +61,6 @@ public class Workout
             return;
         
         _workoutExercises.Remove(workoutExercise);
-    }
-
-    public void SetImageUrl(string imageUrl)
-    {
-        ImageUrl = imageUrl;
     }
     
 #pragma warning disable CS8618 

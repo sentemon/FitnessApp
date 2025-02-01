@@ -3,4 +3,4 @@ using WorkoutService.Application.DTOs;
 
 namespace WorkoutService.Application.Commands.CreateWorkout;
 
-public record CreateWorkoutCommand(WorkoutDto WorkoutDto, string? UserId) : ICommand;
+public record CreateWorkoutCommand(CreateWorkoutDto CreateWorkoutDto, string? UserId) : ICommand;

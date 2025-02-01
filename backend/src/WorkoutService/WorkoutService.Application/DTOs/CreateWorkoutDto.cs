@@ -1,12 +1,13 @@
+using HotChocolate.Types;
 using WorkoutService.Domain.Enums;
 
 namespace WorkoutService.Application.DTOs;
 
-public record WorkoutDto(
+public record CreateWorkoutDto(
     string Title,
     string Description,
     uint DurationInMinutes,
     DifficultyLevel Level,
-    string ImageUrl,
+    IFile? ImageUrl,
     ExerciseDto[] Exercises
 );

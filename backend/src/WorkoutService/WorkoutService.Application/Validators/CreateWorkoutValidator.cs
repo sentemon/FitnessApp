@@ -3,7 +3,7 @@ using WorkoutService.Application.DTOs;
 
 namespace WorkoutService.Application.Validators;
 
-public class CreateWorkoutValidator : AbstractValidator<WorkoutDto>
+public class CreateWorkoutValidator : AbstractValidator<CreateWorkoutDto>
 {
     public CreateWorkoutValidator()
     {

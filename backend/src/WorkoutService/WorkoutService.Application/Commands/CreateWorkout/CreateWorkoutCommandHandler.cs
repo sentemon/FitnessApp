@@ -13,7 +13,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 {
     private readonly WorkoutDbContext _context;
 
-    private readonly IValidator<WorkoutDto> _validator;
+    private readonly IValidator<CreateWorkoutDto> _validator;
 
     public CreateWorkoutCommandHandler(WorkoutDbContext context)
     {
@@ -23,8 +23,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 
     public async Task<IResult<WorkoutDto, Error>> HandleAsync(CreateWorkoutCommand command)
     {
-        var errors = await _validator.ValidateAsync(command.WorkoutDto);
-
+        var errors = await _validator.ValidateAsync(command.CreateWorkoutDto);
         if (!errors.IsValid)
         {
             return Result<WorkoutDto>.Failure(new Error(errors.Errors.ToString() ?? "Validation failed."));
@@ -35,53 +34,64 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             return Result<WorkoutDto>.Failure(new Error("UserId cannot be null."));
         }
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+        var user = await _context.Users
+            .Include(u => u.Workouts)
+            .Include(u => u.Exercises)
+            .FirstOrDefaultAsync(u => u.Id == command.UserId);
 
         if (user is null)
         {
             return Result<WorkoutDto>.Failure(new Error("User not found."));
         }
-        
+
         var workout = Workout.Create(
-            command.WorkoutDto.Title,
-            command.WorkoutDto.Description,
-            command.WorkoutDto.DurationInMinutes,
-            command.WorkoutDto.Level,
+            command.CreateWorkoutDto.Title,
+            command.CreateWorkoutDto.Description,
+            command.CreateWorkoutDto.DurationInMinutes,
+            command.CreateWorkoutDto.Level,
             command.UserId
         );
 
-        foreach (var exerciseDto in command.WorkoutDto.Exercises)
+        var exercises = new List<Exercise>();
+
+        foreach (var exerciseDto in command.CreateWorkoutDto.Exercises)
         {
             if (string.IsNullOrWhiteSpace(exerciseDto.Name))
             {
                 return Result<WorkoutDto>.Failure(new Error("Name of exercise cannot be empty"));
             }
-            
+
             var exercise = Exercise.Create(exerciseDto.Name, exerciseDto.Level, command.UserId);
+            exercises.Add(exercise);
+        }
+
+        await _context.Exercises.AddRangeAsync(exercises);
+        await _context.SaveChangesAsync();
+
+        foreach (var exercise in exercises)
+        {
             workout.AddExercise(exercise);
-            user.AddExercise(exercise);
-            
-            await _context.SaveChangesAsync();
-            
-            foreach (var setDto in exerciseDto.Sets)
+
+            foreach (var setDto in command.CreateWorkoutDto.Exercises.First(e => e.Name == exercise.Name).Sets)
             {
                 var set = Set.Create(setDto.Reps, setDto.Weight, exercise.Id);
                 exercise.AddSet(set);
             }
         }
         
-        user.AddWorkout(workout);
-        
+        // ToDo: get from File Service
+        workout.SetImageUrl("https://example.com/image");
+
         _context.Workouts.Add(workout);
         await _context.SaveChangesAsync();
-        
+
         var workoutDto = new WorkoutDto(
             workout.Title,
             workout.Description,
             workout.DurationInMinutes,
             workout.Level,
-            null,
-            command.WorkoutDto.Exercises
+            workout.ImageUrl,
+            command.CreateWorkoutDto.Exercises
         );
 
         return Result<WorkoutDto>.Success(workoutDto);

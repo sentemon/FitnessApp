@@ -1,6 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
+using WorkoutService.Application.Commands.CreateWorkout;
+using WorkoutService.Application.Commands.DeleteWorkout;
+using WorkoutService.Application.Commands.MarkSetAsCompleted;
+using WorkoutService.Application.Commands.MarkSetAsUncompleted;
+using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Domain.Entities;
 using WorkoutService.Domain.Enums;
 using WorkoutService.Persistence;
@@ -14,6 +19,12 @@ public class TestFixture
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
         .Build();
+
+    internal readonly CreateWorkoutCommandHandler CreateWorkoutCommandHandler;
+    internal readonly UpdateWorkoutCommandHandler UpdateWorkoutCommandHandler;
+    internal readonly DeleteWorkoutCommandHandler DeleteWorkoutCommandHandler;
+    internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
+    internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
 
     public User ExistingUser { get; }
     public Workout ExistingWorkout { get; }
@@ -32,10 +43,16 @@ public class TestFixture
         
         ApplyMigrations();
         
+        CreateWorkoutCommandHandler = serviceProvider.GetRequiredService<CreateWorkoutCommandHandler>();
+        UpdateWorkoutCommandHandler = serviceProvider.GetRequiredService<UpdateWorkoutCommandHandler>();
+        DeleteWorkoutCommandHandler = serviceProvider.GetRequiredService<DeleteWorkoutCommandHandler>();
+        MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
+        MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
+        
         ExistingUser = CreateExistingUser();
-        ExistingWorkout = CreateExistingWorkout();
-        ExistingExercise = CreateExistingExercise();
-        ExistingSet = CreateExistingSet();
+        // ExistingWorkout = CreateExistingWorkout();
+        // ExistingExercise = CreateExistingExercise();
+        // ExistingSet = CreateExistingSet();
     }
 
     private void ApplyMigrations()
@@ -62,7 +79,7 @@ public class TestFixture
             "First Name",
             "Last Name",
             "Username",
-            string.Empty
+            "https://example.com/image"
         );
         
         WorkoutDbContextFixture.Users.Add(user);

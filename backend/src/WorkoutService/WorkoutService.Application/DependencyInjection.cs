@@ -1,11 +1,7 @@
+using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using WorkoutService.Application.Commands.CreateWorkout;
-using WorkoutService.Application.Commands.DeleteWorkout;
-using WorkoutService.Application.Commands.MarkSetAsCompleted;
-using WorkoutService.Application.Commands.MarkSetAsUncompleted;
-using WorkoutService.Application.Commands.UpdateWholeWorkout;
-using WorkoutService.Application.Commands.UpdateWorkout;
+using Shared.Application.Extensions;
 
 namespace WorkoutService.Application;
 
@@ -15,12 +11,8 @@ public static class DependencyInjection
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         
-        services.AddScoped<CreateWorkoutCommandHandler>();
-        services.AddScoped<UpdateWorkoutCommandHandler>();
-        services.AddScoped<UpdateWholeWorkoutCommandHandler>();
-        services.AddScoped<DeleteWorkoutCommandHandler>();
-        services.AddScoped<MarkSetAsCompletedCommandHandler>();
-        services.AddScoped<MarkSetAsUncompletedCommandHandler>();
+        services.AddCommandHandlers(Assembly.GetExecutingAssembly());
+        services.AddQueryHandlers(Assembly.GetExecutingAssembly());
         
         return services;
     }

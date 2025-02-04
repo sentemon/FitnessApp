@@ -15,7 +15,7 @@ public class Workout
     public User User { get; private set; }
     public string UserId { get; private set; }
     
-    private readonly IList<WorkoutExercise> _workoutExercises = [];
+    private readonly List<WorkoutExercise> _workoutExercises = [];
     public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises.AsReadOnly();
 
     private Workout(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
@@ -41,6 +41,24 @@ public class Workout
         DurationInMinutes = durationInMinutes;
         Level = level;
         Url = string.Join("-", Title.ToLower().Split(" "));
+    }
+
+    public void UpdateWhole(string title, string description, uint durationInMinutes, DifficultyLevel level, Exercise[] exercises)
+    {
+        Update(title, description, durationInMinutes, level);
+        
+        var existingExerciseIds = _workoutExercises.Select(we => we.ExerciseId).ToHashSet();
+        var newExerciseIds = exercises.Select(e => e.Id).ToHashSet();
+
+        _workoutExercises.RemoveAll(we => !newExerciseIds.Contains(we.ExerciseId));
+        
+        foreach (var exercise in exercises)
+        {
+            if (!existingExerciseIds.Contains(exercise.Id))
+            {
+                _workoutExercises.Add(new WorkoutExercise(Id, exercise.Id));
+            }
+        }
     }
     
     public void SetImageUrl(string imageUrl) => ImageUrl = imageUrl;

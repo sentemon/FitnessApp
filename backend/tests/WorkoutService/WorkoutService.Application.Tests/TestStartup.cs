@@ -6,6 +6,7 @@ using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.Commands.MarkSetAsCompleted;
 using WorkoutService.Application.Commands.MarkSetAsUncompleted;
+using WorkoutService.Application.Commands.UpdateWholeWorkout;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Persistence;
 
@@ -27,6 +28,7 @@ public class TestStartup
             })
             .AddScoped<CreateWorkoutCommandHandler>()
             .AddScoped<UpdateWorkoutCommandHandler>()
+            .AddScoped<UpdateWholeWorkoutCommandHandler>()
             .AddScoped<DeleteWorkoutCommandHandler>()
             .AddScoped<MarkSetAsCompletedCommandHandler>()
             .AddScoped<MarkSetAsUncompletedCommandHandler>()

@@ -18,7 +18,7 @@ public class UpdateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var durationInMinutes = 58u;
         var level = DifficultyLevel.Advanced;
         
-        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, level);
+        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, null, level);
         var command = new UpdateWorkoutCommand(input);
 
         // Act
@@ -40,7 +40,7 @@ public class UpdateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var durationInMinutes = 45u;
         var level = (DifficultyLevel)34;
         
-        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, level);
+        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, null, level);
         var command = new UpdateWorkoutCommand(input);
 
         // Act
@@ -62,7 +62,7 @@ public class UpdateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var durationInMinutes = 58u;
         var level = DifficultyLevel.Advanced;
 
-        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, level);
+        var input = new UpdateWorkoutDto(id, title, description, durationInMinutes, null, level);
         var command = new UpdateWorkoutCommand(input);
 
         // Act

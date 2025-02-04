@@ -42,6 +42,9 @@ public class UpdateWorkoutCommandHandler : ICommandHandler<UpdateWorkoutCommand,
             command.UpdateWorkoutDto.DurationInMinutes,
             command.UpdateWorkoutDto.Level
         );
+        
+        // ToDo: get from File Service
+        workout.SetImageUrl("https://example.com/image");
 
         await _context.SaveChangesAsync();
         

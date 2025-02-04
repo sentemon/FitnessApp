@@ -4,6 +4,7 @@ using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.Commands.MarkSetAsCompleted;
 using WorkoutService.Application.Commands.MarkSetAsUncompleted;
+using WorkoutService.Application.Commands.UpdateWholeWorkout;
 using WorkoutService.Application.Commands.UpdateWorkout;
 
 namespace WorkoutService.Application;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         
         services.AddScoped<CreateWorkoutCommandHandler>();
         services.AddScoped<UpdateWorkoutCommandHandler>();
+        services.AddScoped<UpdateWholeWorkoutCommandHandler>();
         services.AddScoped<DeleteWorkoutCommandHandler>();
         services.AddScoped<MarkSetAsCompletedCommandHandler>();
         services.AddScoped<MarkSetAsUncompletedCommandHandler>();

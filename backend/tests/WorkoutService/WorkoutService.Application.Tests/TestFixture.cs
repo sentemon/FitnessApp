@@ -50,7 +50,7 @@ public class TestFixture
         MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
         
         ExistingUser = CreateExistingUser();
-        // ExistingWorkout = CreateExistingWorkout();
+        ExistingWorkout = CreateExistingWorkout();
         // ExistingExercise = CreateExistingExercise();
         // ExistingSet = CreateExistingSet();
     }
@@ -97,6 +97,8 @@ public class TestFixture
             DifficultyLevel.Intermediate,
             ExistingUser.Id
         );
+        
+        workout.SetImageUrl("https://example.com");
         
         WorkoutDbContextFixture.Workouts.Add(workout);
         WorkoutDbContextFixture.SaveChanges();

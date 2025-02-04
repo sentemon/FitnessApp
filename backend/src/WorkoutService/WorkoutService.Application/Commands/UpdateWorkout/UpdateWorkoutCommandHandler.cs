@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.Application.Extensions;
 using WorkoutService.Application.DTOs;
 using WorkoutService.Application.Validators;
 using WorkoutService.Persistence;
@@ -23,15 +24,13 @@ public class UpdateWorkoutCommandHandler : ICommandHandler<UpdateWorkoutCommand,
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateWorkoutCommand command)
     {
-        var errors = await _validator.ValidateAsync(command.UpdateWorkoutDto);
-
-        if (!errors.IsValid)
+        var errors = await _validator.ValidateResultAsync(command.UpdateWorkoutDto);
+        if (errors is not null)
         {
-            return Result<string>.Failure(new Error(errors.Errors.ToString() ?? "Validation failed."));
+            return Result<string>.Failure(new Error(errors));
         }
 
-        var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.Id == Guid.Parse(command.UpdateWorkoutDto.Id));
-
+        var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.Id == command.UpdateWorkoutDto.Id);
         if (workout is null)
         {
             return Result<string>.Failure(new Error("Workout not found."));

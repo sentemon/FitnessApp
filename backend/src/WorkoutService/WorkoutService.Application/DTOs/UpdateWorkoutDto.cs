@@ -3,7 +3,7 @@ using WorkoutService.Domain.Enums;
 namespace WorkoutService.Application.DTOs;
 
 public record UpdateWorkoutDto(
-    string Id,
+    Guid Id,
     string Title,
     string Description,
     uint DurationInMinutes,

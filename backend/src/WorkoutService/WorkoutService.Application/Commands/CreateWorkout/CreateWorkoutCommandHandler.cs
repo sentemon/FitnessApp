@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.Application.Extensions;
 using WorkoutService.Application.DTOs;
 using WorkoutService.Application.Validators;
 using WorkoutService.Domain.Entities;
@@ -23,15 +24,10 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 
     public async Task<IResult<WorkoutDto, Error>> HandleAsync(CreateWorkoutCommand command)
     {
-        var errors = await _validator.ValidateAsync(command.CreateWorkoutDto);
-        if (!errors.IsValid)
+        var errors = await _validator.ValidateResultAsync(command.CreateWorkoutDto);
+        if (errors is not null)
         {
-            return Result<WorkoutDto>.Failure(new Error(errors.Errors.ToString() ?? "Validation failed."));
-        }
-
-        if (command.UserId is null)
-        {
-            return Result<WorkoutDto>.Failure(new Error("UserId cannot be null."));
+            return Result<WorkoutDto>.Failure(new Error(errors));
         }
 
         var user = await _context.Users
@@ -49,7 +45,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             command.CreateWorkoutDto.Description,
             command.CreateWorkoutDto.DurationInMinutes,
             command.CreateWorkoutDto.Level,
-            command.UserId
+            user.Id
         );
 
         var exercises = new List<Exercise>();

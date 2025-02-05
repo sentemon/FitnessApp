@@ -2,6 +2,7 @@ using FluentAssertions;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Domain.Enums;
 using Xunit;
 
@@ -43,7 +44,7 @@ public class DeleteWorkoutTests(TestFixture fixture) : TestBase(fixture)
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Response.Should().Be("Workout was successfully deleted.");
+        result.Response.Should().Be(ResponseMessages.WorkoutDeleted);
     }
     
     [Fact]
@@ -70,7 +71,7 @@ public class DeleteWorkoutTests(TestFixture fixture) : TestBase(fixture)
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Message.Should().Be("User not found.");
+        result.Error.Message.Should().Be(ResponseMessages.UserNotFound);
     }
     
     [Fact]
@@ -87,6 +88,6 @@ public class DeleteWorkoutTests(TestFixture fixture) : TestBase(fixture)
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Message.Should().Be("Workout not found.");
+        result.Error.Message.Should().Be(ResponseMessages.WorkoutNotFound);
     }
 }

@@ -5,6 +5,7 @@ using Shared.Application.Common;
 using Shared.Application.Extensions;
 using WorkoutService.Application.DTOs;
 using WorkoutService.Application.Validators;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Domain.Entities;
 using WorkoutService.Persistence;
 
@@ -37,7 +38,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 
         if (user is null)
         {
-            return Result<WorkoutDto>.Failure(new Error("User not found."));
+            return Result<WorkoutDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
         var workout = Workout.Create(
@@ -57,7 +58,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
                 return Result<WorkoutDto>.Failure(new Error("Name of exercise cannot be empty"));
             }
 
-            var exercise = Exercise.Create(exerciseDto.Name, exerciseDto.Level, command.UserId);
+            var exercise = Exercise.Create(exerciseDto.Name, exerciseDto.Level, user.Id);
             exercises.Add(exercise);
         }
 

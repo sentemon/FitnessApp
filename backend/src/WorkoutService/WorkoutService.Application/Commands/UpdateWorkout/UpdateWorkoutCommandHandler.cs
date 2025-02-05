@@ -5,6 +5,7 @@ using Shared.Application.Common;
 using Shared.Application.Extensions;
 using WorkoutService.Application.DTOs;
 using WorkoutService.Application.Validators;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Persistence;
 
 namespace WorkoutService.Application.Commands.UpdateWorkout;
@@ -33,7 +34,7 @@ public class UpdateWorkoutCommandHandler : ICommandHandler<UpdateWorkoutCommand,
         var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.Id == command.UpdateWorkoutDto.Id);
         if (workout is null)
         {
-            return Result<string>.Failure(new Error("Workout not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.WorkoutNotFound));
         }
         
         workout.Update(
@@ -48,6 +49,6 @@ public class UpdateWorkoutCommandHandler : ICommandHandler<UpdateWorkoutCommand,
 
         await _context.SaveChangesAsync();
         
-        return Result<string>.Success("Workout is successfully updated");
+        return Result<string>.Success(ResponseMessages.WorkoutUpdated);
     }
 }

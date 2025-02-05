@@ -1,0 +1,13 @@
+namespace WorkoutService.Domain.Constants;
+
+public static class ResponseMessages
+{
+    public const string WorkoutUpdated = "Workout updated successfully.";
+    public const string WorkoutDeleted = "Workout deleted successfully.";
+    public const string SetCompleted = "Set marked as completed.";
+    public const string SetUncompleted = "Set marked as uncompleted.";
+    
+    public const string WorkoutNotFound = "Workout not found.";
+    public const string SetNotFound = "Set not found.";
+    public const string UserNotFound = "User not found";
+}

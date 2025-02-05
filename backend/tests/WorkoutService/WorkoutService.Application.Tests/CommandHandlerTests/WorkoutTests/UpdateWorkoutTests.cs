@@ -1,6 +1,7 @@
 using FluentAssertions;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Domain.Enums;
 using Xunit;
 
@@ -27,7 +28,7 @@ public class UpdateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Error.Should().BeNull();
-        result.Response.Should().Be("Workout is successfully updated");
+        result.Response.Should().Be(ResponseMessages.WorkoutUpdated);
     }
     
     [Fact]
@@ -70,6 +71,6 @@ public class UpdateWorkoutTests(TestFixture fixture) : TestBase(fixture)
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Message.Should().Be("Workout not found.");
+        result.Error.Message.Should().Be(ResponseMessages.WorkoutNotFound);
     }
 }

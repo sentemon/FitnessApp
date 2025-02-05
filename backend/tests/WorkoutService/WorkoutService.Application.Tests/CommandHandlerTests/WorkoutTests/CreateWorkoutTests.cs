@@ -1,6 +1,7 @@
 using FluentAssertions;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Domain.Enums;
 using Xunit;
 
@@ -102,6 +103,6 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Assert
         workout.IsSuccess.Should().BeFalse();
         workout.Response.Should().BeNull();
-        workout.Error.Message.Should().Be("User not found.");
+        workout.Error.Message.Should().Be(ResponseMessages.UserNotFound);
     }
 }

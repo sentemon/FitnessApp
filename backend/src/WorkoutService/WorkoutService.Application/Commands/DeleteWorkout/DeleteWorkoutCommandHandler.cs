@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Persistence;
 
 namespace WorkoutService.Application.Commands.DeleteWorkout;
@@ -19,13 +20,13 @@ public class DeleteWorkoutCommandHandler : ICommandHandler<DeleteWorkoutCommand,
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
         if (user is null)
         {
-            return Result<string>.Failure(new Error("User not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
         var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.Id == command.WorkoutId);
         if (workout is null)
         {
-            return Result<string>.Failure(new Error("Workout not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.WorkoutNotFound));
         }
         
         user.DeleteWorkout(workout);
@@ -33,6 +34,6 @@ public class DeleteWorkoutCommandHandler : ICommandHandler<DeleteWorkoutCommand,
 
         await _context.SaveChangesAsync();
         
-        return Result<string>.Success("Workout was successfully deleted.");
+        return Result<string>.Success(ResponseMessages.WorkoutDeleted);
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using WorkoutService.Domain.Constants;
 using WorkoutService.Persistence;
 
 namespace WorkoutService.Application.Commands.MarkSetAsUncompleted;
@@ -20,12 +21,12 @@ public class MarkSetAsUncompletedCommandHandler : ICommandHandler<MarkSetAsUncom
 
         if (set is null)
         {
-            return Result<string>.Failure(new Error("Set not found."));
+            return Result<string>.Failure(new Error(ResponseMessages.SetNotFound));
         }
         
         set.MarkAsUncompleted();
         await _context.SaveChangesAsync();
         
-        return Result<string>.Success("Set marked as uncompleted");
+        return Result<string>.Success(ResponseMessages.SetUncompleted);
     }
 }

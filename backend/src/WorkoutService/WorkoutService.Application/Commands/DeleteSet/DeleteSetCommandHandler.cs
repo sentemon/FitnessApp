@@ -4,18 +4,18 @@ using Shared.Application.Common;
 using WorkoutService.Domain.Constants;
 using WorkoutService.Persistence;
 
-namespace WorkoutService.Application.Commands.SetDeleted;
+namespace WorkoutService.Application.Commands.DeleteSet;
 
-public class SetDeletedCommandHandler : ICommandHandler<SetDeletedCommand, string>
+public class DeleteSetCommandHandler : ICommandHandler<DeleteSetCommand, string>
 {
     private readonly WorkoutDbContext _context;
 
-    public SetDeletedCommandHandler(WorkoutDbContext context)
+    public DeleteSetCommandHandler(WorkoutDbContext context)
     {
         _context = context;
     }
 
-    public async Task<IResult<string, Error>> HandleAsync(SetDeletedCommand command)
+    public async Task<IResult<string, Error>> HandleAsync(DeleteSetCommand command)
     {
         var exercise = await _context.Exercises
             .Include(exercise => exercise.Sets)

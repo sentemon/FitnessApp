@@ -16,11 +16,6 @@ public class DeleteWorkoutCommandHandler : ICommandHandler<DeleteWorkoutCommand,
 
     public async Task<IResult<string, Error>> HandleAsync(DeleteWorkoutCommand command)
     {
-        if (command.UserId is null)
-        {
-            return Result<string>.Failure(new Error("UserId is null."));
-        }
-
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
         if (user is null)
         {

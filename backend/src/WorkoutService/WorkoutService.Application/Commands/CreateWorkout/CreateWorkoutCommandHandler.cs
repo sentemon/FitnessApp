@@ -82,6 +82,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         await _context.SaveChangesAsync();
 
         var workoutDto = new WorkoutDto(
+            workout.Id,
             workout.Title,
             workout.Description,
             workout.DurationInMinutes,

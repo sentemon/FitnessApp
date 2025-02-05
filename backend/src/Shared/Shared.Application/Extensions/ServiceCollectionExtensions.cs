@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
 
         var handlers = assembly.GetTypes()
             .Where(t => t.GetInterfaces()
-                .Any(i => i.GetGenericTypeDefinition() == commandHandlerInterface));
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == commandHandlerInterface));
 
         foreach (var handler in handlers)
         {
@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
 
         var handlers = assembly.GetTypes()
             .Where(t => t.GetInterfaces()
-                .Any(i => i.GetGenericTypeDefinition() == queryHandlerInterface));
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == queryHandlerInterface));
 
         foreach (var handler in handlers)
         {

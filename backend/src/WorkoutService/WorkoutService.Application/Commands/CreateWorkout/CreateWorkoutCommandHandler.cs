@@ -89,7 +89,12 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             workout.DurationInMinutes,
             workout.Level,
             workout.ImageUrl,
-            command.CreateWorkoutDto.Exercises
+            exercises.Select(e => new ExerciseDto(
+                e.Id,
+                e.Name,
+                e.Level,
+                e.Sets.ToList().Select(s => new SetDto(s.Id, s.Reps, s.Weight)).ToArray())
+            ).ToArray()
         );
 
         return Result<WorkoutDto>.Success(workoutDto);

@@ -9,5 +9,5 @@ public record CreateWorkoutDto(
     uint DurationInMinutes,
     DifficultyLevel Level,
     IFile? ImageUrl,
-    ExerciseDto[] Exercises
+    CreateExerciseDto[] Exercises
 );

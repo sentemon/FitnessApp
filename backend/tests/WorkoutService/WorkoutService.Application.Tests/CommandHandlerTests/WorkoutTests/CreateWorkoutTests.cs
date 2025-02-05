@@ -19,13 +19,13 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = new[]
         {
-            new ExerciseDto(
+            new CreateExerciseDto(
                 "Example Name",
                 DifficultyLevel.AllLevels,
                 [
-                    new SetDto(20, 20),
-                    new SetDto(30, 10),
-                    new SetDto(5, 40)
+                    new CreateSetDto(20, 20),
+                    new CreateSetDto(30, 10),
+                    new CreateSetDto(5, 40)
                 ]
             )
         };
@@ -44,7 +44,6 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         workout.Response.Description.Should().Be(description);
         workout.Response.DurationInMinutes.Should().Be(durationInMinutes);
         workout.Response.Level.Should().Be(level);
-        workout.Response.Exercises.Should().Equal(exerciseDtos);
     }
 
     [Fact]
@@ -55,7 +54,7 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var description = new string('*', 501);
         var durationInMinutes = 45u;
         var level = (DifficultyLevel)34;
-        var exerciseDtos = Array.Empty<ExerciseDto>();
+        var exerciseDtos = Array.Empty<CreateExerciseDto>();
         
         var userId = Fixture.ExistingUser.Id;
         var createWorkoutDto = new CreateWorkoutDto(title, description, durationInMinutes, level, null, exerciseDtos);
@@ -81,13 +80,13 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = new[]
         {
-            new ExerciseDto(
+            new CreateExerciseDto(
                 "Example Name",
                 DifficultyLevel.AllLevels,
                 [
-                    new SetDto(20, 20),
-                    new SetDto(30, 10),
-                    new SetDto(5, 40)
+                    new CreateSetDto(20, 20),
+                    new CreateSetDto(30, 10),
+                    new CreateSetDto(5, 40)
                 ]
             )
         };

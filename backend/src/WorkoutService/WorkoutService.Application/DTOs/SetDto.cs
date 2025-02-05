@@ -1,3 +1,3 @@
 namespace WorkoutService.Application.DTOs;
 
-public record SetDto(uint Reps, int Weight);
+public record SetDto(Guid Id, uint Reps, int Weight);

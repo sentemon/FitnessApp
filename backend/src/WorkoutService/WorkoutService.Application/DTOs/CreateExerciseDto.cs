@@ -2,9 +2,8 @@ using WorkoutService.Domain.Enums;
 
 namespace WorkoutService.Application.DTOs;
 
-public record ExerciseDto(
-    Guid Id,
+public record CreateExerciseDto(
     string Name, 
     DifficultyLevel Level, 
-    SetDto[] Sets
+    CreateSetDto[] Sets
 );

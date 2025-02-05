@@ -8,6 +8,7 @@ public static class ResponseMessages
     public const string SetUncompleted = "Set marked as uncompleted.";
     
     public const string WorkoutNotFound = "Workout not found.";
+    public const string ExerciseNotFound = "Exercise not found.";
     public const string SetNotFound = "Set not found.";
     public const string UserNotFound = "User not found";
 }

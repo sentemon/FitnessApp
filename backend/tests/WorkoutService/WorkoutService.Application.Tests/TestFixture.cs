@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
+using WorkoutService.Application.Commands.AddSet;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.Commands.MarkSetAsCompleted;
@@ -23,6 +24,7 @@ public class TestFixture
     internal readonly CreateWorkoutCommandHandler CreateWorkoutCommandHandler;
     internal readonly UpdateWorkoutCommandHandler UpdateWorkoutCommandHandler;
     internal readonly DeleteWorkoutCommandHandler DeleteWorkoutCommandHandler;
+    internal readonly AddSetCommandHandler AddSetCommandHandler;
     internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
     internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
 
@@ -46,12 +48,13 @@ public class TestFixture
         CreateWorkoutCommandHandler = serviceProvider.GetRequiredService<CreateWorkoutCommandHandler>();
         UpdateWorkoutCommandHandler = serviceProvider.GetRequiredService<UpdateWorkoutCommandHandler>();
         DeleteWorkoutCommandHandler = serviceProvider.GetRequiredService<DeleteWorkoutCommandHandler>();
+        AddSetCommandHandler = serviceProvider.GetRequiredService<AddSetCommandHandler>();
         MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
         MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
         
         ExistingUser = CreateExistingUser();
         ExistingWorkout = CreateExistingWorkout();
-        // ExistingExercise = CreateExistingExercise();
+        ExistingExercise = CreateExistingExercise();
         // ExistingSet = CreateExistingSet();
     }
 

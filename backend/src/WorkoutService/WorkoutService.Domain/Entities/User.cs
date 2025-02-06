@@ -37,13 +37,8 @@ public class User
         return new User(id, firstName, lastName, username, imageUrl);
     }
 
-    public void SetUpProfile(float weight, float height, Goal currentGoal, ActivityLevel activityLevel, IEnumerable<WorkoutType> favoriteWorkoutTypes, DateTime? dateOfBirth = null)
+    public void SetUpProfile(float weight, float height, Goal currentGoal, ActivityLevel activityLevel, IEnumerable<WorkoutType> favoriteWorkoutTypes, DateTime? dateOfBirth)
     {
-        if (weight <= 0)
-            throw new ArgumentException("Weight must be a positive number.", nameof(weight));
-        if (height <= 0)
-            throw new ArgumentException("Height must be a positive number.", nameof(height));
-        
         Weight = weight;
         Height = height;
         CurrentGoal = currentGoal;

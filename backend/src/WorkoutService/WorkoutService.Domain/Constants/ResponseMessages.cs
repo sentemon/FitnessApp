@@ -7,6 +7,7 @@ public static class ResponseMessages
     public const string SetDeleted = "Set deleted successfully";
     public const string SetCompleted = "Set marked as completed.";
     public const string SetUncompleted = "Set marked as uncompleted.";
+    public const string ProfileSetUp = "Profile set up successfully.";
     
     public const string WorkoutNotFound = "Workout not found.";
     public const string ExerciseNotFound = "Exercise not found.";

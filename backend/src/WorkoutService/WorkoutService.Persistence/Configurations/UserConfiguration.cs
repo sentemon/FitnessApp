@@ -24,6 +24,21 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.ImageUrl)
             .IsRequired(false);
+
+        builder.Property(u => u.Weight)
+            .IsRequired(false);
+        
+        builder.Property(u => u.Height)
+            .IsRequired(false);
+        
+        builder.Property(u => u.CurrentGoal)
+            .IsRequired(false);
+        
+        builder.Property(u => u.ActivityLevel)
+            .IsRequired(false);
+        
+        builder.Property(u => u.DateOfBirth)
+            .IsRequired(false);
         
         builder.HasMany(u => u.Workouts)
             .WithOne(w => w.User)

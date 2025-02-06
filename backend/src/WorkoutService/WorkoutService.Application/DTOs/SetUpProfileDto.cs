@@ -8,5 +8,5 @@ public record SetUpProfileDto(
     DateTime? DateOfBirth,
     Goal Goal,
     ActivityLevel ActivityLevel,
-    WorkoutType[] WorkoutTypes
+    WorkoutType[] FavoriteWorkoutTypes
 );

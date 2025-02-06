@@ -7,6 +7,7 @@ using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.Commands.MarkSetAsCompleted;
 using WorkoutService.Application.Commands.MarkSetAsUncompleted;
+using WorkoutService.Application.Commands.SetUpProfile;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Domain.Entities;
 using WorkoutService.Domain.Enums;
@@ -29,6 +30,7 @@ public class TestFixture
     internal readonly DeleteSetCommandHandler DeleteSetCommandHandler;
     internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
     internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
+    internal readonly SetUpProfileCommandHandler SetUpProfileCommandHandler;
 
     public User ExistingUser { get; }
     public Workout ExistingWorkout { get; }
@@ -54,6 +56,7 @@ public class TestFixture
         DeleteSetCommandHandler = serviceProvider.GetRequiredService<DeleteSetCommandHandler>();
         MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
         MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
+        SetUpProfileCommandHandler = serviceProvider.GetRequiredService<SetUpProfileCommandHandler>();
         
         ExistingUser = CreateExistingUser();
         ExistingWorkout = CreateExistingWorkout();

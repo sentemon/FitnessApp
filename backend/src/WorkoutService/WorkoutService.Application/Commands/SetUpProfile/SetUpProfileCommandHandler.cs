@@ -42,7 +42,7 @@ public class SetUpProfileCommandHandler : ICommandHandler<SetUpProfileCommand, s
             command.SetUpProfileDto.Height,
             command.SetUpProfileDto.Goal,
             command.SetUpProfileDto.ActivityLevel,
-            command.SetUpProfileDto.WorkoutTypes,
+            command.SetUpProfileDto.FavoriteWorkoutTypes,
             command.SetUpProfileDto.DateOfBirth
         );
 

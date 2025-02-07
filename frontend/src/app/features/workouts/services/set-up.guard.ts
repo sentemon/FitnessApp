@@ -19,6 +19,6 @@ export class SetUpGuard implements CanActivate {
   }
 
   private isProfileComplete() {
-    return false;
+    return true;
   }
 }

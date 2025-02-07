@@ -7,8 +7,8 @@ using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteSetHistory;
 using WorkoutService.Application.Commands.DeleteWorkout;
-using WorkoutService.Application.Commands.MarkSetAsCompleted;
-using WorkoutService.Application.Commands.MarkSetAsUncompleted;
+using WorkoutService.Application.Commands.MarkSetHistoryAsCompleted;
+using WorkoutService.Application.Commands.MarkSetHistoryAsUncompleted;
 using WorkoutService.Application.Commands.SetUpProfile;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Domain.Entities;
@@ -32,8 +32,8 @@ public class TestFixture
     internal readonly DeleteSetCommandHandler DeleteSetCommandHandler;
     internal readonly AddSetHistoryCommandHandler AddSetHistoryCommandHandler;
     internal readonly DeleteSetHistoryCommandHandler DeleteSetHistoryCommandHandler;
-    internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
-    internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
+    internal readonly MarkSetHistoryAsCompletedCommandHandler MarkSetHistoryAsCompletedCommandHandler;
+    internal readonly MarkSetHistoryAsUncompletedCommandHandler MarkSetHistoryAsUncompletedCommandHandler;
     internal readonly SetUpProfileCommandHandler SetUpProfileCommandHandler;
 
     public User ExistingUser { get; }
@@ -61,8 +61,8 @@ public class TestFixture
         DeleteSetCommandHandler = serviceProvider.GetRequiredService<DeleteSetCommandHandler>();
         AddSetHistoryCommandHandler = serviceProvider.GetRequiredService<AddSetHistoryCommandHandler>();
         DeleteSetHistoryCommandHandler = serviceProvider.GetRequiredService<DeleteSetHistoryCommandHandler>();
-        MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
-        MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
+        MarkSetHistoryAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetHistoryAsCompletedCommandHandler>();
+        MarkSetHistoryAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetHistoryAsUncompletedCommandHandler>();
         SetUpProfileCommandHandler = serviceProvider.GetRequiredService<SetUpProfileCommandHandler>();
         
         ExistingUser = CreateExistingUser();

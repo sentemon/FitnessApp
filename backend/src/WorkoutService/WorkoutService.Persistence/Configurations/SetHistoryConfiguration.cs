@@ -4,22 +4,22 @@ using WorkoutService.Domain.Entities;
 
 namespace WorkoutService.Persistence.Configurations;
 
-public class SetConfiguration : IEntityTypeConfiguration<Set>
+public class SetHistoryConfiguration : IEntityTypeConfiguration<SetHistory>
 {
-    public void Configure(EntityTypeBuilder<Set> builder)
+    public void Configure(EntityTypeBuilder<SetHistory> builder)
     {
-        builder.HasKey(s => s.Id);
+        builder.HasKey(sh => sh.Id);
         
         builder.Property(sh => sh.Id)
             .ValueGeneratedOnAdd();
-            
-        builder.Property(s => s.Reps)
+
+        builder.Property(sh => sh.Reps)
             .IsRequired();
-            
-        builder.Property(s => s.Weight)
+
+        builder.Property(sh => sh.Weight)
             .IsRequired();
-            
-        builder.Property(s => s.ExerciseId)
+
+        builder.Property(sh => sh.Completed)
             .IsRequired();
     }
 }

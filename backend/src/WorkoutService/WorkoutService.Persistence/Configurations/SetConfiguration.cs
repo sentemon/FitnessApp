@@ -16,10 +16,6 @@ public class SetConfiguration : IEntityTypeConfiguration<Set>
         builder.Property(s => s.Weight)
             .IsRequired();
             
-        builder.Property(s => s.Completed)
-            .IsRequired()
-            .HasDefaultValue(false);
-            
         builder.Property(s => s.ExerciseId)
             .IsRequired();
     }

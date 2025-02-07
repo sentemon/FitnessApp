@@ -17,11 +17,15 @@ public class User
 
     private readonly List<WorkoutType>? _favoriteWorkoutTypes = null;
     public IReadOnlyCollection<WorkoutType>? FavoriteWorkoutTypes => _favoriteWorkoutTypes?.AsReadOnly();
+    
     private readonly List<Workout> _workouts = [];
     public IReadOnlyCollection<Workout> Workouts => _workouts.AsReadOnly();
     
     private readonly List<Exercise> _exercises = [];
     public IReadOnlyCollection<Exercise> Exercises => _exercises.AsReadOnly();
+    
+    private readonly List<WorkoutHistory> _workoutHistories = [];
+    public IReadOnlyCollection<WorkoutHistory> WorkoutHistories => _workoutHistories.AsReadOnly();
 
     private User(string id, string firstName, string lastName, string username, string imageUrl)
     {
@@ -48,22 +52,12 @@ public class User
         DateOfBirth = dateOfBirth;
     }
 
-    public void AddWorkout(Workout workout)
-    {
-        if (_workouts.Any(w => w.Id == workout.Id))
-            throw new InvalidOperationException("This workout is already added to the user.");
-        
-        _workouts.Add(workout);
-    }
-
-    public void AddExercise(Exercise exercise)
-    {
-        if (_exercises.Any(e => e.Id == exercise.Id))
-            throw new InvalidOperationException("This exercise is already added to the user.");
-        
-        _exercises.Add(exercise);
-    }
-    
+    public void AddWorkout(Workout workout) => _workouts.Add(workout);
     public void DeleteWorkout(Workout workout) => _workouts.Remove(workout);
+    
+    public void AddExercise(Exercise exercise) => _exercises.Add(exercise);
     public void DeleteExercise(Exercise exercise) => _exercises.Remove(exercise);
+
+    public void AddWorkoutHistory(WorkoutHistory workoutHistory) => _workoutHistories.Add(workoutHistory);
+    public void DeleteWorkoutHistory(WorkoutHistory workoutHistory) => _workoutHistories.Remove(workoutHistory);
 }

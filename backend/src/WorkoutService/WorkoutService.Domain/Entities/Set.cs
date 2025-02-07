@@ -5,7 +5,6 @@ public class Set
     public Guid Id { get; private set; }
     public uint Reps { get; private set; }
     public int Weight { get; private set; }
-    public bool Completed { get; private set; }
     public Exercise Exercise { get; private set; }
     public Guid ExerciseId { get; private set; }
 
@@ -13,7 +12,6 @@ public class Set
     {
         Reps = reps;
         Weight = weight;
-        Completed = false;
         ExerciseId = exerciseId;
     }
 
@@ -21,9 +19,6 @@ public class Set
     {
         return new Set(reps, weight, exerciseId);
     }
-
-    public void MarkAsCompleted() => Completed = true;
-    public void MarkAsUncompleted() => Completed = false;
     
 #pragma warning disable CS8618 
     // EF Core

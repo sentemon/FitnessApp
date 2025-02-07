@@ -24,7 +24,7 @@ public class MarkSetAsUncompletedCommandHandler : ICommandHandler<MarkSetAsUncom
             return Result<string>.Failure(new Error(ResponseMessages.SetNotFound));
         }
         
-        set.MarkAsUncompleted();
+        // set.MarkAsUncompleted();
         await _context.SaveChangesAsync();
         
         return Result<string>.Success(ResponseMessages.SetUncompleted);

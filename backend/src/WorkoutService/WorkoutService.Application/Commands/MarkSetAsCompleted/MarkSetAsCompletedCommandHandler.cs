@@ -24,7 +24,7 @@ public class MarkSetAsCompletedCommandHandler : ICommandHandler<MarkSetAsComplet
             return Result<string>.Failure(new Error(ResponseMessages.SetNotFound));
         }
         
-        set.MarkAsCompleted();
+        // set.MarkAsCompleted();
         await _context.SaveChangesAsync();
         
         return Result<string>.Success(ResponseMessages.SetCompleted);

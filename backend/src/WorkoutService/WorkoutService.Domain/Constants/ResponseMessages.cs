@@ -11,6 +11,7 @@ public static class ResponseMessages
     
     public const string WorkoutNotFound = "Workout not found.";
     public const string ExerciseNotFound = "Exercise not found.";
+    public const string ExerciseHistoryNotFound = "Exercise History not found.";
     public const string SetNotFound = "Set not found.";
     public const string UserNotFound = "User not found";
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 using WorkoutService.Application.Commands.AddSet;
+using WorkoutService.Application.Commands.AddSetHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteWorkout;
@@ -28,6 +29,7 @@ public class TestFixture
     internal readonly DeleteWorkoutCommandHandler DeleteWorkoutCommandHandler;
     internal readonly AddSetCommandHandler AddSetCommandHandler;
     internal readonly DeleteSetCommandHandler DeleteSetCommandHandler;
+    internal readonly AddSetHistoryCommandHandler AddSetHistoryCommandHandler;
     internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
     internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
     internal readonly SetUpProfileCommandHandler SetUpProfileCommandHandler;
@@ -35,7 +37,8 @@ public class TestFixture
     public User ExistingUser { get; }
     public Workout ExistingWorkout { get; }
     public Exercise ExistingExercise { get; }
-    public Set ExistingSet { get; }
+    public WorkoutHistory ExistingWorkoutHistory { get; }
+    public ExerciseHistory ExistingExerciseHistory { get; }
 
     public TestFixture()
     {
@@ -54,6 +57,7 @@ public class TestFixture
         DeleteWorkoutCommandHandler = serviceProvider.GetRequiredService<DeleteWorkoutCommandHandler>();
         AddSetCommandHandler = serviceProvider.GetRequiredService<AddSetCommandHandler>();
         DeleteSetCommandHandler = serviceProvider.GetRequiredService<DeleteSetCommandHandler>();
+        AddSetHistoryCommandHandler = serviceProvider.GetRequiredService<AddSetHistoryCommandHandler>();
         MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
         MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
         SetUpProfileCommandHandler = serviceProvider.GetRequiredService<SetUpProfileCommandHandler>();
@@ -61,7 +65,8 @@ public class TestFixture
         ExistingUser = CreateExistingUser();
         ExistingWorkout = CreateExistingWorkout();
         ExistingExercise = CreateExistingExercise();
-        // ExistingSet = CreateExistingSet();
+        ExistingWorkoutHistory = CreateExistingWorkoutHistory();
+        ExistingExerciseHistory = CreateExistingExerciseHistory();
     }
 
     private void ApplyMigrations()
@@ -128,18 +133,24 @@ public class TestFixture
 
         return exercise;
     }
-    
-    private Set CreateExistingSet()
-    {
-        var set = Set.Create(
-            12u,
-            20,
-            ExistingExercise.Id
-        );
 
-        WorkoutDbContextFixture.Sets.Add(set);
+    private WorkoutHistory CreateExistingWorkoutHistory()
+    {
+        var workoutHistory = WorkoutHistory.Create(30, ExistingWorkout.Id, ExistingUser.Id);
+
+        WorkoutDbContextFixture.WorkoutHistories.Add(workoutHistory);
         WorkoutDbContextFixture.SaveChanges();
 
-        return set;
+        return workoutHistory;
+    }
+
+    private ExerciseHistory CreateExistingExerciseHistory()
+    {
+        var exerciseHistory = ExerciseHistory.Create(ExistingWorkoutHistory.Id, ExistingExercise.Id);
+
+        WorkoutDbContextFixture.ExerciseHistories.Add(exerciseHistory);
+        WorkoutDbContextFixture.SaveChanges();
+
+        return exerciseHistory;
     }
 }

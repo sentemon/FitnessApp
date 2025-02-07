@@ -23,10 +23,9 @@ public class ExerciseHistory
         return new ExerciseHistory(workoutHistoryId, exerciseId);
     }
 
-    public void AddSetHistory(SetHistory setHistory)
-    {
-        _setHistories.Add(setHistory);
-    }
+    public void AddSetHistory(SetHistory setHistory) => _setHistories.Add(setHistory);
+
+    public void DeleteSet(SetHistory setHistory) => _setHistories.Remove(setHistory);
 
 #pragma warning disable CS8618
     // EF Core

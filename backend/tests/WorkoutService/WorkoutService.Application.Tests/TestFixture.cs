@@ -5,6 +5,7 @@ using WorkoutService.Application.Commands.AddSet;
 using WorkoutService.Application.Commands.AddSetHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
+using WorkoutService.Application.Commands.DeleteSetHistory;
 using WorkoutService.Application.Commands.DeleteWorkout;
 using WorkoutService.Application.Commands.MarkSetAsCompleted;
 using WorkoutService.Application.Commands.MarkSetAsUncompleted;
@@ -30,6 +31,7 @@ public class TestFixture
     internal readonly AddSetCommandHandler AddSetCommandHandler;
     internal readonly DeleteSetCommandHandler DeleteSetCommandHandler;
     internal readonly AddSetHistoryCommandHandler AddSetHistoryCommandHandler;
+    internal readonly DeleteSetHistoryCommandHandler DeleteSetHistoryCommandHandler;
     internal readonly MarkSetAsCompletedCommandHandler MarkSetAsCompletedCommandHandler;
     internal readonly MarkSetAsUncompletedCommandHandler MarkSetAsUncompletedCommandHandler;
     internal readonly SetUpProfileCommandHandler SetUpProfileCommandHandler;
@@ -58,6 +60,7 @@ public class TestFixture
         AddSetCommandHandler = serviceProvider.GetRequiredService<AddSetCommandHandler>();
         DeleteSetCommandHandler = serviceProvider.GetRequiredService<DeleteSetCommandHandler>();
         AddSetHistoryCommandHandler = serviceProvider.GetRequiredService<AddSetHistoryCommandHandler>();
+        DeleteSetHistoryCommandHandler = serviceProvider.GetRequiredService<DeleteSetHistoryCommandHandler>();
         MarkSetAsCompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsCompletedCommandHandler>();
         MarkSetAsUncompletedCommandHandler = serviceProvider.GetRequiredService<MarkSetAsUncompletedCommandHandler>();
         SetUpProfileCommandHandler = serviceProvider.GetRequiredService<SetUpProfileCommandHandler>();

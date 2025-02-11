@@ -33,5 +33,7 @@ public class WorkoutDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SetHistoryConfiguration());
         
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        
+        // ToDo: Seed Data
     }
 }

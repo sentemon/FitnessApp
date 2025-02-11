@@ -12,6 +12,8 @@ var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnec
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices(builder.Configuration)

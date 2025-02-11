@@ -38,7 +38,7 @@ public static class DependencyInjection
                 
                 configurator.UseMessageRetry(r => r.Immediate(5));
                 
-                configurator.ConfigureEndpoints(context);
+                configurator.ConfigureEndpoints(context); // ToDo: fix
             });
         });
         

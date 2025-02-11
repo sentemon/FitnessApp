@@ -115,6 +115,7 @@ services:
       - 8005:8005
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=WorkoutsDb
+      RabbitMq__Host: rabbitmq
     depends_on: 
       gateway:
         condition: service_healthy

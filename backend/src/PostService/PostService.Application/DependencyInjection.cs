@@ -38,7 +38,15 @@ public static class DependencyInjection
                 
                 configurator.UseMessageRetry(r => r.Immediate(5));
                 
-                configurator.ConfigureEndpoints(context); // ToDo: fix
+                configurator.ReceiveEndpoint("post-service-user-created-queue", e =>
+                {
+                    e.ConfigureConsumer<UserCreatedEventConsumer>(context);
+                });
+                
+                configurator.ConfigureEndpoints(context, filterConfigurator =>
+                {
+                    filterConfigurator.Exclude<UserCreatedEventConsumer>();
+                });
             });
         });
         

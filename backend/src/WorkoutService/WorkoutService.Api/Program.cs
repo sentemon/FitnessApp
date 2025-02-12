@@ -22,7 +22,9 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
+    .AddMutationType<Mutation>()
+    .AddType<UnsignedIntType>()
+    .AddType<UploadType>();
 
 builder.Services.AddGraphQL();
 

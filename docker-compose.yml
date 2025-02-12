@@ -27,6 +27,7 @@ services:
       ReverseProxy__Clusters__auth-service__Destinations__destination1__Address: http://auth-service:8001
       ReverseProxy__Clusters__file-service__Destinations__destination1__Address: http://file-service:8004
       ReverseProxy__Clusters__post-service__Destinations__destination1__Address: http://post-service:8002
+      ReverseProxy__Clusters__workout-service__Destinations__destination1__Address: http://workout-service:8005
     depends_on:
       postgres:
         condition: service_healthy

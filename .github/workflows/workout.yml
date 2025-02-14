@@ -26,7 +26,7 @@ jobs:
         with:
           backendCsprojPath: ./backend/src/WorkoutService/WorkoutService.Api/WorkoutService.Api.csproj
           unitTestsProjectPath: ./backend/tests/WorkoutService/WorkoutService.Domain.Tests/WorkoutService.Domain.Tests.csproj
-#          integrationTestsProjectPath: ./backend/tests/WorkoutService/WorkoutService.Application.Tests/WorkoutService.Application.Tests.csproj
+          integrationTestsProjectPath: ./backend/tests/WorkoutService/WorkoutService.Application.Tests/WorkoutService.Application.Tests.csproj
           buildConfiguration: Release
           serviceName: WorkoutService
 

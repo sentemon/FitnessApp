@@ -7,38 +7,68 @@ public class Workout
     public Guid Id { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public int Time { get; private set; }
+    public uint DurationInMinutes { get; private set; }
     public DifficultyLevel Level { get; private set; }
-    public string Url { get; }
+    public string Url { get; private set; }
     public string ImageUrl { get; private set; }
     public bool IsCustom { get; private set; }
+    public User User { get; private set; }
     public string UserId { get; private set; }
     
-    private readonly IList<WorkoutExercise> _workoutExercises = [];
+    private readonly List<WorkoutExercise> _workoutExercises = [];
     public IReadOnlyCollection<WorkoutExercise> WorkoutExercises => _workoutExercises.AsReadOnly();
 
-    private Workout(string title, string description, int time, DifficultyLevel level, string userId)
+    private Workout(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
     {
         Title = title;
         Description = description;
-        Time = time;
+        DurationInMinutes = durationInMinutes;
         Level = level;
         UserId = userId;
         Url = string.Join("-", Title.ToLower().Split(" "));
         IsCustom = true;
     }
 
-    public static Workout Create(string title, string description, int time, DifficultyLevel level, string userId)
+    public static Workout Create(string title, string description, uint durationInMinutes, DifficultyLevel level, string userId)
     {
-        return new Workout(title, description, time, level, userId);
+        return new Workout(title, description, durationInMinutes, level, userId);
     }
+
+    public void Update(string title, string description, uint durationInMinutes, DifficultyLevel level)
+    {
+        Title = title;
+        Description = description;
+        DurationInMinutes = durationInMinutes;
+        Level = level;
+        Url = string.Join("-", Title.ToLower().Split(" "));
+    }
+
+    public void UpdateWhole(string title, string description, uint durationInMinutes, DifficultyLevel level, Exercise[] exercises)
+    {
+        Update(title, description, durationInMinutes, level);
+        
+        var existingExerciseIds = _workoutExercises.Select(we => we.ExerciseId).ToHashSet();
+        var newExerciseIds = exercises.Select(e => e.Id).ToHashSet();
+
+        _workoutExercises.RemoveAll(we => !newExerciseIds.Contains(we.ExerciseId));
+        
+        foreach (var exercise in exercises)
+        {
+            if (!existingExerciseIds.Contains(exercise.Id))
+            {
+                _workoutExercises.Add(new WorkoutExercise(Id, exercise.Id));
+            }
+        }
+    }
+    
+    public void SetImageUrl(string imageUrl) => ImageUrl = imageUrl;
 
     public void AddExercise(Exercise exercise)
     {
         if (_workoutExercises.Any(we => we.ExerciseId == exercise.Id))
             throw new InvalidOperationException("This exercise is already added to the workout.");
 
-        var workoutExercise = new WorkoutExercise(this.Id, exercise.Id);
+        var workoutExercise = new WorkoutExercise(Id, exercise.Id);
         _workoutExercises.Add(workoutExercise);
     }
 
@@ -49,11 +79,6 @@ public class Workout
             return;
         
         _workoutExercises.Remove(workoutExercise);
-    }
-
-    public void SetImageUrl(string imageUrl)
-    {
-        ImageUrl = imageUrl;
     }
     
 #pragma warning disable CS8618 

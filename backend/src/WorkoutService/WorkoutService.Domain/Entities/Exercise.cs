@@ -7,6 +7,7 @@ public class Exercise
     public Guid Id { get; private set; }
     public string Name { get; private set; }
     public DifficultyLevel Level { get; set; }
+    public User User { get; private set; }
     public string UserId { get; private set; }
     
     public IReadOnlyCollection<Set> Sets => _sets.AsReadOnly();

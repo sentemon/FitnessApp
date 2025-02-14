@@ -12,6 +12,7 @@ import {SharedModule} from "../../shared/shared.module";
 import { SetComponent } from './components/set/set.component';
 import { ExerciseComponent } from './components/exercise/exercise.component';
 import { CreateWorkoutComponent } from './components/create-workout/create-workout.component';
+import { ActivitiesHistoryComponent } from './components/activities-history/activities-history.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CreateWorkoutComponent } from './components/create-workout/create-worko
     NewWorkoutComponent,
     SetComponent,
     ExerciseComponent,
-    CreateWorkoutComponent
+    CreateWorkoutComponent,
+    ActivitiesHistoryComponent
   ],
   imports: [
     StepperModule,

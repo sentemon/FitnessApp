@@ -1,0 +1,39 @@
+{
+  "title": "Full Body Workout",
+  "description": "A complete workout for all muscle groups.",
+  "durationInMinutes": 60,
+  "level": "Intermediate",
+  "userId": "system",
+  "exercises": [
+    {
+      "name": "Push-ups",
+      "level": "Beginner",
+      "userId": "system",
+      "sets": [
+        { "reps": 15, "weight": 0 },
+        { "reps": 12, "weight": 0 },
+        { "reps": 10, "weight": 0 }
+      ]
+    },
+    {
+      "name": "Squats",
+      "level": "Beginner",
+      "userId": "system",
+      "sets": [
+        { "reps": 20, "weight": 0 },
+        { "reps": 15, "weight": 10 },
+        { "reps": 12, "weight": 15 }
+      ]
+    },
+    {
+      "name": "Pull-ups",
+      "level": "Intermediate",
+      "userId": "system",
+      "sets": [
+        { "reps": 8, "weight": 0 },
+        { "reps": 6, "weight": 5 },
+        { "reps": 5, "weight": 10 }
+      ]
+    }
+  ]
+}

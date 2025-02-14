@@ -9,16 +9,15 @@ public class SetConfiguration : IEntityTypeConfiguration<Set>
     public void Configure(EntityTypeBuilder<Set> builder)
     {
         builder.HasKey(s => s.Id);
+        
+        builder.Property(sh => sh.Id)
+            .ValueGeneratedOnAdd();
             
         builder.Property(s => s.Reps)
             .IsRequired();
             
         builder.Property(s => s.Weight)
             .IsRequired();
-            
-        builder.Property(s => s.Completed)
-            .IsRequired()
-            .HasDefaultValue(false);
             
         builder.Property(s => s.ExerciseId)
             .IsRequired();

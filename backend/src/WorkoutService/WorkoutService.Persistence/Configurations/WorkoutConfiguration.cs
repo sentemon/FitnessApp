@@ -10,6 +10,9 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
     public void Configure(EntityTypeBuilder<Workout> builder)
     {
         builder.HasKey(w => w.Id);
+        
+        builder.Property(w => w.Id)
+            .ValueGeneratedOnAdd();
             
         builder.Property(w => w.Title)
             .IsRequired()
@@ -18,7 +21,7 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
         builder.Property(w => w.Description)
             .HasMaxLength(500);
             
-        builder.Property(w => w.Time)
+        builder.Property(w => w.DurationInMinutes)
             .IsRequired();
             
         builder.Property(w => w.Level)

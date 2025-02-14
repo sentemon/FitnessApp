@@ -3,19 +3,9 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using PostService.Application.Commands.AddComment;
-using PostService.Application.Commands.AddLike;
-using PostService.Application.Commands.AddPost;
-using PostService.Application.Commands.DeleteComment;
-using PostService.Application.Commands.DeleteLike;
-using PostService.Application.Commands.DeletePost;
-using PostService.Application.Commands.UpdatePost;
 using PostService.Application.DTOs;
-using PostService.Application.Queries.GetAllComments;
-using PostService.Application.Queries.GetAllLikes;
-using PostService.Application.Queries.GetAllPosts;
-using PostService.Application.Queries.GetPost;
 using PostService.Persistence;
+using Shared.Application.Extensions;
 
 namespace PostService.Application.Tests;
 
@@ -28,26 +18,22 @@ public class TestStartup
             .Setup(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var serviceCollection = new ServiceCollection()
-            .AddDbContext<PostDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            })
+        var services = new ServiceCollection();
+        
+        services.AddDbContext<PostDbContext>(options =>
+        {
+            options.UseNpgsql(connectionString);
+        });
+                
+        services
             .AddScoped<IValidator<CreatePostDto>, InlineValidator<CreatePostDto>>()
-            .AddScoped<IValidator<CreateCommentDto>, InlineValidator<CreateCommentDto>>()
-            .AddScoped<AddPostCommandHandler>()
-            .AddScoped<UpdatePostCommandHandler>()
-            .AddScoped<DeletePostCommandHandler>()
-            .AddScoped<AddCommentCommandHandler>()
-            .AddScoped<DeleteCommentCommandHandler>()
-            .AddScoped<AddLikeCommandHandler>()
-            .AddScoped<DeleteLikeCommandHandler>()
-            .AddScoped<GetPostQueryHandler>()
-            .AddScoped<GetAllPostsQueryHandler>()
-            .AddScoped<GetAllCommentsQueryHandler>()
-            .AddScoped<GetAllLikesQueryHandler>()
-            .AddSingleton(publishEndpointMock.Object);
+            .AddScoped<IValidator<CreateCommentDto>, InlineValidator<CreateCommentDto>>();
+                
+        services.AddCommandHandlers(typeof(DependencyInjection).Assembly);
+        services.AddQueryHandlers(typeof(DependencyInjection).Assembly);
+            
+        services.AddSingleton(publishEndpointMock.Object);
 
-        return serviceCollection.BuildServiceProvider();
+        return services.BuildServiceProvider();
     }
 }

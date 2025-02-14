@@ -12,15 +12,19 @@ var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnec
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices(builder.Configuration)
-    .AddApplicationServices();
+    .AddApplicationServices(builder.Configuration);
 
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
+    .AddMutationType<Mutation>()
+    .AddType<UnsignedIntType>()
+    .AddType<UploadType>();
 
 builder.Services.AddGraphQL();
 

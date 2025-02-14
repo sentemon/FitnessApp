@@ -117,6 +117,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Persistence", "backend\src\WorkoutService\WorkoutService.Persistence\WorkoutService.Persistence.csproj", "{6B696361-EE30-4E8E-9FFC-33E30125C44F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkoutService", "WorkoutService", "{C335BCA8-5CA6-4EE9-B32B-3693D58587A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Domain.Tests", "backend\tests\WorkoutService\WorkoutService.Domain.Tests\WorkoutService.Domain.Tests.csproj", "{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Application.Tests", "backend\tests\WorkoutService\WorkoutService.Application.Tests\WorkoutService.Application.Tests.csproj", "{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +237,14 @@ Global
 		{6B696361-EE30-4E8E-9FFC-33E30125C44F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B696361-EE30-4E8E-9FFC-33E30125C44F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B696361-EE30-4E8E-9FFC-33E30125C44F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E44C019-ED30-4671-A878-D2F7B6071024} = {84AE3F00-9A59-4A8D-A737-67AB74E5D1FD}
@@ -271,5 +285,8 @@ Global
 		{6D64E3D1-18B7-4296-8653-EBF226754E3F} = {DD27D65A-AAAD-4B57-90BE-2C9941E4DFFE}
 		{B0525D91-7EC8-42D1-8C56-45A634F85B42} = {DD27D65A-AAAD-4B57-90BE-2C9941E4DFFE}
 		{6B696361-EE30-4E8E-9FFC-33E30125C44F} = {DD27D65A-AAAD-4B57-90BE-2C9941E4DFFE}
+		{C335BCA8-5CA6-4EE9-B32B-3693D58587A7} = {2B7719FF-D7B4-4EFA-B3C5-2240EC19A1A5}
+		{C94EC70E-42EA-4B80-8A65-F40A2B37A1B2} = {C335BCA8-5CA6-4EE9-B32B-3693D58587A7}
+		{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21} = {C335BCA8-5CA6-4EE9-B32B-3693D58587A7}
 	EndGlobalSection
 EndGlobal

@@ -1,21 +1,11 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PostService.Application.Commands.AddComment;
-using PostService.Application.Commands.AddLike;
-using PostService.Application.Commands.AddPost;
-using PostService.Application.Commands.DeleteComment;
-using PostService.Application.Commands.DeleteLike;
-using PostService.Application.Commands.DeletePost;
-using PostService.Application.Commands.UpdatePost;
 using PostService.Application.Consumers;
-using PostService.Application.Queries.GetAllComments;
-using PostService.Application.Queries.GetAllLikes;
-using PostService.Application.Queries.GetAllPosts;
-using PostService.Application.Queries.GetPost;
-using PostService.Application.Queries.IsPostLiked;
 using PostService.Domain.Constants;
+using Shared.Application.Extensions;
 
 namespace PostService.Application;
 
@@ -25,19 +15,8 @@ public static class DependencyInjection
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         
-        services.AddScoped<AddCommentCommandHandler>();
-        services.AddScoped<AddLikeCommandHandler>();
-        services.AddScoped<AddPostCommandHandler>();
-        services.AddScoped<DeleteCommentCommandHandler>();
-        services.AddScoped<DeleteLikeCommandHandler>();
-        services.AddScoped<DeletePostCommandHandler>();
-        services.AddScoped<UpdatePostCommandHandler>();
-        
-        services.AddScoped<GetPostQueryHandler>();
-        services.AddScoped<GetAllPostsQueryHandler>();
-        services.AddScoped<GetAllCommentsQueryHandler>();
-        services.AddScoped<GetAllLikesQueryHandler>();
-        services.AddScoped<IsPostLikedQueryHandler>();
+        services.AddCommandHandlers(Assembly.GetExecutingAssembly());
+        services.AddQueryHandlers(Assembly.GetExecutingAssembly());
         
         var rabbitMqHost = configuration[AppSettingsConstants.RabbitMqHost] ?? throw new ArgumentException("RabbitMQ Host is not configured.");
         var rabbitMqUsername = configuration[AppSettingsConstants.RabbitMqUsername] ?? throw new ArgumentException("RabbitMQ Username is not configured.");
@@ -59,7 +38,15 @@ public static class DependencyInjection
                 
                 configurator.UseMessageRetry(r => r.Immediate(5));
                 
-                configurator.ConfigureEndpoints(context);
+                configurator.ReceiveEndpoint("post-service-user-created-queue", e =>
+                {
+                    e.ConfigureConsumer<UserCreatedEventConsumer>(context);
+                });
+                
+                configurator.ConfigureEndpoints(context, filterConfigurator =>
+                {
+                    filterConfigurator.Exclude<UserCreatedEventConsumer>();
+                });
             });
         });
         

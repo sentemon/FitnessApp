@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Workout} from "../models/workout.model";
 import {Level} from "../models/level.model";
 import {Observable, of} from "rxjs";
+import {Activity} from "../models/activity.model";
 
 @Injectable({
   providedIn: 'root'
@@ -281,5 +282,28 @@ export class WorkoutService {
     };
 
     return of(newWorkout);
+  }
+
+  public getWorkoutsHistory(): Observable<Activity[]> {
+    return of([
+      {
+        id: "asd",
+        sport: "asd",
+        title: "asd",
+        time: 40
+      },
+      {
+        id: "asd",
+        sport: "asd",
+        title: "asd",
+        time: 40
+      },
+      {
+        id: "asd",
+        sport: "asd",
+        title: "asd",
+        time: 40
+      }
+    ])
   }
 }

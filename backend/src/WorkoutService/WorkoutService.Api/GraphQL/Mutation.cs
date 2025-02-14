@@ -1,6 +1,13 @@
 using System.Security.Claims;
+using WorkoutService.Application.Commands.AddSet;
+using WorkoutService.Application.Commands.AddSetHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
+using WorkoutService.Application.Commands.DeleteSet;
+using WorkoutService.Application.Commands.DeleteSetHistory;
 using WorkoutService.Application.Commands.DeleteWorkout;
+using WorkoutService.Application.Commands.MarkSetHistoryAsCompleted;
+using WorkoutService.Application.Commands.MarkSetHistoryAsUncompleted;
+using WorkoutService.Application.Commands.SetUpProfile;
 using WorkoutService.Application.Commands.UpdateWholeWorkout;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Application.DTOs;
@@ -14,6 +21,20 @@ public class Mutation
     public Mutation(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
+    }
+
+    public async Task<string> SetUpProfile(SetUpProfileDto input, [Service] SetUpProfileCommandHandler setUpProfileCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new SetUpProfileCommand(input, userId);
+        var result = await setUpProfileCommandHandler.HandleAsync(command);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
     }
 
     public async Task<WorkoutDto> CreateWorkout(CreateWorkoutDto input, [Service] CreateWorkoutCommandHandler createWorkoutCommandHandler)
@@ -62,6 +83,84 @@ public class Mutation
         var command = new DeleteWorkoutCommand(Guid.Parse(workoutId), userId);
         var result = await deleteWorkoutCommandHandler.HandleAsync(command);
 
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<SetDto> AddSet(uint reps, int weight, string exerciseId, [Service] AddSetCommandHandler addSetCommandHandler)
+    {
+        var command = new AddSetCommand(reps, weight, Guid.Parse(exerciseId));
+        var result = await addSetCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> DeleteSet(string id, string exerciseId, [Service] DeleteSetCommandHandler deleteSetCommandHandler)
+    {
+        var command = new DeleteSetCommand(Guid.Parse(id), Guid.Parse(exerciseId));
+        var result = await deleteSetCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<SetDto> AddSetHistory(uint reps, int weight, string exerciseHistoryId, [Service] AddSetHistoryCommandHandler addSetHistoryCommandHandler)
+    {
+        var command = new AddSetHistoryCommand(reps, weight, Guid.Parse(exerciseHistoryId));
+        var result = await addSetHistoryCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> DeleteSetHistory(string id, string exerciseHistoryId, [Service] DeleteSetHistoryCommandHandler deleteSetHistoryCommandHandler)
+    {
+        var command = new DeleteSetHistoryCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var result = await deleteSetHistoryCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> MarkSetHistoryAsCompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsCompletedCommandHandler markSetHistoryAsCompletedCommandHandler)
+    {
+        var command = new MarkSetHistoryAsCompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var result = await markSetHistoryAsCompletedCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> MarkSetHistoryAsUncompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsUncompletedCommandHandler markSetHistoryAsUncompletedCommandHandler)
+    {
+        var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var result = await markSetHistoryAsUncompletedCommandHandler.HandleAsync(command);
+        
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

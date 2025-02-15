@@ -24,7 +24,6 @@ public class ExerciseHistory
     }
 
     public void AddSetHistory(SetHistory setHistory) => _setHistories.Add(setHistory);
-
     public void DeleteSet(SetHistory setHistory) => _setHistories.Remove(setHistory);
 
 #pragma warning disable CS8618

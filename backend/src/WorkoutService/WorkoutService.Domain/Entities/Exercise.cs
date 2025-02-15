@@ -28,16 +28,9 @@ public class Exercise
         return new Exercise(name, level, userId);
     }
 
-    public void AddSet(Set set)
-    {
-        _sets.Add(set);
-    }
+    public void AddSet(Set set) => _sets.Add(set);
+    public void DeleteSet(Set set) => _sets.Remove(set);
 
-    public void DeleteSet(Set set)
-    {
-        _sets.Remove(set);
-    }
-    
 #pragma warning disable CS8618 
     // EF Core
     private Exercise() { }

@@ -100,4 +100,35 @@ public class WorkoutTests
         // Assert
         workout.ImageUrl.Should().Be(imageUrl);
     }
+
+    [Fact]
+    public void AddExercise_ShouldAddExerciseCorrectly()
+    {
+        // Arrange
+        var userId = Guid.NewGuid().ToString();
+        var workout = Workout.Create("Example Title", "Example Description", 30u, DifficultyLevel.Beginner, userId);
+        var exercise = Exercise.Create("Example", DifficultyLevel.Advanced, userId);
+
+        // Act
+        workout.AddExercise(exercise);
+
+        // Assert
+        workout.WorkoutExercises.Select(we => we.Exercise).Should().Contain(exercise);
+    }
+    
+    [Fact]
+    public void DeleteExercise_ShouldDeleteExerciseCorrectly()
+    {
+        // Arrange
+        var userId = Guid.NewGuid().ToString();
+        var workout = Workout.Create("Example Title", "Example Description", 30u, DifficultyLevel.Beginner, userId);
+        var exercise = Exercise.Create("Example", DifficultyLevel.Advanced, userId);
+        workout.AddExercise(exercise);
+
+        // Act
+        workout.DeleteExercise(exercise);
+
+        // Assert
+        workout.WorkoutExercises.Select(we => we.Exercise).Should().NotContain(exercise);
+    }
 }

@@ -56,7 +56,7 @@ public class Workout
         {
             if (!existingExerciseIds.Contains(exercise.Id))
             {
-                _workoutExercises.Add(new WorkoutExercise(Id, exercise.Id));
+                _workoutExercises.Add(new WorkoutExercise(this, exercise));
             }
         }
     }
@@ -68,7 +68,7 @@ public class Workout
         if (_workoutExercises.Any(we => we.ExerciseId == exercise.Id))
             throw new InvalidOperationException("This exercise is already added to the workout.");
 
-        var workoutExercise = new WorkoutExercise(Id, exercise.Id);
+        var workoutExercise = new WorkoutExercise(this, exercise);
         _workoutExercises.Add(workoutExercise);
     }
 

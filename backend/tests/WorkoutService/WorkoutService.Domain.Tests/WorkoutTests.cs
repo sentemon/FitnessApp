@@ -57,4 +57,47 @@ public class WorkoutTests
         workout.Level.Should().Be(newLevel);
         workout.Url.Should().Be("new-title");
     }
+
+    [Fact]
+    public void UpdateWhole_ShouldUpdateWholePropertiesCorrectly()
+    {
+        // Arrange
+        var title = "Example Title";
+        var description = "Example Description";
+        var durationInMinutes = 30u;
+        var level = DifficultyLevel.Beginner;
+        var userId = Guid.NewGuid().ToString();
+        var workout = Workout.Create(title, description, durationInMinutes, level, userId);
+
+        var newTitle = "New Title";
+        var newDescription = "New Description";
+        var newDurationInMinutes = 90u;
+        var newDifficultyLevel = DifficultyLevel.AllLevels;
+        var newExercises = Array.Empty<Exercise>();
+        
+        // Act
+        workout.UpdateWhole(newTitle, newDescription, newDurationInMinutes, newDifficultyLevel, newExercises);
+        
+        // Assert
+        workout.Title.Should().Be(newTitle);
+        workout.Description.Should().Be(newDescription);
+        workout.DurationInMinutes.Should().Be(newDurationInMinutes);
+        workout.Level.Should().Be(newDifficultyLevel);
+        workout.Url.Should().Be("new-title");
+        workout.WorkoutExercises.Select(we => we.Exercise).Should().BeEquivalentTo(newExercises);
+    }
+
+    [Fact]
+    public void SetImageUrl_ShouldSetImageUrlCorrectly()
+    {
+        // Arrange
+        var workout = Workout.Create("Example Title", "Example Description", 30u, DifficultyLevel.Beginner, Guid.NewGuid().ToString());
+        var imageUrl = "https://example.com/image";
+
+        // Act
+        workout.SetImageUrl(imageUrl);
+        
+        // Assert
+        workout.ImageUrl.Should().Be(imageUrl);
+    }
 }

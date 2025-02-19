@@ -15,8 +15,8 @@ public class User
     public ActivityLevel? ActivityLevel { get; private set; }
     public DateTime? DateOfBirth { get; private set; }
 
-    private readonly List<WorkoutType>? _favoriteWorkoutTypes = null;
-    public IReadOnlyCollection<WorkoutType>? FavoriteWorkoutTypes => _favoriteWorkoutTypes?.AsReadOnly();
+    private readonly List<WorkoutType> _favoriteWorkoutTypes = [];
+    public IReadOnlyCollection<WorkoutType> FavoriteWorkoutTypes => _favoriteWorkoutTypes.AsReadOnly();
     
     private readonly List<Workout> _workouts = [];
     public IReadOnlyCollection<Workout> Workouts => _workouts.AsReadOnly();
@@ -47,8 +47,8 @@ public class User
         Height = height;
         CurrentGoal = currentGoal;
         ActivityLevel = activityLevel;
-        _favoriteWorkoutTypes?.Clear();
-        _favoriteWorkoutTypes?.AddRange(favoriteWorkoutTypes);
+        _favoriteWorkoutTypes.Clear();
+        _favoriteWorkoutTypes.AddRange(favoriteWorkoutTypes);
         DateOfBirth = dateOfBirth;
     }
 

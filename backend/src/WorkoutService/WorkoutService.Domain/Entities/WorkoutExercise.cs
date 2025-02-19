@@ -8,10 +8,10 @@ public class WorkoutExercise
     public Guid ExerciseId { get; private set; }
     public Exercise Exercise { get; private set; }
     
-    public WorkoutExercise(Guid workoutId, Guid exerciseId)
+    public WorkoutExercise(Workout workout, Exercise exercise)
     {
-        WorkoutId = workoutId;
-        ExerciseId = exerciseId;
+        Workout = workout;
+        Exercise = exercise;
     }
     
 #pragma warning disable CS8618 

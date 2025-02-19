@@ -41,6 +41,7 @@ public class TestFixture
     public Exercise ExistingExercise { get; }
     public WorkoutHistory ExistingWorkoutHistory { get; }
     public ExerciseHistory ExistingExerciseHistory { get; }
+    public SetHistory ExistingSetHistory { get; }
 
     public TestFixture()
     {
@@ -70,6 +71,7 @@ public class TestFixture
         ExistingExercise = CreateExistingExercise();
         ExistingWorkoutHistory = CreateExistingWorkoutHistory();
         ExistingExerciseHistory = CreateExistingExerciseHistory();
+        ExistingSetHistory = CreateExistingSetHistory();
     }
 
     private void ApplyMigrations()
@@ -155,5 +157,15 @@ public class TestFixture
         WorkoutDbContextFixture.SaveChanges();
 
         return exerciseHistory;
+    }
+
+    private SetHistory CreateExistingSetHistory()
+    {
+        var setHistory = SetHistory.Create(ExistingExerciseHistory.Id, 34, 10);
+        
+        WorkoutDbContextFixture.SetHistories.Add(setHistory);
+        WorkoutDbContextFixture.SaveChanges();
+
+        return setHistory;
     }
 }

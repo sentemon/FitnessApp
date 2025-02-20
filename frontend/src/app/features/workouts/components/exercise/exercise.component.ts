@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Workout} from "../../models/workout.model";
 import {Exercise} from "../../models/exercise.model";
 import {ExerciseService} from "../../services/exercise.service";
+import {Level} from "../../models/level.model";
 
 @Component({
   selector: 'app-exercise',
@@ -15,11 +16,12 @@ export class ExerciseComponent {
 
   constructor(private exerciseService: ExerciseService) { }
 
-  addExercise(newExerciseName: string): void {
+  addExercise(newExerciseName: string, level: Level): void {
     const tempId = "temp" + Date.now();
     const newExercise: Exercise = {
       id: tempId,
       name: newExerciseName,
+      level: level,
       sets: []
     };
 
@@ -34,4 +36,6 @@ export class ExerciseComponent {
     this.workout.exercises = this.workout.exercises.filter(e => e.id !== id);
     this.exerciseService.delete(id).subscribe();
   }
+
+  protected readonly Level = Level;
 }

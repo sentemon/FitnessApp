@@ -1,6 +1,6 @@
 <section class="add-exercise" *ngIf="workout.isCustom">
   <input type="text" placeholder="New Exercise Name" [(ngModel)]="newExerciseName" />
-  <button (click)="addExercise(newExerciseName)" [disabled]="newExerciseName.length === 0">Add Exercise</button>
+  <button (click)="addExercise(newExerciseName, Level.AllLevels)" [disabled]="newExerciseName.length === 0">Add Exercise</button>
 </section>
 
 <section *ngFor="let exercise of workout.exercises; let i = index" class="exercise">

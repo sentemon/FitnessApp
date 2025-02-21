@@ -1,5 +1,27 @@
 import gql from "graphql-tag";
 
+export const SET_UP_PROFILE = gql`
+  mutation SetUpProfile(
+    $weight: Float!,
+    $height: Float!,
+    $goal: Goal!,
+    $activityLevel: ActivityLevel!,
+    $dateOfBirth: DateTime,
+    $favoriteWorkoutTypes: [FavoriteWorkoutTypes!]!
+  ) {
+    setUpProfile(
+      input: {
+        weight: $weight
+        height: $height
+        goal: $goal
+        activityLevel: $activityLevel
+        dateOfBirth: $dateOfBirth
+        favoriteWorkoutTypes: $favoriteWorkoutTypes
+      }
+    )
+  }
+
+`;
 export const CREATE_WORKOUT = gql`
   mutation CreateWorkout(
     $title: String!,

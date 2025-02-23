@@ -19,10 +19,17 @@ export class UserService {
     this.workoutClient = apollo.use("workouts");
   }
 
-  public setUpProfile(weight: number, height: number, goal: Goal, activityLevel: ActivityLevel, dateOfBirth: Date, favoriteWorkoutTypes: WorkoutType[]): Observable<string | undefined> {
+  public setUpProfile(weight: number, height: number, goal: Goal, activityLevel: ActivityLevel, dateOfBirth: string | null, favoriteWorkoutTypes: WorkoutType[]): Observable<string | undefined> {
     return this.workoutClient.mutate<MutationResponse>({
       mutation: SET_UP_PROFILE,
-      variables: { weight, height, goal, activityLevel, dateOfBirth, favoriteWorkoutTypes }
+      variables: {
+        weight,
+        height,
+        goal,
+        activityLevel,
+        dateOfBirth,
+        favoriteWorkoutTypes
+      }
     }).pipe(
       map(response => response.data?.setUpProfile)
     );

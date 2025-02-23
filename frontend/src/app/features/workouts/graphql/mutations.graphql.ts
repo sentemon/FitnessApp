@@ -7,7 +7,7 @@ export const SET_UP_PROFILE = gql`
     $goal: Goal!,
     $activityLevel: ActivityLevel!,
     $dateOfBirth: DateTime,
-    $favoriteWorkoutTypes: [FavoriteWorkoutTypes!]!
+    $favoriteWorkoutTypes: [WorkoutType!]!
   ) {
     setUpProfile(
       input: {
@@ -20,7 +20,6 @@ export const SET_UP_PROFILE = gql`
       }
     )
   }
-
 `;
 export const CREATE_WORKOUT = gql`
   mutation CreateWorkout(

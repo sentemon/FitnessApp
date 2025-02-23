@@ -15,6 +15,7 @@ export const GET_ALL_WORKOUTS = gql`
       durationInMinutes
       level
       imageUrl
+      url
       exercises {
         id
         name

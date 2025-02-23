@@ -88,6 +88,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             workout.Description,
             workout.DurationInMinutes,
             workout.Level,
+            workout.Url,
             workout.ImageUrl,
             exercises.Select(e => new ExerciseDto(
                 e.Id,

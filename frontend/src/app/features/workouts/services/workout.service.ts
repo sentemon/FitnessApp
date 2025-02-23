@@ -7,6 +7,8 @@ import {Apollo, ApolloBase, MutationResult} from "apollo-angular";
 import {CREATE_WORKOUT} from "../graphql/mutations.graphql";
 import {MutationResponse} from "../graphql/mutation.response";
 import {Exercise} from "../models/exercise.model";
+import {QueryResponse} from "../graphql/query.response";
+import {GET_ALL_WORKOUTS} from "../graphql/queries.graphql";
 
 @Injectable({
   providedIn: 'root'
@@ -268,8 +270,12 @@ export class WorkoutService {
     this.workoutClient = apollo.use("workouts")
   }
 
-  public getAllWorkouts(): Observable<Workout[]> {
-    return of();
+  public getAll(): Observable<Workout[]> {
+    return this.workoutClient.query<QueryResponse>({
+      query: GET_ALL_WORKOUTS
+    }).pipe(
+      map(response => response.data.allWorkouts)
+    );
   }
 
   public getWorkoutByUrl(url: string): Observable<Workout | undefined> {

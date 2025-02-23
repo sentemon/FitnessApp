@@ -15,7 +15,7 @@ export class NewWorkoutComponent implements OnInit {
   constructor(private workoutService: WorkoutService, private router: Router) { }
 
   ngOnInit(): void {
-    this.workoutService.getAllWorkouts().subscribe(result => this.workouts = result);
+    this.workoutService.getAll().subscribe(result => this.workouts = result);
   }
 
   onAddWorkout(): void {

@@ -5,11 +5,11 @@ export interface Workout {
   id: string;
   title: string;
   description: string;
-  time: number;
+  durationInMinutes: number;
   level: Level;
   url: string;
   exercises: Exercise[];
   imageUrl: string;
   isCustom: boolean;
-  userId?: string;
+  userId: string | null;
 }

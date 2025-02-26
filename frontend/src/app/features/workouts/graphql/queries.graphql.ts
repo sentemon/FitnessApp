@@ -29,3 +29,17 @@ export const GET_ALL_WORKOUTS = gql`
     }
   }
 `;
+
+export const GET_WORKOUT_BY_URL = gql`
+  query WorkoutByUrl($url: String!) {
+    workoutByUrl(url: $url) {
+      id
+      title
+      description
+      durationInMinutes
+      level
+      url
+      imageUrl
+    }
+  }
+`;

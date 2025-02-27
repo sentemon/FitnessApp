@@ -4,6 +4,7 @@ using WorkoutService.Application;
 using WorkoutService.Domain.Constants;
 using WorkoutService.Infrastructure;
 using WorkoutService.Persistence;
+using WorkoutService.Persistence.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<WorkoutDbContext>();
     dbContext.Database.Migrate();
+    
+    await Seed.SeedWorkouts(dbContext);
 }
 
 // app.UseHttpsRedirection();

@@ -17,7 +17,7 @@
       <input formControlName="workoutDurationInMinutes" type="text" class="workout-input">
 
       <p>Level</p>
-      <select formControlName="workoutLevel" type="text" class="workout-input">
+      <select formControlName="workoutLevel" class="workout-input">
         <option [value]="Level.Beginner">Beginner</option>
         <option [value]="Level.Intermediate">Intermediate</option>
         <option [value]="Level.Advanced">Advanced</option>
@@ -25,26 +25,28 @@
       </select>
     </div>
 
-    <div class="create-exercise">
-      <div class="exercise-header">
-        <p>Exercise Name</p>
-        <input formControlName="exerciseName" type="text" class="exercise-input">
-      </div>
-
-      <div class="create-set">
-        <div class="set-header">
-          <p>Reps</p>
-          <input formControlName="reps" type="number" class="set-input">
-
-          <p>Weight</p>
-          <input formControlName="weight" type="number" class="set-input">
+    <div formArrayName="exercises" class="create-exercise">
+      <div *ngFor="let exercise of getExercises().controls; let i = index" [formGroupName]="i">
+        <div class="exercise-header">
+          <p>Exercise Name</p>
+          <input formControlName="exerciseName" type="text" class="exercise-input">
         </div>
 
-        <button class="set-button">Add Set</button>
-      </div>
+        <div formArrayName="sets" class="create-set">
+          <div *ngFor="let set of getSets(i).controls; let j = index" [formGroupName]="j" class="set-header">
+            <p>Reps</p>
+            <input formControlName="reps" type="number" class="set-input">
 
-      <button class="exercise-button">Add Exercise</button>
+            <p>Weight</p>
+            <input formControlName="weight" type="number" class="set-input">
+          </div>
+          <button (click)="addSet(i)" class="set-button" type="button">Add Set</button>
+        </div>
+
+        <button (click)="addNewExercise()" class="exercise-button" type="button">Add Exercise</button>
+      </div>
     </div>
+
     <button type="submit" class="create-button">Create Workout</button>
   </form>
 </div>

@@ -9,6 +9,7 @@ import {MutationResponse} from "../graphql/mutation.response";
 import {Exercise} from "../models/exercise.model";
 import {QueryResponse} from "../graphql/query.response";
 import {GET_ALL_WORKOUTS, GET_WORKOUT_BY_URL} from "../graphql/queries.graphql";
+import {CreateWorkout} from "../models/create-workout.model";
 
 @Injectable({
   providedIn: 'root'
@@ -287,10 +288,15 @@ export class WorkoutService {
     );
   }
 
-  public create(title: string, description: string, time: number, level: Level, exercises: Exercise): Observable<Workout | MutationResult<MutationResponse>> {
+  public create(createWorkout: CreateWorkout): Observable<Workout | MutationResult<MutationResponse>> {
+    const title = createWorkout.title;
+    const description = createWorkout.description;
+    const durationInMinutes = createWorkout.durationInMinutes;
+    const level = createWorkout.level;
+
     return this.workoutClient.mutate<MutationResponse>({
       mutation: CREATE_WORKOUT,
-      variables: { title, description, time, level }
+      variables: { title, description, durationInMinutes, level }
     }).pipe(
       map(response => {
         const workout = response.data?.createWorkout;

@@ -11,5 +11,5 @@ export interface Workout {
   exercises: Exercise[];
   imageUrl: string;
   isCustom: boolean;
-  userId: string | null;
+  userId: string;
 }

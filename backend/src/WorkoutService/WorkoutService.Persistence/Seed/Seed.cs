@@ -46,11 +46,19 @@ public static class Seed
             context.Workouts.Add(workout);
             context.Exercises.AddRange(exercises);
 
-            var workoutExercises = exercises
-                .Select(exercise => new WorkoutExercise(workout, exercise))
-                .ToList();
+            foreach (var exerciseDto in workoutDto.Exercises)
+            {
+                var exercise = exercises.First(e => e.Name == exerciseDto.Name);
 
-            context.WorkoutExercises.AddRange(workoutExercises);
+                var sets = exerciseDto.Sets
+                    .Select(s => Set.Create(s.Reps, s.Weight, exercise.Id))
+                    .ToList();
+
+                context.Sets.AddRange(sets);
+
+                var workoutExercise = new WorkoutExercise(workout, exercise);
+                context.WorkoutExercises.Add(workoutExercise);
+            }
         }
 
         await context.SaveChangesAsync();

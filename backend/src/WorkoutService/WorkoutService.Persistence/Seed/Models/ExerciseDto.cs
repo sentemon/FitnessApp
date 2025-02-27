@@ -4,5 +4,6 @@ namespace WorkoutService.Persistence.Seed.Models;
 
 public record ExerciseDto(
     string Name,
-    DifficultyLevel Level
+    DifficultyLevel Level,
+    SetDto[] Sets
 );

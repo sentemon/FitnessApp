@@ -40,6 +40,16 @@ export const GET_WORKOUT_BY_URL = gql`
       level
       url
       imageUrl
+      exercises {
+        id
+        name
+        level
+        sets {
+          id
+          reps
+          weight
+        }
+      }
     }
   }
 `;

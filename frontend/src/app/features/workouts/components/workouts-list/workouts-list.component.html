@@ -28,7 +28,7 @@
       <p>Create Workout</p>
     </div>
     <div [routerLink]="workout.url" class="workout" *ngFor="let workout of workouts">
-      <img [src]="workout.imageUrl || 'assets/workout.svg'" alt="">
+      <img [src]="'assets/workout.svg'" alt="">
       <div class="time">
         Time: {{ workout.durationInMinutes }} min
       </div>

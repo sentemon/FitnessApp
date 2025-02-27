@@ -22,7 +22,20 @@ export class WorkoutComponent implements OnInit {
       const workoutUrl = params["workout-name"];
       this.workoutService.getWorkoutByUrl(workoutUrl).subscribe(result => {
         if (result) {
-          this.workout = result
+          this.workout = {
+            id: result.id,
+            title: result.title,
+            description: result.description,
+            durationInMinutes: result.durationInMinutes,
+            level: result.level,
+            url: result.url,
+            exercises: result.exercises,
+            imageUrl: result.imageUrl,
+            isCustom: result.isCustom,
+            userId: result.userId
+          }
+
+          console.log(result);
         } else {
           this.router.navigate(["/not-found"]);
         }

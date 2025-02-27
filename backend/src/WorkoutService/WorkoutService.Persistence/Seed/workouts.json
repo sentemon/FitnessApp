@@ -7,11 +7,31 @@
     "exercises": [
       {
         "name": "Push-ups",
-        "level": "Intermediate"
+        "level": "Intermediate",
+        "sets": [
+          {
+          "reps": 30,
+          "weight": 10
+          },
+          {
+            "reps": 30,
+            "weight": 10
+          }
+        ]
       },
       {
         "name": "Squats",
-        "level": "Beginner"
+        "level": "Beginner",
+        "sets": [
+          {
+            "reps": 30,
+            "weight": 10
+          },
+          {
+            "reps": 30,
+            "weight": 10
+          }
+        ]
       }
     ]
   }

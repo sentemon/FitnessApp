@@ -5,19 +5,18 @@ using WorkoutService.Persistence.Seed.Models;
 
 namespace WorkoutService.Persistence.Seed;
 
-public class Seed
+public static class Seed
 {
-    
     public static async Task SeedWorkouts(WorkoutDbContext context)
     {
         var workoutsData = await File.ReadAllTextAsync(Directory.GetCurrentDirectory() + "/../WorkoutService.Persistence/Seed/workouts.json");
 
-    var options = new JsonSerializerOptions
+        var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
             Converters = { new JsonStringEnumConverter() } 
         };
+        
         var workoutDtos = JsonSerializer.Deserialize<List<WorkoutDto>>(workoutsData, options);
 
         if (workoutDtos == null)

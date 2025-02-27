@@ -5,7 +5,7 @@ import {AsyncPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Steps} from "primeng/steps";
 import { WorkoutsListComponent } from './components/workouts-list/workouts-list.component';
 import { WorkoutComponent } from './components/workout/workout.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
 import {RouterLink} from "@angular/router";
 import {SharedModule} from "../../shared/shared.module";
@@ -34,6 +34,7 @@ import { ActivitiesHistoryComponent } from './components/activities-history/acti
     FormsModule,
     RouterLink,
     SharedModule,
+    ReactiveFormsModule,
   ]
 })
 export class WorkoutsModule { }

@@ -32,7 +32,8 @@ export class CreateWorkoutComponent {
 
   addExercise() {
     return this.fb.group({
-      exerciseName: ['', Validators.required],
+      name: ['', Validators.required],
+      level: [Level.Beginner],
       sets: this.fb.array([this.createSet()])
     });
   }

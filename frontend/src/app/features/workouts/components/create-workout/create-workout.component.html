@@ -29,7 +29,14 @@
       <div *ngFor="let exercise of getExercises().controls; let i = index" [formGroupName]="i">
         <div class="exercise-header">
           <p>Exercise Name</p>
-          <input formControlName="exerciseName" type="text" class="exercise-input">
+          <input formControlName="name" type="text" class="exercise-input">
+
+          <select formControlName="level" class="workout-input">
+            <option [value]="Level.Beginner">Beginner</option>
+            <option [value]="Level.Intermediate">Intermediate</option>
+            <option [value]="Level.Advanced">Advanced</option>
+            <option [value]="Level.AllLevels">All Levels</option>
+          </select>
         </div>
 
         <div formArrayName="sets" class="create-set">

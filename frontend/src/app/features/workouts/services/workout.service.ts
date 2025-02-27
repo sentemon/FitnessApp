@@ -293,10 +293,27 @@ export class WorkoutService {
     const description = createWorkout.description;
     const durationInMinutes = createWorkout.durationInMinutes;
     const level = createWorkout.level;
+    const exercises = createWorkout.exercises.map(e => ({
+      name: e.name,
+      level: e.level,
+      sets: e.sets.map(s => ({
+        reps: s.reps,
+        weight: s.weight
+      }))
+    }));
+
+    console.log("Exercises:", JSON.stringify(createWorkout.exercises, null, 2));
 
     return this.workoutClient.mutate<MutationResponse>({
       mutation: CREATE_WORKOUT,
-      variables: { title, description, durationInMinutes, level }
+      variables: {
+        title,
+        description,
+        durationInMinutes,
+        level,
+        imageUrl: null,
+        exercises
+      }
     }).pipe(
       map(response => {
         const workout = response.data?.createWorkout;

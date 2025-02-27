@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Level} from "../../models/level.model";
 import {WorkoutService} from "../../services/workout.service";
 import {CreateWorkout} from "../../models/create-workout.model";
+import {Workout} from "../../models/workout.model";
 
 @Component({
   selector: 'app-create-workout',
@@ -69,9 +70,9 @@ export class CreateWorkoutComponent {
       exercises: this.workoutForm.get("exercises")?.value
     };
 
-    this.workoutService.create(workoutData).subscribe(response => {
-      console.log('Workout created successfully', response);
-    });
+    this.workoutService.create(workoutData).subscribe(result =>
+      this.workoutService.addWorkout(result as Workout)
+    );
   }
 
   protected readonly Level = Level;

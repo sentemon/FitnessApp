@@ -6,7 +6,6 @@ import {Activity} from "../models/activity.model";
 import {Apollo, ApolloBase, MutationResult} from "apollo-angular";
 import {CREATE_WORKOUT} from "../graphql/mutations.graphql";
 import {MutationResponse} from "../graphql/mutation.response";
-import {Exercise} from "../models/exercise.model";
 import {QueryResponse} from "../graphql/query.response";
 import {GET_ALL_WORKOUTS, GET_WORKOUT_BY_URL} from "../graphql/queries.graphql";
 import {CreateWorkout} from "../models/create-workout.model";
@@ -289,30 +288,15 @@ export class WorkoutService {
   }
 
   public create(createWorkout: CreateWorkout): Observable<Workout | MutationResult<MutationResponse>> {
-    const title = createWorkout.title;
-    const description = createWorkout.description;
-    const durationInMinutes = createWorkout.durationInMinutes;
-    const level = createWorkout.level;
-    const exercises = createWorkout.exercises.map(e => ({
-      name: e.name,
-      level: e.level,
-      sets: e.sets.map(s => ({
-        reps: s.reps,
-        weight: s.weight
-      }))
-    }));
-
-    console.log("Exercises:", JSON.stringify(createWorkout.exercises, null, 2));
-
     return this.workoutClient.mutate<MutationResponse>({
       mutation: CREATE_WORKOUT,
       variables: {
-        title,
-        description,
-        durationInMinutes,
-        level,
+        title: createWorkout.title,
+        description: createWorkout.description,
+        durationInMinutes: createWorkout.durationInMinutes,
+        level: createWorkout.level,
         imageUrl: null,
-        exercises
+        exercises: createWorkout.exercises
       }
     }).pipe(
       map(response => {
@@ -324,7 +308,7 @@ export class WorkoutService {
 
         return response;
       })
-    )
+    );
   }
 
   public getWorkoutsHistory(): Observable<Activity[]> {

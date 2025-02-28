@@ -11,12 +11,11 @@ public class WorkoutHistoryTests
     public void Create_ShouldCreateWorkoutHistoryCorrectly()
     {
         // Arrange
-        var durationInMinutes = 45u;
         var workoutId = Guid.NewGuid();
         var userId = Guid.NewGuid().ToString();
 
         // Act
-        var workoutHistory = WorkoutHistory.Create(durationInMinutes, workoutId, userId);
+        var workoutHistory = WorkoutHistory.Create(workoutId, userId);
 
         // Assert
         workoutHistory.WorkoutId.Should().Be(workoutId);
@@ -29,7 +28,7 @@ public class WorkoutHistoryTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
-        var workoutHistory = WorkoutHistory.Create(45u, Guid.NewGuid(), userId);
+        var workoutHistory = WorkoutHistory.Create(Guid.NewGuid(), userId);
         var exercise = Exercise.Create("Example", DifficultyLevel.Intermediate, userId);
         var exerciseHistory = ExerciseHistory.Create(workoutHistory.Id, exercise.Id);
         

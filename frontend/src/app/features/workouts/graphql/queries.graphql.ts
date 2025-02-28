@@ -53,3 +53,12 @@ export const GET_WORKOUT_BY_URL = gql`
     }
   }
 `;
+
+// export const MARK_SET_HISTORY_AS_COMPLETED = gql`
+//
+// `;
+//
+//
+// export const MARK_SET_HISTORY_AS_UNCOMPLETED = gql`
+//
+// `;

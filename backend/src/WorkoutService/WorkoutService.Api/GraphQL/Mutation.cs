@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using WorkoutService.Application.Commands.AddSet;
 using WorkoutService.Application.Commands.AddSetHistory;
+using WorkoutService.Application.Commands.AddWorkoutHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteSetHistory;
@@ -11,6 +12,7 @@ using WorkoutService.Application.Commands.SetUpProfile;
 using WorkoutService.Application.Commands.UpdateWholeWorkout;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Domain.Entities;
 
 namespace WorkoutService.Api.GraphQL;
 
@@ -160,6 +162,20 @@ public class Mutation
     {
         var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
         var result = await markSetHistoryAsUncompletedCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<WorkoutHistory> AddWorkoutHistory(string workoutId, [Service] AddWorkoutHistoryCommandHandler addWorkoutHistoryCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new AddWorkoutHistoryCommand(Guid.Parse(workoutId), userId);
+        var result = await addWorkoutHistoryCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
         {

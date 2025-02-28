@@ -30,7 +30,7 @@ public class AddWorkoutHistoryCommandHandler : ICommandHandler<AddWorkoutHistory
             return Result<WorkoutHistory>.Failure(new Error(ResponseMessages.WorkoutNotFound));
         }
 
-        var workoutHistory = WorkoutHistory.Create(command.DurationInMinutes, workout.Id, user.Id);
+        var workoutHistory = WorkoutHistory.Create(workout.Id, user.Id);
         _context.WorkoutHistories.Add(workoutHistory);
 
         await _context.SaveChangesAsync();

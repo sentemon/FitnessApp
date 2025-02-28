@@ -2,6 +2,7 @@ using System.Security.Claims;
 using WorkoutService.Application.Commands.AddSet;
 using WorkoutService.Application.Commands.AddSetHistory;
 using WorkoutService.Application.Commands.AddWorkoutHistory;
+using WorkoutService.Application.Commands.CompleteWorkoutHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteSetHistory;
@@ -176,6 +177,19 @@ public class Mutation
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var command = new AddWorkoutHistoryCommand(Guid.Parse(workoutId), userId);
         var result = await addWorkoutHistoryCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> CompleteWorkoutHistory(string id, uint durationInMinutes, [Service] CompleteWorkoutHistoryCommandHandler completeWorkoutHistoryCommandHandler)
+    {
+        var command = new CompleteWorkoutHistoryCommand(Guid.Parse(id), durationInMinutes);
+        var result = await completeWorkoutHistoryCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
         {

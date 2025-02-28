@@ -49,3 +49,13 @@ export const CREATE_WORKOUT = gql`
     }
   }
 `;
+
+export const ADD_WORKOUT_HISTORY = gql`
+  mutation AddWorkoutHistory($workoutId: String!) {
+    addWorkoutHistory(workoutId: $workoutId) {
+      id
+      workoutId
+      userId
+    }
+  }
+`;

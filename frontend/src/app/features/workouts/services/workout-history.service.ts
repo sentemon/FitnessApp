@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import {Apollo, ApolloBase, MutationResult} from "apollo-angular";
+import {WorkoutHistory} from "../models/workout-history.model";
+import {map, Observable} from "rxjs";
+import {MutationResponse} from "../graphql/mutation.response";
+import {ADD_WORKOUT_HISTORY} from "../graphql/mutations.graphql";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WorkoutHistoryService {
+  private workoutClient: ApolloBase;
+
+  constructor(apollo: Apollo) {
+    this.workoutClient = apollo.use("workouts");
+  }
+
+  public add(workoutId: string): Observable<WorkoutHistory> {
+    return this.workoutClient.mutate<MutationResponse>({
+      mutation: ADD_WORKOUT_HISTORY,
+      variables: { workoutId }
+    }).pipe(
+      map(response => response.data!.addWorkoutHistory)
+    );
+  }
+}

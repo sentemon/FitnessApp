@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {WorkoutService} from "../../services/workout.service";
 import {Workout} from "../../models/workout.model";
-import {Activity} from "../../models/activity.model";
+import {Activity} from "../../models/workout-history.model";
 
 @Component({
   selector: 'app-activities-history',

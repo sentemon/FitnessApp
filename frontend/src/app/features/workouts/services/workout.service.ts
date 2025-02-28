@@ -1,14 +1,13 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Workout} from "../models/workout.model";
 import {BehaviorSubject, map, Observable, of, tap} from "rxjs";
-import {Activity} from "../models/activity.model";
+import {WorkoutHistory} from "../models/workout-history.model";
 import {Apollo, ApolloBase, MutationResult} from "apollo-angular";
 import {CREATE_WORKOUT} from "../graphql/mutations.graphql";
 import {MutationResponse} from "../graphql/mutation.response";
 import {QueryResponse} from "../graphql/query.response";
 import {GET_ALL_WORKOUTS, GET_WORKOUT_BY_URL} from "../graphql/queries.graphql";
 import {CreateWorkout} from "../models/create-workout.model";
-import {Post} from "../../posts/models/post.model";
 
 @Injectable({
   providedIn: 'root'
@@ -74,26 +73,7 @@ export class WorkoutService {
     this.workoutsSubject.next([workout, ...this.workoutsSubject.value]);
   }
 
-  public getWorkoutsHistory(): Observable<Activity[]> {
-    return of([
-      {
-        id: "asd",
-        sport: "asd",
-        title: "asd",
-        time: 40
-      },
-      {
-        id: "asd",
-        sport: "asd",
-        title: "asd",
-        time: 40
-      },
-      {
-        id: "asd",
-        sport: "asd",
-        title: "asd",
-        time: 40
-      }
-    ])
+  public getWorkoutsHistory(): Observable<WorkoutHistory[]> {
+    return of();
   }
 }

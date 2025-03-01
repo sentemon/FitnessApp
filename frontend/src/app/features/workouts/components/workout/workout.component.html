@@ -6,7 +6,7 @@
     <p>{{ workout.description }}</p>
   </header>
 
-  <app-exercise [workout]="workout"></app-exercise>
+  <app-exercise [workout]="workout" (workoutChange)="updateWorkout($event)"></app-exercise>
 
   <div *ngIf="isWorkoutCompleted()" class="workout-completed">
     <h3>🎉 Congratulations! Your workout is completed! 🎉</h3>

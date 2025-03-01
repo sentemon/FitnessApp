@@ -45,6 +45,7 @@ export const CREATE_WORKOUT = gql`
       description
       durationInMinutes
       level
+      isCustom
       imageUrl
     }
   }

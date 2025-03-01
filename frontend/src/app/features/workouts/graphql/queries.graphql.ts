@@ -14,6 +14,7 @@ export const GET_ALL_WORKOUTS = gql`
       description
       durationInMinutes
       level
+      isCustom
       imageUrl
       url
       exercises {
@@ -38,6 +39,7 @@ export const GET_WORKOUT_BY_URL = gql`
       description
       durationInMinutes
       level
+      isCustom
       url
       imageUrl
       exercises {

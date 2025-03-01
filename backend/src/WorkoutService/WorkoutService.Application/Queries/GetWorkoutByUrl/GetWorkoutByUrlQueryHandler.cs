@@ -40,6 +40,7 @@ public class GetWorkoutByUrlQueryHandler : IQueryHandler<GetWorkoutByUrlQuery, W
             workout.Description,
             workout.DurationInMinutes,
             workout.Level,
+            workout.IsCustom,
             workout.Url,
             workout.ImageUrl,
             workout.WorkoutExercises.Select(we => new ExerciseDto(

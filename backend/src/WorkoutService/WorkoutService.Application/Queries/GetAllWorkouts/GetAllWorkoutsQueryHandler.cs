@@ -28,6 +28,7 @@ public class GetAllWorkoutsQueryHandler : IQueryHandler<GetAllWorkoutsQuery, Lis
                 w.Description,
                 w.DurationInMinutes,
                 w.Level,
+                w.IsCustom,
                 w.Url,
                 w.ImageUrl,
                 w.WorkoutExercises.Select(we => new ExerciseDto(

@@ -50,4 +50,8 @@ export class WorkoutComponent implements OnInit {
         exercise.sets.every(set => set.completed)
       );
   }
+
+  protected updateWorkout(updatedWorkout: Workout) {
+    this.workout = updatedWorkout;
+  }
 }

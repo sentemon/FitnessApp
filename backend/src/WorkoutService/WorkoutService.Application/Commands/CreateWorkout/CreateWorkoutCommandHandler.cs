@@ -44,7 +44,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         var workout = Workout.Create(
             command.CreateWorkoutDto.Title,
             command.CreateWorkoutDto.Description,
-            command.CreateWorkoutDto.DurationInMinutes,
+            (uint)command.CreateWorkoutDto.DurationInMinutes,
             command.CreateWorkoutDto.Level,
             user.Id
         );
@@ -88,6 +88,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
             workout.Description,
             workout.DurationInMinutes,
             workout.Level,
+            workout.IsCustom,
             workout.Url,
             workout.ImageUrl,
             exercises.Select(e => new ExerciseDto(

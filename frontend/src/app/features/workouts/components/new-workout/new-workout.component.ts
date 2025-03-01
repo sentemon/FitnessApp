@@ -21,9 +21,10 @@ export class NewWorkoutComponent implements OnInit {
 
   onAddWorkout(): void {
     let selectedWorkout = this.workouts.find(w => w.id == this.selectedWorkoutId);
+    this.workoutHistoryService.add(selectedWorkout!.id).subscribe(result => {
+      this.router.navigate([`/workouts/${selectedWorkout?.url}/${result.id}`]);
+    });
 
-    this.workoutHistoryService.add(selectedWorkout!.id).subscribe();
     // todo: сделать так чтобы перекидывало на новую начатую тренировку (типо workouts/full-body/{id})
-    this.router.navigate([`/workouts/${selectedWorkout?.url}`]);
   }
 }

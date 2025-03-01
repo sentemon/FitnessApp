@@ -1,0 +1,6 @@
+<div class="workouts-history">
+  <p>My workouts</p>
+  <div class="workouts" *ngFor="let workoutHistory of workoutHistories">
+    <p>{{ workoutHistory.id }}: {{ workoutHistory.durationInMinutes }}</p>
+  </div>
+</div>

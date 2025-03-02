@@ -8,5 +8,5 @@
     <h2>{{ exercise.name }}</h2>
     <a class="delete-exercise" (click)="deleteExercise(exercise.id)" *ngIf="workout.isCustom">×</a>
   </header>
-  <app-set [workout]="workout" [exercise]="exercise" (exerciseChange)="updateWorkout($event)"></app-set>
+  <app-set-history [workout]="workout" [exercise]="exercise" (exerciseChange)="updateWorkout($event)"></app-set-history>
 </section>

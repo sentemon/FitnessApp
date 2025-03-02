@@ -43,14 +43,6 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
-  isWorkoutCompleted(): boolean {
-    return this.workout.exercises.length > 0 &&
-      this.workout.exercises.every(exercise =>
-        exercise.sets.length > 0 &&
-        exercise.sets.every(set => set.completed)
-      );
-  }
-
   protected updateWorkout(updatedWorkout: Workout) {
     this.workout = updatedWorkout;
   }

@@ -46,8 +46,6 @@ export class ExerciseComponent {
     this.exerciseService.delete(id).subscribe();
   }
 
-  protected readonly Level = Level;
-
   protected updateWorkout(updatedExercise: Exercise) {
     this.workout = {
       ...this.workout,
@@ -56,4 +54,6 @@ export class ExerciseComponent {
       )
     };
   }
+
+  protected readonly Level = Level;
 }

@@ -25,34 +25,6 @@ export class SetComponent {
 
   constructor(private setService: SetService) { }
 
-  markSetAsCompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
-
-    this.setService.markAsCompleted(set.id).subscribe(result => {
-      const updatedSets = this.exercise.sets.map((s, index) =>
-        index === setIndex ? { ...s, completed: result } : s
-      );
-
-      const updatedExercise = { ...this.exercise, sets: updatedSets };
-
-      this.exerciseChange.emit(updatedExercise);
-    });
-  }
-
-  markSetAsUncompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
-
-    this.setService.markAsUncompleted(set.id).subscribe(result => {
-      const updatedSets = this.exercise.sets.map((s, index) =>
-        index === setIndex ? { ...s, completed: !result } : s
-      );
-
-      const updatedExercise = { ...this.exercise, sets: updatedSets };
-
-      this.exerciseChange.emit(updatedExercise);
-    });
-  }
-
   addSet(exerciseId: string, reps: number, weight: number): void {
     const tempId = "temp" + Date.now();
     const newSet: Set = {

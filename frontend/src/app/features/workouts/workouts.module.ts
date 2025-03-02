@@ -13,6 +13,9 @@ import { SetComponent } from './components/set/set.component';
 import { ExerciseComponent } from './components/exercise/exercise.component';
 import { CreateWorkoutComponent } from './components/create-workout/create-workout.component';
 import { WorkoutsHistoryComponent } from './components/workouts-history/workouts-history.component';
+import { WorkoutHistoryComponent } from './components/workout-history/workout-history.component';
+import { ExerciseHistoryComponent } from './components/exercise-history/exercise-history.component';
+import { SetHistoryComponent } from './components/set-history/set-history.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { WorkoutsHistoryComponent } from './components/workouts-history/workouts
     SetComponent,
     ExerciseComponent,
     CreateWorkoutComponent,
-    WorkoutsHistoryComponent
+    WorkoutsHistoryComponent,
+    WorkoutHistoryComponent,
+    ExerciseHistoryComponent,
+    SetHistoryComponent
   ],
   imports: [
     StepperModule,

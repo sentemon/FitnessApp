@@ -1,0 +1,60 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.workout {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #fdfdfd;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .workout-header {
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .workout-completed {
+    margin-top: 2rem;
+    text-align: center;
+    color: #28a745;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #f1f9f1;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}

@@ -5,7 +5,7 @@ import {Set} from "../models/set.model";
 @Injectable({
   providedIn: 'root'
 })
-export class SetService {
+export class SetHistoryService {
   constructor() { }
 
   add(exerciseId: string, reps: number, weight: number): Observable<Set> {
@@ -21,6 +21,14 @@ export class SetService {
   }
 
   delete(id: string): Observable<boolean> {
+    return of(true);
+  }
+
+  markAsCompleted(id: string): Observable<boolean> {
+    return of(true);
+  }
+
+  markAsUncompleted(id: string): Observable<boolean> {
     return of(true);
   }
 }

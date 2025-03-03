@@ -31,6 +31,31 @@ export const GET_ALL_WORKOUTS = gql`
   }
 `;
 
+export const GET_ALL_WORKOUT_HISTORIES = gql`
+  query AllWorkoutHistories {
+    allWorkoutHistories {
+      id
+      durationInMinutes
+      workoutId
+      userId
+      performedAt
+      exerciseHistories {
+        id
+        workoutHistoryId
+        exerciseId
+        setHistories {
+          id
+          exerciseHistoryId
+          reps
+          weight
+          completed
+          completedAt
+        }
+      }
+    }
+  }
+`;
+
 export const GET_WORKOUT_BY_URL = gql`
   query WorkoutByUrl($url: String!) {
     workoutByUrl(url: $url) {

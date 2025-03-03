@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {WorkoutService} from "../../services/workout.service";
 import {WorkoutHistory} from "../../models/workout-history.model";
+import {WorkoutHistoryService} from "../../services/workout-history.service";
 
 @Component({
   selector: 'app-workouts-history',
@@ -9,9 +9,9 @@ import {WorkoutHistory} from "../../models/workout-history.model";
 })
 export class WorkoutsHistoryComponent implements OnInit {
   workoutHistories: WorkoutHistory[] = [];
-  constructor(private workoutService: WorkoutService) { }
+  constructor(private workoutHistoryService: WorkoutHistoryService) { }
 
   ngOnInit() {
-    this.workoutService.getWorkoutsHistory().subscribe(result => this.workoutHistories = result);
+    this.workoutHistoryService.getAll().subscribe(result => this.workoutHistories = result);
   }
 }

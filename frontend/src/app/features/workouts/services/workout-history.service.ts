@@ -4,6 +4,8 @@ import {WorkoutHistory} from "../models/workout-history.model";
 import {map, Observable, of} from "rxjs";
 import {MutationResponse} from "../graphql/mutation.response";
 import {ADD_WORKOUT_HISTORY} from "../graphql/mutations.graphql";
+import {GET_ALL_WORKOUT_HISTORIES} from "../graphql/queries.graphql";
+import {QueryResponse} from "../graphql/query.response";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +28,13 @@ export class WorkoutHistoryService {
 
   public get(id: string): Observable<WorkoutHistory> {
     return of();
+  }
+
+  public getAll(): Observable<WorkoutHistory[]> {
+    return this.workoutClient.query<QueryResponse>({
+      query: GET_ALL_WORKOUT_HISTORIES
+    }).pipe(
+      map(response => response.data.allWorkoutHistories)
+    );
   }
 }

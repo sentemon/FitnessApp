@@ -72,8 +72,4 @@ export class WorkoutService {
   public addWorkout(workout: Workout): void {
     this.workoutsSubject.next([workout, ...this.workoutsSubject.value]);
   }
-
-  public getWorkoutsHistory(): Observable<WorkoutHistory[]> {
-    return of();
-  }
 }

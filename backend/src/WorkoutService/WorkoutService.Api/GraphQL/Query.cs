@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Application.Queries.GetAllWorkoutHistories;
 using WorkoutService.Application.Queries.GetAllWorkouts;
 using WorkoutService.Application.Queries.GetWorkoutByUrl;
 using WorkoutService.Application.Queries.ProfileSetUp;
+using WorkoutService.Domain.Entities;
 
 namespace WorkoutService.Api.GraphQL;
 
@@ -20,6 +22,20 @@ public class Query
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var query = new GetAllWorkoutsQuery(userId);
         var result = await getAllWorkoutsQueryHandler.HandleAsync(query);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<List<WorkoutHistory>> GetAllWorkoutHistories([Service] GetAllWorkoutHistoriesQueryHandler getAllWorkoutHistoriesQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var query = new GetAllWorkoutHistoriesQuery(userId);
+        var result = await getAllWorkoutHistoriesQueryHandler.HandleAsync(query);
 
         if (!result.IsSuccess)
         {

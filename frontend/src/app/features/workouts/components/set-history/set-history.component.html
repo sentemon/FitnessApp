@@ -1,38 +1,38 @@
 <ul class="sets">
   <li
-    *ngFor="let set of exercise.sets; let i = index"
-    [class.completed]="set.completed"
+    *ngFor="let setHistory of exerciseHistory.setHistories; let i = index"
+    [class.completed]="setHistory.completed"
     class="set"
   >
     <div class="set-info">
-      <p>Set {{ i + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
-      <a class="delete-set" (click)="deleteSet(set.id)" *ngIf="workout.isCustom">×</a>
+      <p>Set {{ i + 1 }}: {{ setHistory.reps }} reps {{ setHistory.weight }} kg</p>
+      <a class="delete-set" (click)="deleteSet(setHistory.id)" *ngIf="workoutHistory.workout.isCustom">×</a>
     </div>
     <div class="set-actions">
-      <button *ngIf="!set.completed" (click)="markSetAsCompleted(i)">Mark as Completed</button>
-      <span *ngIf="set.completed" (click)="markSetAsUncompleted(i)">✅ Completed</span>
+      <button *ngIf="!setHistory.completed" (click)="markSetAsCompleted(i)">Mark as Completed</button>
+      <span *ngIf="setHistory.completed" (click)="markSetAsUncompleted(i)">✅ Completed</span>
     </div>
   </li>
 </ul>
 
-<div class="add-set" *ngIf="workout.isCustom">
+<div class="add-set" *ngIf="workoutHistory.workout.isCustom">
   <input
     type="number"
     placeholder="Reps"
-    [(ngModel)]="newSet.reps"
+    [(ngModel)]="newSetHistory.reps"
     min="1"
     class="set-input"
   />
   <input
     type="number"
     placeholder="Weight (kg)"
-    [(ngModel)]="newSet.weight"
+    [(ngModel)]="newSetHistory.weight"
     min="0"
     class="set-input"
   />
   <button
-    (click)="addSet(exercise.id, newSet.reps, newSet.weight)"
-    [disabled]="!newSet.reps || newSet.reps < 1 || newSet.weight < 0">
+    (click)="addSet(exerciseHistory.id, newSetHistory.reps, newSetHistory.weight)"
+    [disabled]="!newSetHistory.reps || newSetHistory.reps < 1 || newSetHistory.weight < 0">
     + Add Set
   </button>
 </div>

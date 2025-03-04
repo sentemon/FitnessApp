@@ -1,12 +1,12 @@
-<section class="add-exercise" *ngIf="workout.isCustom">
-  <input type="text" placeholder="New Exercise Name" [(ngModel)]="newExerciseName" />
-  <button (click)="addExercise(newExerciseName, Level.AllLevels)" [disabled]="newExerciseName.length === 0">Add Exercise</button>
+<section class="add-exercise" *ngIf="workoutHistory.workout.isCustom">
+  <input type="text" placeholder="New Exercise Name" [(ngModel)]="newExerciseHistoryName" />
+  <button (click)="addExercise(newExerciseHistoryName, Level.AllLevels)" [disabled]="newExerciseHistoryName.length === 0">Add Exercise</button>
 </section>
 
-<section *ngFor="let exercise of workout.exercises; let i = index" class="exercise">
+<section *ngFor="let exerciseHistory of workoutHistory.exerciseHistories; let i = index" class="exercise">
   <header class="exercise-header">
-    <h2>{{ exercise.name }}</h2>
-    <a class="delete-exercise" (click)="deleteExercise(exercise.id)" *ngIf="workout.isCustom">×</a>
+<!--    <h2>{{ exerciseHistory.name }}</h2>-->
+    <a class="delete-exercise" (click)="deleteExercise(exerciseHistory.id)" *ngIf="workoutHistory.workout.isCustom">×</a>
   </header>
-  <app-set-history [workout]="workout" [exercise]="exercise" (exerciseChange)="updateWorkout($event)"></app-set-history>
+  <app-set-history [workoutHistory]="workoutHistory" [exerciseHistory]="exerciseHistory" (exerciseHistoryChange)="updateWorkout($event)"></app-set-history>
 </section>

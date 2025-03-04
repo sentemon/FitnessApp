@@ -3,6 +3,9 @@ import {Workout} from "../../models/workout.model";
 import {ExerciseService} from "../../services/exercise.service";
 import {Exercise} from "../../models/exercise.model";
 import {Level} from "../../models/level.model";
+import {WorkoutHistory} from "../../models/workout-history.model";
+import {ExerciseHistory} from "../../models/exercise-history.model";
+import {ExerciseHistoryService} from "../../services/exercise-history.service";
 
 @Component({
   selector: 'app-exercise-history',
@@ -10,48 +13,48 @@ import {Level} from "../../models/level.model";
   styleUrl: './exercise-history.component.scss'
 })
 export class ExerciseHistoryComponent {
-  @Input() workout!: Workout;
+  @Input() workoutHistory!: WorkoutHistory;
 
-  @Output() workoutChange = new EventEmitter<Workout>();
+  @Output() workoutHistoryChange = new EventEmitter<WorkoutHistory>();
 
-  newExerciseName: string = '';
+  newExerciseHistoryName: string = '';
 
-  constructor(private exerciseService: ExerciseService) { }
+  constructor(private exerciseHistoryService: ExerciseHistoryService) { }
 
-  addExercise(newExerciseName: string, level: Level): void {
+  addExercise(newExerciseHistoryName: string, level: Level): void {
     const tempId = "temp" + Date.now();
-    const newExercise: Exercise = {
+    const newExercise: ExerciseHistory = {
       id: tempId,
-      name: newExerciseName,
-      level: level,
-      sets: []
+      setHistories: []
+      // name: newExerciseHistoryName,
+      // level: level,
     };
 
-    this.exerciseService.add(newExerciseName).subscribe(result => {
-      const workout: Workout = {
-        ...this.workout,
-        exercises: this.workout.exercises.concat(newExercise)
+    this.exerciseHistoryService.add(newExerciseHistoryName).subscribe(result => {
+      const workoutHistory: WorkoutHistory = {
+        ...this.workoutHistory,
+        exerciseHistories: this.workoutHistory.exerciseHistories.concat(newExercise)
       };
-      this.newExerciseName = '';
+      this.newExerciseHistoryName = '';
 
-      const exercise = workout.exercises.find(e => e.id === tempId);
+      const exercise = workoutHistory.exerciseHistories.find(e => e.id === tempId);
       exercise!.id = result.id
 
-      this.workoutChange.emit(workout);
+      this.workoutHistoryChange.emit(workoutHistory);
     });
   }
 
   deleteExercise(id: string): void {
-    this.workout.exercises = this.workout.exercises.filter(e => e.id !== id);
-    this.exerciseService.delete(id).subscribe();
+    this.workoutHistory.exerciseHistories = this.workoutHistory.exerciseHistories.filter(e => e.id !== id);
+    this.exerciseHistoryService.delete(id).subscribe();
   }
 
   protected readonly Level = Level;
 
-  protected updateWorkout(updatedExercise: Exercise) {
-    this.workout = {
-      ...this.workout,
-      exercises: this.workout.exercises.map(e =>
+  protected updateWorkout(updatedExercise: ExerciseHistory) {
+    this.workoutHistory = {
+      ...this.workoutHistory,
+      exerciseHistories: this.workoutHistory.exerciseHistories.map(e =>
         e.id === updatedExercise.id ? updatedExercise : e
       )
     };

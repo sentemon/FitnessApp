@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Workout} from "../../models/workout.model";
-import {Exercise} from "../../models/exercise.model";
-import {Set} from "../../models/set.model";
 import {SetHistoryService} from "../../services/set-history.service";
+import {SetHistory} from "../../models/set-history.model";
+import {WorkoutHistory} from "../../models/workout-history.model";
+import {ExerciseHistory} from "../../models/exercise-history.model";
 
 @Component({
   selector: 'app-set-history',
@@ -10,79 +10,81 @@ import {SetHistoryService} from "../../services/set-history.service";
   styleUrl: './set-history.component.scss'
 })
 export class SetHistoryComponent {
-  @Input() workout!: Workout;
-  @Input() exercise!: Exercise;
+  @Input() workoutHistory!: WorkoutHistory;
+  @Input() exerciseHistory!: ExerciseHistory;
 
-  @Output() exerciseChange = new EventEmitter<Exercise>();
+  @Output() exerciseHistoryChange = new EventEmitter<ExerciseHistory>();
 
-  newSet: Set = {
+  newSetHistory: SetHistory = {
     id: '',
     reps: 0,
     weight: 0,
+    exerciseHistoryId: '',
     completed: false,
-    exerciseId: ''
+    completedAt: new Date()
   }
 
   constructor(private setHistoryService: SetHistoryService) { }
 
-  markSetAsCompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
+  markSetAsCompleted(setHistoryIndex: number): void {
+    const set = this.exerciseHistory.setHistories[setHistoryIndex];
 
     this.setHistoryService.markAsCompleted(set.id).subscribe(result => {
-      const updatedSets = this.exercise.sets.map((s, index) =>
-        index === setIndex ? { ...s, completed: result } : s
+      const updatedSets = this.exerciseHistory.setHistories.map((s, index) =>
+        index === setHistoryIndex ? { ...s, completed: result } : s
       );
 
-      const updatedExercise = { ...this.exercise, sets: updatedSets };
+      const updatedExercise = { ...this.exerciseHistory, setHistories: updatedSets };
 
-      this.exerciseChange.emit(updatedExercise);
+      this.exerciseHistoryChange.emit(updatedExercise);
     });
   }
 
   markSetAsUncompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
+    const set = this.exerciseHistory.setHistories[setIndex];
 
     this.setHistoryService.markAsUncompleted(set.id).subscribe(result => {
-      const updatedSets = this.exercise.sets.map((s, index) =>
+      const updatedSets = this.exerciseHistory.setHistories.map((s, index) =>
         index === setIndex ? { ...s, completed: !result } : s
       );
 
-      const updatedExercise = { ...this.exercise, sets: updatedSets };
+      const updatedExercise = { ...this.exerciseHistory, setHistories: updatedSets };
 
-      this.exerciseChange.emit(updatedExercise);
+      this.exerciseHistoryChange.emit(updatedExercise);
     });
   }
 
-  addSet(exerciseId: string, reps: number, weight: number): void {
+  addSet(exerciseHistoryId: string, reps: number, weight: number): void {
     const tempId = "temp" + Date.now();
-    const newSet: Set = {
+    const newSet: SetHistory = {
       id: tempId,
       reps,
       weight,
+      exerciseHistoryId,
       completed: false,
-      exerciseId
+      completedAt: new Date()
     };
 
-    const updatedSets = [...this.exercise.sets, newSet];
-    const updatedExercise = { ...this.exercise, sets: updatedSets };
+    const updatedSets = [...this.exerciseHistory.setHistories, newSet];
+    const updatedExercise = { ...this.exerciseHistory, setHistories: updatedSets };
 
-    this.exerciseChange.emit(updatedExercise);
+    this.exerciseHistoryChange.emit(updatedExercise);
 
-    this.setHistoryService.add(exerciseId, reps, weight).subscribe(response => {
-      const finalSets = updatedExercise.sets.map(s =>
+    this.setHistoryService.add(exerciseHistoryId, reps, weight).subscribe(response => {
+      const finalSets = updatedExercise.setHistories.map(s =>
         s.id === tempId ? { ...s, id: response.id } : s
       );
 
-      this.exerciseChange.emit({ ...updatedExercise, sets: finalSets });
+      this.exerciseHistoryChange.emit({ ...updatedExercise, setHistories: finalSets });
     });
   }
 
-  deleteSet(setId: string): void {
-    const updatedSets = this.exercise.sets.filter(s => s.id !== setId);
-    const updatedExercise = { ...this.exercise, sets: updatedSets };
+  deleteSet(setHistoryId: string): void {
+    const updatedSets = this.exerciseHistory.setHistories.filter(s => s.id !== setHistoryId);
+    const updatedExercise = { ...this.exerciseHistory, setHistories: updatedSets };
 
-    this.exerciseChange.emit(updatedExercise);
+    this.exerciseHistoryChange.emit(updatedExercise);
 
-    this.setHistoryService.delete(setId).subscribe();
+    this.setHistoryService.delete(setHistoryId).subscribe();
   }
 }

@@ -12,9 +12,9 @@ export class ExerciseHistoryService {
   add(name: string): Observable<ExerciseHistory> {
     const newExerciseHistory: ExerciseHistory = {
       id: name,
+      exerciseId: "",
+      workoutHistoryId: "",
       setHistories: []
-      // name: name,
-      // level: Level.AllLevels,
     }
 
     return of(newExerciseHistory);

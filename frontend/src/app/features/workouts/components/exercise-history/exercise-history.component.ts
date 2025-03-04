@@ -1,7 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Workout} from "../../models/workout.model";
-import {ExerciseService} from "../../services/exercise.service";
-import {Exercise} from "../../models/exercise.model";
 import {Level} from "../../models/level.model";
 import {WorkoutHistory} from "../../models/workout-history.model";
 import {ExerciseHistory} from "../../models/exercise-history.model";
@@ -25,7 +22,9 @@ export class ExerciseHistoryComponent {
     const tempId = "temp" + Date.now();
     const newExercise: ExerciseHistory = {
       id: tempId,
-      setHistories: []
+      exerciseId: "",
+      workoutHistoryId: "",
+      setHistories: [],
       // name: newExerciseHistoryName,
       // level: level,
     };

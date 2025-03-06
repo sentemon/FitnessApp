@@ -11,9 +11,8 @@ public class MarkSetHistoryAsCompletedTests(TestFixture fixture) : TestBase(fixt
     public async Task HandleAsync_ShouldMarkSetHistoryAsCompleted_WhenDataIsValid()
     {
         // Arrange
-        var exerciseHistoryId = Fixture.ExistingExerciseHistory.Id;
         var setHistoryId = Fixture.ExistingSetHistory.Id;
-        var command = new MarkSetHistoryAsCompletedCommand(setHistoryId, exerciseHistoryId);
+        var command = new MarkSetHistoryAsCompletedCommand(setHistoryId);
 
         // Act
         var result = await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(command);
@@ -27,9 +26,8 @@ public class MarkSetHistoryAsCompletedTests(TestFixture fixture) : TestBase(fixt
     public async Task HandleAsync_ShouldFail_WhenExerciseHistoryOrSetHistoryNotFound()
     {
         // Arrange
-        var exerciseHistoryId = Guid.Empty;
         var setHistoryId = Guid.Empty;
-        var command = new MarkSetHistoryAsCompletedCommand(setHistoryId, exerciseHistoryId);
+        var command = new MarkSetHistoryAsCompletedCommand(setHistoryId);
 
         // Act
         var result = await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(command);

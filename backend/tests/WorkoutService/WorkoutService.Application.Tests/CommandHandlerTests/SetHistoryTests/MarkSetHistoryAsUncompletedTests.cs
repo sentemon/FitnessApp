@@ -13,9 +13,8 @@ public class MarkSetHistoryAsUncompletedTests(TestFixture fixture) : TestBase(fi
     {
         // Arrange
         var setHistoryId = Fixture.ExistingSetHistory.Id;
-        var exerciseHistoryId = Fixture.ExistingExerciseHistory.Id;
-        await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(new MarkSetHistoryAsCompletedCommand(setHistoryId, exerciseHistoryId));
-        var command = new MarkSetHistoryAsUncompletedCommand(setHistoryId, exerciseHistoryId);
+        await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(new MarkSetHistoryAsCompletedCommand(setHistoryId));
+        var command = new MarkSetHistoryAsUncompletedCommand(setHistoryId);
         
         // Act
         var result = await Fixture.MarkSetHistoryAsUncompletedCommandHandler.HandleAsync(command);
@@ -29,10 +28,9 @@ public class MarkSetHistoryAsUncompletedTests(TestFixture fixture) : TestBase(fi
     public async Task HandleAsync_ShouldFail_WhenExerciseHistoryOrSetHistoryNotFound()
     {
         // Arrange
-        var exerciseHistoryId = Guid.Empty;
         var setHistoryId = Guid.Empty;
-        await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(new MarkSetHistoryAsCompletedCommand(setHistoryId, exerciseHistoryId));
-        var command = new MarkSetHistoryAsUncompletedCommand(setHistoryId, exerciseHistoryId);
+        await Fixture.MarkSetHistoryAsCompletedCommandHandler.HandleAsync(new MarkSetHistoryAsCompletedCommand(setHistoryId));
+        var command = new MarkSetHistoryAsUncompletedCommand(setHistoryId);
         
         // Act
         var result = await Fixture.MarkSetHistoryAsUncompletedCommandHandler.HandleAsync(command);

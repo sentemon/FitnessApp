@@ -146,9 +146,9 @@ public class Mutation
         return result.Response;
     }
 
-    public async Task<string> MarkSetHistoryAsCompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsCompletedCommandHandler markSetHistoryAsCompletedCommandHandler)
+    public async Task<string> MarkSetHistoryAsCompleted(string id, [Service] MarkSetHistoryAsCompletedCommandHandler markSetHistoryAsCompletedCommandHandler)
     {
-        var command = new MarkSetHistoryAsCompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var command = new MarkSetHistoryAsCompletedCommand(Guid.Parse(id));
         var result = await markSetHistoryAsCompletedCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
@@ -159,9 +159,9 @@ public class Mutation
         return result.Response;
     }
     
-    public async Task<string> MarkSetHistoryAsUncompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsUncompletedCommandHandler markSetHistoryAsUncompletedCommandHandler)
+    public async Task<string> MarkSetHistoryAsUncompleted(string id, [Service] MarkSetHistoryAsUncompletedCommandHandler markSetHistoryAsUncompletedCommandHandler)
     {
-        var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id));
         var result = await markSetHistoryAsUncompletedCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)

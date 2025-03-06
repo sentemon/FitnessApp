@@ -60,3 +60,9 @@ export const ADD_WORKOUT_HISTORY = gql`
     }
   }
 `;
+
+export const MARK_SET_HISTORY_AS_COMPLETED = gql`
+  mutation MarkSetHistoryAsCompleted($id: String!) {
+    markSetHistoryAsCompleted(id: $id)
+  }
+`;

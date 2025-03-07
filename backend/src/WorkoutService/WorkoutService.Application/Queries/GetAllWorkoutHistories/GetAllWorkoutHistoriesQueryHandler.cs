@@ -25,6 +25,7 @@ public class GetAllWorkoutHistoriesQueryHandler : IQueryHandler<GetAllWorkoutHis
         }
 
         var workoutHistories = _context.WorkoutHistories
+            .Include(wh => wh.Workout)
             .Include(wh => wh.ExerciseHistories)
                 .ThenInclude(eh => eh.SetHistories)
             .Where(wh => wh.UserId == user.Id)

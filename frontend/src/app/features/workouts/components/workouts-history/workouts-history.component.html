@@ -1,6 +1,6 @@
 <div class="workouts-history">
   <p>My workouts</p>
   <div class="workouts" *ngFor="let workoutHistory of workoutHistories">
-    <p>{{ workoutHistory.id }}: {{ workoutHistory.durationInMinutes }}</p>
+    <a [routerLink]="'../' + workoutHistory.workout.url + '/' + workoutHistory.id">{{ workoutHistory.workout.title }}</a>
   </div>
 </div>

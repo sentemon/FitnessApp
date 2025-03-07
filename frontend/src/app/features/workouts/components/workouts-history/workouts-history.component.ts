@@ -12,6 +12,9 @@ export class WorkoutsHistoryComponent implements OnInit {
   constructor(private workoutHistoryService: WorkoutHistoryService) { }
 
   ngOnInit() {
-    this.workoutHistoryService.getAll().subscribe(result => this.workoutHistories = result);
+    this.workoutHistoryService.getAll().subscribe(result => {
+      console.log(result);
+      this.workoutHistories = result
+    });
   }
 }

@@ -37,6 +37,16 @@ export const GET_ALL_WORKOUT_HISTORIES = gql`
       id
       durationInMinutes
       workoutId
+      workout {
+        id
+        title
+        description
+        durationInMinutes
+        level
+        url
+        imageUrl
+        isCustom
+      }
       userId
       performedAt
       exerciseHistories {

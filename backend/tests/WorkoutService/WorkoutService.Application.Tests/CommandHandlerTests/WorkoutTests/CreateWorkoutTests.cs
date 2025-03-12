@@ -15,7 +15,7 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Example Title";
         var description = "Example Description";
-        var durationInMinutes = 35u;
+        var durationInMinutes = 35;
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = new[]
         {
@@ -42,7 +42,7 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         workout.IsSuccess.Should().BeTrue();
         workout.Response.Title.Should().Be(title);
         workout.Response.Description.Should().Be(description);
-        workout.Response.DurationInMinutes.Should().Be(durationInMinutes);
+        workout.Response.DurationInMinutes.Should().Be((uint)durationInMinutes);
         workout.Response.Level.Should().Be(level);
     }
 
@@ -52,7 +52,7 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = string.Empty;
         var description = new string('*', 501);
-        var durationInMinutes = 45u;
+        var durationInMinutes = 45;
         var level = (DifficultyLevel)34;
         var exerciseDtos = Array.Empty<CreateExerciseDto>();
         
@@ -76,7 +76,7 @@ public class CreateWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Example Title";
         var description = "Example Description";
-        var durationInMinutes = 35u;
+        var durationInMinutes = 35;
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = new[]
         {

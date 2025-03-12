@@ -13,6 +13,8 @@ export class SetComponent {
   @Input() workout!: Workout;
   @Input() exercise!: Exercise;
 
+  @Output() exerciseChange = new EventEmitter<Exercise>();
+
   newSet: Set = {
     id: '',
     reps: 0,
@@ -23,42 +25,35 @@ export class SetComponent {
 
   constructor(private setService: SetService) { }
 
-  markSetAsCompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
-    this.setService.markAsCompleted(set.id).subscribe(result => set.completed = result);
-  }
-
-  markSetAsUncompleted(setIndex: number): void {
-    const set = this.exercise.sets[setIndex];
-    this.setService.markAsUncompleted(set.id).subscribe(result => set.completed = !result);
-  }
-
   addSet(exerciseId: string, reps: number, weight: number): void {
     const tempId = "temp" + Date.now();
     const newSet: Set = {
       id: tempId,
-      reps: reps,
-      weight: weight,
+      reps,
+      weight,
       completed: false,
-      exerciseId: exerciseId
+      exerciseId
     };
 
+    const updatedSets = [...this.exercise.sets, newSet];
+    const updatedExercise = { ...this.exercise, sets: updatedSets };
 
-    this.exercise.sets.push(newSet);
-    this.newSet = { completed: false, exerciseId: "", id: "", reps: 0, weight: 0 }
+    this.exerciseChange.emit(updatedExercise);
 
     this.setService.add(exerciseId, reps, weight).subscribe(response => {
-      const set = this.exercise.sets.find(s => s.id === tempId);
-      if (set) {
-        set.id = response.id;
-      } else {
-        console.error(`Temporary set with ID ${tempId} not found.`);
-      }
+      const finalSets = updatedExercise.sets.map(s =>
+        s.id === tempId ? { ...s, id: response.id } : s
+      );
+
+      this.exerciseChange.emit({ ...updatedExercise, sets: finalSets });
     });
   }
 
   deleteSet(setId: string): void {
-    this.exercise.sets = this.exercise.sets.filter(s => s.id !== setId);
+    const updatedSets = this.exercise.sets.filter(s => s.id !== setId);
+    const updatedExercise = { ...this.exercise, sets: updatedSets };
+
+    this.exerciseChange.emit(updatedExercise);
 
     this.setService.delete(setId).subscribe();
   }

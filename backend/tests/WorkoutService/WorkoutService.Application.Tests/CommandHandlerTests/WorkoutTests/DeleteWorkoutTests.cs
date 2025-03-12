@@ -16,7 +16,7 @@ public class DeleteWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Example Title";
         var description = "Example Description";
-        var durationInMinutes = 35u;
+        var durationInMinutes = 35;
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = new[]
         {
@@ -53,7 +53,7 @@ public class DeleteWorkoutTests(TestFixture fixture) : TestBase(fixture)
         // Arrange
         var title = "Example Title";
         var description = "Example Description";
-        var durationInMinutes = 35u;
+        var durationInMinutes = 35;
         var level = DifficultyLevel.Advanced;
         var exerciseDtos = Array.Empty<CreateExerciseDto>();
         

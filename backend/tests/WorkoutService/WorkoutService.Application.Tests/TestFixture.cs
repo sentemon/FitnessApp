@@ -141,7 +141,7 @@ public class TestFixture
 
     private WorkoutHistory CreateExistingWorkoutHistory()
     {
-        var workoutHistory = WorkoutHistory.Create(30, ExistingWorkout.Id, ExistingUser.Id);
+        var workoutHistory = WorkoutHistory.Create(ExistingWorkout.Id, ExistingUser.Id);
 
         WorkoutDbContextFixture.WorkoutHistories.Add(workoutHistory);
         WorkoutDbContextFixture.SaveChanges();

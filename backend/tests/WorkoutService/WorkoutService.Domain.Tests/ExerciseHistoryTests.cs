@@ -14,7 +14,7 @@ public class ExerciseHistoryTests
         var userId = Guid.NewGuid().ToString();
         var workoutId = Workout.Create("Example", "Example", 35, DifficultyLevel.Beginner, userId).Id;
         var exercise = Exercise.Create("Example", DifficultyLevel.Beginner, userId);
-        var workoutHistory = WorkoutHistory.Create(35, workoutId, userId);
+        var workoutHistory = WorkoutHistory.Create(workoutId, userId);
         
         // Act
         var exerciseHistory = ExerciseHistory.Create(workoutHistory.Id, exercise.Id);
@@ -30,7 +30,7 @@ public class ExerciseHistoryTests
         var userId = Guid.NewGuid().ToString();
         var workoutId = Workout.Create("Example", "Example", 35, DifficultyLevel.Beginner, userId).Id;
         var exercise = Exercise.Create("Example", DifficultyLevel.Beginner, userId);
-        var workoutHistory = WorkoutHistory.Create(35, workoutId, userId);
+        var workoutHistory = WorkoutHistory.Create(workoutId, userId);
         var exerciseHistory = ExerciseHistory.Create(workoutHistory.Id, exercise.Id);
 
         var setHistory = SetHistory.Create(exerciseHistory.Id, 45, 2);
@@ -50,7 +50,7 @@ public class ExerciseHistoryTests
         var userId = Guid.NewGuid().ToString();
         var workoutId = Workout.Create("Example", "Example", 35, DifficultyLevel.Beginner, userId).Id;
         var exercise = Exercise.Create("Example", DifficultyLevel.Beginner, userId);
-        var workoutHistory = WorkoutHistory.Create(35, workoutId, userId);
+        var workoutHistory = WorkoutHistory.Create(workoutId, userId);
         var exerciseHistory = ExerciseHistory.Create(workoutHistory.Id, exercise.Id);
 
         var setHistory = SetHistory.Create(exerciseHistory.Id, 45, 2);

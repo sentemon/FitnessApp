@@ -8,6 +8,8 @@ public record WorkoutDto(
     string Description,
     uint DurationInMinutes,
     DifficultyLevel Level,
+    bool IsCustom,
+    string Url,
     string ImageUrl,
     ExerciseDto[] Exercises
 );

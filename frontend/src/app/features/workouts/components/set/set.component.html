@@ -8,10 +8,6 @@
       <p>Set {{ i + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
       <a class="delete-set" (click)="deleteSet(set.id)" *ngIf="workout.isCustom">×</a>
     </div>
-    <div class="set-actions">
-      <button *ngIf="!set.completed" (click)="markSetAsCompleted(i)">Mark as Completed</button>
-      <span *ngIf="set.completed" (click)="markSetAsUncompleted(i)">✅ Completed</span>
-    </div>
   </li>
 </ul>
 

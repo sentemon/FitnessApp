@@ -15,8 +15,5 @@ public class WorkoutHistoryConfiguration : IEntityTypeConfiguration<WorkoutHisto
 
         builder.Property(wh => wh.UserId)
             .IsRequired();
-
-        builder.Property(wh => wh.PerformedAt)
-            .IsRequired();
     }
 }

@@ -17,7 +17,7 @@ public class MarkSetHistoryAsCompletedCommandHandler : ICommandHandler<MarkSetHi
 
     public async Task<IResult<string, Error>> HandleAsync(MarkSetHistoryAsCompletedCommand command)
     {
-        var setHistory = await _context.SetHistories.FirstOrDefaultAsync(sh => sh.Id == command.Id && sh.ExerciseHistoryId == command.ExerciseHistoryId);
+        var setHistory = await _context.SetHistories.FirstOrDefaultAsync(sh => sh.Id == command.Id);
 
         if (setHistory is null)
         {

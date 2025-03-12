@@ -147,6 +147,11 @@ namespace WorkoutService.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("ProfileSetUp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
@@ -227,10 +232,10 @@ namespace WorkoutService.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<long>("DurationInMinutes")
+                    b.Property<long?>("DurationInMinutes")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("PerformedAt")
+                    b.Property<DateTime?>("PerformedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")

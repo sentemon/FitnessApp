@@ -14,6 +14,7 @@ public class User
     public Goal? CurrentGoal { get; private set; }
     public ActivityLevel? ActivityLevel { get; private set; }
     public DateTime? DateOfBirth { get; private set; }
+    public bool ProfileSetUp { get; private set; }
 
     private readonly List<WorkoutType> _favoriteWorkoutTypes = [];
     public IReadOnlyCollection<WorkoutType> FavoriteWorkoutTypes => _favoriteWorkoutTypes.AsReadOnly();
@@ -50,6 +51,7 @@ public class User
         _favoriteWorkoutTypes.Clear();
         _favoriteWorkoutTypes.AddRange(favoriteWorkoutTypes);
         DateOfBirth = dateOfBirth;
+        ProfileSetUp = true;
     }
 
     public void AddWorkout(Workout workout) => _workouts.Add(workout);

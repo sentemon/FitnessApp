@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using WorkoutService.Application.Commands.AddSet;
 using WorkoutService.Application.Commands.AddSetHistory;
+using WorkoutService.Application.Commands.AddWorkoutHistory;
+using WorkoutService.Application.Commands.CompleteWorkoutHistory;
 using WorkoutService.Application.Commands.CreateWorkout;
 using WorkoutService.Application.Commands.DeleteSet;
 using WorkoutService.Application.Commands.DeleteSetHistory;
@@ -11,6 +13,7 @@ using WorkoutService.Application.Commands.SetUpProfile;
 using WorkoutService.Application.Commands.UpdateWholeWorkout;
 using WorkoutService.Application.Commands.UpdateWorkout;
 using WorkoutService.Application.DTOs;
+using WorkoutService.Domain.Entities;
 
 namespace WorkoutService.Api.GraphQL;
 
@@ -143,9 +146,9 @@ public class Mutation
         return result.Response;
     }
 
-    public async Task<string> MarkSetHistoryAsCompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsCompletedCommandHandler markSetHistoryAsCompletedCommandHandler)
+    public async Task<string> MarkSetHistoryAsCompleted(string id, [Service] MarkSetHistoryAsCompletedCommandHandler markSetHistoryAsCompletedCommandHandler)
     {
-        var command = new MarkSetHistoryAsCompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var command = new MarkSetHistoryAsCompletedCommand(Guid.Parse(id));
         var result = await markSetHistoryAsCompletedCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
@@ -156,10 +159,37 @@ public class Mutation
         return result.Response;
     }
     
-    public async Task<string> MarkSetHistoryAsUncompleted(string id, string exerciseHistoryId, [Service] MarkSetHistoryAsUncompletedCommandHandler markSetHistoryAsUncompletedCommandHandler)
+    public async Task<string> MarkSetHistoryAsUncompleted(string id, [Service] MarkSetHistoryAsUncompletedCommandHandler markSetHistoryAsUncompletedCommandHandler)
     {
-        var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id), Guid.Parse(exerciseHistoryId));
+        var command = new MarkSetHistoryAsUncompletedCommand(Guid.Parse(id));
         var result = await markSetHistoryAsUncompletedCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<WorkoutHistory> AddWorkoutHistory(string workoutId, [Service] AddWorkoutHistoryCommandHandler addWorkoutHistoryCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new AddWorkoutHistoryCommand(Guid.Parse(workoutId), userId);
+        var result = await addWorkoutHistoryCommandHandler.HandleAsync(command);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> CompleteWorkoutHistory(string id, uint durationInMinutes, [Service] CompleteWorkoutHistoryCommandHandler completeWorkoutHistoryCommandHandler)
+    {
+        var command = new CompleteWorkoutHistoryCommand(Guid.Parse(id), durationInMinutes);
+        var result = await completeWorkoutHistoryCommandHandler.HandleAsync(command);
         
         if (!result.IsSuccess)
         {

@@ -101,7 +101,7 @@ public class UserTests
         var id = Guid.NewGuid().ToString();
         var user = User.Create(id, "Example", "Example", "example", string.Empty);
         var workoutId = Workout.Create("Example Title", "Example Description", 30u, DifficultyLevel.Beginner, id).Id;
-        var workoutHistory = WorkoutHistory.Create(30u, workoutId, id);
+        var workoutHistory = WorkoutHistory.Create(workoutId, id);
         
         // Act
         user.AddWorkoutHistory(workoutHistory);
@@ -117,7 +117,7 @@ public class UserTests
         var id = Guid.NewGuid().ToString();
         var user = User.Create(id, "Example", "Example", "example", string.Empty);
         var workoutId = Workout.Create("Example Title", "Example Description", 30u, DifficultyLevel.Beginner, id).Id;
-        var workoutHistory = WorkoutHistory.Create(30u, workoutId, id);
+        var workoutHistory = WorkoutHistory.Create(workoutId, id);
         user.AddWorkoutHistory(workoutHistory);
         
         // Act

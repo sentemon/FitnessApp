@@ -5,14 +5,17 @@ import {AsyncPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Steps} from "primeng/steps";
 import { WorkoutsListComponent } from './components/workouts-list/workouts-list.component';
 import { WorkoutComponent } from './components/workout/workout.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
 import {RouterLink} from "@angular/router";
 import {SharedModule} from "../../shared/shared.module";
 import { SetComponent } from './components/set/set.component';
 import { ExerciseComponent } from './components/exercise/exercise.component';
 import { CreateWorkoutComponent } from './components/create-workout/create-workout.component';
-import { ActivitiesHistoryComponent } from './components/activities-history/activities-history.component';
+import { WorkoutsHistoryComponent } from './components/workouts-history/workouts-history.component';
+import { WorkoutHistoryComponent } from './components/workout-history/workout-history.component';
+import { ExerciseHistoryComponent } from './components/exercise-history/exercise-history.component';
+import { SetHistoryComponent } from './components/set-history/set-history.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { ActivitiesHistoryComponent } from './components/activities-history/acti
     SetComponent,
     ExerciseComponent,
     CreateWorkoutComponent,
-    ActivitiesHistoryComponent
+    WorkoutsHistoryComponent,
+    WorkoutHistoryComponent,
+    ExerciseHistoryComponent,
+    SetHistoryComponent
   ],
   imports: [
     StepperModule,
@@ -34,6 +40,7 @@ import { ActivitiesHistoryComponent } from './components/activities-history/acti
     FormsModule,
     RouterLink,
     SharedModule,
+    ReactiveFormsModule,
   ]
 })
 export class WorkoutsModule { }

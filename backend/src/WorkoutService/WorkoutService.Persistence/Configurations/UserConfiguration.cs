@@ -39,6 +39,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(u => u.DateOfBirth)
             .IsRequired(false);
+
+        builder.Property(u => u.ProfileSetUp)
+            .HasDefaultValue(false);
         
         builder.HasMany(u => u.Workouts)
             .WithOne(w => w.User)

@@ -124,6 +124,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutService.Application.Tests", "backend\tests\WorkoutService\WorkoutService.Application.Tests\WorkoutService.Application.Tests.csproj", "{30E4B052-3DCD-4DEC-B3FD-85D760D4FC21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatService", "ChatService", "{794A5658-49BE-49DE-86D7-A48F783478D6}"
+	ProjectSection(SolutionItems) = preProject
+		backend\src\ChatService\Dockerfile = backend\src\ChatService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService.Api", "backend\src\ChatService\ChatService.Api\ChatService.Api.csproj", "{B81E78E8-E2D5-405E-AC84-28D08B39A5C8}"
 EndProject

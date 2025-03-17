@@ -72,8 +72,10 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 ## Screenshots
 
 - **Home**
-<img src="./img/home.png" alt="Fitness App Home Page"/>
+<img src="./img/home.png" alt="Fitness App Home Page" />
 
+- **Workouts**
+<img src="./img/workouts.png" alt="Fitness App Workouts Page" />
 ---
 
 ## Technology Stack

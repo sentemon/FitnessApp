@@ -11,4 +11,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ChatService.Application\ChatService.Application.csproj" />
+      <ProjectReference Include="..\ChatService.Infrastructure\ChatService.Infrastructure.csproj" />
+      <ProjectReference Include="..\ChatService.Persistence\ChatService.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

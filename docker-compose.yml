@@ -127,6 +127,24 @@ services:
       retries: 3
     networks: 
       - microservices
+        
+  chat-service:
+    container_name: chat-service
+    build:
+      context: ./backend/src
+      dockerfile: ChatService/Dockerfile
+    ports:
+      - 8006:8006
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://workout-service:8006/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
 
   postgres:
     container_name: postgres

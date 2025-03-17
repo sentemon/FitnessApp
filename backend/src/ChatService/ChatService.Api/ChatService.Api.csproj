@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ChatService.Application\ChatService.Application.csproj" />
+      <ProjectReference Include="..\ChatService.Domain\ChatService.Domain.csproj" />
       <ProjectReference Include="..\ChatService.Infrastructure\ChatService.Infrastructure.csproj" />
       <ProjectReference Include="..\ChatService.Persistence\ChatService.Persistence.csproj" />
     </ItemGroup>

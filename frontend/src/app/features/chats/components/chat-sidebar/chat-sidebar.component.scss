@@ -1,16 +1,59 @@
 :host {
-  width: 100%;
+  width: 30%;
   height: 100%;
 }
 
 .chat-sidebar {
-  width: 30%;
-  background-color: red;
+  //background-color: red;
+  height: 100%;
 
   .search {
     padding: 10px;
     margin: 10px;
     background-color: #C5C6C7;
     border-radius: 10px;
+
+    input {
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      padding: 2px;
+    }
+  }
+
+  .chats {
+    .chat {
+      display: flex;
+      align-items: center;
+      background-color: #f4f4f4;
+      max-width: 400px;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      gap: 10px;
+
+      img {
+        width: 43px;
+        height: 43px;
+        border-radius: 50%;
+      }
+
+      .chat-content {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-name {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .chat-message {
+        font-size: 13px;
+        color: #666;
+        margin-top: 3px;
+      }
+    }
   }
 }

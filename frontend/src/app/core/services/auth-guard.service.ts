@@ -4,7 +4,7 @@ import {
   CanActivate,
   Router
 } from "@angular/router";
-import {map, Observable} from "rxjs";
+import {map, Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +19,10 @@ export class AuthGuard implements CanActivate {
       map(result => {
         if (result) {
           return true;
-        } else {
-          console.log(result);
-          this.router.navigate(["login"])
-          return false;
         }
+        
+        this.router.navigate(["login"])
+        return false;
       })
     );
   }

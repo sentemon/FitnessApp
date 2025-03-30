@@ -9,8 +9,8 @@
       <img [src]="'assets/profile.svg'" alt="profile" class="profile-pic">
     </div>
   </div>
-  <div class="messages">
-    <div *ngFor="let message of selectedChat?.messages" [class.self]="message" class="message">
+  <div #messagesContainer class="messages">
+    <div *ngFor="let message of selectedChat?.messages" [class.self]="message.userId === me" class="message">
       <p>{{ message.content }}</p>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 
@@ -7,14 +7,20 @@ import {ChatService} from "../../services/chat.service";
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
-export class ChatAreaComponent implements OnChanges {
+export class ChatAreaComponent implements OnChanges, AfterViewChecked {
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
 
   @Input() selectedChatId: string | null = null;
+  me: string = "user1";
 
   constructor(private chatService: ChatService) { }
 
   ngOnChanges() {
     this.chatService.get(this.selectedChatId).subscribe(result => this.selectedChat = result);
+  }
+
+  ngAfterViewChecked() {
+    this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
   }
 }

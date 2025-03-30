@@ -6,7 +6,7 @@
     <div *ngFor="let chat of chats" (click)="onSelectChat(chat.id)" class="chat">
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
-        <p class="chat-name">{{ chat.id }}</p>
+        <p class="chat-name">{{ getChatName(chat) }}</p>
         <p class="chat-message">{{ chat.messages[chat.messages.length - 1].content }}</p>
       </div>
     </div>

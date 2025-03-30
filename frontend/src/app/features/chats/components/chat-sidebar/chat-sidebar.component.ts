@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -20,5 +21,18 @@ export class ChatSidebarComponent implements OnInit {
 
   onSelectChat(chatId: string): void {
     this.selectedChatId.emit(chatId);
+  }
+
+  getChatName(chat: Chat): string {
+    let result: User = {
+      id: 'user1',
+      firstName: 'Ivan',
+      lastName: 'Sentemon',
+      username: 'sentemon',
+      isOnline: false,
+      chats: []
+    };
+
+    return chat.users.find(u => u.username !== result.username)!.username;
   }
 }

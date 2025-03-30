@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 
@@ -10,9 +10,15 @@ import {ChatService} from "../../services/chat.service";
 export class ChatSidebarComponent implements OnInit {
   chats: Chat[] = [];
 
+  @Output() chatSelected = new EventEmitter<string>();
+
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
     this.chatService.getAll().subscribe(result => this.chats = result);
+  }
+
+  onSelectChat(chatId: string): void {
+    this.chatSelected.emit(chatId);
   }
 }

@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-chat',
   template: `
     <div class="chat">
-      <app-chat-sidebar></app-chat-sidebar>
-      <app-chat-area></app-chat-area>
+      <app-chat-sidebar (chatSelected)="onChatSelected($event)"></app-chat-sidebar>
+      <app-chat-area> [selectedChatId]="selectedChatId"</app-chat-area>
     </div>
   `,
   styles: `
@@ -20,5 +20,9 @@ import { Component } from '@angular/core';
   `
 })
 export class ChatComponent {
+  selectedChatId: string | null = null;
 
+  onChatSelected(chatId: string) {
+    this.selectedChatId = chatId;
+  }
 }

@@ -51,4 +51,8 @@ export class ChatService {
   getAll(): Observable<Chat[]> {
     return of(this.chats);
   }
+
+  get(chatId: string): Observable<Chat | undefined> {
+    return of(this.chats.find(c => c.id == chatId))
+  }
 }

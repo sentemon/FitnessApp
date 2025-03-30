@@ -210,7 +210,7 @@ export class ChatService {
         },
         {
           id: '1',
-          content: 'Hi, how are you?',
+          content: 'Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?',
           createdAt: new Date(),
           chatId: 'chat1',
           userId: 'user1',

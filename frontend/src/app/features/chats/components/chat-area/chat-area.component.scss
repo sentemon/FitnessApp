@@ -42,6 +42,14 @@
   border: 1px solid #ccc;
 }
 
+.search {
+  position: absolute;
+  right: 75px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
 .profile-pic {
   width: 40px;
   height: 40px;
@@ -75,6 +83,12 @@
   color: white;
 }
 
+.time {
+  text-align: end;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
 .chat-input {
   display: flex;
   padding: 1rem;
@@ -89,12 +103,7 @@
   border: 1px solid #ccc;
 }
 
-.chat-input button {
+.chat-input img {
   margin-left: 1rem;
-  padding: 0.5rem 1rem;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
 }

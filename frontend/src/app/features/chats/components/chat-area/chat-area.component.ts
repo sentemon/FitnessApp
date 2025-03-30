@@ -24,4 +24,6 @@ export class ChatAreaComponent implements OnChanges, AfterViewChecked {
     if (!this.messagesContainer) return;
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
   }
+
+  protected readonly navigator = navigator;
 }

@@ -13,10 +13,16 @@ import {graphql} from "./graphql.config";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/services/auth.interceptor";
 import {WorkoutsModule} from "./features/workouts/workouts.module";
+import { ChatSidebarComponent } from './features/chats/components/chat-sidebar/chat-sidebar.component';
+import { ChatAreaComponent } from './features/chats/components/chat-area/chat-area.component';
+import { ChatComponent } from './features/chats/components/chat.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChatSidebarComponent,
+    ChatAreaComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

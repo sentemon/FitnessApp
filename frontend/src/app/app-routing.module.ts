@@ -15,6 +15,7 @@ import {NewWorkoutComponent} from "./features/workouts/components/new-workout/ne
 import {CreateWorkoutComponent} from "./features/workouts/components/create-workout/create-workout.component";
 import {WorkoutsHistoryComponent} from "./features/workouts/components/workouts-history/workouts-history.component";
 import {WorkoutHistoryComponent} from "./features/workouts/components/workout-history/workout-history.component";
+import {ChatComponent} from "./features/chats/components/chat.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -29,6 +30,8 @@ const routes: Routes = [
   { path: 'workouts/:workout-name', component: WorkoutComponent, canActivate: [AuthGuard] },
   { path: 'workouts/:workout-name/:id', component: WorkoutHistoryComponent, canActivate: [AuthGuard] },
   { path: 'setup-profile', component: SetUpProfileComponent, canActivate: [AuthGuard] },
+  { path: 'chats', component: ChatComponent, canActivate: [AuthGuard] },
+  { path: 'chats/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

@@ -10,7 +10,7 @@ import {ChatService} from "../../services/chat.service";
 export class ChatSidebarComponent implements OnInit {
   chats: Chat[] = [];
 
-  @Output() chatSelected = new EventEmitter<string>();
+  @Output() selectedChatId = new EventEmitter<string>();
 
   constructor(private chatService: ChatService) { }
 
@@ -19,6 +19,6 @@ export class ChatSidebarComponent implements OnInit {
   }
 
   onSelectChat(chatId: string): void {
-    this.chatSelected.emit(chatId);
+    this.selectedChatId.emit(chatId);
   }
 }

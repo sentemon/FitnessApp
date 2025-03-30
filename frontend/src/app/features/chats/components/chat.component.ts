@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-chat',
   template: `
     <div class="chat">
-      <app-chat-sidebar (chatSelected)="onChatSelected($event)"></app-chat-sidebar>
-      <app-chat-area> [selectedChatId]="selectedChatId"</app-chat-area>
+      <app-chat-sidebar (selectedChatId)="onChatSelected($event)"></app-chat-sidebar>
+      <app-chat-area [selectedChatId]="selectedChatId"></app-chat-area>
     </div>
   `,
   styles: `

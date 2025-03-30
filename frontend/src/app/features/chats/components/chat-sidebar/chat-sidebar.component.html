@@ -3,11 +3,11 @@
     <input placeholder="Search for a user by username...">
   </div>
   <div class="chats">
-    <div class="chat">
+    <div *ngFor="let chat of chats" class="chat">
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
-        <p class="chat-name">Ivan Sentemon</p>
-        <p class="chat-message">Hi, how are you?</p>
+        <p class="chat-name">{{ chat.id }}</p>
+        <p class="chat-message">{{ chat.messages[chat.messages.length - 1].content }}</p>
       </div>
     </div>
   </div>

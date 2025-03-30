@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'workouts/:workout-name/:id', component: WorkoutHistoryComponent, canActivate: [AuthGuard] },
   { path: 'setup-profile', component: SetUpProfileComponent, canActivate: [AuthGuard] },
   { path: 'chats', component: ChatComponent, canActivate: [AuthGuard] },
+  { path: 'chats/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

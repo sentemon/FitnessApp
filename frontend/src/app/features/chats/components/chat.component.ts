@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-chat',
@@ -19,10 +20,18 @@ import { Component } from '@angular/core';
     }
   `
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
   selectedChatId: string | null = null;
 
+  constructor(private route: ActivatedRoute, private router: Router) { }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.selectedChatId = params.get('chatId');
+    });
+  }
+
   onChatSelected(chatId: string) {
-    this.selectedChatId = chatId;
+    this.router.navigate(['/chats', chatId]);
   }
 }

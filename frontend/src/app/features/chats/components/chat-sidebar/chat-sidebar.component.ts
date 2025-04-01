@@ -10,6 +10,7 @@ import {User} from "../../models/user.model";
 })
 export class ChatSidebarComponent implements OnInit {
   chats: Chat[] = [];
+  searchTerm: string = '';
 
   @Output() selectedChatId = new EventEmitter<string>();
 
@@ -34,5 +35,11 @@ export class ChatSidebarComponent implements OnInit {
     };
 
     return chat.users.find(u => u.username !== result.username)!.username;
+  }
+
+  get filteredChats(): Chat[] {
+    return this.chats.filter(chat =>
+      chat.users.some(user => user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()))
+    );
   }
 }

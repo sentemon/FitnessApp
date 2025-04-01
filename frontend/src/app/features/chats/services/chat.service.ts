@@ -257,6 +257,20 @@ export class ChatService {
           chats: []
         }
       ],
+    },
+    {
+      id: 'chat3',
+      messages: [],
+      users: [
+        {
+          id: 'user3',
+          firstName: 'Qwery',
+          lastName: 'qwe',
+          username: 'qwerty',
+          isOnline: false,
+          chats: []
+        }
+      ]
     }
   ];
 

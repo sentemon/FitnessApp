@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 import {User} from "../../models/user.model";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -9,15 +10,19 @@ import {User} from "../../models/user.model";
   styleUrl: './chat-sidebar.component.scss'
 })
 export class ChatSidebarComponent implements OnInit {
+  currentUser!: User;
   chats: Chat[] = [];
   searchTerm: string = '';
 
   @Output() selectedChatId = new EventEmitter<string>();
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private userService: UserService) { }
 
   ngOnInit() {
-    this.chatService.getAll().subscribe(result => this.chats = result);
+    this.userService.getCurrent().subscribe(result => {
+      this.currentUser = result;
+      this.chatService.getAll().subscribe(result => this.chats = result);
+    });
   }
 
   onSelectChat(chatId: string): void {
@@ -25,16 +30,7 @@ export class ChatSidebarComponent implements OnInit {
   }
 
   getChatName(chat: Chat): string {
-    let result: User = {
-      id: 'user1',
-      firstName: 'Ivan',
-      lastName: 'Sentemon',
-      username: 'sentemon',
-      isOnline: false,
-      chats: []
-    };
-
-    return chat.users.find(u => u.username !== result.username)!.username;
+    return chat.users.find(u => u.username !== this.currentUser.username)!.username;
   }
 
   get filteredChats(): Chat[] {

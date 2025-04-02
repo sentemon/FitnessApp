@@ -39,7 +39,7 @@ export class ChatService {
           firstName: 'Navi',
           lastName: 'Nometnes',
           username: 'nometnes',
-          isOnline: false,
+          isOnline: true,
           chats: []
         }
       ],
@@ -253,7 +253,7 @@ export class ChatService {
           firstName: 'Navi',
           lastName: 'Nometnes',
           username: 'nometnes',
-          isOnline: false,
+          isOnline: true,
           chats: []
         }
       ],

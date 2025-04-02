@@ -27,7 +27,14 @@
 
 .chat-status {
   font-size: 0.8rem;
-  color: green;
+
+  &.online {
+    color: green;
+  }
+
+  &.offline {
+    color: gray;
+  }
 }
 
 .header-actions {

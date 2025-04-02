@@ -1,6 +1,8 @@
 import {AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
+import {User} from "../../models/user.model";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-chat-area',
@@ -10,19 +12,32 @@ import {ChatService} from "../../services/chat.service";
 export class ChatAreaComponent implements OnChanges, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
+  currentUser!: User;
 
   @Input() selectedChatId: string | null = null;
-  me: string = "user1";
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private userService: UserService) { }
 
   ngOnChanges() {
-    this.chatService.get(this.selectedChatId).subscribe(result => this.selectedChat = result);
+    this.userService.getCurrent().subscribe(result => {
+      this.currentUser = result;
+      this.chatService.get(this.selectedChatId).subscribe(result => this.selectedChat = result);
+    });
   }
 
   ngAfterViewChecked() {
-    if (!this.messagesContainer) return;
+    if (!this.messagesContainer)
+      return;
+
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+  get isOnline(): boolean {
+    return this.selectedChat!.users.find(u => u.id !== this.currentUser.id)!.isOnline;
+  }
+
+  get chatName(): string {
+    return this.selectedChat!.users.find(u => u.username !== this.currentUser.username)!.username;
   }
 
   protected readonly navigator = navigator;

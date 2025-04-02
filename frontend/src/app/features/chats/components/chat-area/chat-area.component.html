@@ -1,17 +1,19 @@
 <div class="chat-area" *ngIf="selectedChatId">
   <div class="header">
     <div class="chat-info">
-      <p class="chat-name">{{ selectedChatId }}</p>
-      <p class="chat-status">Online</p>
+      <p class="chat-name">{{ chatName }}</p>
+      <p class="chat-status" [ngClass]="isOnline ? 'online' : 'offline'">
+        {{ isOnline ? 'Online' : 'Offline' }}
+      </p>
     </div>
     <div class="header-actions">
-      <input class="search-input" placeholder="Search...">
+      <input [(ngModel)]="searchQuery" class="search-input" placeholder="Search...">
       <img [src]="'assets/search.svg'" alt="Search" class="search">
       <img [src]="'assets/profile.svg'" alt="profile" class="profile-pic">
     </div>
   </div>
   <div #messagesContainer class="messages">
-    <div *ngFor="let message of selectedChat?.messages" [class.self]="message.userId === me" class="message">
+    <div *ngFor="let message of filteredMessages" [class.self]="message.userId === currentUser.id" class="message">
       <p>{{ message.content }}</p>
       <div class="time">
         {{ message.createdAt.toLocaleTimeString(navigator.language, { hour: '2-digit', minute:'2-digit' }) }}

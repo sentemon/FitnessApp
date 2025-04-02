@@ -16,6 +16,7 @@ import {WorkoutsModule} from "./features/workouts/workouts.module";
 import { ChatSidebarComponent } from './features/chats/components/chat-sidebar/chat-sidebar.component';
 import { ChatAreaComponent } from './features/chats/components/chat-area/chat-area.component';
 import { ChatComponent } from './features/chats/components/chat.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ChatComponent } from './features/chats/components/chat.component';
     WorkoutsModule,
     SharedModule,
     HttpClientModule,
-    ApolloModule
+    ApolloModule,
+    FormsModule
   ],
   providers: [
     {

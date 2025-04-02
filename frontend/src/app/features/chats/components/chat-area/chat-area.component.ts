@@ -3,6 +3,7 @@ import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
+import {Message} from "../../models/message.model";
 
 @Component({
   selector: 'app-chat-area',
@@ -13,6 +14,7 @@ export class ChatAreaComponent implements OnChanges, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
   currentUser!: User;
+  searchQuery: string = '';
 
   @Input() selectedChatId: string | null = null;
 
@@ -38,6 +40,10 @@ export class ChatAreaComponent implements OnChanges, AfterViewChecked {
 
   get chatName(): string {
     return this.selectedChat!.users.find(u => u.username !== this.currentUser.username)!.username;
+  }
+
+  get filteredMessages(): Message[] {
+    return this.selectedChat!.messages.filter(m => m.content.includes(this.searchQuery));
   }
 
   protected readonly navigator = navigator;

@@ -35,7 +35,7 @@ export class ChatSidebarComponent implements OnInit {
 
   get filteredChats(): Chat[] {
     return this.chats.filter(chat =>
-      chat.users.some(user => user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()))
+      chat.users.some(user => user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()) && user.username !== this.currentUser.username)
     );
   }
 }

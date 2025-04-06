@@ -1,17 +1,25 @@
 import { Error } from "./error";
 
-export class Result<TResponse> {
-  private constructor(
-    public response?: TResponse,
-    public error?: Error,
-    public isSuccess: boolean = false
-  ) { }
+type SuccessResult<T> = {
+  isSuccess: true;
+  response: T;
+  error?: undefined;
+};
 
-  public static success<TResponse>(response: TResponse): Result<TResponse> {
-    return new Result(response, undefined, true);
+type FailureResult = {
+  isSuccess: false;
+  response?: undefined;
+  error: Error;
+};
+
+export type Result<T> = SuccessResult<T> | FailureResult
+
+export namespace Result {
+  export function success<T>(response: T): Result<T> {
+    return { isSuccess: true, response };
   }
 
-  public static failure<TResponse>(error: Error): Result<TResponse> {
-    return new Result<TResponse>(undefined, error, false);
+  export function failure<T>(error: Error): Result<T> {
+    return { isSuccess: false, error };
   }
 }

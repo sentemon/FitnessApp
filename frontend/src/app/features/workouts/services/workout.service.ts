@@ -8,6 +8,8 @@ import {MutationResponse} from "../graphql/mutation.response";
 import {QueryResponse} from "../graphql/query.response";
 import {GET_ALL_WORKOUTS, GET_WORKOUT_BY_URL} from "../graphql/queries.graphql";
 import {CreateWorkout} from "../models/create-workout.model";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Result} from "../../../core/types/result/result";
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +38,12 @@ export class WorkoutService {
     return this.workouts$;
   }
 
-  public getWorkoutByUrl(url: string): Observable<Workout> {
+  public getWorkoutByUrl(url: string): Observable<Result<Workout>> {
     return this.workoutClient.query<QueryResponse>({
       query: GET_WORKOUT_BY_URL,
       variables: { url }
     }).pipe(
-      map(response => response.data.workoutByUrl)
+      toResult<Workout>('workoutByUrl')
     );
   }
 

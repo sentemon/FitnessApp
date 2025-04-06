@@ -1,3 +1,5 @@
+import { Error } from "./error";
+
 export class Result<TResponse> {
   private constructor(
     public response?: TResponse,

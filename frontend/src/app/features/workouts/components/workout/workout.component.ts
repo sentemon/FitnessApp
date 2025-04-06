@@ -23,7 +23,7 @@ export class WorkoutComponent implements OnInit {
       this.workoutService.getWorkoutByUrl(workoutUrl).subscribe(result => {
         if (result.isSuccess) {
           const workout = result.response;
-          
+
           this.workout = {
             id: workout.id,
             title: workout.title,
@@ -36,8 +36,6 @@ export class WorkoutComponent implements OnInit {
             isCustom: workout.isCustom,
             userId: workout.userId
           }
-
-          console.log(result);
         } else {
           this.router.navigate(["/not-found"]);
         }

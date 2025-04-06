@@ -1,4 +1,4 @@
-import { Error } from "./error";
+import { CustomError } from "./custom-error";
 
 type SuccessResult<T> = {
   isSuccess: true;
@@ -9,7 +9,7 @@ type SuccessResult<T> = {
 type FailureResult = {
   isSuccess: false;
   response?: undefined;
-  error: Error;
+  error: CustomError;
 };
 
 export type Result<T> = SuccessResult<T> | FailureResult
@@ -19,7 +19,7 @@ export namespace Result {
     return { isSuccess: true, response };
   }
 
-  export function failure<T>(error: Error): Result<T> {
+  export function failure<T>(error: CustomError): Result<T> {
     return { isSuccess: false, error };
   }
 }

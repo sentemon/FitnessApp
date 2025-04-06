@@ -1,4 +1,4 @@
-import { CustomError } from "./custom-error";
+import { CustomError } from "./custom-error.type";
 
 type SuccessResult<T> = {
   isSuccess: true;

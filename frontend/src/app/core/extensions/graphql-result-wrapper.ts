@@ -1,8 +1,8 @@
 import { ApolloError } from '@apollo/client/core';
-import { Result } from '../types/result/result';
+import { Result } from '../types/result/result.type';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { CustomError } from "../types/result/custom-error";
+import { CustomError } from "../types/result/custom-error.type";
 
 export function toResult<T>(key: string) {
   return (source$: Observable<any>): Observable<Result<T>> => {

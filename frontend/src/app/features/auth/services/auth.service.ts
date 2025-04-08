@@ -4,6 +4,8 @@ import {BehaviorSubject, map, Observable} from "rxjs";
 import {LOGIN, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
 import {CookieService} from "../../../core/services/cookie.service";
+import {Result} from "../../../core/types/result/result.type";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +14,21 @@ export class AuthService {
   private authClient: ApolloBase;
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuth());
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private apollo: Apollo) {
+  constructor(apollo: Apollo) {
     this.authClient = apollo.use("auth");
   }
 
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
 
-    const token = cookieService.get("token");
+    const token = cookieService.get("token").response;
 
-    return token != "There is no cookie with key token.";
+    return token !== "There is no cookie with key token.";
   }
 
-  public login(username: string, password: string): Observable<boolean> {
+  public login(username: string, password: string): Observable<Result<boolean>> {
     return this.authClient.mutate<MutationResponse>({
       mutation: LOGIN,
       variables: { username, password },
@@ -36,11 +38,11 @@ export class AuthService {
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
-          return true;
+          return Result.success(true);
         } else {
           this.isAuthenticatedSubject.next(false);
           console.error("Login failed: no token received.");
-          return false;
+          return Result.success(false);
         }
       })
     );
@@ -52,7 +54,7 @@ export class AuthService {
     username: string,
     email: string,
     password: string
-  ): Observable<boolean> {
+  ): Observable<Result<boolean>> {
     return this.authClient.mutate<MutationResponse>({
       mutation: REGISTER,
       variables: { firstName, lastName, username, email, password }
@@ -62,18 +64,20 @@ export class AuthService {
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
-          return true;
+          return Result.success(true);
         } else {
           this.isAuthenticatedSubject.next(false);
           console.error("Registration failed: no token received.");
-          return false;
+          return Result.success(false);
         }
       })
     );
   }
 
 
-  public isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticated$;
+  public isAuthenticated(): Observable<Result<boolean>> {
+    return this.isAuthenticated$.pipe(
+      map(value => Result.success(value)),
+    );
   }
 }

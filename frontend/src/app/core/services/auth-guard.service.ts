@@ -11,13 +11,12 @@ import {map, Observable, of} from "rxjs";
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(
       map(result => {
-        if (result) {
+        if (result.response) {
           return true;
         }
 

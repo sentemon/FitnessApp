@@ -21,21 +21,21 @@ export class WorkoutComponent implements OnInit {
     this.route.params.subscribe(params => {
       const workoutUrl = params["workout-name"];
       this.workoutService.getWorkoutByUrl(workoutUrl).subscribe(result => {
-        if (result) {
-          this.workout = {
-            id: result.id,
-            title: result.title,
-            description: result.description,
-            durationInMinutes: result.durationInMinutes,
-            level: result.level,
-            url: result.url,
-            exercises: result.exercises,
-            imageUrl: result.imageUrl,
-            isCustom: result.isCustom,
-            userId: result.userId
-          }
+        if (result.isSuccess) {
+          const workout = result.response;
 
-          console.log(result);
+          this.workout = {
+            id: workout.id,
+            title: workout.title,
+            description: workout.description,
+            durationInMinutes: workout.durationInMinutes,
+            level: workout.level,
+            url: workout.url,
+            exercises: workout.exercises,
+            imageUrl: workout.imageUrl,
+            isCustom: workout.isCustom,
+            userId: workout.userId
+          }
         } else {
           this.router.navigate(["/not-found"]);
         }

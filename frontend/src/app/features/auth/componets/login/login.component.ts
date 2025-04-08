@@ -21,7 +21,7 @@ export class LoginComponent {
   onLogin(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(result => {
-        if (result) {
+        if (result.isSuccess) {
           this.router.navigate(["/"]);
         } else {
           console.error("Something went wrong during login.")

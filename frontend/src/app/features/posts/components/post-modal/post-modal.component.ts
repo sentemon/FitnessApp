@@ -31,7 +31,11 @@ export class PostModalComponent implements OnInit {
     });
 
     this.userService.getCurrentUser().subscribe(result => {
-      this.currentUsername = result.username;
+      if (result.isSuccess) {
+        this.currentUsername = result.response.username;
+      } else {
+        console.error(result.error.message);
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-<div class="layout" *ngIf="authService.isAuthenticated() | async; else loginPage">
+<div class="layout" *ngIf="(authService.isAuthenticated() | async)?.response; else loginPage">
   <app-layout></app-layout>
 </div>
 

@@ -8,15 +8,17 @@ import {User} from "../../models/user.model";
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-  user?: User;
+  user!: User;
 
   constructor(private userService: UserService) { }
 
   getSentemon(): void {
     this.userService.getUserByUsername("sentemon").subscribe(result => {
-      this.user = result;
+      if (result.isSuccess) {
+        this.user = result.response;
+      } else {
+        console.log(result.error.message)
+      }
     });
-    console.log(this.user);
   }
-
 }

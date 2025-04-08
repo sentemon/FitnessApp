@@ -8,11 +8,17 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    req = req.clone({
-      setHeaders: {
-        'Authorization': `Bearer ${this.cookieService.get("token")}`,
-      },
-    });
+    let result = this.cookieService.get("token");
+
+    if (result.isSuccess) {
+      req = req.clone({
+        setHeaders: {
+          'Authorization': `Bearer ${result.response}`,
+        },
+      });
+    } else {
+      console.error(result.error.message);
+    }
 
     return next.handle(req);
   }

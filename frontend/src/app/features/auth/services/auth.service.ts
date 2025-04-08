@@ -23,9 +23,9 @@ export class AuthService {
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
 
-    const token = cookieService.get("token");
+    const token = cookieService.get("token").response;
 
-    return token != "There is no cookie with key token.";
+    return token !== "There is no cookie with key token.";
   }
 
   public login(username: string, password: string): Observable<Result<boolean>> {

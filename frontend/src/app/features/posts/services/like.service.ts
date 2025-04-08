@@ -4,6 +4,8 @@ import {Like} from "../models/like.model";
 import {map, Observable} from "rxjs";
 import {MutationResponse} from "../graphql/mutation.response";
 import {ADD_LIKE, DELETE_LIKE, IS_POST_LIKED} from "../graphql/mutations.graphql";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Result} from "../../../core/types/result/result.type";
 
 @Injectable({
   providedIn: 'root'
@@ -15,25 +17,21 @@ export class LikeService {
     this.postClient = apollo.use("posts");
   }
 
-  public addLike(postId: string): Observable<Like> {
+  public addLike(postId: string): Observable<Result<Like>> {
     return this.postClient.mutate<MutationResponse>({
       mutation: ADD_LIKE,
       variables: { postId }
     }).pipe(
-      map(response => {
-        return response.data!.addLike;
-      })
+      toResult<Like>("addLike")
     );
   }
 
-  public deleteLike(postId: string): Observable<string> {
+  public deleteLike(postId: string): Observable<Result<string>> {
     return this.postClient.mutate<MutationResponse>({
       mutation: DELETE_LIKE,
       variables: { postId }
     }).pipe(
-      map(response => {
-        return response.data!.deleteLike;
-      })
+      toResult<string>("deleteLike")
     );
   }
 

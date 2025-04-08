@@ -26,8 +26,12 @@ export class PostModalComponent implements OnInit {
   constructor(private commentService: CommentService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.commentService.getAllComments(this.post.id, 25).subscribe(comments => {
-      this.comments = comments;
+    this.commentService.getAllComments(this.post.id, 25).subscribe(result => {
+      if (result.isSuccess) {
+        this.comments = result.response;
+      } else {
+        console.log(result.error.message);
+      }
     });
 
     this.userService.getCurrentUser().subscribe(result => {
@@ -49,14 +53,18 @@ export class PostModalComponent implements OnInit {
     if (commentContent.trim() === "")
       return;
 
-    this.commentService.addComment(this.post.id, commentContent).subscribe(comment => {
-      this.comments.push(comment);
-      const updatedPost = {...this.post, commentCount: this.post.commentCount + 1};
+    this.commentService.addComment(this.post.id, commentContent).subscribe(result => {
+      if (result.isSuccess) {
+        this.comments.push(result.response);
+        const updatedPost = {...this.post, commentCount: this.post.commentCount + 1};
 
-      this.post = updatedPost
-      this.postChange.emit(updatedPost);
+        this.post = updatedPost
+        this.postChange.emit(updatedPost);
 
-      this.newComment = "";
+        this.newComment = "";
+      } else {
+        console.log(result.error.message);
+      }
     });
 
     setTimeout((): void => {

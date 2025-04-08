@@ -23,16 +23,24 @@ export class LikeComponent implements OnInit {
 
   toggleLike(): void {
     if (!this.isLiked) {
-      this.likeService.addLike(this.post.id).subscribe(() => {
-        this.isLiked = true;
-        const updatedPost = {...this.post, likeCount: this.post.likeCount + 1 }
-        this.likeChange.emit(updatedPost);
+      this.likeService.addLike(this.post.id).subscribe(result => {
+        if (result.isSuccess) {
+          this.isLiked = true;
+          const updatedPost = {...this.post, likeCount: this.post.likeCount + 1}
+          this.likeChange.emit(updatedPost);
+        } else {
+          console.error(result.error.message);
+        }
       });
     } else {
-      this.likeService.deleteLike(this.post.id).subscribe(() => {
-        this.isLiked = false;
-        const updatedPost = {...this.post, likeCount: this.post.likeCount - 1 }
-        this.likeChange.emit(updatedPost);
+      this.likeService.deleteLike(this.post.id).subscribe(result => {
+        if (result.isSuccess) {
+          this.isLiked = false;
+          const updatedPost = {...this.post, likeCount: this.post.likeCount - 1}
+          this.likeChange.emit(updatedPost);
+        } else {
+          console.error(result.error.message);
+        }
       });
     }
   }

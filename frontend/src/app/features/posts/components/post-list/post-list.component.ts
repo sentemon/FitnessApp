@@ -22,8 +22,12 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.postService.getAllPosts().subscribe(response => {
-      this.posts = [...response];
+    this.postService.getAllPosts().subscribe(result => {
+      if (result.isSuccess) {
+        this.posts = [...result.response];
+      } else {
+        console.error(result.error.message);
+      }
     });
 
     this.userService.getCurrentUser().subscribe(result => {
@@ -36,8 +40,12 @@ export class PostListComponent implements OnInit {
   }
 
   deletePost(postId: string) {
-    this.postService.deletePost(postId).subscribe(() => {
-      this.posts = this.posts.filter(post => post.id !== postId);
+    this.postService.deletePost(postId).subscribe(result => {
+      if (result.isSuccess) {
+        this.posts = this.posts.filter(post => post.id !== postId);
+      } else {
+        console.error(result.error.message);
+      }
     });
 
     this.selectedPostForOptions = null;

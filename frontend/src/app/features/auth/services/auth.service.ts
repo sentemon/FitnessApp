@@ -5,7 +5,6 @@ import {LOGIN, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
 import {CookieService} from "../../../core/services/cookie.service";
 import {Result} from "../../../core/types/result/result.type";
-import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +22,9 @@ export class AuthService {
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
 
-    const token = cookieService.get("token").response;
+    const result = cookieService.get("token");
 
-    return token !== "There is no cookie with key token.";
+    return result.isSuccess;
   }
 
   public login(username: string, password: string): Observable<Result<boolean>> {

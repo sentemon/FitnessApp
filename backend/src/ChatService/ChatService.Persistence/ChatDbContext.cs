@@ -1,4 +1,5 @@
 using ChatService.Domain.Entities;
+using ChatService.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatService.Persistence;
@@ -16,6 +17,9 @@ public class ChatDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new MessageConfiguration());
+        modelBuilder.ApplyConfiguration(new ChatConfiguration());
+        modelBuilder.ApplyConfiguration(new UserChatConfiguration());
     }
 }

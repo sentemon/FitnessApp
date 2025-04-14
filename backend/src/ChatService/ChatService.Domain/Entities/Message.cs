@@ -14,17 +14,16 @@ public class Message
     public DateTime? UpdatedAt { get; private set; }
     public bool IsRead { get; private set; }
 
-    private Message(string senderId, Guid chatId, string content, DateTime sentAt)
+    private Message(string senderId, Guid chatId, string content)
     {
         SenderId = senderId;
         ChatId = chatId;
         Content = content;
-        SentAt = sentAt;
     }
 
-    public static Message Create(string senderId, Guid chatId, string content, DateTime sentAt)
+    public static Message Create(string senderId, Guid chatId, string content)
     {
-        return new Message(senderId, chatId, content, sentAt);
+        return new Message(senderId, chatId, content);
     }
     
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

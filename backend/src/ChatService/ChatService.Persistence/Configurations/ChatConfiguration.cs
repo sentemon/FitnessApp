@@ -14,6 +14,7 @@ public class ChatConfiguration : IEntityTypeConfiguration<Chat>
             .ValueGeneratedOnAdd();
 
         builder.Property(c => c.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .ValueGeneratedOnAdd();
         
         builder

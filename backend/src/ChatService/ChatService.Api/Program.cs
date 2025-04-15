@@ -19,7 +19,7 @@ builder.Services.AddSignalR();
 
 builder.Services
     .AddPersistenceServices(connectionString)
-    .AddInfrastructureServices()
+    .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
 
 builder.Services
@@ -35,8 +35,11 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.MapGet("/health", () => Results.Ok("Healthy"));
+app.UseAuthentication();
+app.UseAuthorization();
 
+app.MapGet("/health", () => Results.Ok("Healthy"));
+app.MapGraphQL();
 app.MapHub<ChatHub>("/chat");
 
 app.Run();

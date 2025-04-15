@@ -18,9 +18,11 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
             .IsRequired();
 
         builder.Property(m => m.SentAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .ValueGeneratedOnAdd();
 
         builder.Property(m => m.UpdatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .ValueGeneratedOnUpdate()
             .IsRequired(false);
         

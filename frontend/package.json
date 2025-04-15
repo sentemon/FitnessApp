@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@apollo/client": "^3.11.10",
+    "@microsoft/signalr": "^8.0.7",
     "@primeng/themes": "^19.0.5",
     "apollo-angular": "^8.0.0",
     "graphql": "^16.9.0",

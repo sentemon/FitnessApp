@@ -12,6 +12,7 @@ export class UserService {
       firstName: 'Ivan',
       lastName: 'Sentemon',
       username: 'sentemon',
+      email: '',
       isOnline: false,
       chats: []
     },
@@ -20,6 +21,7 @@ export class UserService {
       firstName: 'Ivan',
       lastName: 'Babachov',
       username: 'babachov',
+      email: '',
       isOnline: true,
       chats: []
     },
@@ -28,6 +30,7 @@ export class UserService {
       firstName: 'Deni',
       lastName: 'Gabedava',
       username: 'gabedava',
+      email: '',
       isOnline: false,
       chats: []
     },
@@ -36,6 +39,7 @@ export class UserService {
       firstName: 'Valera',
       lastName: 'Star',
       username: 'coolman',
+      email: '',
       isOnline: true,
       chats: []
     },

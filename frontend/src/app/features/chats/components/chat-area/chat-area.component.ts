@@ -1,24 +1,42 @@
-import {AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
 import {Message} from "../../models/message.model";
+import {SignalRService} from "../../services/signalr.service";
+import {CookieService} from "../../../../core/services/cookie.service";
 
 @Component({
   selector: 'app-chat-area',
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
-export class ChatAreaComponent implements OnChanges, AfterViewChecked {
+export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
   currentUser!: User;
   searchQuery: string = '';
+  content: string = '';
 
   @Input() selectedChatId: string | null = null;
 
-  constructor(private chatService: ChatService, private userService: UserService) { }
+  constructor(
+    private chatService: ChatService,
+    private userService: UserService,
+    private signalRService: SignalRService,
+    private cookieService: CookieService
+  ) { }
+
+  ngOnInit(): void {
+    const result = this.cookieService.get("token").response;
+
+    this.signalRService.onReceiveMessage = msg => {
+      console.log('New message received:', msg);
+    };
+
+    this.signalRService.startConnection(this.selectedChatId!, result!);
+  }
 
   ngOnChanges() {
     this.userService.getCurrent().subscribe(result => {
@@ -32,6 +50,12 @@ export class ChatAreaComponent implements OnChanges, AfterViewChecked {
       return;
 
     this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+  }
+
+  sendMessage() {
+    this.signalRService.sendMessage(this.selectedChatId!, this.content);
+
+    this.content = '';
   }
 
   get isOnline(): boolean {

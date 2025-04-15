@@ -14,6 +14,8 @@ builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hos
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddSignalR();
+
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices()

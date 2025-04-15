@@ -138,6 +138,7 @@ services:
       - 8006:8006
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
+      RabbitMq__Host: rabbitmq
     depends_on:
       gateway:
         condition: service_healthy

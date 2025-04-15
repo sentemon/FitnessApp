@@ -29,7 +29,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
             return Result<Message>.Failure(new Error("User not found."));
         }
 
-        var message = Message.Create(user.Id, chat.Id, command.Content);
+        var message = Message.Create(user.Id, chat.Id, command.Content.Trim());
         _context.Messages.Add(message);
 
         await _context.SaveChangesAsync();

@@ -1,3 +1,4 @@
+using ChatService.Api.Hubs;
 using ChatService.Application;
 using ChatService.Domain.Constants;
 using ChatService.Infrastructure;
@@ -10,6 +11,8 @@ var hostingUrl = builder.Configuration[AppSettingsConstants.WebHostUrl];
 var connectionString = builder.Configuration[AppSettingsConstants.DatabaseConnectionString];
 
 builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hostingUrl), "Hosting URL is not configured."));
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddPersistenceServices(connectionString)
@@ -25,5 +28,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
+
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

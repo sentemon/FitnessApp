@@ -20,7 +20,7 @@ builder.Services.AddSignalR();
 builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices()
-    .AddApplicationServices();
+    .AddApplicationServices(builder.Configuration);
 
 builder.Services
     .AddGraphQLServer()

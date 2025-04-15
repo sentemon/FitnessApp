@@ -1,3 +1,4 @@
+using ChatService.Api.GraphQL;
 using ChatService.Api.Hubs;
 using ChatService.Application;
 using ChatService.Domain.Constants;
@@ -20,6 +21,11 @@ builder.Services
     .AddPersistenceServices(connectionString)
     .AddInfrastructureServices()
     .AddApplicationServices();
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
 
 var app = builder.Build();
 

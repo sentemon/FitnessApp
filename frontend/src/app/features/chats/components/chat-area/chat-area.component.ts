@@ -35,7 +35,9 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
       console.log('New message received:', msg);
     };
 
-    this.signalRService.startConnection(this.selectedChatId!, result!);
+    if (this.selectedChat) {
+      this.signalRService.startConnection(this.selectedChatId!, result!);
+    }
   }
 
   ngOnChanges() {
@@ -59,11 +61,11 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   get isOnline(): boolean {
-    return this.selectedChat!.users.find(u => u.id !== this.currentUser.id)!.isOnline;
+    return this.selectedChat!.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.isOnline;
   }
 
   get chatName(): string {
-    return this.selectedChat!.users.find(u => u.username !== this.currentUser.username)!.username;
+    return this.selectedChat!.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.username;
   }
 
   get filteredMessages(): Message[] {

@@ -1,32 +1,29 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Chat} from "../models/chat.model";
 import {Observable, of} from "rxjs";
+import {Apollo, ApolloBase} from "apollo-angular";
+import {GET_ALL_CHATS} from "../requests/queries.graphql";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Result} from "../../../core/types/result/result.type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private chats: Chat[] = [
-    {
-      id: 'chat1',
-      messages: [
-        {
-          id: '123',
-          senderId: '123',
-          sender: undefined!,
-          chatId: 'chat1',
-          content: 'zxc',
-          sentAt: new Date()
-        }
-      ],
-      users: []
-    }
-  ];
+  private chats: Chat[] = [];
 
-  constructor() { }
+  private chatClient: ApolloBase
 
-  getAll(): Observable<Chat[]> {
-    return of(this.chats);
+  constructor(apollo: Apollo) {
+    this.chatClient = apollo.use("chats");
+  }
+
+  getAll(): Observable<Result<Chat[]>> {
+    return this.chatClient.query({
+      query: GET_ALL_CHATS
+    }).pipe(
+      toResult<Chat[]>("allChats")
+    );
   }
 
   get(chatId: string | null): Observable<Chat | null> {

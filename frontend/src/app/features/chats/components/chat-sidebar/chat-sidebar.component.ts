@@ -21,7 +21,10 @@ export class ChatSidebarComponent implements OnInit {
   ngOnInit() {
     this.userService.getCurrent().subscribe(result => {
       this.currentUser = result;
-      this.chatService.getAll().subscribe(result => this.chats = result);
+      this.chatService.getAll().subscribe(result => {
+        if (result.isSuccess)
+          this.chats = result.response;
+      });
     });
   }
 
@@ -30,12 +33,12 @@ export class ChatSidebarComponent implements OnInit {
   }
 
   getChatName(chat: Chat): string {
-    return chat.users.find(u => u.username !== this.currentUser.username)!.username;
+    return chat.userChats.find(uc => uc.user.username !== this.currentUser.username)!.user.username;
   }
 
   get filteredChats(): Chat[] {
     return this.chats.filter(chat =>
-      chat.users.some(user => user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()) && user.username !== this.currentUser.username)
+      chat.userChats.some(uc => uc.user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()) && uc.user.username !== this.currentUser.username)
     );
   }
 }

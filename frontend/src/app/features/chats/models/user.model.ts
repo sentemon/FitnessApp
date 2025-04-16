@@ -1,4 +1,4 @@
-import {Chat} from "./chat.model";
+import {UserChat} from "./user-chat";
 
 export interface User {
   id: string;
@@ -7,5 +7,5 @@ export interface User {
   username: string;
   email: string;
   isOnline: boolean;
-  chats: Chat[];
+  userChats: UserChat[];
 }

@@ -13,9 +13,18 @@ export class SignalRService {
 
   constructor() { }
 
-  public startConnection(chatId: string, accessToken: string): void {
+  public startConnection(chatId: string | null, accessToken: string): void {
+    if (!chatId) {
+      console.error('Chat ID is required for SignalR connection');
+      return;
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`http://localhost:8000/chat/chat`)
+      .withUrl(`http://localhost:8000/chat/chat?chatId=${chatId}`, {
+        withCredentials: true,
+        accessTokenFactory: () => accessToken
+      })
+      .withAutomaticReconnect()
       .build();
 
     this.hubConnection
@@ -23,10 +32,15 @@ export class SignalRService {
       .then(() => console.log('SignalR connection started'))
       .catch(err => console.error('SignalR connection error: ', err));
 
-    this.hubConnection.on('ReceiveMessage', (message) => {
+    this.hubConnection.on('ReceiveMessage', message => {
       if (this.onReceiveMessage) {
         this.onReceiveMessage(message);
       }
+    });
+
+    this.hubConnection.onclose(error => {
+      console.warn('SignalR connection closed. Attempting to reconnect...', error);
+      setTimeout(() => this.startConnection(chatId, accessToken), 3000);
     });
   }
 
@@ -37,6 +51,7 @@ export class SignalRService {
   }
 
   public sendMessage(chatId: string, message: string): void {
+    console.log(this.isConnected());
     if (this.isConnected()) {
       this.hubConnection.invoke('SendMessage', chatId, message)
         .catch(err => console.error('Error while sending message: ', err));

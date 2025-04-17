@@ -29,14 +29,20 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    const result = this.cookieService.get("token").response;
+    const result = this.cookieService.get("token");
+    if (result.isSuccess) {
+        console.log(result.response);
 
-    this.signalRService.onReceiveMessage = msg => {
-      console.log('New message received:', msg);
-    };
+      this.signalRService.onReceiveMessage = msg => {
+        // this.
+        console.log('New message received:', msg);
+      };
 
-    if (this.selectedChat) {
-      this.signalRService.startConnection(this.selectedChatId!, result!);
+      if (this.selectedChat) {
+        this.signalRService.startConnection(this.selectedChatId, result.response);
+      }
+    } else {
+      console.log(result.error.message);
     }
   }
 
@@ -61,15 +67,15 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   get isOnline(): boolean {
-    return this.selectedChat!.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.isOnline;
+    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.isOnline ?? false;
   }
 
   get chatName(): string {
-    return this.selectedChat!.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.username;
+    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.username ?? "Unknown";
   }
 
   get filteredMessages(): Message[] {
-    return this.selectedChat!.messages.filter(m => m.content.includes(this.searchQuery));
+    return this.selectedChat?.messages.filter(m => m.content.includes(this.searchQuery)) ?? [];
   }
 
   protected readonly navigator = navigator;

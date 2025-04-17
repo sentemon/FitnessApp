@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ChatService.Api.GraphQL;
 using ChatService.Api.Hubs;
 using ChatService.Application;
@@ -15,7 +16,9 @@ builder.WebHost.UseUrls(hostingUrl ?? throw new ArgumentNullException(nameof(hos
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddSignalR();
+builder.Services
+    .AddSignalR()
+    .AddJsonProtocol(options => options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 builder.Services
     .AddPersistenceServices(connectionString)

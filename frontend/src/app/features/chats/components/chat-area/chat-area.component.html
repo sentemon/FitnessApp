@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="chat-input">
-    <input (click)="sendMessage()" [(ngModel)]="content" type="text" placeholder="Write a message here...">
-    <img [src]="'assets/send.svg'" alt="Send">
+    <input [(ngModel)]="content" type="text" placeholder="Write a message here...">
+    <img (click)="sendMessage()" [src]="'assets/send.svg'" alt="Send">
   </div>
 </div>

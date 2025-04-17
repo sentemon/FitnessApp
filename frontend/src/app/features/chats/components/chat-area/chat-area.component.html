@@ -16,7 +16,7 @@
     <div *ngFor="let message of filteredMessages" [class.self]="message.senderId === currentUser.id" class="message">
       <p>{{ message.content }}</p>
       <div class="time">
-        {{ message.sentAt.toLocaleTimeString(navigator.language, { hour: '2-digit', minute:'2-digit' }) }}
+        {{ message.sentAt | date: 'shortTime' }}
       </div>
     </div>
   </div>

@@ -29,6 +29,10 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
+    this.chatService.get(this.selectedChatId).subscribe(result => {
+      this.selectedChat = result;
+    })
+
     const result = this.cookieService.get("token");
     if (result.isSuccess) {
         console.log(result.response);
@@ -39,7 +43,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
       };
 
       if (this.selectedChat) {
-        this.signalRService.startConnection(this.selectedChatId, result.response);
+        this.signalRService.startConnection(this.selectedChat.id, result.response);
       }
     } else {
       console.log(result.error.message);
@@ -49,7 +53,9 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   ngOnChanges() {
     this.userService.getCurrent().subscribe(result => {
       this.currentUser = result;
-      this.chatService.get(this.selectedChatId).subscribe(result => this.selectedChat = result);
+      if (this.selectedChat) {
+        this.chatService.get(this.selectedChat.id).subscribe(result => this.selectedChat = result)
+      }
     });
   }
 
@@ -61,9 +67,11 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   sendMessage() {
-    this.signalRService.sendMessage(this.selectedChatId!, this.content);
+    if (this.selectedChat) {
+      this.signalRService.sendMessage(this.selectedChat.id, this.content);
 
-    this.content = '';
+      this.content = '';
+    }
   }
 
   get isOnline(): boolean {
@@ -78,5 +86,4 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
     return this.selectedChat?.messages.filter(m => m.content.includes(this.searchQuery)) ?? [];
   }
 
-  protected readonly navigator = navigator;
 }

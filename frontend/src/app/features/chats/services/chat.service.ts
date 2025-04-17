@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Chat} from "../models/chat.model";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 import {Apollo, ApolloBase} from "apollo-angular";
 import {GET_ALL_CHATS} from "../requests/queries.graphql";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
@@ -10,7 +10,8 @@ import {Result} from "../../../core/types/result/result.type";
   providedIn: 'root'
 })
 export class ChatService {
-  private chats: Chat[] = [];
+  private chatsSubject = new BehaviorSubject<Chat[]>([]);
+  private chats$ = this.chatsSubject.asObservable();
 
   private chatClient: ApolloBase
 
@@ -19,14 +20,24 @@ export class ChatService {
   }
 
   getAll(): Observable<Result<Chat[]>> {
-    return this.chatClient.query({
+    const result$ = this.chatClient.query({
       query: GET_ALL_CHATS
     }).pipe(
       toResult<Chat[]>("allChats")
     );
+
+    result$.subscribe(result => {
+      if (result.isSuccess) {
+        this.chatsSubject.next(result.response);
+      }
+    });
+
+    return result$;
   }
 
-  get(chatId: string | null): Observable<Chat | null> {
-    return of(this.chats.find(c => c.id == chatId) ?? null)
+  get(chatId: string | null) {
+    return this.chats$.pipe(
+      map(chats => chats.find(c => c.id === chatId) ?? null)
+    );
   }
 }

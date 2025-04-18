@@ -17,17 +17,18 @@ public class GetAllChatsQueryHandler : IQueryHandler<GetAllChatsQuery, List<Chat
 
     public async Task<IResult<List<Chat>, Error>> HandleAsync(GetAllChatsQuery query)
     {
-        var user = await _context.Users
-            .Include(u => u.UserChats)
-            .ThenInclude(uc => uc.Chat)
-            .FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
 
         if (user is null)
         {
             return Result<List<Chat>>.Failure(new Error("User not found."));
         }
 
-        var chats = user.UserChats.Select(uc => uc.Chat).ToList();
+        var chats = await _context.Chats
+            .Where(c => c.UserChats.Any(uc => uc.UserId == user.Id))
+            .Include(c => c.UserChats)
+                .ThenInclude(uc => uc.User)
+            .ToListAsync();
 
         return Result<List<Chat>>.Success(chats);
     }

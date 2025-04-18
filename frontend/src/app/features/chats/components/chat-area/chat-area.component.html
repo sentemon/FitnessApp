@@ -13,7 +13,7 @@
     </div>
   </div>
   <div #messagesContainer class="messages">
-    <div *ngFor="let message of filteredMessages" [class.self]="message.senderId === currentUser.id" class="message">
+    <div *ngFor="let message of filteredMessages" [class.self]="message.senderId === currentUserId" class="message">
       <p>{{ message.content }}</p>
       <div class="time">
         {{ message.sentAt | date: 'shortTime' }}

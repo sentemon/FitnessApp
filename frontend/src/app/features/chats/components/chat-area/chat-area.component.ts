@@ -1,8 +1,6 @@
 import {AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
-import {User} from "../../models/user.model";
-import {UserService} from "../../services/user.service";
 import {Message} from "../../models/message.model";
 import {SignalRService} from "../../services/signalr.service";
 import {CookieService} from "../../../../core/services/cookie.service";
@@ -15,7 +13,7 @@ import {CookieService} from "../../../../core/services/cookie.service";
 export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
-  currentUser!: User;
+  currentUserId: string;
   searchQuery: string = '';
   content: string = '';
 
@@ -23,10 +21,12 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
 
   constructor(
     private chatService: ChatService,
-    private userService: UserService,
     private signalRService: SignalRService,
     private cookieService: CookieService
-  ) { }
+  ) {
+    this.currentUserId = this.cookieService.get("userId").response!;
+  }
+
 
   ngOnInit(): void {
     this.chatService.get(this.selectedChatId).subscribe(result => {
@@ -35,8 +35,6 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
 
     const result = this.cookieService.get("token");
     if (result.isSuccess) {
-        console.log(result.response);
-
       this.signalRService.onReceiveMessage = msg => {
         // this.
         console.log('New message received:', msg);
@@ -51,12 +49,9 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   ngOnChanges() {
-    this.userService.getCurrent().subscribe(result => {
-      this.currentUser = result;
-      if (this.selectedChat) {
-        this.chatService.get(this.selectedChat.id).subscribe(result => this.selectedChat = result)
-      }
-    });
+    if (this.selectedChat) {
+      this.chatService.get(this.selectedChat.id).subscribe(result => this.selectedChat = result)
+    }
   }
 
   ngAfterViewChecked() {
@@ -75,15 +70,14 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   get isOnline(): boolean {
-    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.isOnline ?? false;
+    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUserId)!.user.isOnline ?? false;
   }
 
   get chatName(): string {
-    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUser.id)!.user.username ?? "Unknown";
+    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUserId)!.user.username ?? "Unknown";
   }
 
   get filteredMessages(): Message[] {
     return this.selectedChat?.messages.filter(m => m.content.includes(this.searchQuery)) ?? [];
   }
-
 }

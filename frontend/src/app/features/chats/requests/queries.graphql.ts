@@ -6,6 +6,8 @@ export const GET_ALL_CHATS = gql`
       id
       createdAt
       userChats {
+        userId
+        chatId
         user {
           id
           firstName
@@ -14,12 +16,6 @@ export const GET_ALL_CHATS = gql`
           imageUrl
           createdAt
         }
-      }
-      messages {
-        content
-        sentAt
-        updatedAt
-        isRead
       }
     }
   }

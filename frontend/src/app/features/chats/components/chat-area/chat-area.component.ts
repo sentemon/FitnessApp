@@ -1,5 +1,5 @@
 import {
-  AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef,
+  AfterViewChecked,
   Component,
   ElementRef,
   Input,
@@ -48,7 +48,8 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
       }
     });
 
-    this.subscriptions.add(messageSub)
+    this.subscriptions.add(messageSub);
+    this.scrollToBottom();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,9 +69,10 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   sendMessage() {
-    if (this.selectedChat) {
+    if (this.selectedChat && this.content !== '') {
       this.signalRService.sendMessage(this.selectedChat.id, this.content.trim());
-      this.content = '';
+      this.content = ''
+      this.scrollToBottom();
     }
   }
 
@@ -102,5 +104,14 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
         console.error(result.error.message);
       }
     });
+  }
+
+  private scrollToBottom(): void {
+    if (this.messagesContainer) {
+      setTimeout(() => {
+        const container = this.messagesContainer.nativeElement;
+        container.scrollTop = container.scrollHeight;
+      });
+    }
   }
 }

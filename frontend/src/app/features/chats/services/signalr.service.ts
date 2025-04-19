@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import {HubConnection} from "@microsoft/signalr";
 import {Message} from "../models/message.model";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import {Message} from "../models/message.model";
 export class SignalRService {
   private hubConnection!: HubConnection;
 
-  public onReceiveMessage: ((message: Message) => void) | null = null;
+  public onReceiveMessage: Subject<Message> = new Subject()
 
   constructor() { }
 
@@ -34,7 +35,7 @@ export class SignalRService {
 
     this.hubConnection.on('ReceiveMessage', (message: Message) => {
       if (this.onReceiveMessage) {
-        this.onReceiveMessage(message);
+        this.onReceiveMessage.next(message);
       }
     });
 

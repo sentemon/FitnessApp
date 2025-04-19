@@ -3,7 +3,7 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild
@@ -13,14 +13,14 @@ import {ChatService} from "../../services/chat.service";
 import {Message} from "../../models/message.model";
 import {SignalRService} from "../../services/signalr.service";
 import {CookieService} from "../../../../core/services/cookie.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-area',
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
+export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
   currentUserId: string;
@@ -29,11 +29,12 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
 
   @Input() selectedChatId: string | null = null;
 
+  private subscriptions = new Subscription();
+
   constructor(
     private chatService: ChatService,
     private signalRService: SignalRService,
-    private cookieService: CookieService,
-    private cdr: ChangeDetectorRef
+    private cookieService: CookieService
   ) {
     this.currentUserId = this.cookieService.get("userId").response!;
   }
@@ -41,13 +42,13 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
   ngOnInit(): void {
     this.tryLoadChat();
 
-    this.signalRService.onReceiveMessage = (message: Message) => {
+    const messageSub = this.signalRService.onReceiveMessage.subscribe(message => {
       if (this.selectedChat && message.chatId === this.selectedChat.id) {
-        this.selectedChat.messages = [...(this.selectedChat.messages || []), message];
-        console.log("msg added", message);
-        this.cdr.markForCheck();
+        this.selectedChat.messages = [...this.selectedChat.messages, message];
       }
-    };
+    });
+
+    this.subscriptions.add(messageSub)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -60,6 +61,10 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
     if (this.messagesContainer) {
       this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   sendMessage() {
@@ -90,7 +95,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked {
 
     this.chatService.getById(this.selectedChatId).subscribe(result => {
       if (result.isSuccess) {
-        this.selectedChat = result.response!;
+        this.selectedChat = structuredClone(result.response);
         const token = this.cookieService.get("token").response!;
         this.signalRService.startConnection(this.selectedChat.id, token);
       } else {

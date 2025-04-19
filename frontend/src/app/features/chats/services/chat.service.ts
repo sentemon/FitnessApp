@@ -13,7 +13,7 @@ export class ChatService {
   private chatsSubject = new BehaviorSubject<Chat[]>([]);
   private chats$ = this.chatsSubject.asObservable();
 
-  private chatClient: ApolloBase
+  private chatClient: ApolloBase;
 
   constructor(apollo: Apollo) {
     this.chatClient = apollo.use("chats");
@@ -41,13 +41,13 @@ export class ChatService {
     );
   }
 
-  /* get(chatId: string | null) {
+  getById(chatId: string): Observable<Result<Chat>> {
     return this.chatClient.query({
       query: GET_CHAT_BY_ID,
-      variables: { chatId }
+      variables: { chatId },
+      fetchPolicy: 'network-only'
     }).pipe(
       toResult<Chat>("chatById")
     );
   }
-   */
 }

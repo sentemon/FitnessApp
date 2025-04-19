@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import {HubConnection} from "@microsoft/signalr";
-import {Message} from "primeng/message";
+import {Message} from "../models/message.model";
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class SignalRService {
       .then(() => console.log('SignalR connection started'))
       .catch(err => console.error('SignalR connection error: ', err));
 
-    this.hubConnection.on('ReceiveMessage', message => {
+    this.hubConnection.on('ReceiveMessage', (message: Message) => {
       if (this.onReceiveMessage) {
         this.onReceiveMessage(message);
       }
@@ -51,7 +51,6 @@ export class SignalRService {
   }
 
   public sendMessage(chatId: string, message: string): void {
-    console.log(this.isConnected());
     if (this.isConnected()) {
       this.hubConnection.invoke('SendMessage', chatId, message)
         .catch(err => console.error('Error while sending message: ', err));

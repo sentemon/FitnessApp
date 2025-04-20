@@ -35,7 +35,7 @@ public class ChatHub : Hub
 
         if (string.IsNullOrEmpty(chatId))
         {
-            throw new HubException(ResponseMessages.UserIdCannotBeEmpty);
+            throw new HubException(ResponseMessages.ChatIdCannotBeEmpty);
         }
         
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId);

@@ -5,6 +5,7 @@ import {LOGIN, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
 import {CookieService} from "../../../core/services/cookie.service";
 import {Result} from "../../../core/types/result/result.type";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuth());
   private isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(apollo: Apollo) {
+  constructor(apollo: Apollo, private userService: UserService, private cookieService: CookieService) {
     this.authClient = apollo.use("auth");
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
     }).pipe(
       map(response => {
         const token = response.data?.login;
+        this.setUserCookies();
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
@@ -60,6 +62,7 @@ export class AuthService {
     }).pipe(
       map(response => {
         const token = response.data?.register;
+        this.setUserCookies();
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
@@ -78,5 +81,17 @@ export class AuthService {
     return this.isAuthenticated$.pipe(
       map(value => Result.success(value)),
     );
+  }
+
+  private setUserCookies(): void {
+    this.userService.getCurrentUser().subscribe(result => {
+      console.log(result);
+
+      if (result.isSuccess) {
+        console.log(result.response);
+        this.cookieService.set("userId", result.response.id, 1);
+        this.cookieService.set("username", result.response.username.value, 1);
+      }
+    });
   }
 }

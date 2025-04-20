@@ -32,7 +32,7 @@ export class PostListComponent implements OnInit {
 
     this.userService.getCurrentUser().subscribe(result => {
       if (result.isSuccess) {
-        this.currentUsername = result.response.username;
+        this.currentUsername = result.response.username.value;
       } else {
         console.error(result.error.message);
       }

@@ -1,13 +1,11 @@
-import {Chat} from "./chat.model";
 import {User} from "./user.model";
 
 export interface Message {
   id: string;
-  content: string;
-  createdAt: Date;
-  // updatedAt: Date;
+  senderId: string;
+  sender: User;
   chatId: string;
-  // chat: Chat;
-  userId: string;
-  // user: User;
+  content: string;
+  sentAt: Date;
+  updatedAt?: Date;
 }

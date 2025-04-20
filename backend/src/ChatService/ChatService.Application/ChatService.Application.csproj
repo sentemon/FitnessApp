@@ -7,7 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MassTransit.Abstractions" Version="8.0.0" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
+      <ProjectReference Include="..\..\Shared\Shared.DTO\Shared.DTO.csproj" />
+      <ProjectReference Include="..\ChatService.Domain\ChatService.Domain.csproj" />
+      <ProjectReference Include="..\ChatService.Persistence\ChatService.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

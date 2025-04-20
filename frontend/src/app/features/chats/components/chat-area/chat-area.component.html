@@ -13,15 +13,15 @@
     </div>
   </div>
   <div #messagesContainer class="messages">
-    <div *ngFor="let message of filteredMessages" [class.self]="message.userId === currentUser.id" class="message">
+    <div *ngFor="let message of filteredMessages" [class.self]="message.senderId === currentUserId" class="message">
       <p>{{ message.content }}</p>
       <div class="time">
-        {{ message.createdAt.toLocaleTimeString(navigator.language, { hour: '2-digit', minute:'2-digit' }) }}
+        {{ message.sentAt | date: 'shortTime' }}
       </div>
     </div>
   </div>
   <div class="chat-input">
-    <input type="text" placeholder="Write a message here...">
-    <img [src]="'assets/send.svg'" alt="Send">
+    <input [(ngModel)]="content" type="text" placeholder="Write a message here..." (keydown.enter)="sendMessage()">
+    <img (click)="sendMessage()" [src]="'assets/send.svg'" alt="Send">
   </div>
 </div>

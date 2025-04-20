@@ -1,286 +1,53 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Chat} from "../models/chat.model";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
+import {Apollo, ApolloBase} from "apollo-angular";
+import {GET_ALL_CHATS, GET_CHAT_BY_ID} from "../requests/queries.graphql";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Result} from "../../../core/types/result/result.type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private chats: Chat[] = [
-    {
-      id: "chat1",
-      messages: [
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '2',
-          content: "Hi, I'm good, what about you?",
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        }
-      ],
-      users: [
-        {
-          id: 'user1',
-          firstName: 'Ivan',
-          lastName: 'Sentemon',
-          username: 'sentemon',
-          isOnline: true,
-          chats: []
-        },
-        {
-          id: 'user2',
-          firstName: 'Navi',
-          lastName: 'Nometnes',
-          username: 'nometnes',
-          isOnline: true,
-          chats: []
-        }
-      ],
-    },
-    {
-      id: "chat2",
-      messages: [
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '2',
-          content: "Hi, I'm good, what about you?",
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user2',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
-        {
-          id: '1',
-          content: 'Hi, how are you?',
-          createdAt: new Date(),
-          chatId: 'chat1',
-          userId: 'user1',
-        },
+  private chatsSubject = new BehaviorSubject<Chat[]>([]);
+  private chats$ = this.chatsSubject.asObservable();
 
+  private chatClient: ApolloBase;
 
-      ],
-      users: [
-        {
-          id: 'user1',
-          firstName: 'Ivan',
-          lastName: 'Sentemon',
-          username: 'sentemon',
-          isOnline: true,
-          chats: []
-        },
-        {
-          id: 'user2',
-          firstName: 'Navi',
-          lastName: 'Nometnes',
-          username: 'nometnes',
-          isOnline: true,
-          chats: []
-        }
-      ],
-    },
-    {
-      id: 'chat3',
-      messages: [],
-      users: [
-        {
-          id: 'user3',
-          firstName: 'Qwery',
-          lastName: 'qwe',
-          username: 'qwerty',
-          isOnline: false,
-          chats: []
-        }
-      ]
-    }
-  ];
-
-  constructor() { }
-
-  getAll(): Observable<Chat[]> {
-    return of(this.chats);
+  constructor(apollo: Apollo) {
+    this.chatClient = apollo.use("chats");
   }
 
-  get(chatId: string | null): Observable<Chat | null> {
-    return of(this.chats.find(c => c.id == chatId) ?? null)
+  getAll(): Observable<Result<Chat[]>> {
+    const result$ = this.chatClient.query({
+      query: GET_ALL_CHATS
+    }).pipe(
+      toResult<Chat[]>("allChats")
+    );
+
+    result$.subscribe(result => {
+      if (result.isSuccess) {
+        this.chatsSubject.next(result.response);
+      }
+    });
+
+    return result$;
+  }
+
+  get(chatId: string | null) {
+    return this.chats$.pipe(
+      map(chats => chats.find(c => c.id === chatId) ?? null)
+    );
+  }
+
+  getById(chatId: string): Observable<Result<Chat>> {
+    return this.chatClient.query({
+      query: GET_CHAT_BY_ID,
+      variables: { chatId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      toResult<Chat>("chatById")
+    );
   }
 }

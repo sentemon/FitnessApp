@@ -1,3 +1,4 @@
+using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
         if (user is null)
         {
-            return Result<User>.Failure(new Error("User not found."));
+            return Result<User>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
         return Result<User>.Success(user);

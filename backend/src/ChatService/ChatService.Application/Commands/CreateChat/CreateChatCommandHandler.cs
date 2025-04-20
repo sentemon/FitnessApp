@@ -1,3 +1,4 @@
+using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ public class CreateChatCommandHandler : ICommandHandler<CreateChatCommand, Chat>
     {
         if (string.IsNullOrEmpty(command.UserId1) || string.IsNullOrEmpty(command.UserId2))
         {
-            return Result<Chat>.Failure(new Error("User Id cannot be empty."));
+            return Result<Chat>.Failure(new Error(ResponseMessages.UserIdCannotBeEmpty));
         }
         
         var exists = await _context.Chats.Include(c => c.UserChats)
@@ -30,7 +31,7 @@ public class CreateChatCommandHandler : ICommandHandler<CreateChatCommand, Chat>
 
         if (exists)
         {
-            return Result<Chat>.Failure(new Error("Chat between users already exists."));
+            return Result<Chat>.Failure(new Error(ResponseMessages.ChatBetweenUsersAlreadyExists));
         }
         
         var chat = Chat.Create(command.UserId1, command.UserId2);

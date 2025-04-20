@@ -1,3 +1,4 @@
+using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ public class GetAllChatsQueryHandler : IQueryHandler<GetAllChatsQuery, List<Chat
 
         if (user is null)
         {
-            return Result<List<Chat>>.Failure(new Error("User not found."));
+            return Result<List<Chat>>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
         var chats = await _context.Chats

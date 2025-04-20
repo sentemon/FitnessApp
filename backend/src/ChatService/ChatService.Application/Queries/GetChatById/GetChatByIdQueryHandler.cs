@@ -1,3 +1,4 @@
+using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ public class GetChatByIdQueryHandler : IQueryHandler<GetChatByIdQuery, Chat>
 
         if (chat is null)
         {
-            return Result<Chat>.Failure(new Error("Chat not found."));
+            return Result<Chat>.Failure(new Error(ResponseMessages.ChatNotFound));
         }
 
         return Result<Chat>.Success(chat);

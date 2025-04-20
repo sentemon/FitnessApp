@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using ChatService.Application.Commands.SendMessage;
+using ChatService.Domain.Constants;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatService.Api.Hubs;
@@ -34,7 +35,7 @@ public class ChatHub : Hub
 
         if (string.IsNullOrEmpty(chatId))
         {
-            throw new HubException("Chat Id cannot be empty.");
+            throw new HubException(ResponseMessages.UserIdCannotBeEmpty);
         }
         
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId);

@@ -78,8 +78,10 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 <img src="./img/workouts.png" alt="Fitness App Workouts Page" />
 
 - **Chats**
-  <img src="./img/chats.png" alt="Fitness App Chats Page" />
-  
+<img src="./img/chats.png" alt="Fitness App Chats Page" />
+
+---
+
 ## Technology Stack
 
 - **SDK:** .NET 8

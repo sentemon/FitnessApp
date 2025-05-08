@@ -36,7 +36,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<WorkoutDbContext>();
     dbContext.Database.Migrate();
     
-    await Seed.SeedWorkouts(dbContext);
+    // await Seed.SeedWorkouts(dbContext);
 }
 
 // app.UseHttpsRedirection();

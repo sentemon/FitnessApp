@@ -3,7 +3,7 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MainComponent} from "./layout/main/main.component";
 import {SideBarComponent} from "./layout/sidebar/sidebar.component";
 import {LayoutComponent} from "./layout/layout.component";
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BackComponent } from './back/back.component';
 
@@ -23,7 +23,8 @@ import { BackComponent } from './back/back.component';
     CommonModule,
     NgOptimizedImage,
     RouterOutlet,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ]
 })
 export class SharedModule { }

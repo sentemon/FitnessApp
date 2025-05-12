@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.35.0 (HEAD)
+  labels:
+    io.kompose.service: azurite
+  name: azurite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: azurite
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.35.0 (HEAD)
+      labels:
+        io.kompose.service: azurite
+    spec:
+      containers:
+        - args:
+            - azurite
+            - --blobHost
+            - 0.0.0.0
+            - --blobPort
+            - "10000"
+          env:
+            - name: AZURITE_ACCOUNTS
+              value: sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+          image: mcr.microsoft.com/azure-storage/azurite
+          name: azurite
+          ports:
+            - containerPort: 10000
+              protocol: TCP
+      restartPolicy: Always

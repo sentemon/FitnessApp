@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.35.0 (HEAD)
+  labels:
+    io.kompose.service: chat-service
+  name: chat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: chat-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.35.0 (HEAD)
+      labels:
+        io.kompose.service: chat-service
+    spec:
+      containers:
+        - env:
+            - name: DatabaseConnectionString
+              value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
+            - name: RabbitMq__Host
+              value: rabbitmq
+          image: chat-service
+          livenessProbe:
+            exec:
+              command:
+                - curl -f http://workout-service:8006/health || exit 1
+            failureThreshold: 3
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: chat-service
+          ports:
+            - containerPort: 8006
+              protocol: TCP
+      restartPolicy: Always

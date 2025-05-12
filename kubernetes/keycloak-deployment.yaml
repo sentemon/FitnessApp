@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.35.0 (HEAD)
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.35.0 (HEAD)
+      labels:
+        io.kompose.service: keycloak
+    spec:
+      containers:
+        - args:
+            - start-dev
+            - --import-realm
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: admin
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: admin
+            - name: KC_DB_VENDOR
+              value: h2
+            - name: KC_HOSTNAME
+              value: localhost
+          image: quay.io/keycloak/keycloak:26.0
+          name: keycloak
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/keycloak/data/import/fitness-app-realm.json
+              name: keycloak-cm0
+              subPath: fitness-app-realm.json
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: fitness-app-realm.json
+                path: fitness-app-realm.json
+            name: keycloak-cm0
+          name: keycloak-cm0

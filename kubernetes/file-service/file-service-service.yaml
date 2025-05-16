@@ -1,16 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.35.0 (HEAD)
-  labels:
-    io.kompose.service: file-service
   name: file-service
 spec:
   ports:
-    - name: "8004"
+    - name: "http"
       port: 8004
       targetPort: 8004
   selector:
-    io.kompose.service: file-service
+    app: file-service
+  type: "ClusterIP"

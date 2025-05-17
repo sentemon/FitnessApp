@@ -1,41 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.35.0 (HEAD)
-  labels:
-    io.kompose.service: post-service
   name: post-service
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: post-service
+      app: post-service
   template:
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.35.0 (HEAD)
-      labels:
-        io.kompose.service: post-service
     spec:
       containers:
-        - env:
+        - name: post-service
+          image: post-service
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 8002
+          env:
             - name: DatabaseConnectionString
               value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
             - name: RabbitMq__Host
               value: rabbitmq
-          image: post-service
-          livenessProbe:
-            exec:
-              command:
-                - curl -f http://post-service:8002/health || exit 1
-            failureThreshold: 3
-            periodSeconds: 10
-            timeoutSeconds: 5
-          name: post-service
-          ports:
-            - containerPort: 8002
-              protocol: TCP
-      restartPolicy: Always

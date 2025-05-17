@@ -1,43 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.35.0 (HEAD)
-  labels:
-    io.kompose.service: rabittmq
   name: rabittmq
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: rabittmq
+      app: rabittmq
   template:
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.35.0 (HEAD)
-      labels:
-        io.kompose.service: rabittmq
     spec:
       containers:
-        - env:
+        - name: rabbitmq
+          image: rabbitmq:4-management
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          env:
             - name: RABBITMQ_DEFAULT_PASS
               value: guest
             - name: RABBITMQ_DEFAULT_USER
               value: guest
-          image: rabbitmq:4-management
-          livenessProbe:
-            exec:
-              command:
-                - rabbitmq-diagnostics -q ping
-            failureThreshold: 5
-            periodSeconds: 30
-            timeoutSeconds: 10
-          name: rabbitmq
-          ports:
-            - containerPort: 5672
-              protocol: TCP
-            - containerPort: 15672
-              protocol: TCP
-      restartPolicy: Always

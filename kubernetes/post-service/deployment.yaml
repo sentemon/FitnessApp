@@ -7,6 +7,9 @@ spec:
     matchLabels:
       app: post-service
   template:
+    metadata:
+      labels:
+        app: post-service
     spec:
       containers:
         - name: post-service

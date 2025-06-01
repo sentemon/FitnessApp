@@ -1,4 +1,3 @@
-
 # Kubernetes Manifests
 
 This folder contains Kubernetes manifests for all services and dependencies of the project.

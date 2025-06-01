@@ -2,11 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: post-service
+  labels:
+    app: post-service
 spec:
+  selector:
+    app: post-service
   ports:
     - name: http
       port: 8002
       targetPort: 8002
-  selector:
-    app: post-service
   type: ClusterIP

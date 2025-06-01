@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: azurite
+  labels:
+    app: azurite
 spec:
   replicas: 1
   selector:
@@ -15,13 +17,13 @@ spec:
       containers:
         - name: azurite
           image: mcr.microsoft.com/azure-storage/azurite
+          imagePullPolicy: IfNotPresent
           args:
             - azurite
             - --blobHost
             - 0.0.0.0
             - --blobPort
             - "10000"
-          imagePullPolicy: Always
           ports:
             - containerPort: 10000
               protocol: TCP
@@ -35,4 +37,10 @@ spec:
           env:
             - name: AZURITE_ACCOUNTS
               value: sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 10000
+            initialDelaySeconds: 5
+            periodSeconds: 5
       restartPolicy: Always

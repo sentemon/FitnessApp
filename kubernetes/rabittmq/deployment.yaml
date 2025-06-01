@@ -1,12 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabittmq
+  name: rabbitmq
+  labels:
+    app: rabbitmq
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: rabittmq
+      app: rabbitmq
   template:
+    metadata:
+      labels:
+        app: rabbitmq
     spec:
       containers:
         - name: rabbitmq
@@ -16,13 +22,15 @@ spec:
               memory: "128Mi"
               cpu: "100m"
             limits:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "256Mi"
+              cpu: "200m"
           ports:
-            - containerPort: 5672
-            - containerPort: 15672
+            - containerPort: 5672    # AMQP
+            - containerPort: 15672   # Management UI
           env:
             - name: RABBITMQ_DEFAULT_PASS
               value: guest
             - name: RABBITMQ_DEFAULT_USER
               value: guest
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always

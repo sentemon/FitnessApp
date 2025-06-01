@@ -2,17 +2,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak
+  labels:
+    app: keycloak
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: keycloak
   strategy:
     type: Recreate
   template:
+    metadata:
+      labels:
+        app: keycloak
     spec:
       containers:
-        - image: quay.io/keycloak/keycloak:26.0
-          name: keycloak
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - start-dev
+            - --import-realm
+          ports:
+            - containerPort: 8080
           resources:
             requests:
               memory: "128Mi"
@@ -20,29 +32,24 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-          ports:
-            - containerPort: 8080
-          args:
-            - start-dev
-            - --import-realm
           env:
-            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-              value: admin
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: admin
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: admin
             - name: KC_DB_VENDOR
               value: h2
             - name: KC_HOSTNAME
               value: localhost
           volumeMounts:
-            - mountPath: /opt/keycloak/data/import/fitness-app-realm.json
-              name: keycloak-cm0
+            - name: keycloak-cm0
+              mountPath: /opt/keycloak/data/import/fitness-app-realm.json
               subPath: fitness-app-realm.json
-      restartPolicy: Always
       volumes:
-        - configMap:
+        - name: keycloak-cm0
+          configMap:
+            name: keycloak-cm0
             items:
               - key: fitness-app-realm.json
                 path: fitness-app-realm.json
-            name: keycloak-cm0
-          name: keycloak-cm0
+      restartPolicy: Always

@@ -1,4 +1,11 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak-cm0
 data:
   fitness-app-realm.json: |-
     {
@@ -2242,10 +2249,3 @@ data:
         "policies": []
       }
     }
-kind: ConfigMap
-metadata:
-  annotations:
-    use-subpath: "true"
-  labels:
-    io.kompose.service: keycloak
-  name: keycloak-cm0

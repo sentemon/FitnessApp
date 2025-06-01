@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-service
+  labels:
+    app: auth-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: auth-service
@@ -13,8 +16,8 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: auth-service:latest
-          imagePullPolicy: Always
+          image: sentemon/auth-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8001
           resources:
@@ -31,3 +34,9 @@ spec:
               value: http://keycloak:8080
             - name: RabbitMq__Host
               value: rabbitmq
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 5
+            periodSeconds: 5

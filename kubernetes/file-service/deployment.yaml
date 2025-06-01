@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: file-service
+  labels:
+    app: file-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: file-service
@@ -14,7 +17,9 @@ spec:
       containers:
         - name: file-service
           image: file-service
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8004
           resources:
             requests:
               memory: "128Mi"
@@ -22,8 +27,6 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-          ports:
-            - containerPort: 8004
           env:
             - name: ConnectionStrings__AzureStorageConnectionString
               value: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://azurite:10000/sentemon
@@ -31,4 +34,10 @@ spec:
               value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
             - name: RabbitMq__Host
               value: rabbitmq
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8004
+            initialDelaySeconds: 5
+            periodSeconds: 5
       restartPolicy: Always

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chat-service
+  labels:
+    app: chat-service
 spec:
   replicas: 1
   selector:
@@ -15,6 +17,7 @@ spec:
       containers:
         - name: chat-service
           image: chat-service
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8006
           resources:
@@ -29,4 +32,10 @@ spec:
               value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
             - name: RabbitMq__Host
               value: rabbitmq
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8006
+            initialDelaySeconds: 5
+            periodSeconds: 5
       restartPolicy: Always

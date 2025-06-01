@@ -2,15 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: workout-service
+  labels:
+    app: workout-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: workout-service
   template:
+    metadata:
+      labels:
+        app: workout-service
     spec:
       containers:
         - name: workout-service
           image: workout-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8005
           resources:
             requests:
               memory: "128Mi"
@@ -18,10 +27,15 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
-          ports:
-            - containerPort: 8005
           env:
             - name: DatabaseConnectionString
               value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=WorkoutsDb
             - name: RabbitMq__Host
               value: rabbitmq
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8005
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      restartPolicy: Always

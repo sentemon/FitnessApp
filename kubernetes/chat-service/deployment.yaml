@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service
+  labels:
+    app: chat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-service
+  template:
+    metadata:
+      labels:
+        app: chat-service
+    spec:
+      containers:
+        - name: chat-service
+          image: chat-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8006
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          env:
+            - name: DatabaseConnectionString
+              value: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
+            - name: RabbitMq__Host
+              value: rabbitmq
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8006
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      restartPolicy: Always

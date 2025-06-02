@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: gateway
+          image: sentemon/gateway
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000

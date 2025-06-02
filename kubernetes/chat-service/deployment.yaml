@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: chat-service
-          image: chat-service
+          image: sentemon/chat-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8006

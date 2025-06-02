@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: file-service
-          image: file-service
+          image: sentemon/file-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8004

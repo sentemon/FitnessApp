@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: post-service
-          image: post-service
+          image: sentemon/post-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8002

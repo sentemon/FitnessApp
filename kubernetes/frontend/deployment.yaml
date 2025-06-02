@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend
+          image: sentemon/frontend
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

@@ -1,5 +1,23 @@
-<p>profile works!</p>
-<p>{{ user?.firstName }}</p>
-<p>{{ user?.lastName }}</p>
-<p>{{ user?.username }}</p>
-<button (click)="getSentemon()" >Get Sentemon</button>
+<header>
+  <img [src]="user.imageUrl" alt="User Profile Picture">
+  <p>{{ user.firstName }} {{ user.lastName }}</p>
+</header>
+<section>
+  <p>{{ user.username.value }}</p>
+  <button>Edit Profile</button>
+</section>
+<!-- ToDo -->
+<section>
+  <p>followers</p>
+  <p>following</p>
+</section>
+<section>Description: </section>
+
+
+<main>
+  <div class="posts">
+    <div *ngFor="let post of posts" class="post">
+      <p>{{ post.id }}</p>
+    </div>
+  </div>
+</main>

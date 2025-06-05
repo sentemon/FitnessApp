@@ -21,7 +21,6 @@ const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'sentemon', component: ProfileComponent },
   { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'workouts', component: WorkoutsListComponent, canActivate: [AuthGuard, SetUpGuard] },
   { path: 'workouts/new', component: NewWorkoutComponent, canActivate: [AuthGuard] },
@@ -32,6 +31,7 @@ const routes: Routes = [
   { path: 'setup-profile', component: SetUpProfileComponent, canActivate: [AuthGuard] },
   { path: 'chats', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'chats/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
+  { path: ':username', component: ProfileComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

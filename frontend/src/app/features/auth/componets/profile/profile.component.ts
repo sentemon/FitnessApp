@@ -3,6 +3,7 @@ import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
 import {Post} from "../../../posts/models/post.model";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,11 @@ export class ProfileComponent implements OnInit {
   user!: User;
   posts: Post[] = [];
 
-  constructor(private userService: UserService, private postService: PostService) { }
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private postService: PostService
+  ) { }
 
   ngOnInit() {
     this.userService.getCurrentUser().subscribe(result => {
@@ -26,6 +31,11 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  logout(): void {
+    this.authService.logout().subscribe(result => {
+      console.log(result);
+    })
+  }
   private getPosts() {
     this.postService.getAllPosts().subscribe(result => {
       if (result.isSuccess) {

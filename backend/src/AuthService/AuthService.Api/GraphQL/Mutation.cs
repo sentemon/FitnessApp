@@ -30,14 +30,8 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
         
-        _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
-        {
-            Path = "/",
-            HttpOnly = false,
-            Secure = false,
-            SameSite = SameSiteMode.Strict,
-            MaxAge = TimeSpan.FromSeconds(result.Response.ExpiresIn)
-        });
+        SetCookie("token", result.Response.AccessToken, result.Response.ExpiresIn);
+        SetCookie("refreshToken", result.Response.RefreshToken, result.Response.ExpiresIn);
 
         return result.Response;
     }
@@ -52,14 +46,8 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
         
-        _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", result.Response.AccessToken, new CookieOptions
-        {
-            Path = "/",
-            HttpOnly = false,
-            Secure = false,
-            SameSite = SameSiteMode.Strict,
-            MaxAge = TimeSpan.FromSeconds(result.Response.ExpiresIn)
-        });
+        SetCookie("token", result.Response.AccessToken, result.Response.ExpiresIn);
+        SetCookie("refreshToken", result.Response.RefreshToken, result.Response.ExpiresIn);
         
         return result.Response;
     }
@@ -75,6 +63,7 @@ public class Mutation
         }
         
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete("token");
+        _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
 
         return result.Response;
     }
@@ -133,5 +122,17 @@ public class Mutation
         }
 
         return result.Response;
+    }
+
+    private void SetCookie(string name, string value, long expiresInSeconds)
+    {
+        _httpContextAccessor.HttpContext?.Response.Cookies.Append(name, value, new CookieOptions
+        {
+            Path = "/",
+            HttpOnly = false,
+            Secure = false,
+            SameSite = SameSiteMode.Strict,
+            MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
+        });
     }
 }

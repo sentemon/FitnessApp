@@ -1,21 +1,26 @@
-<header>
-  <img [src]="user.imageUrl" alt="User Profile Picture">
-  <p>{{ user.firstName }} {{ user.lastName }}</p>
-</header>
-<section>
-  <p>{{ user.username }}</p>
-  <ng-container *ngIf="currentUser.username.value === user.username">
-    <button>Edit Profile</button>
-    <button (click)="logout()">Logout</button>
-  </ng-container>
-</section>
-<!-- ToDo -->
-<section>
-  <p>followers</p>
-  <p>following</p>
-</section>
-<section>Description: </section>
+<div class="flex">
+  <header>
+    <section>
+      <img [src]="user.imageUrl || 'assets/profile.svg'" alt="User Profile Picture">
+      <p>{{ user.firstName }} {{ user.lastName }}</p>
+    </section>
 
+    <section class="flex">
+      <p class="username">{{ user.username }}</p>
+      <ng-container class="flex" *ngIf="currentUser.username.value === user.username">
+        <button>Edit Profile</button>
+        <button (click)="logout()">Logout</button>
+      </ng-container>
+    </section>
+
+    <!-- ToDo -->
+    <section>
+      <p>followers</p>
+      <p>following</p>
+    </section>
+    <section>Description: </section>
+  </header>
+</div>
 
 <main>
   <div class="posts">

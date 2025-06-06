@@ -1,0 +1,72 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+
+  header {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    align-items: center;
+
+    section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .username {
+      font-weight: bold;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin: 6px 0;
+      border-radius: 8px;
+      border: none;
+      background-color: #efefef;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+  }
+}
+
+main {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+
+    .post {
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+    }
+  }
+}

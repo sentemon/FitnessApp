@@ -50,10 +50,9 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout().subscribe(result => {
-      console.log(result);
-    })
+    this.authService.logout().subscribe(() => window.location.reload());
   }
+
   private getPosts() {
     this.postService.getAllPosts().subscribe(result => {
       if (result.isSuccess) {

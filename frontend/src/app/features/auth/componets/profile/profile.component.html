@@ -3,9 +3,11 @@
   <p>{{ user.firstName }} {{ user.lastName }}</p>
 </header>
 <section>
-  <p>{{ user.username.value }}</p>
-  <button>Edit Profile</button>
-  <button (click)="logout()">Logout</button>
+  <p>{{ user.username }}</p>
+  <ng-container *ngIf="currentUser.username.value === user.username">
+    <button>Edit Profile</button>
+    <button (click)="logout()">Logout</button>
+  </ng-container>
 </section>
 <!-- ToDo -->
 <section>

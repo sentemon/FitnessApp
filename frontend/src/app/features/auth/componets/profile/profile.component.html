@@ -1,31 +1,40 @@
-<div class="flex">
-  <header>
-    <section>
-      <img [src]="user.imageUrl || 'assets/profile.svg'" alt="User Profile Picture">
-      <p>{{ user.firstName }} {{ user.lastName }}</p>
-    </section>
+<div class="profile">
+  <div class="profile__left">
+    <img [src]="user.imageUrl || 'assets/profile.svg'" alt="User Profile Picture" />
+    <p class="profile__fullname">{{ user.firstName }} {{ user.lastName }}</p>
+  </div>
 
-    <section class="flex">
-      <p class="username">{{ user.username }}</p>
-      <ng-container class="flex" *ngIf="currentUser.username.value === user.username">
+  <div class="profile__right">
+    <div class="profile__top-row">
+      <p class="profile__username">{{ user.username }}</p>
+      <ng-container *ngIf="currentUser.username.value === user.username">
         <button>Edit Profile</button>
         <button (click)="logout()">Logout</button>
       </ng-container>
-    </section>
+    </div>
 
-    <!-- ToDo -->
-    <section>
-      <p>followers</p>
-      <p>following</p>
-    </section>
-    <section>Description: </section>
-  </header>
+    <div class="profile__stats">
+      <div>
+<!--        <strong>{{ user.followersCount }}</strong>-->
+        <strong>56</strong>
+        <p>Followers</p>
+      </div>
+      <div>
+<!--        <strong>{{ user.followingCount }}</strong>-->
+        <strong>34</strong>
+        <p>Following</p>
+      </div>
+    </div>
+
+<!--    <p class="profile__description">{{ user.description || 'No description yet.' }}</p>-->
+    <p class="profile__description">{{ 'No description yet.' }}</p>
+  </div>
 </div>
 
 <main>
   <div class="posts">
     <div *ngFor="let post of posts" class="post">
-      <p>{{ post.id }}</p>
+      <img [src]="post.contentUrl" alt="Post Image">
     </div>
   </div>
 </main>

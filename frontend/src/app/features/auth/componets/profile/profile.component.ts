@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private getPosts() {
-    this.postService.getAllPosts().subscribe(result => {
+    this.postService.getAllUserPosts(this.user.username).subscribe(result => {
       if (result.isSuccess) {
         this.posts = result.response;
       } else {

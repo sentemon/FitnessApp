@@ -23,7 +23,8 @@ import { PostOptionsComponent } from './components/post-options/post-options.com
   ],
   exports: [
     PostListComponent,
-    CreatePostComponent
+    CreatePostComponent,
+    PostModalComponent
   ],
   imports: [
     CommonModule,

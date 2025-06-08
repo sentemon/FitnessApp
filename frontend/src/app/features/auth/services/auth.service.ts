@@ -1,11 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {LOGIN, REGISTER} from "../requests/mutations";
+import {LOGIN, LOGOUT, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
 import {CookieService} from "../../../core/services/cookie.service";
 import {Result} from "../../../core/types/result/result.type";
 import {UserService} from "./user.service";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Comment} from "../../posts/models/comment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +75,17 @@ export class AuthService {
           return Result.success(false);
         }
       })
+    );
+  }
+
+  public logout(): Observable<Result<string>> {
+    const refreshToken = this.cookieService.get("refreshToken").response!;
+
+    return this.authClient.mutate({
+      mutation: LOGOUT,
+      variables: { refreshToken }
+    }).pipe(
+      toResult<string>("logout")
     );
   }
 

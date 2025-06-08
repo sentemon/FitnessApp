@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CookieService} from "../../../core/services/cookie.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.component.scss'
 })
 export class SideBarComponent {
+  username: string = "";
 
+  constructor(cookieService: CookieService) {
+    let result = cookieService.get("username");
+    if (result.isSuccess) {
+      this.username = result.response;
+    }
+  }
 }

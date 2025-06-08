@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {BehaviorSubject, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, filter, map, Observable, tap} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
@@ -83,6 +83,15 @@ export class PostService {
   getAllPosts(): Observable<Result<Post[]>> {
     return this.posts$.pipe(
       map(value => Result.success(value))
+    );
+  }
+
+  getAllUserPosts(username: string): Observable<Result<Post[]>> {
+    return this.posts$.pipe(
+      map(posts => {
+        const filteredPosts = posts.filter(p => p.username === username);
+        return Result.success(filteredPosts);
+      })
     );
   }
 

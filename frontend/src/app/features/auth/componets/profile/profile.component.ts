@@ -14,9 +14,10 @@ import {UserDto} from "../../models/user-dto.model";
 })
 export class ProfileComponent implements OnInit {
   user!: UserDto;
-  posts: Post[] = [];
-
   currentUser!: User;
+
+  posts: Post[] = [];
+  selectedPostForModal: Post | null = null;
 
   constructor(
     private userService: UserService,
@@ -53,7 +54,7 @@ export class ProfileComponent implements OnInit {
     this.authService.logout().subscribe(() => window.location.reload());
   }
 
-  private getPosts() {
+  private getPosts(): void {
     this.postService.getAllUserPosts(this.user.username).subscribe(result => {
       if (result.isSuccess) {
         this.posts = result.response;
@@ -61,5 +62,16 @@ export class ProfileComponent implements OnInit {
         console.warn(result.error.message);
       }
     })
+  }
+
+  openModal(post: Post): void {
+    this.selectedPostForModal = post;
+  }
+
+  updatePost(updatedPost: Post) {
+    const index = this.posts.findIndex(post => post.id === updatedPost.id);
+    if (index !== -1) {
+      this.posts[index] = updatedPost;
+    }
   }
 }

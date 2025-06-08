@@ -35,7 +35,14 @@
   <div class="title" *ngIf="posts.length !== 0"><strong>POSTS</strong></div>
   <div class="posts">
     <div *ngFor="let post of posts" class="post">
-      <img [src]="post.contentUrl" alt="Post Image">
+      <img (click)="openModal(post)" [src]="post.contentUrl" alt="Post Image">
     </div>
   </div>
 </main>
+
+<app-post-modal
+  *ngIf="selectedPostForModal"
+  [post]="selectedPostForModal"
+  (close)="selectedPostForModal = null"
+  (postChange)="updatePost($event)"
+></app-post-modal>

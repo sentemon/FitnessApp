@@ -1,90 +1,86 @@
-<div class="common">
-  <div class="new-post">
-    <form [formGroup]="postForm" (ngSubmit)="submitPost()">
-      <div *ngIf="contentType == ContentType.Video"><h1>In progress</h1></div>
-      <h1>New Post</h1>
+<div class="create-post">
+  <div class="create-post__form-wrapper">
+    <form [formGroup]="postForm" (ngSubmit)="submitPost()" class="create-post__form">
+      <h1 class="create-post__title">New Post</h1>
 
-      <div class="form-group">
-        <label>Post Type:</label>
-        <select formControlName="contentType">
+      <div class="create-post__group">
+        <label class="create-post__label">Post Type:</label>
+        <select class="create-post__select" formControlName="contentType">
           <option [value]="contentTypes.Text">Text</option>
           <option [value]="contentTypes.Image">Image</option>
           <option [value]="contentTypes.Video">Video</option>
         </select>
       </div>
 
-      <div *ngIf="contentType == contentTypes.Text; else imageTemplate">
-        <div class="form-group">
-          <h4>Title</h4>
-          <input class="title-input" formControlName="title" type="text" required />
-        </div>
-
-        <div class="form-group">
-          <h4>Description</h4>
-          <input class="description-input" formControlName="description" type="text" required />
-        </div>
-      </div>
-
-      <ng-template #imageTemplate>
-        <div *ngIf="contentType == contentTypes.Image; else videoTemplate">
-          <div class="form-group">
-            <h4>Title (optional)</h4>
-            <input class="title-input" formControlName="title" type="text" />
+      <ng-container [ngSwitch]="contentType">
+        <ng-container *ngSwitchCase="contentTypes.Text">
+          <div class="create-post__group">
+            <label class="create-post__label">Title</label>
+            <input class="create-post__input" formControlName="title" type="text" required />
           </div>
-
-          <div class="form-group">
-            <h4>Description (optional)</h4>
-            <input class="description-input" formControlName="description" type="text" />
+          <div class="create-post__group">
+            <label class="create-post__label">Description</label>
+            <input class="create-post__input" formControlName="description" type="text" required />
           </div>
+        </ng-container>
 
-          <div class="form-group">
-            <input id="file-image" type="file" (change)="onChange($event)" required />
-            <label for="file-image">Upload Image</label>
+        <ng-container *ngSwitchCase="contentTypes.Image">
+          <div class="create-post__group">
+            <label class="create-post__label">Title (optional)</label>
+            <input class="create-post__input" formControlName="title" type="text" />
           </div>
-        </div>
-      </ng-template>
+          <div class="create-post__group">
+            <label class="create-post__label">Description (optional)</label>
+            <input class="create-post__input" formControlName="description" type="text" />
+          </div>
+          <div class="create-post__group">
+            <input id="file-image" type="file" (change)="onChange($event)" hidden />
+            <label for="file-image" class="create-post__upload-btn">Upload Image</label>
+          </div>
+        </ng-container>
 
-      <ng-template #videoTemplate>
-        <div class="form-group">
-          <h4>Title (optional)</h4>
-          <input class="title-input" formControlName="title" type="text" />
-        </div>
+        <ng-container *ngSwitchCase="contentTypes.Video">
+          <div class="create-post__group">
+            <label class="create-post__label">Title (optional)</label>
+            <input class="create-post__input" formControlName="title" type="text" />
+          </div>
+          <div class="create-post__group">
+            <label class="create-post__label">Description (optional)</label>
+            <input class="create-post__input" formControlName="description" type="text" />
+          </div>
+          <div class="create-post__group">
+            <input id="file-video" type="file" (change)="onChange($event)" hidden />
+            <label for="file-video" class="create-post__upload-btn">Upload Video</label>
+          </div>
+        </ng-container>
+      </ng-container>
 
-        <div class="form-group">
-          <h4>Description (optional)</h4>
-          <input class="description-input" formControlName="description" type="text" />
-        </div>
-
-        <div class="form-group">
-          <input id="file-video" type="file" (change)="onChange($event)" required />
-          <label for="file-video">Upload Video</label>
-        </div>
-      </ng-template>
-
-      <button type="submit" class="submit-button">Create</button>
+      <button type="submit" class="create-post__submit-btn">Create</button>
     </form>
   </div>
 
-  <div class="preview">
+  <div class="create-post__preview">
     <div class="post">
-      <div class="content">
-        <header>
-          <img class="image" [src]="'assets/profile.svg'" alt="">
-          <p>username</p>
-          <span class="dot">•</span>
-          <span class="date">{{ Date.now() | date: "mediumDate" }}</span>
-          <img class="see-more" [src]="'assets/more.svg'" height="40px" width="40px" alt="see more...">
-        </header>
-        <h3>{{ title }}</h3>
-        <div class="media">
-          <img *ngIf="contentType == ContentType.Image || contentType == ContentType.Video" [src]="contentUrl"  alt=""/>
-        </div>
-        <div class="meta">
-          <app-like></app-like>
-          <app-comment></app-comment>
-        </div>
-        <p>{{ description }}</p>
+      <header class="post__header">
+        <img class="post__avatar" src="assets/profile.svg" alt="Profile" />
+        <span class="post__username">username</span>
+        <span class="post__dot">•</span>
+        <span class="post__date">{{ Date.now() | date: 'mediumDate' }}</span>
+        <img class="post__more-icon" src="assets/more.svg" alt="more options" />
+      </header>
+
+      <h3 class="post__title">{{ title }}</h3>
+
+      <div class="post__media">
+        <img *ngIf="contentType === ContentType.Image || contentType === ContentType.Video" [src]="contentUrl" alt="Preview" />
       </div>
+
+      <div class="post__actions">
+        <app-like></app-like>
+        <app-comment></app-comment>
+      </div>
+
+      <p class="post__description">{{ description }}</p>
     </div>
   </div>
 </div>

@@ -48,6 +48,24 @@
         }
       }
     }
+
+    .history {
+      button {
+        border: none;
+        color: #fff;
+        background-color: #007BFF;
+        padding: 10px;
+        margin-top: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+        max-width: 140px;
+        border-radius: 10px;
+
+        &:hover {
+          background-color: #3498DB;
+        }
+      }
+    }
   }
 
   .new-training {

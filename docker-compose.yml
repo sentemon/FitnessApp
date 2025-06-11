@@ -9,7 +9,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "4200:80"
+      - 4200:80
     depends_on:
       gateway:
         condition: service_healthy
@@ -22,11 +22,13 @@ services:
       context: ./backend/src
       dockerfile: Gateway/Dockerfile
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
       ReverseProxy__Clusters__auth-service__Destinations__destination1__Address: http://auth-service:8001
       ReverseProxy__Clusters__file-service__Destinations__destination1__Address: http://file-service:8004
       ReverseProxy__Clusters__post-service__Destinations__destination1__Address: http://post-service:8002
+      ReverseProxy__Clusters__workout-service__Destinations__destination1__Address: http://workout-service:8005
+      ReverseProxy__Clusters__chat-service__Destinations__destination1__Address: http://chat-service:8006
     depends_on:
       postgres:
         condition: service_healthy
@@ -46,7 +48,7 @@ services:
       context: ./backend/src
       dockerfile: AuthService/Dockerfile
     ports:
-      - "8001:8001"
+      - 8001:8001
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
       Keycloak__Url: http://keycloak:8080
@@ -68,7 +70,7 @@ services:
       context: ./backend/src
       dockerfile: FileService/Dockerfile
     ports:
-      - "8004:8004"
+      - 8004:8004
     environment:
       ConnectionStrings__DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
       ConnectionStrings__AzureStorageConnectionString: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://azurite:10000/sentemon
@@ -91,7 +93,7 @@ services:
       context: ./backend/src
       dockerfile: PostService/Dockerfile
     ports:
-      - "8002:8002"
+      - 8002:8002
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
       RabbitMq__Host: rabbitmq
@@ -105,6 +107,48 @@ services:
       retries: 3
     networks:
       - microservices
+  
+  workout-service:
+    container_name: workout-service
+    build:
+      context: ./backend/src
+      dockerfile: WorkoutService/Dockerfile
+    ports:
+      - 8005:8005
+    environment:
+      DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=WorkoutsDb
+      RabbitMq__Host: rabbitmq
+    depends_on: 
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://workout-service:8005/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks: 
+      - microservices
+        
+  chat-service:
+    container_name: chat-service
+    build:
+      context: ./backend/src
+      dockerfile: ChatService/Dockerfile
+    ports:
+      - 8006:8006
+    environment:
+      DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
+      RabbitMq__Host: rabbitmq
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://workout-service:8006/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
 
   postgres:
     container_name: postgres
@@ -113,7 +157,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpasswordfordevelopment
     ports:
-      - "5432:5432"
+      - 5432:5432
     restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -134,7 +178,7 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
       - KC_HOSTNAME=localhost
     ports:
-      - "8080:8080"
+      - 8080:8080
     command: [ "start-dev", "--import-realm" ]
     restart: always
     volumes:
@@ -146,7 +190,7 @@ services:
     image: mcr.microsoft.com/azure-storage/azurite
     container_name: azurite
     ports:
-      - "10000:10000"
+      - 10000:10000
     command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
     restart: always
     environment:

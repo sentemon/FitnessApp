@@ -1,5 +1,41 @@
 <app-back></app-back>
 
-<div class="new-workout">
-  <p>new-workout works!</p>
+<div class="container">
+  <h1>Choose workout</h1>
+
+  <div class="workouts-list">
+    <div
+      *ngFor="let workout of workouts"
+      class="workout-card"
+      [class.selected]="selectedWorkoutId === workout.id"
+      (click)="selectedWorkoutId = workout.id"
+    >
+      <div class="radio-indicator">
+        <div class="radio-circle" *ngIf="selectedWorkoutId === workout.id"></div>
+      </div>
+
+      <div class="workout-info">
+        <h3>{{ workout.title }}</h3>
+        <p>{{ workout.description }}</p>
+        <div class="workout-duration">
+          <span class="duration-icon">⏱</span>
+          {{ workout.durationInMinutes }} minutes
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button
+      class="add-button"
+      [disabled]="!selectedWorkoutId"
+      (click)="onAddWorkout()"
+    >
+      Add selected workout
+    </button>
+
+    <button class="create-button" [routerLink]="'../create'">
+      Create your own workout
+    </button>
+  </div>
 </div>

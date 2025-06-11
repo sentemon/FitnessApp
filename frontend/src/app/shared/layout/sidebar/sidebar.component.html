@@ -8,32 +8,32 @@
 
   <ul class="options">
     <li>
-      <a [routerLink]="''">Home</a>
+      <a [routerLink]="''" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
     </li>
     <li>
-      <a href="#">Search</a>
+      <a href="#" class="disabled">Search</a>
     </li>
     <li>
-      <a href="#">Chats</a>
+      <a [routerLink]="'chats'" routerLinkActive="active">Chats</a>
     </li>
     <li>
-      <a [routerLink]="'/workouts'">Workouts</a>
+      <a [routerLink]="'/workouts'" routerLinkActive="active">Workouts</a>
     </li>
     <li>
-      <a href="#">Meal Planner</a>
+      <a href="#" class="disabled">Meal Planner</a>
     </li>
     <li>
-      <a href="#">Challenges</a>
+      <a href="#" class="disabled">Challenges</a>
     </li>
     <li>
-      <a href="#">Notifications</a>
+      <a href="#" class="disabled">Notifications</a>
     </li>
     <li>
-      <a [routerLink]="'/create-post'">Create</a>
+      <a [routerLink]="'/create-post'" routerLinkActive="active">Create</a>
     </li>
   </ul>
 
   <div class="profile">
-    <a href="#">Profile</a>
+    <a [routerLink]="username" routerLinkActive="active">Profile</a>
   </div>
 </div>

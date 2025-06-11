@@ -5,6 +5,9 @@ import {GET_CURRENT_USER, GET_USER_BY_USERNAME} from "../requests/queries";
 import {User} from "../models/user.model";
 import {QueryResponses} from "../responses/query.responses";
 import {ApolloLink} from "@apollo/client/core";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Result} from "../../../core/types/result/result.type";
+import {UserDto} from "../models/user-dto.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,24 +15,24 @@ import {ApolloLink} from "@apollo/client/core";
 export class UserService {
   private authClient: ApolloBase;
 
-  constructor(private apollo: Apollo) {
+  constructor(apollo: Apollo) {
     this.authClient = apollo.use("auth");
   }
 
-  getCurrentUser(): Observable<User> {
+  getCurrentUser(): Observable<Result<User>> {
     return this.authClient.query<QueryResponses>({
       query: GET_CURRENT_USER
     }).pipe(
-      map(response => response.data.currentUser)
+      toResult<User>('currentUser')
     );
   }
 
-  getUserByUsername(username: string): Observable<User> {
-    return this.apollo.query<QueryResponses>({
+  getUserByUsername(username: string): Observable<Result<UserDto>> {
+    return this.authClient.query<QueryResponses>({
       query: GET_USER_BY_USERNAME,
       variables: { username }
     }).pipe(
-      map(response => response.data.userByUsername)
+      toResult<UserDto>('userByUsername')
     );
   }
 }

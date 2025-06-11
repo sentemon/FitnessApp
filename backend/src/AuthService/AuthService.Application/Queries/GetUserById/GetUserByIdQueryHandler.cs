@@ -1,12 +1,12 @@
-using AuthService.Application.DTOs;
 using AuthService.Domain.Constants;
+using AuthService.Domain.Entities;
 using AuthService.Infrastructure.Interfaces;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
 namespace AuthService.Application.Queries.GetUserById;
 
-public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
+public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
 {
     private readonly IUserService _userService;
 
@@ -15,26 +15,19 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
         _userService = userService;
     }
 
-    public async Task<IResult<UserDto, Error>> HandleAsync(GetUserByIdQuery query)
+    public async Task<IResult<User, Error>> HandleAsync(GetUserByIdQuery query)
     {
         if (query.Id == null)
         {
-            return Result<UserDto>.Failure(new Error(ResponseMessages.UserIdIsNull));
+            return Result<User>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         var user = await _userService.GetByIdAsync(query.Id);
 
         if (user == null)
         {
-            return Result<UserDto>.Failure(new Error(ResponseMessages.UserNotFound));
+            return Result<User>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
-        var userDto = new UserDto(user.FirstName,
-            user.LastName,
-            user.Username.Value,
-            user.Email.Value,
-            user.ImageUrl
-        );
-
-        return Result<UserDto>.Success(userDto);
+        return Result<User>.Success(user);
     }
 }

@@ -8,14 +8,6 @@ import {Set} from "../models/set.model";
 export class SetService {
   constructor() { }
 
-  markAsCompleted(id: string): Observable<boolean> {
-    return of(true);
-  }
-
-  markAsUncompleted(id: string): Observable<boolean> {
-    return of(true);
-  }
-
   add(exerciseId: string, reps: number, weight: number): Observable<Set> {
     const newSet: Set = {
       id: 'newId' + Date.now(),

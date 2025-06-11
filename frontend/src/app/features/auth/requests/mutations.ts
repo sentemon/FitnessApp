@@ -35,3 +35,12 @@ export const REGISTER = gql`
     }
   }
 `;
+
+
+export const LOGOUT = gql`
+  mutation Logout($refreshToken: String!) {
+    logout(
+      refreshToken: $refreshToken
+    )
+  }
+`;

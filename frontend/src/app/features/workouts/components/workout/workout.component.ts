@@ -21,8 +21,21 @@ export class WorkoutComponent implements OnInit {
     this.route.params.subscribe(params => {
       const workoutUrl = params["workout-name"];
       this.workoutService.getWorkoutByUrl(workoutUrl).subscribe(result => {
-        if (result) {
-          this.workout = result
+        if (result.isSuccess) {
+          const workout = result.response;
+
+          this.workout = {
+            id: workout.id,
+            title: workout.title,
+            description: workout.description,
+            durationInMinutes: workout.durationInMinutes,
+            level: workout.level,
+            url: workout.url,
+            exercises: workout.exercises,
+            imageUrl: workout.imageUrl,
+            isCustom: workout.isCustom,
+            userId: workout.userId
+          }
         } else {
           this.router.navigate(["/not-found"]);
         }
@@ -30,11 +43,7 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
-  isWorkoutCompleted(): boolean {
-    return this.workout.exercises.length > 0 &&
-      this.workout.exercises.every(exercise =>
-        exercise.sets.length > 0 &&
-        exercise.sets.every(set => set.completed)
-      );
+  protected updateWorkout(updatedWorkout: Workout) {
+    this.workout = updatedWorkout;
   }
 }

@@ -72,7 +72,13 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 ## Screenshots
 
 - **Home**
-<img src="./img/home.png" alt="Fitness App Home Page"/>
+<img src="./img/home.png" alt="Fitness App Home Page" />
+
+- **Workouts**
+<img src="./img/workouts.png" alt="Fitness App Workouts Page" />
+
+- **Chats**
+<img src="./img/chats.png" alt="Fitness App Chats Page" />
 
 ---
 
@@ -114,3 +120,4 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 ## Future Plans
 
 - **Kubernetes Support:** Planned deployment and orchestration.
+- **Azure Deployment:** Deploy the app on Azure

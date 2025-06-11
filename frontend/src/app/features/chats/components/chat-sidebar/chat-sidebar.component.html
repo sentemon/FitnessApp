@@ -1,0 +1,18 @@
+<div class="chat-sidebar">
+  <div class="search">
+    <input
+      placeholder="Search for a user by username..."
+      [(ngModel)]="searchTerm"
+    >
+  </div>
+  <div class="chats">
+    <div *ngFor="let chat of filteredChats" (click)="onSelectChat(chat.id)" class="chat">
+      <img [src]="'assets/profile.svg'" alt="">
+      <div class="chat-content">
+        <p class="chat-name">{{ getChatName(chat) }}</p>
+<!--        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>-->
+        <p class="chat-message">No messages yet</p>
+      </div>
+    </div>
+  </div>
+</div>

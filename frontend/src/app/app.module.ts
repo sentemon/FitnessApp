@@ -13,6 +13,8 @@ import {graphql} from "./graphql.config";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/services/auth.interceptor";
 import {WorkoutsModule} from "./features/workouts/workouts.module";
+import {FormsModule} from "@angular/forms";
+import {ChatsModule} from "./features/chats/chats.module";
 
 @NgModule({
   declarations: [
@@ -24,9 +26,11 @@ import {WorkoutsModule} from "./features/workouts/workouts.module";
     AuthModule,
     PostsModule,
     WorkoutsModule,
+    ChatsModule,
     SharedModule,
     HttpClientModule,
-    ApolloModule
+    ApolloModule,
+    FormsModule
   ],
   providers: [
     {

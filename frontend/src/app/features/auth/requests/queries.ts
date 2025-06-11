@@ -3,11 +3,17 @@ import gql from 'graphql-tag';
 export const GET_CURRENT_USER = gql`
   query CurrentUser {
     currentUser {
+      id
       firstName
       lastName
-      username
-      email
+      username {
+        value
+      }
+      email {
+        value
+      }
       imageUrl
+      createdAt
     }
   }
 `;

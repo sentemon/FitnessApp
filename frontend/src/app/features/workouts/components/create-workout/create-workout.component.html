@@ -1,42 +1,59 @@
 <app-back></app-back>
 
 <div class="create-workout">
-  <div class="workout-header">
-    <p>Title</p>
-    <input type="text" class="workout-input">
+  <form [formGroup]="workoutForm" (ngSubmit)="submitWorkout()">
+    <div class="workout-header">
+      <p>Title</p>
+      <input formControlName="workoutTitle" type="text" class="workout-input">
 
-    <p>Description</p>
-    <input type="text" class="workout-input">
+      <p>Description</p>
+      <input formControlName="workoutDescription" type="text" class="workout-input">
 
-    <p>Image</p>
-    <input id="file-image" type="file" class="workout-input">
-    <label for="file-image">Upload Image</label>
+      <p>Image</p>
+      <input id="file-image" formControlName="workoutImage" type="file" class="workout-input">
+      <label for="file-image">Upload Image</label>
 
-    <p>Time</p>
-    <input type="text" class="workout-input">
+      <p>Time</p>
+      <input formControlName="workoutDurationInMinutes" type="text" class="workout-input">
 
-    <p>Level</p>
-    <input type="text" class="workout-input">
-  </div>
-
-  <div class="create-exercise">
-    <div class="exercise-header">
-      <p>Exercise Name</p>
-      <input type="text" class="exercise-input">
+      <p>Level</p>
+      <select formControlName="workoutLevel" class="workout-input">
+        <option [value]="Level.Beginner">Beginner</option>
+        <option [value]="Level.Intermediate">Intermediate</option>
+        <option [value]="Level.Advanced">Advanced</option>
+        <option [value]="Level.AllLevels">All Levels</option>
+      </select>
     </div>
 
-    <div class="create-set">
-      <div class="set-header">
-        <p>Reps</p>
-        <input type="number" class="set-input">
+    <div formArrayName="exercises" class="create-exercise">
+      <div *ngFor="let exercise of getExercises().controls; let i = index" [formGroupName]="i">
+        <div class="exercise-header">
+          <p>Exercise Name</p>
+          <input formControlName="name" type="text" class="exercise-input">
 
-        <p>Weight</p>
-        <input type="number" class="set-input">
+          <select formControlName="level" class="workout-input">
+            <option [value]="Level.Beginner">Beginner</option>
+            <option [value]="Level.Intermediate">Intermediate</option>
+            <option [value]="Level.Advanced">Advanced</option>
+            <option [value]="Level.AllLevels">All Levels</option>
+          </select>
+        </div>
+
+        <div formArrayName="sets" class="create-set">
+          <div *ngFor="let set of getSets(i).controls; let j = index" [formGroupName]="j" class="set-header">
+            <p>Reps</p>
+            <input formControlName="reps" type="number" class="set-input">
+
+            <p>Weight</p>
+            <input formControlName="weight" type="number" class="set-input">
+          </div>
+          <button (click)="addSet(i)" class="set-button" type="button">Add Set</button>
+        </div>
+
+        <button (click)="addNewExercise()" class="exercise-button" type="button">Add Exercise</button>
       </div>
-
-      <button class="set-button">Add Set</button>
     </div>
 
-    <button class="exercise-button">Add Exercise</button>
-  </div>
+    <button type="submit" class="create-button">Create Workout</button>
+  </form>
 </div>

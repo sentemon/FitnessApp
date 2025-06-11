@@ -6,6 +6,7 @@ import {RouterLink} from "@angular/router";
 import {LogoutComponent} from "./componets/logout/logout.component";
 import {ProfileComponent} from "./componets/profile/profile.component";
 import {RegisterComponent} from "./componets/register/register.component";
+import {PostsModule} from "../posts/posts.module";
 
 
 
@@ -19,7 +20,8 @@ import {RegisterComponent} from "./componets/register/register.component";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    PostsModule,
   ]
 })
 export class AuthModule { }

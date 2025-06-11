@@ -19,6 +19,22 @@ export function graphql(httpLink: HttpLink) {
         withCredentials: true
       }),
       cache: new InMemoryCache()
-    }
+    },
+    workouts: {
+      name: 'workouts',
+      link: httpLink.create({
+        uri: environment.workout_service,
+        withCredentials: true
+      }),
+      cache: new InMemoryCache()
+    },
+    chats: {
+      name: 'chats',
+      link: httpLink.create({
+        uri: environment.chat_service,
+        withCredentials: true
+      }),
+      cache: new InMemoryCache()
+    },
   }
 }

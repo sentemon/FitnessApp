@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Full Body Workout",
+    "description": "A high-intensity full-body workout for building strength and endurance.",
+    "durationInMinutes": 45,
+    "level": "Intermediate",
+    "exercises": [
+      {
+        "name": "Push-ups",
+        "level": "Intermediate",
+        "sets": [
+          {
+          "reps": 30,
+          "weight": 10
+          },
+          {
+            "reps": 30,
+            "weight": 10
+          }
+        ]
+      },
+      {
+        "name": "Squats",
+        "level": "Beginner",
+        "sets": [
+          {
+            "reps": 30,
+            "weight": 10
+          },
+          {
+            "reps": 30,
+            "weight": 10
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,57 @@
+:host {
+  width: 30%;
+  height: 100%;
+}
+
+.chat-sidebar {
+  max-width: 300px;
+  height: 100vh;
+  background: #2c3e50;
+  color: white;
+}
+
+.search input {
+  width: 80%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: none;
+  margin: 1rem;
+}
+
+.chats {
+  margin-top: 1rem;
+}
+
+.chat {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #585c60;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.chat:hover {
+  background: #34495e;
+}
+
+.chat img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.chat-content {
+  flex: 1;
+}
+
+.chat-name {
+  font-weight: bold;
+}
+
+.chat-message {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

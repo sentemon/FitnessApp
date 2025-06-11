@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {BehaviorSubject, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, filter, map, Observable, tap} from "rxjs";
 import {Post} from "../models/post.model";
 import {UpdatePostDto} from "../requests/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
@@ -11,6 +11,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CREATE_POST, DELETE_POST} from "../graphql/mutations.graphql";
 import {environment} from "../../../../environments/environment";
 import {MutationResponse} from "../graphql/mutation.response";
+import {Result} from "../../../core/types/result/result.type";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class PostService {
   private postsSubject = new BehaviorSubject<Post[]>([]);
   private posts$ = this.postsSubject.asObservable();
 
-  constructor(private apollo: Apollo, private http: HttpClient) {
+  constructor(apollo: Apollo, private http: HttpClient) {
     this.postClient = apollo.use("posts");
 
     let first = 10;
@@ -78,24 +80,27 @@ export class PostService {
     ).subscribe();
   }
 
-  getAllPosts() {
-    return this.posts$;
+  getAllPosts(): Observable<Result<Post[]>> {
+    return this.posts$.pipe(
+      map(value => Result.success(value))
+    );
   }
 
-  getPost(id: string): Observable<Post | ApolloQueryResult<QueryResponse>> {
+  getAllUserPosts(username: string): Observable<Result<Post[]>> {
+    return this.posts$.pipe(
+      map(posts => {
+        const filteredPosts = posts.filter(p => p.username === username);
+        return Result.success(filteredPosts);
+      })
+    );
+  }
+
+  getPost(id: string): Observable<Result<Post>> {
     return this.postClient.query<QueryResponse>({
       query: GET_POST,
       variables: { id }
     }).pipe(
-      map(response => {
-        const post = response.data.post;
-
-        if (post) {
-          return post;
-        }
-
-        return response;
-      })
+      toResult<Post>("post")
     );
   }
 
@@ -126,7 +131,7 @@ export class PostService {
     });
   }
 
-  addPost(newPost: Post) {
+  addPost(newPost: Post): void {
     this.postsSubject.next([newPost, ...this.postsSubject.value]);
   }
 
@@ -134,14 +139,12 @@ export class PostService {
     throw new Error();
   }
 
-  deletePost(id: string): Observable<string | undefined> {
+  deletePost(id: string): Observable<Result<string>> {
     return this.postClient.mutate<MutationResponse>({
       mutation: DELETE_POST,
       variables: { id }
     }).pipe(
-      map(response => {
-        return response.data?.deletePost;
-      })
+      toResult<string>("deletePost")
     );
   }
 }

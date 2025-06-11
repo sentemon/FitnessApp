@@ -1,0 +1,14 @@
+<app-back></app-back>
+
+<div class="workout">
+  <header class="workout-header">
+    <h1>{{ workoutHistory.workout.title }}</h1>
+    <p>{{ workoutHistory.workout.description }}</p>
+  </header>
+
+  <app-exercise-history [workoutHistory]="workoutHistory" (workoutHistoryChange)="updateWorkoutHistory($event)"></app-exercise-history>
+
+  <div *ngIf="isWorkoutCompleted()" class="workout-completed">
+    <h3>🎉 Congratulations! Your workout is completed! 🎉</h3>
+  </div>
+</div>

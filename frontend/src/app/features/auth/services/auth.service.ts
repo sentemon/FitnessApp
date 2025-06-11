@@ -1,9 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {LOGIN, REGISTER} from "../requests/mutations";
+import {LOGIN, LOGOUT, REGISTER} from "../requests/mutations";
 import {MutationResponse} from "../responses/mutation.response";
 import {CookieService} from "../../../core/services/cookie.service";
+import {Result} from "../../../core/types/result/result.type";
+import {UserService} from "./user.service";
+import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {Comment} from "../../posts/models/comment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,35 +16,36 @@ export class AuthService {
   private authClient: ApolloBase;
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuth());
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private apollo: Apollo) {
+  constructor(apollo: Apollo, private userService: UserService, private cookieService: CookieService) {
     this.authClient = apollo.use("auth");
   }
 
   private checkAuth(): boolean {
     let cookieService = inject(CookieService);
 
-    const token = cookieService.get("token");
+    const result = cookieService.get("token");
 
-    return token != "There is no cookie with key token.";
+    return result.isSuccess;
   }
 
-  public login(username: string, password: string): Observable<boolean> {
+  public login(username: string, password: string): Observable<Result<boolean>> {
     return this.authClient.mutate<MutationResponse>({
       mutation: LOGIN,
       variables: { username, password },
     }).pipe(
       map(response => {
         const token = response.data?.login;
+        this.setUserCookies();
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
-          return true;
+          return Result.success(true);
         } else {
           this.isAuthenticatedSubject.next(false);
           console.error("Login failed: no token received.");
-          return false;
+          return Result.success(false);
         }
       })
     );
@@ -52,28 +57,54 @@ export class AuthService {
     username: string,
     email: string,
     password: string
-  ): Observable<boolean> {
+  ): Observable<Result<boolean>> {
     return this.authClient.mutate<MutationResponse>({
       mutation: REGISTER,
       variables: { firstName, lastName, username, email, password }
     }).pipe(
       map(response => {
         const token = response.data?.register;
+        this.setUserCookies();
 
         if (token) {
           this.isAuthenticatedSubject.next(true);
-          return true;
+          return Result.success(true);
         } else {
           this.isAuthenticatedSubject.next(false);
           console.error("Registration failed: no token received.");
-          return false;
+          return Result.success(false);
         }
       })
     );
   }
 
+  public logout(): Observable<Result<string>> {
+    const refreshToken = this.cookieService.get("refreshToken").response!;
 
-  public isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticated$;
+    return this.authClient.mutate({
+      mutation: LOGOUT,
+      variables: { refreshToken }
+    }).pipe(
+      toResult<string>("logout")
+    );
+  }
+
+
+  public isAuthenticated(): Observable<Result<boolean>> {
+    return this.isAuthenticated$.pipe(
+      map(value => Result.success(value)),
+    );
+  }
+
+  private setUserCookies(): void {
+    this.userService.getCurrentUser().subscribe(result => {
+      console.log(result);
+
+      if (result.isSuccess) {
+        console.log(result.response);
+        this.cookieService.set("userId", result.response.id, 1);
+        this.cookieService.set("username", result.response.username.value, 1);
+      }
+    });
   }
 }

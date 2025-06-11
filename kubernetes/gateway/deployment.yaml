@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: sentemon/gateway
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          env:
+            - name: ReverseProxy__Clusters__auth-service__Destinations__destination1__Address
+              value: http://auth-service:8001
+            - name: ReverseProxy__Clusters__chat-service__Destinations__destination1__Address
+              value: http://chat-service:8006
+            - name: ReverseProxy__Clusters__file-service__Destinations__destination1__Address
+              value: http://file-service:8004
+            - name: ReverseProxy__Clusters__post-service__Destinations__destination1__Address
+              value: http://post-service:8002
+            - name: ReverseProxy__Clusters__workout-service__Destinations__destination1__Address
+              value: http://workout-service:8005
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      restartPolicy: Always

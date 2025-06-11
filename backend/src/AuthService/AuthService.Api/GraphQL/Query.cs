@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AuthService.Application.DTOs;
 using AuthService.Application.Queries.GetUserById;
 using AuthService.Application.Queries.GetUserByUsername;
+using AuthService.Domain.Entities;
 
 namespace AuthService.Api.GraphQL;
 
@@ -14,7 +15,7 @@ public class Query
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserDto> GetCurrentUser([Service] GetUserByIdQueryHandler getUserByIdQueryHandler)
+    public async Task<User> GetCurrentUser([Service] GetUserByIdQueryHandler getUserByIdQueryHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var query = new GetUserByIdQuery(userId);

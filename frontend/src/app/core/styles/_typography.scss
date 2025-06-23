@@ -1,20 +1,29 @@
-:root {
-  --font-base: 'Montserrat', system-ui, sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
+@import 'variables';
+
+* {
+  font-family: $font-family-base;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-base);
-  font-weight: 700;
-  color: var(--text-primary);
+  font-family: $font-family-base;
+  font-weight: $font-weight-bold;
+  color: $text-primary;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: $h1-font-size;
   line-height: 1.2;
   letter-spacing: -0.05em;
+}
 
-  @include responsive(tablet) {
-    font-size: 3rem;
-  }
+h2 {
+  font-size: $h2-font-size;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
 }

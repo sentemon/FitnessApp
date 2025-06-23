@@ -1,10 +1,9 @@
-@import 'app/core/styles/variables';
-@import 'app/core/styles/mixins';
-@import 'app/core/styles/typography';
-@import 'app/shared/styles/buttons';
+@use 'app/core/styles/variables';
+@use 'app/core/styles/mixins';
+@use 'app/core/styles/typography';
+@use 'app/shared/styles/buttons';
 
 * {
-  font-family: Montserrat, serif;
   margin: 0;
   padding: 0;
 }

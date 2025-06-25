@@ -1,9 +1,9 @@
-<div class="create-post">
+<div class="create-post flex">
   <div class="create-post__form-wrapper">
-    <form [formGroup]="postForm" (ngSubmit)="submitPost()" class="create-post__form">
+    <form [formGroup]="postForm" (ngSubmit)="submitPost()" class="create-post__form flex flex-col">
       <h1 class="create-post__title">New Post</h1>
 
-      <div class="create-post__group">
+      <div class="create-post__group flex flex-col">
         <label class="create-post__label">Post Type:</label>
         <select class="create-post__select" formControlName="contentType">
           <option [value]="contentTypes.Text">Text</option>
@@ -14,41 +14,41 @@
 
       <ng-container [ngSwitch]="contentType">
         <ng-container *ngSwitchCase="contentTypes.Text">
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Title</label>
             <input class="create-post__input" formControlName="title" type="text" required />
           </div>
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Description</label>
             <input class="create-post__input" formControlName="description" type="text" required />
           </div>
         </ng-container>
 
         <ng-container *ngSwitchCase="contentTypes.Image">
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Title (optional)</label>
             <input class="create-post__input" formControlName="title" type="text" />
           </div>
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Description (optional)</label>
             <input class="create-post__input" formControlName="description" type="text" />
           </div>
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <input id="file-image" type="file" (change)="onChange($event)" hidden />
             <label for="file-image" class="create-post__upload-btn">Upload Image</label>
           </div>
         </ng-container>
 
         <ng-container *ngSwitchCase="contentTypes.Video">
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Title (optional)</label>
             <input class="create-post__input" formControlName="title" type="text" />
           </div>
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <label class="create-post__label">Description (optional)</label>
             <input class="create-post__input" formControlName="description" type="text" />
           </div>
-          <div class="create-post__group">
+          <div class="create-post__group flex flex-col">
             <input id="file-video" type="file" (change)="onChange($event)" hidden />
             <label for="file-video" class="create-post__upload-btn">Upload Video</label>
           </div>
@@ -61,7 +61,7 @@
 
   <div class="create-post__preview">
     <div class="post">
-      <header class="post__header">
+      <header class="post__header flex flex-center">
         <img class="post__avatar" src="assets/profile.svg" alt="Profile" />
         <span class="post__username">username</span>
         <span class="post__dot">•</span>
@@ -75,7 +75,7 @@
         <img *ngIf="contentType === ContentType.Image || contentType === ContentType.Video" [src]="contentUrl" alt="Preview" />
       </div>
 
-      <div class="post__actions">
+      <div class="post__actions flex">
         <app-like></app-like>
         <app-comment></app-comment>
       </div>

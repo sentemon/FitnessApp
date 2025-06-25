@@ -1,6 +1,6 @@
-<div class="post" *ngFor="let post of posts" xmlns="http://www.w3.org/1999/html">
-  <div class="content">
-    <header>
+<div class="post flex flex-col" *ngFor="let post of posts" xmlns="http://www.w3.org/1999/html">
+  <div class="content flex flex-col">
+    <header class="flex flex-center">
       <img class="image" [src]="post.userImageUrl || 'assets/profile.svg'" alt="post-image">
       <p>{{ post.username }}</p>
       <span class="dot">•</span>

@@ -1,6 +1,6 @@
-<div class="modal-overlay" (click)="closeModal()">
+<div class="modal-overlay flex flex-center" (click)="closeModal()">
   <div class="modal" (click)="$event.stopPropagation()">
-    <div class="modal-header">
+    <div class="modal-header flex flex-center">
       <h2>{{ post.title }}</h2>
       <button class="close-btn" (click)="closeModal()">×</button>
     </div>
@@ -9,25 +9,25 @@
       <div class="post-content">
         <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <img [src]="post.contentUrl" alt="Post Image" />
-        <div class="meta">
+        <div class="meta flex">
           <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
           <app-comment [post]="post"></app-comment>
         </div>
         <p class="description">{{ post.description }}</p>
       </div>
 
-      <div class="comments-container">
+      <div class="comments-container flex flex-col">
         <div class="comments">
           <h3>Comments</h3>
-          <div *ngFor="let comment of comments" class="comment">
+          <div *ngFor="let comment of comments" class="comment flex">
             <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
             <span class="delete" (click)="deleteComment(comment.id)" *ngIf="comment.username === this.currentUsername">×</span>
           </div>
           <div #scrollAnchor></div>
         </div>
 
-        <div class="form-container">
-          <form (submit)="sendComment($event, commentInput.value)">
+        <div class="form-container flex">
+          <form class="flex" (submit)="sendComment($event, commentInput.value)">
             <input
               #commentInput
               type="text"

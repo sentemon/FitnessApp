@@ -1,7 +1,6 @@
 @use "app/core/styles/mixins" as *;
 
 .create-post {
-  display: flex;
   gap: 4rem;
   padding: 2rem;
 
@@ -11,8 +10,6 @@
   }
 
   &__form {
-    display: flex;
-    flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
     border-radius: 1rem;
@@ -28,8 +25,6 @@
   }
 
   &__group {
-    display: flex;
-    flex-direction: column;
     gap: 0.5rem;
   }
 
@@ -81,8 +76,6 @@
       @include glass-effect;
 
       &__header {
-        display: flex;
-        align-items: center;
         gap: 1rem;
 
         .post__avatar {
@@ -126,7 +119,6 @@
       }
 
       &__actions {
-        display: flex;
         gap: 1rem;
         margin-bottom: 1rem;
       }

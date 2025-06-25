@@ -1,7 +1,7 @@
-<div class="form">
-  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+<div class="form flex flex-center">
+  <form class="flex flex-col" [formGroup]="registerForm" (ngSubmit)="onRegister()">
     <h1>Register to Fitness App</h1>
-    <div class="fields">
+    <div class="fields flex flex-col">
       <input id="first-name" type="text" formControlName="firstName" placeholder="First Name" name="first-name">
       <input id="last-name" type="text" formControlName="lastName" placeholder="Last Name" name="last-name">
       <input id="username" type="text" formControlName="username" placeholder="Username" name="username">

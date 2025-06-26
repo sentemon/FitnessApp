@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 @Component({
   selector: 'app-chat',
   template: `
-    <div class="chat">
+    <div class="chat flex">
       <app-chat-sidebar (selectedChatId)="onChatSelected($event)"></app-chat-sidebar>
       <app-chat-area [selectedChatId]="selectedChatId"></app-chat-area>
     </div>
@@ -13,10 +13,6 @@ import {ActivatedRoute, Router} from "@angular/router";
     :host {
       width: 100%;
       height: 100%;
-    }
-
-    .chat {
-      display: flex;
     }
   `
 })

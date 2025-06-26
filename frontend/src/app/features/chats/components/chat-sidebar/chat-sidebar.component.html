@@ -6,7 +6,7 @@
     >
   </div>
   <div class="chats">
-    <div *ngFor="let chat of filteredChats" (click)="onSelectChat(chat.id)" class="chat">
+    <div *ngFor="let chat of filteredChats" (click)="onSelectChat(chat.id)" class="chat flex flex-center">
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
         <p class="chat-name">{{ getChatName(chat) }}</p>

@@ -4,7 +4,7 @@
 </section>
 
 <section *ngFor="let exerciseHistory of workoutHistory.exerciseHistories; let i = index" class="exercise">
-  <header class="exercise-header">
+  <header class="exercise-header flex flex-center">
 <!--    <h2>{{ exerciseHistory.name }}</h2>-->
     <a class="delete-exercise" (click)="deleteExercise(exerciseHistory.id)" *ngIf="workoutHistory.workout.isCustom">×</a>
   </header>

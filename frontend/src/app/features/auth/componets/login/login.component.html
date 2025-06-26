@@ -1,7 +1,7 @@
-<div class="form">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+<div class="form flex flex-center">
+  <form class="flex flex-col" [formGroup]="loginForm" (ngSubmit)="onLogin()">
     <h1>Login to Fitness App</h1>
-    <div class="fields">
+    <div class="fields flex flex-col">
       <input id="email" type="email" formControlName="email" placeholder="Email / Username" name="email" autocomplete="username" autocapitalize="off">
       <input id="password" type="password" formControlName="password" placeholder="Password">
     </div>

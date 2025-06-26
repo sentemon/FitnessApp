@@ -1,15 +1,10 @@
 .profile {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  align-items: start;
-  padding: 40px 40px 20px 40px;
   max-width: 1000px;
   margin: 0 auto;
+  padding: 40px 40px 20px 40px;
+  gap: 40px;
 
   &__left {
-    display: flex;
-    flex-direction: column;
     align-items: start;
     gap: 12px;
 
@@ -27,14 +22,11 @@
   }
 
   &__right {
-    display: flex;
     flex: 1;
-    flex-direction: column;
     gap: 20px;
   }
 
   &__top-row {
-    display: flex;
     align-items: center;
     gap: 16px;
 
@@ -57,7 +49,6 @@
   }
 
   &__stats {
-    display: flex;
     gap: 40px;
 
     div {
@@ -91,9 +82,6 @@ main {
   }
 
   .posts {
-    //margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: 4px;
 
     .post {

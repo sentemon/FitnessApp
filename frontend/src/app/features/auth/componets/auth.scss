@@ -1,21 +1,14 @@
 .form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 
   form {
-    display: flex;
-    flex-direction: column;
-
     h1 {
       margin-bottom: 1.5rem;
       text-align: center;
+      color: black;
     }
 
     .fields {
-      display: flex;
-      flex-direction: column;
       gap: 1rem;
 
       input {

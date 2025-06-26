@@ -19,9 +19,9 @@ export class CreatePostComponent {
   constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
     this.postForm = fb.group({
       title: "",
-        description: "",
-        contentType: ContentType.Image,
-        file: null
+      description: "",
+      contentType: ContentType.Image,
+      file: null,
     });
   }
 

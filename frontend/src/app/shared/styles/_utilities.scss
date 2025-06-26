@@ -1,0 +1,35 @@
+$spacers: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem);
+
+@each $name, $value in $spacers {
+  .m-#{$name} { margin: $value; }
+  .p-#{$name} { padding: $value; }
+  .gap-#{$name} { gap: $value; }
+}
+
+.flex {
+  display: flex;
+
+  &-col { flex-direction: column; }
+  &-wrap { flex-wrap: wrap; }
+  &-center {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.grid {
+  display: grid;
+
+  &-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  &-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.hidden { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-hidden { display: none; }
+}

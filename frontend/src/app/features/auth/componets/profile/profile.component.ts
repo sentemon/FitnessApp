@@ -4,7 +4,7 @@ import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
 import {Post} from "../../../posts/models/post.model";
 import {AuthService} from "../../services/auth.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserDto} from "../../models/user-dto.model";
 
 @Component({
@@ -23,7 +23,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private postService: PostService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -51,7 +52,9 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout().subscribe(() => window.location.reload());
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(["/"]).then(() => window.location.reload());
+    });
   }
 
   private getPosts(): void {

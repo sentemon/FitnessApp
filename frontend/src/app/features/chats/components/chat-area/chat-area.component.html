@@ -1,18 +1,18 @@
-<div class="chat-area" *ngIf="selectedChatId">
-  <div class="header">
-    <div class="chat-info">
+<div class="chat-area flex flex-col" *ngIf="selectedChatId">
+  <div class="header flex flex-center">
+    <div class="chat-info flex flex-col">
       <p class="chat-name">{{ chatName }}</p>
       <p class="chat-status" [ngClass]="isOnline ? 'online' : 'offline'">
         {{ isOnline ? 'Online' : 'Offline' }}
       </p>
     </div>
-    <div class="header-actions">
+    <div class="header-actions flex flex-center">
       <input [(ngModel)]="searchQuery" class="search-input" placeholder="Search...">
       <img [src]="'assets/search.svg'" alt="Search" class="search">
       <img [src]="'assets/profile.svg'" alt="profile" class="profile-pic">
     </div>
   </div>
-  <div #messagesContainer class="messages">
+  <div #messagesContainer class="messages flex flex-col">
     <div *ngFor="let message of filteredMessages" [class.self]="message.senderId === currentUserId" class="message">
       <p>{{ message.content }}</p>
       <div class="time">
@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <div class="chat-input">
+  <div class="chat-input flex">
     <input [(ngModel)]="content" type="text" placeholder="Write a message here..." (keydown.enter)="sendMessage()">
     <img (click)="sendMessage()" [src]="'assets/send.svg'" alt="Send">
   </div>

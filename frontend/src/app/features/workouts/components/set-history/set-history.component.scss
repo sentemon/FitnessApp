@@ -22,14 +22,11 @@
   }
 
   .set {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid #f0f0f0;
 
     .set-info {
-      display: flex;
 
       p {
         margin: 0;
@@ -85,7 +82,6 @@
 }
 
 .add-set {
-  display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
 

@@ -2,7 +2,7 @@
 
 <div class="create-workout">
   <form [formGroup]="workoutForm" (ngSubmit)="submitWorkout()">
-    <div class="workout-header">
+    <div class="workout-header grid">
       <p>Title</p>
       <input formControlName="workoutTitle" type="text" class="workout-input">
 
@@ -10,7 +10,7 @@
       <input formControlName="workoutDescription" type="text" class="workout-input">
 
       <p>Image</p>
-      <input id="file-image" formControlName="workoutImage" type="file" class="workout-input">
+      <input id="file-image" formControlName="workoutImage" type="file" class="workout-input hidden">
       <label for="file-image">Upload Image</label>
 
       <p>Time</p>
@@ -27,7 +27,7 @@
 
     <div formArrayName="exercises" class="create-exercise">
       <div *ngFor="let exercise of getExercises().controls; let i = index" [formGroupName]="i">
-        <div class="exercise-header">
+        <div class="exercise-header grid">
           <p>Exercise Name</p>
           <input formControlName="name" type="text" class="exercise-input">
 
@@ -40,7 +40,7 @@
         </div>
 
         <div formArrayName="sets" class="create-set">
-          <div *ngFor="let set of getSets(i).controls; let j = index" [formGroupName]="j" class="set-header">
+          <div *ngFor="let set of getSets(i).controls; let j = index" [formGroupName]="j" class="set-header grid grid-cols-2">
             <p>Reps</p>
             <input formControlName="reps" type="number" class="set-input">
 

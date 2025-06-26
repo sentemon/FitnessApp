@@ -12,7 +12,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   .workout-header {
-    display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
     margin-bottom: 20px;
@@ -35,10 +34,6 @@
       &:focus {
         border-color: #007bff;
       }
-    }
-
-    #file-image {
-      display: none;
     }
 
     label {
@@ -64,7 +59,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     .exercise-header {
-      display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
       margin-bottom: 20px;
@@ -94,8 +88,6 @@
       margin-top: 20px;
 
       .set-header {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
         gap: 16px;
         margin-bottom: 20px;
 

@@ -2,7 +2,7 @@
   <li
     *ngFor="let set of exercise.sets; let i = index"
     [class.completed]="set.completed"
-    class="set"
+    class="set flex flex-center"
   >
     <div class="set-info">
       <p>Set {{ i + 1 }}: {{ set.reps }} reps {{ set.weight }} kg</p>
@@ -11,7 +11,7 @@
   </li>
 </ul>
 
-<div class="add-set" *ngIf="workout.isCustom">
+<div class="add-set flex" *ngIf="workout.isCustom">
   <input
     type="number"
     placeholder="Reps"

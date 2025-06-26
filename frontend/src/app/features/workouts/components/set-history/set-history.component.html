@@ -2,9 +2,9 @@
   <li
     *ngFor="let setHistory of exerciseHistory.setHistories; let i = index"
     [class.completed]="setHistory.completed"
-    class="set"
+    class="set flex flex-center"
   >
-    <div class="set-info">
+    <div class="set-info flex">
       <p>Set {{ i + 1 }}: {{ setHistory.reps }} reps {{ setHistory.weight }} kg</p>
       <a class="delete-set" (click)="deleteSet(setHistory.id)" *ngIf="workoutHistory.workout.isCustom">×</a>
     </div>
@@ -15,7 +15,7 @@
   </li>
 </ul>
 
-<div class="add-set" *ngIf="workoutHistory.workout.isCustom">
+<div class="add-set flex" *ngIf="workoutHistory.workout.isCustom">
   <input
     type="number"
     placeholder="Reps"

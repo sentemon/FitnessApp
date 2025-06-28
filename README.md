@@ -80,6 +80,9 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 - **Chats**
 <img src="./img/chats.png" alt="Fitness App Chats Page" />
 
+- **Profile**
+<img src="./img/profile.png" alt="Fitness App Profile Page" />
+
 ---
 
 ## Technology Stack
@@ -119,5 +122,4 @@ Use the provided `docker-compose.yml` to set up the infrastructure:
 
 ## Future Plans
 
-- **Kubernetes Support:** Planned deployment and orchestration.
 - **Azure Deployment:** Deploy the app on Azure

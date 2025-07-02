@@ -1,0 +1,15 @@
+<div class="search-container flex flex-center">
+  <input
+    [formControl]="searchControl"
+    type="text"
+    placeholder="Search users..."
+    class="search-input"
+  />
+
+  <ul class="results-list" *ngIf="users.length > 0">
+    <li [routerLink]="'/' + user.username.value" *ngFor="let user of users" class="user-item">
+      <strong>{{ user.username.value }}</strong>
+      <span *ngIf="user.id"> – {{ user.firstName }} {{ user.lastName }}</span>
+    </li>
+  </ul>
+</div>

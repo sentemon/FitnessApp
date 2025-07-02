@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import { Observable, of } from "rxjs";
-import {GET_CURRENT_USER, GET_USER_BY_USERNAME} from "../requests/queries";
+import {GET_CURRENT_USER, GET_USER_BY_USERNAME, SEARCH_USERS} from "../requests/queries";
 import {User} from "../models/user.model";
 import {QueryResponses} from "../responses/query.responses";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
@@ -35,32 +35,12 @@ export class UserService {
     );
   }
 
-  searchUsers(query: string): Observable<Result<User[]>> {
-    return of(Result.success([
-      {
-        id: "1",
-        firstName: "string",
-        lastName: "string",
-        username: {
-          value: "string"
-        },
-        email: {
-          value: "string"
-        },
-        imageUrl: "string"
-      },
-      {
-        id: "2",
-        firstName: "Ivan",
-        lastName: "Sentemon",
-        username: {
-          value: "sentemon"
-        },
-        email: {
-          value: "string"
-        },
-        imageUrl: "string"
-      },
-    ]));
+  searchUsers(query: string): Observable<Result<UserDto[]>> {
+    return this.authClient.query({
+      query: SEARCH_USERS,
+      variables: { search: query }
+    }).pipe(
+      toResult<UserDto[]>('searchUsers')
+    );
   }
 }

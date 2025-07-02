@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
-import {User} from "../../models/user.model";
+import {UserDto} from "../../models/user-dto.model";
 
 @Component({
   selector: 'app-search',
@@ -11,13 +11,13 @@ import {User} from "../../models/user.model";
 })
 export class SearchComponent {
   searchControl = new FormControl('');
-  users: User[] = [];
+  users: UserDto[] = [];
 
   constructor(private userService: UserService) {
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(query => this.userService.searchUsers(query || ''))
-    ).subscribe(result => this.users = result.response!);
+    ).subscribe(result => this.users = result?.response ?? []);
   }
 }

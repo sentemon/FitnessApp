@@ -34,4 +34,16 @@ export const IS_AUTHENTICATED = gql`
   query IsAuthenticated {
     isAuthenticated
   }
-`
+`;
+
+export const SEARCH_USERS = gql`
+  query SearchUsers($search: String!) {
+    searchUsers(search: $search) {
+      firstName
+      lastName
+      username
+      email
+      imageUrl
+    }
+  }
+`;

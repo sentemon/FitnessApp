@@ -2,6 +2,7 @@ using System.Security.Claims;
 using ChatService.Application.Queries.GetAllChats;
 using ChatService.Application.Queries.GetChatById;
 using ChatService.Application.Queries.GetUserById;
+using ChatService.Application.Queries.SearchUsers;
 using ChatService.Domain.Entities;
 
 namespace ChatService.Api.GraphQL;
@@ -64,6 +65,20 @@ public class Query
         if (!result.IsSuccess)
         {
             throw new GraphQLException(result.Error.Message);
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<IEnumerable<User>> SearchUsers(string search, [Service] SearchUsersQueryHandler searchUsersQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var query = new SearchUsersQuery(search, userId);
+        var result = await searchUsersQueryHandler.HandleAsync(query);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
         }
 
         return result.Response;

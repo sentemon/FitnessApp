@@ -48,13 +48,23 @@
       display: flex;
       align-items: center;
 
-      strong {
-        color: #374151;
+      img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
       }
 
-      span {
-        color: #6b7280;
-        margin-left: 0.25rem;
+      div {
+        strong {
+          color: #374151;
+          display: block;
+        }
+
+        p {
+          color: #6b7280;
+          display: block;
+        }
       }
 
       &:hover {

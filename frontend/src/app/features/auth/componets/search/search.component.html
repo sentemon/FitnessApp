@@ -8,8 +8,11 @@
 
   <ul class="results-list" *ngIf="users.length > 0">
     <li [routerLink]="'/' + user.username" *ngFor="let user of users" class="user-item">
-      <strong>{{ user.username }}</strong>
-      <span> – {{ user.firstName }} {{ user.lastName }}</span>
+      <img [src]="user.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
+      <div>
+        <strong>{{ user.username }}</strong>
+        <p>{{ user.firstName }} {{ user.lastName }}</p>
+      </div>
     </li>
   </ul>
 </div>

@@ -57,3 +57,16 @@ export const GET_CHAT_BY_ID = gql`
     }
   }
 `;
+
+export const SEARCH_USERS = gql`
+  query SearchUsers($search: String!) {
+    searchUsers(search: $search) {
+      id
+      firstName
+      lastName
+      username
+      imageUrl
+      createdAt
+    }
+  }
+`;

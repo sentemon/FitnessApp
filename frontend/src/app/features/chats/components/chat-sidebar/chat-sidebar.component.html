@@ -1,17 +1,27 @@
 <div class="chat-sidebar">
-  <div class="search">
-    <input
-      placeholder="Search for a user by username..."
-      [(ngModel)]="searchTerm"
-    >
-  </div>
+  <input
+    [formControl]="searchControl"
+    type="text"
+    placeholder="Search chats..."
+    class="search-input"
+  >
+
+  <ul class="results-list" *ngIf="users.length > 0">
+    <li [routerLink]="'/chats/' + user.id" *ngFor="let user of users" class="user-item">
+      <img [src]="user.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
+      <div>
+        <span>{{ user.firstName }} {{ user.lastName }}</span>
+        <strong>{{ user.username }}</strong>
+      </div>
+    </li>
+  </ul>
   <div class="chats">
-    <div *ngFor="let chat of filteredChats" (click)="onSelectChat(chat.id)" class="chat flex flex-center">
+    <div *ngFor="let chat of chats" (click)="onSelectChat(chat.id)" class="chat flex flex-center">
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
         <p class="chat-name">{{ getChatName(chat) }}</p>
-<!--        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>-->
-        <p class="chat-message">No messages yet</p>
+        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>
+<!--        <p class="chat-message">No messages yet</p>-->
       </div>
     </div>
   </div>

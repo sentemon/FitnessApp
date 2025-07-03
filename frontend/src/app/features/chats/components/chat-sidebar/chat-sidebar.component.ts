@@ -1,9 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
+import {CookieService} from "../../../../core/services/cookie.service";
+import {FormControl} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
-import {CookieService} from "../../../../core/services/cookie.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -13,12 +15,21 @@ import {CookieService} from "../../../../core/services/cookie.service";
 export class ChatSidebarComponent implements OnInit {
   currentUsername: string;
   chats: Chat[] = [];
-  searchTerm: string = '';
+  users: User[] = [];
+  searchControl = new FormControl('');
 
   @Output() selectedChatId = new EventEmitter<string>();
 
-  constructor(private chatService: ChatService, cookieService: CookieService) {
+  constructor(
+    private chatService: ChatService,
+    private userService: UserService,
+    cookieService: CookieService) {
     this.currentUsername = cookieService.get("username").response!;
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => this.userService.searchUsers(query || ''))
+    ).subscribe(result => this.users = result?.response ?? []);
   }
 
   ngOnInit() {
@@ -37,9 +48,9 @@ export class ChatSidebarComponent implements OnInit {
     return chat.userChats.find(uc => uc.user.username !== this.currentUsername)!.user.username;
   }
 
-  get filteredChats(): Chat[] {
-    return this.chats.filter(chat =>
-      chat.userChats.some(uc => uc.user.username.toLowerCase().startsWith(this.searchTerm.toLowerCase()) && uc.user.username !== this.currentUsername)
-    );
-  }
+  // get filteredChats(): Chat[] {
+  //   return this.chats.filter(chat =>
+  //     chat.userChats.some(uc => uc.user.username.toLowerCase().startsWith(this.searchControl.value!.toLowerCase()) && uc.user.username !== this.currentUsername)
+  //   );
+  // }
 }

@@ -5,6 +5,7 @@ export interface User {
   firstName: string;
   lastName: string;
   username: string;
+  imageUrl: string;
   email: string;
   isOnline: boolean;
   userChats: UserChat[];

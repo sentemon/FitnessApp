@@ -1,0 +1,18 @@
+<div class="search-container flex flex-center">
+  <input
+    [formControl]="searchControl"
+    type="text"
+    placeholder="Search users..."
+    class="search-input"
+  />
+
+  <ul class="results-list" *ngIf="users.length > 0">
+    <li [routerLink]="'/' + user.username" *ngFor="let user of users" class="user-item">
+      <img [src]="user.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
+      <div>
+        <strong>{{ user.username }}</strong>
+        <p>{{ user.firstName }} {{ user.lastName }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

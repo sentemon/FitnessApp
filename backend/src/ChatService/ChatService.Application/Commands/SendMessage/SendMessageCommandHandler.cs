@@ -18,16 +18,17 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
 
     public async Task<IResult<Message, Error>> HandleAsync(SendMessageCommand command)
     {
-        var chat = await _context.Chats.FirstOrDefaultAsync(c => c.Id == command.ChatId);
-        if (chat is null)
-        {
-            return Result<Message>.Failure(new Error(ResponseMessages.ChatNotFound));
-        }
-
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
         if (user is null)
         {
             return Result<Message>.Failure(new Error(ResponseMessages.UserNotFound));
+        }
+        
+        var chat = await _context.Chats.FirstOrDefaultAsync(c => c.Id == command.ChatId);
+        if (chat is null)
+        {
+            // ToDo: Create Chat
+            return Result<Message>.Failure(new Error(ResponseMessages.ChatNotFound));
         }
 
         var message = Message.Create(user.Id, chat.Id, command.Content.Trim());

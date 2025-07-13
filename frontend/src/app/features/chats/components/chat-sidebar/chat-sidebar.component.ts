@@ -19,6 +19,7 @@ export class ChatSidebarComponent implements OnInit {
   searchControl = new FormControl('');
 
   @Output() selectedChatId = new EventEmitter<string>();
+  @Output() userSelected = new EventEmitter<string>();
 
   constructor(
     private chatService: ChatService,
@@ -42,6 +43,10 @@ export class ChatSidebarComponent implements OnInit {
 
   onSelectChat(chatId: string): void {
     this.selectedChatId.emit(chatId);
+  }
+
+  onUserSelected(userId: string) {
+    this.userSelected.emit(userId);
   }
 
   getChatName(chat: Chat): string {

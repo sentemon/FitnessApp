@@ -14,6 +14,7 @@ import {Message} from "../../models/message.model";
 import {SignalRService} from "../../services/signalr.service";
 import {CookieService} from "../../../../core/services/cookie.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-chat-area',
@@ -28,29 +29,45 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   content: string = '';
 
   @Input() selectedChatId: string | null = null;
+  @Input() receiverId: string | null = null;
 
   private subscriptions = new Subscription();
 
   constructor(
     private chatService: ChatService,
     private signalRService: SignalRService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router,
   ) {
     this.currentUserId = this.cookieService.get("userId").response!;
   }
 
   ngOnInit(): void {
-    this.tryLoadChat();
+    if (this.selectedChatId) {
+      const token = this.cookieService.get("token").response!;
+      this.signalRService.startConnection(this.selectedChatId, token);
+      this.tryLoadChat(); // подгрузка сообщений
+    } else if (this.receiverId) {
+      const token = this.cookieService.get("token").response!;
+      this.signalRService.startTempConnection(this.receiverId, token);
+    }
 
-    const messageSub = this.signalRService.onReceiveMessage.subscribe(message => {
-      if (this.selectedChat && message.chatId === this.selectedChat.id) {
-        this.selectedChat.messages = [...this.selectedChat.messages, message];
-      }
-    });
-
-    this.subscriptions.add(messageSub);
-    this.scrollToBottom();
+    this.subscriptions.add(
+      this.signalRService.onReceiveMessage.subscribe(message => {
+        if (!this.selectedChat || this.selectedChat.id !== message.chatId) {
+          this.chatService.getById(message.chatId).subscribe(result => {
+            if (result.isSuccess) {
+              this.selectedChat = structuredClone(result.response);
+              this.router.navigate(['/chats', this.selectedChat.id]);
+            }
+          });
+        } else {
+          this.selectedChat.messages.push(message);
+        }
+      })
+    );
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["selectedChatId"] && !changes["selectedChatId"].firstChange) {
@@ -69,11 +86,23 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   sendMessage() {
-    if (this.selectedChat && this.content !== '') {
-      this.signalRService.sendMessage(this.selectedChat.id, this.content.trim());
-      this.content = ''
-      this.scrollToBottom();
+    if (!this.content.trim()) return;
+
+    console.log('[sendMessage] content:', this.content);
+    console.log('[sendMessage] selectedChat:', this.selectedChat);
+    console.log('[sendMessage] receiverId:', this.receiverId);
+
+    if (this.selectedChat) {
+      this.signalRService.sendMessage(
+        this.selectedChat.userChats.find(u => u.userId !== this.currentUserId)!.userId, this.content.trim()
+      );
     }
+    else if (this.receiverId) {
+      this.signalRService.sendMessage(this.receiverId, this.content.trim());
+    }
+
+    this.content = '';
+    this.scrollToBottom();
   }
 
   get isOnline(): boolean {

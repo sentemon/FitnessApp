@@ -9,8 +9,7 @@ import {Subject} from "rxjs";
 })
 export class SignalRService {
   private hubConnection!: HubConnection;
-
-  public onReceiveMessage: Subject<Message> = new Subject()
+  public onReceiveMessage: Subject<Message> = new Subject();
 
   constructor() { }
 
@@ -20,10 +19,18 @@ export class SignalRService {
       return;
     }
 
+    this.createConnection(`http://localhost:8000/chat/chat?chatId=${chatId}`, accessToken);
+  }
+
+  public startTempConnection(receiverId: string, accessToken: string): void {
+    this.createConnection(`http://localhost:8000/chat/chat?receiverId=${receiverId}`, accessToken);
+  }
+
+  private createConnection(url: string, token: string) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`http://localhost:8000/chat/chat?chatId=${chatId}`, {
+      .withUrl(url, {
         withCredentials: true,
-        accessTokenFactory: () => accessToken
+        accessTokenFactory: () => token
       })
       .withAutomaticReconnect()
       .build();
@@ -34,14 +41,12 @@ export class SignalRService {
       .catch(err => console.error('SignalR connection error: ', err));
 
     this.hubConnection.on('ReceiveMessage', (message: Message) => {
-      if (this.onReceiveMessage) {
-        this.onReceiveMessage.next(message);
-      }
+      this.onReceiveMessage.next(message);
     });
 
     this.hubConnection.onclose(error => {
-      console.warn('SignalR connection closed. Attempting to reconnect...', error);
-      setTimeout(() => this.startConnection(chatId, accessToken), 3000);
+      console.warn('SignalR connection closed. Reconnecting...', error);
+      setTimeout(() => this.createConnection(url, token), 3000);
     });
   }
 
@@ -51,10 +56,13 @@ export class SignalRService {
     }
   }
 
-  public sendMessage(chatId: string, message: string): void {
+  public sendMessage(receiverId: string, message: string): void {
     if (this.isConnected()) {
-      this.hubConnection.invoke('SendMessage', chatId, message)
+      this.hubConnection.invoke('SendMessage', receiverId, message)
         .catch(err => console.error('Error while sending message: ', err));
+      console.log("Message sent");
+    } else {
+      console.log("Message didn't send — connection not ready");
     }
   }
 

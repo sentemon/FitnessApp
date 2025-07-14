@@ -35,7 +35,6 @@ export class ChatSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.chatService.getAll().subscribe(result => {
-      console.log(result);
       if (result.isSuccess)
         this.chats = result.response;
     });

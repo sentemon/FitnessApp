@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import {HubConnection} from "@microsoft/signalr";
+import {HubConnection, LogLevel} from "@microsoft/signalr";
 import {Message} from "../models/message.model";
 import {Subject} from "rxjs";
 
@@ -15,7 +15,7 @@ export class SignalRService {
 
   public startConnection(chatId: string | null, accessToken: string): void {
     if (!chatId) {
-      console.error('Chat ID is required for SignalR connection');
+      console.log('Chat ID is required for SignalR connection');
       return;
     }
 
@@ -36,34 +36,31 @@ export class SignalRService {
         withCredentials: true,
         accessTokenFactory: () => token
       })
+      .configureLogging(LogLevel.Error)
       .withAutomaticReconnect()
       .build();
 
     this.hubConnection
       .start()
-      .then(() => console.log('SignalR connection started'))
-      .catch(err => console.error('SignalR connection error: ', err));
+      .catch(err => console.log('SignalR connection error: ', err));
 
     this.hubConnection.on('ReceiveMessage', (message: Message) => {
       this.onReceiveMessage.next(message);
     });
 
-    this.hubConnection.onclose(error => {
-      console.warn('SignalR connection closed. Reconnecting...', error);
+    this.hubConnection.onclose(() => {
       setTimeout(() => this.createConnection(url, token), 3000);
     });
   }
 
   public stopConnection(): void {
-    if (this.hubConnection) {
-      this.hubConnection.stop().then(() => console.log('SignalR connection stopped'));
-    }
+    this.hubConnection?.stop().catch(err => console.log('SignalR connection error: ', err));
   }
 
   public sendMessage(receiverId: string, message: string): void {
     if (this.isConnected()) {
       this.hubConnection.invoke('SendMessage', receiverId, message)
-        .catch(err => console.error('Error while sending message: ', err));
+        .catch(err => console.log('Error while sending message: ', err));
     } else {
       console.log("Message didn't send — connection not ready");
     }

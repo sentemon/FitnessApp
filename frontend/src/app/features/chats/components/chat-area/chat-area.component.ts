@@ -45,10 +45,12 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   ngOnInit(): void {
     if (this.selectedChatId) {
       const token = this.cookieService.get("token").response!;
+      this.signalRService.stopConnection();
       this.signalRService.startConnection(this.selectedChatId, token);
-      this.tryLoadChat(); // подгрузка сообщений
+      this.tryLoadChat();
     } else if (this.receiverId) {
       const token = this.cookieService.get("token").response!;
+      this.signalRService.stopConnection();
       this.signalRService.startTempConnection(this.receiverId, token);
     }
 
@@ -82,15 +84,12 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   ngOnDestroy() {
+    this.signalRService.stopConnection();
     this.subscriptions.unsubscribe();
   }
 
   sendMessage() {
     if (!this.content.trim()) return;
-
-    console.log('[sendMessage] content:', this.content);
-    console.log('[sendMessage] selectedChat:', this.selectedChat);
-    console.log('[sendMessage] receiverId:', this.receiverId);
 
     if (this.selectedChat) {
       this.signalRService.sendMessage(

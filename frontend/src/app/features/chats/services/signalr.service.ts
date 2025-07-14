@@ -27,6 +27,10 @@ export class SignalRService {
   }
 
   private createConnection(url: string, token: string) {
+    if (this.hubConnection) {
+      this.hubConnection.off('ReceiveMessage');
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(url, {
         withCredentials: true,
@@ -60,7 +64,6 @@ export class SignalRService {
     if (this.isConnected()) {
       this.hubConnection.invoke('SendMessage', receiverId, message)
         .catch(err => console.error('Error while sending message: ', err));
-      console.log("Message sent");
     } else {
       console.log("Message didn't send — connection not ready");
     }

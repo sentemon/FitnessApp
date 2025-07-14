@@ -18,19 +18,28 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
 
     public async Task<IResult<Message, Error>> HandleAsync(SendMessageCommand command)
     {
-        var chat = await _context.Chats.FirstOrDefaultAsync(c => c.Id == command.ChatId);
-        if (chat is null)
-        {
-            return Result<Message>.Failure(new Error(ResponseMessages.ChatNotFound));
-        }
-
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
-        if (user is null)
+        var sender = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
+        var receiver = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.ReceiverId);
+        if (sender is null || receiver is null)
         {
             return Result<Message>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
-        var message = Message.Create(user.Id, chat.Id, command.Content.Trim());
+        var chat = await _context.Chats
+            .Include(c => c.UserChats)
+            .FirstOrDefaultAsync(c =>
+                c.UserChats.Any(uc => uc.UserId == sender.Id) &&
+                c.UserChats.Any(uc => uc.UserId == receiver.Id));
+        
+        if (chat is null)
+        {
+            chat = Chat.Create(sender.Id, receiver.Id);
+            
+            _context.Chats.Add(chat);
+            await _context.SaveChangesAsync();
+        }
+
+        var message = Message.Create(sender.Id, chat.Id, command.Content.Trim());
         _context.Messages.Add(message);
 
         await _context.SaveChangesAsync();

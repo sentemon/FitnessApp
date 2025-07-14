@@ -1,4 +1,4 @@
-<div class="chat-area flex flex-col" *ngIf="selectedChatId">
+<div class="chat-area flex flex-col" *ngIf="selectedChatId || receiverId">
   <div class="header flex flex-center">
     <div class="chat-info flex flex-col">
       <p class="chat-name">{{ chatName }}</p>
@@ -9,7 +9,7 @@
     <div class="header-actions flex flex-center">
       <input [(ngModel)]="searchQuery" class="search-input" placeholder="Search...">
       <img [src]="'assets/search.svg'" alt="Search" class="search">
-      <img [src]="'assets/profile.svg'" alt="profile" class="profile-pic">
+      <img [routerLink]="'/' + chatName" [src]="'assets/profile.svg'" alt="profile" class="profile-pic">
     </div>
   </div>
   <div #messagesContainer class="messages flex flex-col">

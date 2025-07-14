@@ -4,10 +4,11 @@
     type="text"
     placeholder="Search chats..."
     class="search-input"
+    name="Search Chats"
   >
 
   <ul class="results-list" *ngIf="users.length > 0">
-    <li [routerLink]="'/chats/' + user.id" *ngFor="let user of users" class="user-item">
+    <li [routerLink]="'/chats/' + user.id" *ngFor="let user of users" (click)="onUserSelected(user.id)" class="user-item">
       <img [src]="user.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
       <div>
         <span>{{ user.firstName }} {{ user.lastName }}</span>
@@ -20,8 +21,8 @@
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
         <p class="chat-name">{{ getChatName(chat) }}</p>
-        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>
-<!--        <p class="chat-message">No messages yet</p>-->
+<!--        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>-->
+        <p class="chat-message">No messages yet</p>
       </div>
     </div>
   </div>

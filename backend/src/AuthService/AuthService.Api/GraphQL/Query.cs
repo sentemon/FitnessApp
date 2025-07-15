@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AuthService.Application.DTOs;
 using AuthService.Application.Queries.GetFollowers;
+using AuthService.Application.Queries.GetFollowing;
 using AuthService.Application.Queries.GetUserById;
 using AuthService.Application.Queries.GetUserByUsername;
 using AuthService.Application.Queries.SearchUsers;
@@ -63,6 +64,20 @@ public class Query
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var query = new GetFollowersQuery(userId);
         var result = await getFollowersQueryHandler.HandleAsync(query);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<ICollection<User>> GetFollowing([Service] GetFollowingQueryHandler getFollowingQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var query = new GetFollowingQuery(userId);
+        var result = await getFollowingQueryHandler.HandleAsync(query);
 
         if (!result.IsSuccess)
         {

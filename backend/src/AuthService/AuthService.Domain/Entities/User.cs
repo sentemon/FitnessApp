@@ -13,6 +13,12 @@ public class User
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
+    private readonly List<Follow> _followers = [];
+    public IReadOnlyCollection<Follow> Followers => _followers.AsReadOnly();
+
+    private readonly List<Follow> _followings = [];
+    public IReadOnlyCollection<Follow> Followings => _followings.AsReadOnly();
+
     private User(string id, string firstName, string lastName, Username username, Email email, string? imageUrl = null)
     {
         Id = id;

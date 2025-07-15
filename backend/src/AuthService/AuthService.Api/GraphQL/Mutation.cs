@@ -5,6 +5,7 @@ using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
 using AuthService.Application.Commands.ResetPassword;
 using AuthService.Application.Commands.SendVerifyEmail;
+using AuthService.Application.Commands.Unfollow;
 using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
@@ -130,6 +131,20 @@ public class Mutation
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var command = new FollowCommand(targetUserId, userId);
         var result = await followCommandHandler.HandleAsync(command);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> Unfollow(string targetUserId, [Service] UnfollowCommandHandler unfollowCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new UnfollowCommand(targetUserId, userId);
+        var result = await unfollowCommandHandler.HandleAsync(command);
 
         if (!result.IsSuccess)
         {

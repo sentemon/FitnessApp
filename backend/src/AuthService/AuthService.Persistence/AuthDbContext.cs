@@ -11,9 +11,11 @@ public class AuthDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Follow> Follows { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new FollowConfiguration());
     }
 }

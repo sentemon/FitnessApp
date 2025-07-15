@@ -16,8 +16,8 @@ public class User
     private readonly List<Follow> _followers = [];
     public IReadOnlyCollection<Follow> Followers => _followers.AsReadOnly();
 
-    private readonly List<Follow> _followings = [];
-    public IReadOnlyCollection<Follow> Followings => _followings.AsReadOnly();
+    private readonly List<Follow> _following = [];
+    public IReadOnlyCollection<Follow> Following => _following.AsReadOnly();
 
     private User(string id, string firstName, string lastName, Username username, Email email, string? imageUrl = null)
     {
@@ -65,11 +65,11 @@ public class User
     {
         if (targetUser.Id == Id)
             throw new InvalidOperationException("Cannot follow yourself.");
-        if (_followings.Any(f => f.FollowingId == targetUser.Id))
+        if (_following.Any(f => f.FollowingId == targetUser.Id))
             return;
 
         var follow = Follow.Create(Id, targetUser.Id);
-        _followings.Add(follow);
+        _following.Add(follow);
         targetUser._followers.Add(follow);
     }
 
@@ -78,11 +78,11 @@ public class User
         if (targetUser.Id == Id)
             throw new InvalidOperationException("Cannot unfollow yourself.");
         
-        var follow = _followings.FirstOrDefault(f => f.FollowingId == targetUser.Id);
+        var follow = _following.FirstOrDefault(f => f.FollowingId == targetUser.Id);
         if (follow is null)
             return;
         
-        _followings.Remove(follow);
+        _following.Remove(follow);
         targetUser._followers.Remove(follow);
     }
     

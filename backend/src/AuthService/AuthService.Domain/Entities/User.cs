@@ -60,6 +60,31 @@ public class User
     {
         EmailVerified = true;
     }
+
+    public void FollowUser(User targetUser)
+    {
+        if (targetUser.Id == Id)
+            throw new InvalidOperationException("Cannot follow yourself.");
+        if (_followings.Any(f => f.FollowingId == targetUser.Id))
+            return;
+
+        var follow = Follow.Create(Id, targetUser.Id);
+        _followings.Add(follow);
+        targetUser._followers.Add(follow);
+    }
+
+    public void UnfollowUser(User targetUser)
+    {
+        if (targetUser.Id == Id)
+            throw new InvalidOperationException("Cannot unfollow yourself.");
+        
+        var follow = _followings.FirstOrDefault(f => f.FollowingId == targetUser.Id);
+        if (follow is null)
+            return;
+        
+        _followings.Remove(follow);
+        targetUser._followers.Remove(follow);
+    }
     
     #pragma warning disable CS8618
     // Required by EF Core

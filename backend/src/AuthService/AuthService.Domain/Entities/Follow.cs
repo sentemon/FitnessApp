@@ -10,18 +10,23 @@ public class Follow
     public User Follower { get; private set; }
     public User Following { get; private set; }
 
-    public Follow(string followerId, string followingId)
+    private Follow(string followerId, string followingId)
     {
         FollowerId = followerId;
         FollowingId = followingId;
         FollowedAt = DateOnly.FromDateTime(DateTime.UtcNow);
     }
-    
-    #pragma warning disable CS8618
+
+    public static Follow Create(string followerId, string followingId)
+    {
+        return new Follow(followerId, followingId);
+    }
+
+#pragma warning disable CS8618
     // Required by EF Core
     private Follow()
     {
     }
-    #pragma warning disable CS8618
+#pragma warning disable CS8618
     
 }

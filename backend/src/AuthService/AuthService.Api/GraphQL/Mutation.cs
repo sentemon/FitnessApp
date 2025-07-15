@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AuthService.Application.Commands.Follow;
 using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
@@ -116,6 +117,20 @@ public class Mutation
         var command = new UpdateUserCommand(input, userId);
         var result = await updateUserCommandHandler.HandleAsync(command);
         
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> Follow(string targetUserId, [Service] FollowCommandHandler followCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new FollowCommand(targetUserId, userId);
+        var result = await followCommandHandler.HandleAsync(command);
+
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

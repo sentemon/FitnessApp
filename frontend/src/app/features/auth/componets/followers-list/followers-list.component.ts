@@ -9,4 +9,8 @@ import {User} from "../../models/user.model";
 export class FollowersListComponent {
   @Output() close = new EventEmitter<void>();
   @Input() followers!: User[];
+
+  closeModal(): void {
+    this.close.emit();
+  }
 }

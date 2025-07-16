@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   posts: Post[] = [];
   selectedPostForModal: Post | null = null;
 
-  followers: User[] | null = null;
+  followers: User[] | null = [];
   following: User[] | null = null;
 
   constructor(

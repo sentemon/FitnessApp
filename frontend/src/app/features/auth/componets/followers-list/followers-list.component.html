@@ -1,3 +1,17 @@
-<div class="modal-overlay">
-  <p>followers-list works!</p>
+<div class="modal-overlay flex flex-center" (click)="closeModal()">
+  <div class="modal flex flex-col" (click)="$event.stopPropagation()">
+    <header class="modal-header flex flex-center">
+      <strong class="followers">Followers</strong>
+      <strong class="close" (click)="closeModal()">×</strong>
+    </header>
+    <div class="followers-list">
+      <div *ngFor="let follower of followers" class="follower flex">
+        <img [src]="follower.imageUrl || 'assets/profile.png'" alt="Profile Picture">
+        <div class="follower-info flex flex-col">
+          <strong>{{ follower.username }}</strong>
+          <p>{{ follower.firstName }} {{ follower.lastName }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

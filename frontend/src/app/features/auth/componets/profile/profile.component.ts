@@ -19,6 +19,9 @@ export class ProfileComponent implements OnInit {
   posts: Post[] = [];
   selectedPostForModal: Post | null = null;
 
+  followers: User[] | null = null;
+  following: User[] | null = null;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -67,7 +70,7 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  openModal(post: Post): void {
+  openPost(post: Post): void {
     this.selectedPostForModal = post;
   }
 
@@ -76,5 +79,16 @@ export class ProfileComponent implements OnInit {
     if (index !== -1) {
       this.posts[index] = updatedPost;
     }
+  }
+
+  openFollowers() {
+    this.userService.getFollowers().subscribe(result => {
+      if (!result.isSuccess) {
+        console.log(result.error.message);
+        return;
+      }
+
+      this.followers = result.response;
+    });
   }
 }

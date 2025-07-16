@@ -14,7 +14,7 @@
     </div>
 
     <div class="profile__stats flex">
-      <div>
+      <div class="followers" (click)="openFollowers()">
 <!--        <strong>{{ user.followersCount }}</strong>-->
         <strong>56</strong>
         <p>Followers</p>
@@ -35,7 +35,7 @@
   <div class="title" *ngIf="posts.length !== 0"><strong>POSTS</strong></div>
   <div class="posts grid grid-cols-3">
     <div *ngFor="let post of posts" class="post">
-      <img (click)="openModal(post)" [src]="post.contentUrl" alt="Post Image">
+      <img (click)="openPost(post)" [src]="post.contentUrl" alt="Post Image">
     </div>
   </div>
 </main>
@@ -46,3 +46,9 @@
   (close)="selectedPostForModal = null"
   (postChange)="updatePost($event)"
 ></app-post-modal>
+
+<app-followers-list
+  *ngIf="followers"
+  [followers]="followers"
+  (close)="followers = null"
+></app-followers-list>

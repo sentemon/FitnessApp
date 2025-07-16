@@ -47,3 +47,15 @@ export const SEARCH_USERS = gql`
     }
   }
 `;
+
+export const GET_FOLLOWERS = gql`
+  query Followers {
+    followers {
+      id
+      firstName
+      lastName
+      imageUrl
+      createdAt
+    }
+  }
+`

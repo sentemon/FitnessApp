@@ -8,6 +8,7 @@ import {ProfileComponent} from "./componets/profile/profile.component";
 import {RegisterComponent} from "./componets/register/register.component";
 import {PostsModule} from "../posts/posts.module";
 import {SearchComponent} from "./componets/search/search.component";
+import { FollowersListComponent } from './componets/followers-list/followers-list.component';
 
 
 
@@ -17,7 +18,8 @@ import {SearchComponent} from "./componets/search/search.component";
     LogoutComponent,
     ProfileComponent,
     RegisterComponent,
-    SearchComponent
+    SearchComponent,
+    FollowersListComponent
   ],
   imports: [
     CommonModule,

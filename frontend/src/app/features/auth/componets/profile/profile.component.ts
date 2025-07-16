@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   posts: Post[] = [];
   selectedPostForModal: Post | null = null;
 
-  followers: User[] | null = [];
+  followers: User[] | null = null;
   following: User[] | null = null;
 
   constructor(
@@ -89,6 +89,17 @@ export class ProfileComponent implements OnInit {
       }
 
       this.followers = result.response;
+    });
+  }
+
+  openFollowing() {
+    this.userService.getFollowing().subscribe(result => {
+      if (!result.isSuccess) {
+        console.log(result.error.message);
+        return;
+      }
+
+      this.following = result.response;
     });
   }
 }

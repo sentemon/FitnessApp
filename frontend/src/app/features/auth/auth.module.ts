@@ -9,6 +9,7 @@ import {RegisterComponent} from "./componets/register/register.component";
 import {PostsModule} from "../posts/posts.module";
 import {SearchComponent} from "./componets/search/search.component";
 import { FollowersListComponent } from './componets/followers-list/followers-list.component';
+import {FollowingListComponent} from "./componets/following-list/following-list.component";
 
 
 
@@ -19,7 +20,8 @@ import { FollowersListComponent } from './componets/followers-list/followers-lis
     ProfileComponent,
     RegisterComponent,
     SearchComponent,
-    FollowersListComponent
+    FollowersListComponent,
+    FollowingListComponent
   ],
   imports: [
     CommonModule,

@@ -19,7 +19,7 @@
         <strong>56</strong>
         <p>Followers</p>
       </div>
-      <div>
+      <div class="following" (click)="openFollowing()">
 <!--        <strong>{{ user.followingCount }}</strong>-->
         <strong>34</strong>
         <p>Following</p>
@@ -52,3 +52,9 @@
   [followers]="followers"
   (close)="followers = null"
 ></app-followers-list>
+
+<app-following-list
+  *ngIf="following"
+  [following]="following"
+  (close)="following = null"
+></app-following-list>

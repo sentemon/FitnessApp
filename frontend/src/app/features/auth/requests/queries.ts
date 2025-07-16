@@ -58,4 +58,16 @@ export const GET_FOLLOWERS = gql`
       createdAt
     }
   }
-`
+`;
+
+export const GET_FOLLOWING = gql`
+  query Following {
+    following {
+      id
+      firstName
+      lastName
+      imageUrl
+      createdAt
+    }
+  }
+`;

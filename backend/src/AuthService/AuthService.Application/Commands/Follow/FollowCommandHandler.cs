@@ -3,7 +3,7 @@ using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
-
+    
 namespace AuthService.Application.Commands.Follow;
 
 public class FollowCommandHandler : ICommandHandler<FollowCommand, string>
@@ -25,9 +25,19 @@ public class FollowCommandHandler : ICommandHandler<FollowCommand, string>
             return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
-        user.FollowUser(targetUser);
+        var alreadyFollowing = await _context.Follows
+            .AnyAsync(f => f.FollowerId == user.Id && f.FollowingId == targetUser.Id);
+
+        if (alreadyFollowing)
+        {
+            return Result<string>.Failure(new Error("Already following this user."));
+        }
+
+        var follow = Domain.Entities.Follow.Create(user.Id, targetUser.Id);
+        _context.Follows.Add(follow);
+
         await _context.SaveChangesAsync();
-        
+
         return Result<string>.Success("User followed successfully");
     }
 }

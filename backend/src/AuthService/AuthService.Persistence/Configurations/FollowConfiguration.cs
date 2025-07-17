@@ -9,6 +9,10 @@ public class FollowConfiguration : IEntityTypeConfiguration<Follow>
     public void Configure(EntityTypeBuilder<Follow> builder)
     {
         builder.HasKey(f => f.Id);
+        
+        builder
+            .HasIndex(f => new { f.FollowerId, f.FollowingId })
+            .IsUnique();
 
         builder
             .HasOne(f => f.Follower)

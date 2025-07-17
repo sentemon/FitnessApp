@@ -60,18 +60,6 @@ public class User
     {
         EmailVerified = true;
     }
-
-    public void FollowUser(User targetUser)
-    {
-        if (targetUser.Id == Id)
-            throw new InvalidOperationException("Cannot follow yourself.");
-        if (_following.Any(f => f.FollowingId == targetUser.Id))
-            return;
-
-        var follow = Follow.Create(Id, targetUser.Id);
-        _following.Add(follow);
-        targetUser._followers.Add(follow);
-    }
     
     #pragma warning disable CS8618
     // Required by EF Core

@@ -21,6 +21,7 @@ export const GET_CURRENT_USER = gql`
 export const GET_USER_BY_USERNAME = gql`
   query UserByUsername($username: String!) {
     userByUsername(username: $username) {
+      id
       firstName
       lastName
       username

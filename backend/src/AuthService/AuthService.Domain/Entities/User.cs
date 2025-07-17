@@ -72,19 +72,6 @@ public class User
         _following.Add(follow);
         targetUser._followers.Add(follow);
     }
-
-    public void UnfollowUser(User targetUser)
-    {
-        if (targetUser.Id == Id)
-            throw new InvalidOperationException("Cannot unfollow yourself.");
-        
-        var follow = _following.FirstOrDefault(f => f.FollowingId == targetUser.Id);
-        if (follow is null)
-            return;
-        
-        _following.Remove(follow);
-        targetUser._followers.Remove(follow);
-    }
     
     #pragma warning disable CS8618
     // Required by EF Core

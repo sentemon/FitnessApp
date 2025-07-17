@@ -17,15 +17,18 @@ public class UnfollowCommandHandler : ICommandHandler<UnfollowCommand, string>
 
     public async Task<IResult<string, Error>> HandleAsync(UnfollowCommand command)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.UserId);
-        var targetUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == command.TargetUserId);
+        var follow = await _context.Follows
+            .FirstOrDefaultAsync(f =>
+                f.FollowerId == command.UserId &&
+                f.FollowingId == command.TargetUserId);
 
-        if (user is null || targetUser is null)
+        if (follow is null)
         {
-            return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
+            return Result<string>.Failure(new Error("Follow relationship not found."));
         }
+
+        _context.Follows.Remove(follow);
         
-        user.UnfollowUser(targetUser);
         await _context.SaveChangesAsync();
         
         return Result<string>.Success("User unfollowed successfully");

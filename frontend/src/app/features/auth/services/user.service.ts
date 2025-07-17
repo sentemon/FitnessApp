@@ -14,6 +14,7 @@ import {QueryResponses} from "../responses/query.responses";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 import {UserDto} from "../models/user-dto.model";
+import {FOLLOW, UNFOLLOW} from "../requests/mutations";
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,24 @@ export class UserService {
       query: GET_FOLLOWING
     }).pipe(
       toResult<User[]>('following')
+    );
+  }
+
+  follow(targetUserId: string): Observable<Result<string>> {
+    return this.authClient.mutate({
+      mutation: FOLLOW,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<string>('follow')
+    );
+  }
+
+  unfollow(targetUserId: string): Observable<Result<string>> {
+    return this.authClient.mutate({
+      mutation: UNFOLLOW,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<string>('unfollow')
     );
   }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
@@ -12,7 +12,7 @@ import {UserDto} from "../../models/user-dto.model";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
   user!: UserDto;
   currentUser!: User;
 
@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
       });
     });
 
-
     this.userService.getCurrentUser().subscribe(result => {
       if (result.isSuccess) {
         this.currentUser = result.response;
@@ -53,8 +52,14 @@ export class ProfileComponent implements OnInit {
         console.warn(result.error.message);
       }
     });
+  }
 
-    this.checkIfFollowing();
+  ngAfterViewInit(): void {
+    this.userService.isFollowing(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = result.response;
+      }
+    });
   }
 
   logout(): void {
@@ -107,23 +112,18 @@ export class ProfileComponent implements OnInit {
   }
 
   follow(): void {
-    this.isFollowing = true;
-    console.log("Followed", this.user);
+    this.userService.follow(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = true;
+      }
+    });
   }
 
   unfollow(): void {
-    this.isFollowing = false;
-    console.log("Unfollowed", this.user);
-  }
-
-  checkIfFollowing(): void {
-    this.userService.isFollowing(this.user.username).subscribe(result => {
-      if (!result.isSuccess) {
-        console.log(result.error.message);
-        return;
+    this.userService.unfollow(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = false;
       }
-
-      this.isFollowing = result.response;
     });
   }
 }

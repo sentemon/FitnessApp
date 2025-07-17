@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
@@ -12,12 +12,16 @@ import {UserDto} from "../../models/user-dto.model";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
   user!: UserDto;
   currentUser!: User;
 
   posts: Post[] = [];
   selectedPostForModal: Post | null = null;
+
+  followers: User[] | null = null;
+  following: User[] | null = null;
+  isFollowing: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -40,7 +44,6 @@ export class ProfileComponent implements OnInit {
       });
     });
 
-
     this.userService.getCurrentUser().subscribe(result => {
       if (result.isSuccess) {
         this.currentUser = result.response;
@@ -48,7 +51,15 @@ export class ProfileComponent implements OnInit {
       } else {
         console.warn(result.error.message);
       }
-    })
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.userService.isFollowing(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = result.response;
+      }
+    });
   }
 
   logout(): void {
@@ -67,7 +78,7 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  openModal(post: Post): void {
+  openPost(post: Post): void {
     this.selectedPostForModal = post;
   }
 
@@ -76,5 +87,43 @@ export class ProfileComponent implements OnInit {
     if (index !== -1) {
       this.posts[index] = updatedPost;
     }
+  }
+
+  openFollowers() {
+    this.userService.getFollowers(this.user.id).subscribe(result => {
+      if (!result.isSuccess) {
+        console.log(result.error.message);
+        return;
+      }
+
+      this.followers = result.response;
+    });
+  }
+
+  openFollowing() {
+    this.userService.getFollowing(this.user.id).subscribe(result => {
+      if (!result.isSuccess) {
+        console.log(result.error.message);
+        return;
+      }
+
+      this.following = result.response;
+    });
+  }
+
+  follow(): void {
+    this.userService.follow(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = true;
+      }
+    });
+  }
+
+  unfollow(): void {
+    this.userService.unfollow(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = false;
+      }
+    });
   }
 }

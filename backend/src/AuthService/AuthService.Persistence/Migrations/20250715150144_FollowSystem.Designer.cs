@@ -3,6 +3,7 @@ using System;
 using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthService.Persistence.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715150144_FollowSystem")]
+    partial class FollowSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +44,9 @@ namespace AuthService.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FollowingId");
+                    b.HasIndex("FollowerId");
 
-                    b.HasIndex("FollowerId", "FollowingId")
-                        .IsUnique();
+                    b.HasIndex("FollowingId");
 
                     b.ToTable("Follows");
                 });

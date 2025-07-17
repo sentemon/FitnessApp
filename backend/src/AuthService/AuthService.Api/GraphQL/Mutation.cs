@@ -1,9 +1,11 @@
 using System.Security.Claims;
+using AuthService.Application.Commands.Follow;
 using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
 using AuthService.Application.Commands.Register;
 using AuthService.Application.Commands.ResetPassword;
 using AuthService.Application.Commands.SendVerifyEmail;
+using AuthService.Application.Commands.Unfollow;
 using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
@@ -116,6 +118,34 @@ public class Mutation
         var command = new UpdateUserCommand(input, userId);
         var result = await updateUserCommandHandler.HandleAsync(command);
         
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<string> Follow(string targetUserId, [Service] FollowCommandHandler followCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new FollowCommand(targetUserId, userId);
+        var result = await followCommandHandler.HandleAsync(command);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<string> Unfollow(string targetUserId, [Service] UnfollowCommandHandler unfollowCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new UnfollowCommand(targetUserId, userId);
+        var result = await unfollowCommandHandler.HandleAsync(command);
+
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

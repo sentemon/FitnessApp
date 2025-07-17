@@ -1,0 +1,17 @@
+<div class="modal-overlay flex flex-center" (click)="closeModal()">
+  <div class="modal flex flex-col" (click)="$event.stopPropagation()">
+    <header class="modal-header flex flex-center">
+      <strong class="followers">Followers</strong>
+      <strong class="close" (click)="closeModal()">×</strong>
+    </header>
+    <div class="followers-list">
+      <div [routerLink]="'/' + follower.username.value" *ngFor="let follower of followers" class="follower flex" (click)="closeModal()">
+        <img [src]="follower.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
+        <div class="follower-info flex flex-col">
+          <strong>{{ follower.username.value }}</strong>
+          <p>{{ follower.firstName }} {{ follower.lastName }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

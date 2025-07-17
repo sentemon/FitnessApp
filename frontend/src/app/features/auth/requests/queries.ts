@@ -21,6 +21,7 @@ export const GET_CURRENT_USER = gql`
 export const GET_USER_BY_USERNAME = gql`
   query UserByUsername($username: String!) {
     userByUsername(username: $username) {
+      id
       firstName
       lastName
       username
@@ -45,5 +46,41 @@ export const SEARCH_USERS = gql`
       email
       imageUrl
     }
+  }
+`;
+
+export const GET_FOLLOWERS = gql`
+  query Followers($userId: String!) {
+    followers(userId: $userId) {
+      id
+      firstName
+      lastName
+      username {
+        value
+      }
+      imageUrl
+      createdAt
+    }
+  }
+`;
+
+export const GET_FOLLOWING = gql`
+  query Following($userId: String!) {
+    following(userId: $userId) {
+      id
+      firstName
+      lastName
+      username {
+        value
+      }
+      imageUrl
+      createdAt
+    }
+  }
+`;
+
+export const IS_FOLLOWING = gql`
+  query IsFollowing($targetUserId: String!) {
+    isFollowing(targetUserId: $targetUserId)
   }
 `;

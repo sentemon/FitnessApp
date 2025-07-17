@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import { Observable, of } from "rxjs";
-import {GET_CURRENT_USER, GET_USER_BY_USERNAME, SEARCH_USERS} from "../requests/queries";
+import {
+  GET_CURRENT_USER,
+  GET_FOLLOWERS,
+  GET_FOLLOWING,
+  GET_USER_BY_USERNAME,
+  IS_FOLLOWING,
+  SEARCH_USERS
+} from "../requests/queries";
 import {User} from "../models/user.model";
 import {QueryResponses} from "../responses/query.responses";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 import {UserDto} from "../models/user-dto.model";
+import {FOLLOW, UNFOLLOW} from "../requests/mutations";
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +49,51 @@ export class UserService {
       variables: { search: query }
     }).pipe(
       toResult<UserDto[]>('searchUsers')
+    );
+  }
+
+  getFollowers(userId: string): Observable<Result<User[]>> {
+    return this.authClient.query({
+      query: GET_FOLLOWERS,
+      variables: { userId }
+    }).pipe(
+      toResult<User[]>('followers')
+    );
+  }
+
+  getFollowing(userId: string): Observable<Result<User[]>> {
+    return this.authClient.query({
+      query: GET_FOLLOWING,
+      variables: { userId }
+    }).pipe(
+      toResult<User[]>('following')
+    );
+  }
+
+  follow(targetUserId: string): Observable<Result<string>> {
+    return this.authClient.mutate({
+      mutation: FOLLOW,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<string>('follow')
+    );
+  }
+
+  unfollow(targetUserId: string): Observable<Result<string>> {
+    return this.authClient.mutate({
+      mutation: UNFOLLOW,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<string>('unfollow')
+    );
+  }
+
+  isFollowing(targetUserId: string): Observable<Result<boolean>> {
+    return this.authClient.query({
+      query: IS_FOLLOWING,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<boolean>('isFollowing')
     );
   }
 }

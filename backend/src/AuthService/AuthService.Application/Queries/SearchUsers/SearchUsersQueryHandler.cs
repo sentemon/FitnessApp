@@ -27,6 +27,7 @@ public class SearchUsersQueryHandler : IQueryHandler<SearchUsersQuery, IEnumerab
             .OrderBy(u => u.Username.Value)
             .Take(10)
             .Select(u => new UserDto(
+                u.Id,
                 u.FirstName,
                 u.LastName,
                 u.Username.Value,

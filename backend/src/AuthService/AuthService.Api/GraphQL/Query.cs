@@ -1,7 +1,10 @@
 using System.Security.Claims;
 using AuthService.Application.DTOs;
+using AuthService.Application.Queries.GetFollowers;
+using AuthService.Application.Queries.GetFollowing;
 using AuthService.Application.Queries.GetUserById;
 using AuthService.Application.Queries.GetUserByUsername;
+using AuthService.Application.Queries.IsFollowing;
 using AuthService.Application.Queries.SearchUsers;
 using AuthService.Domain.Entities;
 
@@ -49,6 +52,46 @@ public class Query
         var query = new SearchUsersQuery(search, userId);
         var result = await searchUsersQueryHandler.HandleAsync(query);
         
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<ICollection<User>> GetFollowers(string userId, [Service] GetFollowersQueryHandler getFollowersQueryHandler)
+    {
+        var query = new GetFollowersQuery(userId);
+        var result = await getFollowersQueryHandler.HandleAsync(query);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<ICollection<User>> GetFollowing(string userId, [Service] GetFollowingQueryHandler getFollowingQueryHandler)
+    {
+        var query = new GetFollowingQuery(userId);
+        var result = await getFollowingQueryHandler.HandleAsync(query);
+
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<bool> IsFollowing(string targetUserId, [Service] IsFollowingQueryHandler isFollowingQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var query = new IsFollowingQuery(targetUserId, userId);
+        var result = await isFollowingQueryHandler.HandleAsync(query);
+
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

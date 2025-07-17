@@ -26,6 +26,7 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
         }
 
         var userDto = new UserDto(
+            user.Id,
             user.FirstName,
             user.LastName,
             user.Username.Value,

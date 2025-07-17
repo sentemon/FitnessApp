@@ -44,3 +44,15 @@ export const LOGOUT = gql`
     )
   }
 `;
+
+export const FOLLOW = gql`
+  mutation Follow($targetUserId: String!) {
+    follow(targetUserId: $targetUserId)
+  }
+`;
+
+export const UNFOLLOW = gql`
+  mutation Unfollow($targetUserId: String!) {
+    unfollow(targetUserId: $targetUserId)
+  }
+`;

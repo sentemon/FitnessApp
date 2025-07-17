@@ -25,6 +25,10 @@
         <p>Following</p>
       </div>
     </div>
+    <div *ngIf="currentUser.username.value !== user.username" class="profile__actions flex flex-center">
+      <button *ngIf="!isFollowing" (click)="follow()" class="unfollowed">Follow</button>
+      <button *ngIf="isFollowing" (click)="unfollow()" class="followed">Unfollow</button>
+    </div>
 
 <!--    <p class="profile__description">{{ user.description || 'No description yet.' }}</p>-->
     <p class="profile__description">{{ 'No description yet.' }}</p>

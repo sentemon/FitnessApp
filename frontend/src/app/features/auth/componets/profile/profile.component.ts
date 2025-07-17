@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
 
   followers: User[] | null = null;
   following: User[] | null = null;
+  isFollowing: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -101,5 +102,15 @@ export class ProfileComponent implements OnInit {
 
       this.following = result.response;
     });
+  }
+
+  follow() {
+    this.isFollowing = true;
+    console.log("Followed", this.user);
+  }
+
+  unfollow() {
+    this.isFollowing = false;
+    console.log("Unfollowed", this.user);
   }
 }

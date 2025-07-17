@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   openFollowers() {
-    this.userService.getFollowers().subscribe(result => {
+    this.userService.getFollowers(this.user.id).subscribe(result => {
       if (!result.isSuccess) {
         console.log(result.error.message);
         return;
@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   openFollowing() {
-    this.userService.getFollowing().subscribe(result => {
+    this.userService.getFollowing(this.user.id).subscribe(result => {
       if (!result.isSuccess) {
         console.log(result.error.message);
         return;

@@ -5,10 +5,10 @@
       <strong class="close" (click)="closeModal()">×</strong>
     </header>
     <div class="following-list">
-      <div *ngFor="let followee of following" class="follower flex">
-        <img [src]="followee.imageUrl || 'assets/profile.png'" alt="Profile Picture">
+      <div [routerLink]="'/' + followee.username.value" *ngFor="let followee of following" class="followee flex" (click)="closeModal()">
+        <img [src]="followee.imageUrl || 'assets/profile.svg'" alt="Profile Picture">
         <div class="followee-info flex flex-col">
-          <strong>{{ followee.username }}</strong>
+          <strong>{{ followee.username.value }}</strong>
           <p>{{ followee.firstName }} {{ followee.lastName }}</p>
         </div>
       </div>

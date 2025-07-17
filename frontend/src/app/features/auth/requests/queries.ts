@@ -50,11 +50,14 @@ export const SEARCH_USERS = gql`
 `;
 
 export const GET_FOLLOWERS = gql`
-  query Followers {
-    followers {
+  query Followers($userId: String!) {
+    followers(userId: $userId) {
       id
       firstName
       lastName
+      username {
+        value
+      }
       imageUrl
       createdAt
     }
@@ -62,11 +65,14 @@ export const GET_FOLLOWERS = gql`
 `;
 
 export const GET_FOLLOWING = gql`
-  query Following {
-    following {
+  query Following($userId: String!) {
+    following(userId: $userId) {
       id
       firstName
       lastName
+      username {
+        value
+      }
       imageUrl
       createdAt
     }

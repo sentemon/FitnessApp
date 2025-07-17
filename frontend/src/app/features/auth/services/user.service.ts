@@ -52,17 +52,19 @@ export class UserService {
     );
   }
 
-  getFollowers(): Observable<Result<User[]>> {
+  getFollowers(userId: string): Observable<Result<User[]>> {
     return this.authClient.query({
-      query: GET_FOLLOWERS
+      query: GET_FOLLOWERS,
+      variables: { userId }
     }).pipe(
       toResult<User[]>('followers')
     );
   }
 
-  getFollowing(): Observable<Result<User[]>> {
+  getFollowing(userId: string): Observable<Result<User[]>> {
     return this.authClient.query({
-      query: GET_FOLLOWING
+      query: GET_FOLLOWING,
+      variables: { userId }
     }).pipe(
       toResult<User[]>('following')
     );

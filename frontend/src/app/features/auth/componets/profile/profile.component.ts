@@ -52,7 +52,9 @@ export class ProfileComponent implements OnInit {
       } else {
         console.warn(result.error.message);
       }
-    })
+    });
+
+    this.checkIfFollowing();
   }
 
   logout(): void {
@@ -104,13 +106,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  follow() {
+  follow(): void {
     this.isFollowing = true;
     console.log("Followed", this.user);
   }
 
-  unfollow() {
+  unfollow(): void {
     this.isFollowing = false;
     console.log("Unfollowed", this.user);
+  }
+
+  checkIfFollowing(): void {
+    this.userService.isFollowing(this.user.username).subscribe(result => {
+      if (!result.isSuccess) {
+        console.log(result.error.message);
+        return;
+      }
+
+      this.isFollowing = result.response;
+    });
   }
 }

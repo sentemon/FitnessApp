@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
 import { Observable, of } from "rxjs";
-import {GET_CURRENT_USER, GET_FOLLOWERS, GET_FOLLOWING, GET_USER_BY_USERNAME, SEARCH_USERS} from "../requests/queries";
+import {
+  GET_CURRENT_USER,
+  GET_FOLLOWERS,
+  GET_FOLLOWING,
+  GET_USER_BY_USERNAME,
+  IS_FOLLOWING,
+  SEARCH_USERS
+} from "../requests/queries";
 import {User} from "../models/user.model";
 import {QueryResponses} from "../responses/query.responses";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
@@ -57,6 +64,15 @@ export class UserService {
       query: GET_FOLLOWING
     }).pipe(
       toResult<User[]>('following')
+    );
+  }
+
+  isFollowing(targetUserId: string): Observable<Result<boolean>> {
+    return this.authClient.query({
+      query: IS_FOLLOWING,
+      variables: { targetUserId }
+    }).pipe(
+      toResult<boolean>('isFollowing')
     );
   }
 }

@@ -71,3 +71,9 @@ export const GET_FOLLOWING = gql`
     }
   }
 `;
+
+export const IS_FOLLOWING = gql`
+  query IsFollowing($targetUserId: String!) {
+    isFollowing(targetUserId: $targetUserId)
+  }
+`;

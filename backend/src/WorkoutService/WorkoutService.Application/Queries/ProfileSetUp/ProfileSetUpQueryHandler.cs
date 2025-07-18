@@ -17,7 +17,8 @@ public class ProfileSetUpQueryHandler : IQueryHandler<ProfileSetUpQuery, bool>
 
     public async Task<IResult<bool, Error>> HandleAsync(ProfileSetUpQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.UserId);
+        
         if (user is null)
         {
             return Result<bool>.Failure(new Error(ResponseMessages.UserNotFound));

@@ -18,7 +18,7 @@ public class GetAllChatsQueryHandler : IQueryHandler<GetAllChatsQuery, List<Chat
 
     public async Task<IResult<List<Chat>, Error>> HandleAsync(GetAllChatsQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.UserId);
 
         if (user is null)
         {
@@ -26,6 +26,7 @@ public class GetAllChatsQueryHandler : IQueryHandler<GetAllChatsQuery, List<Chat
         }
 
         var chats = await _context.Chats
+            .AsNoTracking()
             .Where(c => c.UserChats.Any(uc => uc.UserId == user.Id))
             .Include(c => c.UserChats)
                 .ThenInclude(uc => uc.User)

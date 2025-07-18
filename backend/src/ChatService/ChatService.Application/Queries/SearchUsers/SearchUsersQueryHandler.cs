@@ -20,6 +20,7 @@ public class SearchUsersQueryHandler : IQueryHandler<SearchUsersQuery, IEnumerab
         var search = $"%{query.Search}%";
 
         var users = await _context.Users
+            .AsNoTracking()
             .Where(u => u.Id != query.UserId)   
             .Where(u =>
                 EF.Functions.Like(u.Username, search) ||

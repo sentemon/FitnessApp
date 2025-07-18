@@ -18,7 +18,7 @@ public class GetAllPostsQueryHandler : IQueryHandler<GetAllPostsQuery, IList<Pos
 
     public async Task<IResult<IList<PostDto>, Error>> HandleAsync(GetAllPostsQuery query)
     {
-        var queryablePosts = _context.Posts.AsQueryable();
+        var queryablePosts = _context.Posts.AsNoTracking().AsQueryable();
 
         if (query.LastPostId != Guid.Empty)
         {

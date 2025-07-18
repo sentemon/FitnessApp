@@ -19,6 +19,7 @@ public class GetFollowersQueryHandler : IQueryHandler<GetFollowersQuery, ICollec
     public async Task<IResult<ICollection<User>, Error>> HandleAsync(GetFollowersQuery query)
     {
         var user = await _context.Users
+            .AsNoTracking()
             .Include(u => u.Username)
             .Include(u => u.Followers)
                 .ThenInclude(f => f.Follower)

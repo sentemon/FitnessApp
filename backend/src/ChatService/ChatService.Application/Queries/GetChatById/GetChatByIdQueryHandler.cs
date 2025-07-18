@@ -19,6 +19,7 @@ public class GetChatByIdQueryHandler : IQueryHandler<GetChatByIdQuery, Chat>
     public async Task<IResult<Chat, Error>> HandleAsync(GetChatByIdQuery query)
     {
         var chat = await _context.Chats
+            .AsNoTracking()
             .Include(c => c.Messages)
             .Include(c => c.UserChats)
                 .ThenInclude(uc => uc.User)

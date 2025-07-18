@@ -21,6 +21,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
         {
             return Result<User>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
+        
         var user = await _userService.GetByIdAsync(query.Id);
 
         if (user == null)

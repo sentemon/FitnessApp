@@ -18,13 +18,15 @@ public class GetAllWorkoutHistoriesQueryHandler : IQueryHandler<GetAllWorkoutHis
 
     public async Task<IResult<List<WorkoutHistory>, Error>> HandleAsync(GetAllWorkoutHistoriesQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.UserId);
+        
         if (user is null)
         {
             return Result<List<WorkoutHistory>>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
         var workoutHistories = _context.WorkoutHistories
+            .AsNoTracking()
             .Include(wh => wh.Workout)
             .Include(wh => wh.ExerciseHistories)
                 .ThenInclude(eh => eh.SetHistories)

@@ -18,7 +18,8 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
 
     public async Task<IResult<User, Error>> HandleAsync(GetUserByIdQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.UserId);
+        
         if (user is null)
         {
             return Result<User>.Failure(new Error(ResponseMessages.UserNotFound));

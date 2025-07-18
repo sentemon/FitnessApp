@@ -24,6 +24,7 @@ public class GetWorkoutByUrlQueryHandler : IQueryHandler<GetWorkoutByUrlQuery, W
         }
 
         var workout = await _context.Workouts
+            .AsNoTracking()
             .Include(w => w.WorkoutExercises)
                 .ThenInclude(we => we.Exercise)
                     .ThenInclude(e => e.Sets)

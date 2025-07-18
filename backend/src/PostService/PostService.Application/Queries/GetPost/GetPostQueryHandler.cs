@@ -19,14 +19,14 @@ public class GetPostQueryHandler : IQueryHandler<GetPostQuery, PostDto>
 
     public async Task<IResult<PostDto, Error>> HandleAsync(GetPostQuery query)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == query.Id);
+        var post = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == query.Id);
 
         if (post == null)
         {
             return Result<PostDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
-        var user = await _context.Users.FirstAsync(u => u.Id  == post.UserId);
+        var user = await _context.Users.AsNoTracking().FirstAsync(u => u.Id  == post.UserId);
         
         var postDto = new PostDto(
             post.Id,

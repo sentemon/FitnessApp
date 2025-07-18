@@ -22,7 +22,7 @@ public class IsPostLikedQueryHandler : IQueryHandler<IsPostLikedQuery, bool>
             return Result<bool>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == query.PostId);
+        var post = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == query.PostId);
 
         if (post == null)
         {
@@ -30,6 +30,7 @@ public class IsPostLikedQueryHandler : IQueryHandler<IsPostLikedQuery, bool>
         }
         
         var isAlreadyLiked = await _context.Likes
+            .AsNoTracking()
             .AnyAsync(l => l.PostId == query.PostId && l.UserId == query.UserId);
 
         return Result<bool>.Success(isAlreadyLiked);

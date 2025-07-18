@@ -18,6 +18,7 @@ public class GetAllWorkoutsQueryHandler : IQueryHandler<GetAllWorkoutsQuery, Lis
     public async Task<IResult<List<WorkoutDto>, Error>> HandleAsync(GetAllWorkoutsQuery query)
     {
         var workouts = await _context.Workouts
+            .AsNoTracking()
             .Where(w => w.UserId == query.UserId || w.IsCustom)
             .Include(w => w.WorkoutExercises)
                 .ThenInclude(we => we.Exercise)

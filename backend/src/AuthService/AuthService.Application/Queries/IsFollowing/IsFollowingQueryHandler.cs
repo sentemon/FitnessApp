@@ -17,8 +17,8 @@ public class IsFollowingQueryHandler : IQueryHandler<IsFollowingQuery, bool>
 
     public async Task<IResult<bool, Error>> HandleAsync(IsFollowingQuery query)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
-        var targetUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.TargetUserId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.UserId);
+        var targetUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == query.TargetUserId);
 
         if (user is null || targetUser is null)
         {
@@ -26,6 +26,7 @@ public class IsFollowingQueryHandler : IQueryHandler<IsFollowingQuery, bool>
         }
 
         var isFollowing = await _context.Follows
+            .AsNoTracking()
             .AnyAsync(f => f.FollowerId == query.UserId && f.FollowingId == query.TargetUserId);
         
         return Result<bool>.Success(isFollowing);

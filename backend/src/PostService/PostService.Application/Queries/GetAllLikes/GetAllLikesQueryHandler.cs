@@ -18,6 +18,7 @@ public class GetAllLikesQueryHandler : IQueryHandler<GetAllLikesQuery, IList<Lik
     public async Task<IResult<IList<Like>, Error>> HandleAsync(GetAllLikesQuery query)
     {
         var queryableLikes = _context.Likes
+            .AsNoTracking()
             .AsQueryable()
             .Where(l => l.PostId == query.PostId);
         

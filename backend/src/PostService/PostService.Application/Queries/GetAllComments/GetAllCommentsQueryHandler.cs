@@ -18,6 +18,7 @@ public class GetAllCommentsQueryHandler : IQueryHandler<GetAllCommentsQuery, ILi
     public async Task<IResult<IList<Comment>, Error>> HandleAsync(GetAllCommentsQuery query)
     {
         var queryableComments = _context.Comments
+            .AsNoTracking()
             .AsQueryable()
             .Where(c => c.PostId == query.PostId);
 

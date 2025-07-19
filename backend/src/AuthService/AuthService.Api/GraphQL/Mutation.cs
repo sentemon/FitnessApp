@@ -158,10 +158,11 @@ public class Mutation
     {
         _httpContextAccessor.HttpContext?.Response.Cookies.Append(name, value, new CookieOptions
         {
+            Domain = ".sentemon.me",
             Path = "/",
             HttpOnly = false,
-            Secure = false,
-            SameSite = SameSiteMode.Strict,
+            Secure = true,
+            SameSite = SameSiteMode.None,
             MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
         });
     }

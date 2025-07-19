@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import {HubConnection, LogLevel} from "@microsoft/signalr";
 import {Message} from "../models/message.model";
 import {Subject} from "rxjs";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class SignalRService {
       return;
     }
 
-    this.createConnection(`http://localhost:8000/chat/chat?chatId=${chatId}`, accessToken);
+    this.createConnection(`${environment.api}/chat/chat?chatId=${chatId}`, accessToken);
   }
 
   public startTempConnection(receiverId: string, accessToken: string): void {
-    this.createConnection(`http://localhost:8000/chat/chat?receiverId=${receiverId}`, accessToken);
+    this.createConnection(`${environment.api}/chat/chat?receiverId=${receiverId}`, accessToken);
   }
 
   private createConnection(url: string, token: string) {

@@ -1,0 +1,11 @@
+tunnel: 2d10182a-4218-43a2-9a75-b96486537661
+credentials-file: ~/.cloudflared/2d10182a-4218-43a2-9a75-b96486537661.json
+
+ingress:
+  - hostname: sentemon.me
+    service: http://localhost:4200
+
+  - hostname: api.sentemon.me
+    service: http://localhost:8000
+
+  - service: http_status:404

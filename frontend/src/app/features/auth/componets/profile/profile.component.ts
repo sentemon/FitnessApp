@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
@@ -12,7 +12,7 @@ import {UserDto} from "../../models/user-dto.model";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
   user!: UserDto;
   currentUser!: User;
 
@@ -32,34 +32,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const username = params.get("username")!;
-
-      this.userService.getUserByUsername(username).subscribe(result => {
-        if (result.isSuccess) {
-          this.user = result.response;
-        } else {
-          console.warn(result.error.message);
-        }
-      });
-    });
-
-    this.userService.getCurrentUser().subscribe(result => {
-      if (result.isSuccess) {
-        this.currentUser = result.response;
-        this.getPosts();
-      } else {
-        console.warn(result.error.message);
-      }
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.userService.isFollowing(this.user.id).subscribe(result => {
-      if (result.isSuccess) {
-        this.isFollowing = result.response;
-      }
-    });
+    this.getUser();
+    this.getCurrentUser();
   }
 
   logout(): void {
@@ -123,6 +97,41 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.userService.unfollow(this.user.id).subscribe(result => {
       if (result.isSuccess) {
         this.isFollowing = false;
+      }
+    });
+  }
+
+  private getUser(): void {
+    this.route.paramMap.subscribe(params => {
+      const username = params.get("username")!;
+
+      this.userService.getUserByUsername(username).subscribe(result => {
+        if (result.isSuccess) {
+          this.user = result.response;
+
+          this.getPosts();
+          this.isUserFollowing();
+        } else {
+          console.log(result.error.message);
+        }
+      });
+    });
+  }
+
+  private getCurrentUser(): void {
+    this.userService.getCurrentUser().subscribe(result => {
+      if (result.isSuccess) {
+        this.currentUser = result.response;
+      } else {
+        console.log(result.error.message);
+      }
+    });
+  }
+
+  private isUserFollowing(): void {
+    this.userService.isFollowing(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = result.response;
       }
     });
   }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Chat} from "../models/chat.model";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {Apollo, ApolloBase} from "apollo-angular";
-import {GET_ALL_CHATS, GET_CHAT_BY_ID} from "../requests/queries.graphql";
+import {GET_ALL_CHATS, GET_CHAT_BY_ID} from "../graphql/queries.graphql";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 

@@ -23,7 +23,8 @@ builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
-    .AddType(new UuidType());
+    .AddType(new UuidType())
+    .AddType(new UnsignedIntType());
     // .AddAuthorization();
 
 builder.Services.AddGraphQL();

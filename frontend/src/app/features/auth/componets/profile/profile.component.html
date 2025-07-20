@@ -15,13 +15,11 @@
 
     <div class="profile__stats flex">
       <div class="followers" (click)="openFollowers()">
-<!--        <strong>{{ user.followersCount }}</strong>-->
-        <strong>56</strong>
+        <strong>{{ user.followersCount }}</strong>
         <p>Followers</p>
       </div>
       <div class="following" (click)="openFollowing()">
-<!--        <strong>{{ user.followingCount }}</strong>-->
-        <strong>34</strong>
+        <strong>{{ user.followingCount }}</strong>
         <p>Following</p>
       </div>
     </div>
@@ -30,7 +28,8 @@
       <button *ngIf="isFollowing" (click)="unfollow()" class="followed">Unfollow</button>
     </div>
 
-<!--    <p class="profile__description">{{ user.description || 'No description yet.' }}</p>-->
+    <!--  ToDo  -->
+    <!--    <p class="profile__description">{{ user.description || 'No description yet.' }}</p>-->
     <p class="profile__description">{{ 'No description yet.' }}</p>
   </div>
 </div>

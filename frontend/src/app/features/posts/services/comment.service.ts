@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 import {Comment} from "../models/comment.model";
 import {Apollo, ApolloBase} from "apollo-angular";
-import {MutationResponse} from "../graphql/mutation.response";
 import {CREATE_COMMENT, DELETE_COMMENT, GET_ALL_COMMENTS} from "../graphql/mutations.graphql";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
@@ -18,7 +17,7 @@ export class CommentService {
   }
 
   public getAllComments(postId: string, first: number): Observable<Result<Comment[]>> {
-    return this.postClient.mutate<MutationResponse>({
+    return this.postClient.mutate({
       mutation: GET_ALL_COMMENTS,
       variables: { postId, first }
     }).pipe(
@@ -27,7 +26,7 @@ export class CommentService {
   }
 
   addComment(postId: string, content: string): Observable<Result<Comment>> {
-    return this.postClient.mutate<MutationResponse>({
+    return this.postClient.mutate({
       mutation: CREATE_COMMENT,
       variables: { postId, content }
     }).pipe(
@@ -36,7 +35,7 @@ export class CommentService {
   }
 
   deleteComment(id: string): Observable<Result<string>> {
-    return this.postClient.mutate<MutationResponse>({
+    return this.postClient.mutate({
       mutation: DELETE_COMMENT,
       variables: { id }
     }).pipe(

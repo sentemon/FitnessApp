@@ -6,5 +6,7 @@ public record UserDto(
     string LastName,
     string Username,
     string Email,
-    string? ImageUrl
+    string? ImageUrl,
+    uint FollowingCount,
+    uint FollowersCount
 );

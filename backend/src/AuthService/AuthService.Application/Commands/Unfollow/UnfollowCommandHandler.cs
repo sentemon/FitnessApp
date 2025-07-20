@@ -18,6 +18,8 @@ public class UnfollowCommandHandler : ICommandHandler<UnfollowCommand, string>
     public async Task<IResult<string, Error>> HandleAsync(UnfollowCommand command)
     {
         var follow = await _context.Follows
+            .Include(f => f.Following)
+            .Include(f => f.Follower)
             .FirstOrDefaultAsync(f =>
                 f.FollowerId == command.UserId &&
                 f.FollowingId == command.TargetUserId);
@@ -28,6 +30,9 @@ public class UnfollowCommandHandler : ICommandHandler<UnfollowCommand, string>
         }
 
         _context.Follows.Remove(follow);
+        
+        follow.Follower.UnfollowUser();
+        follow.Following.RemoveFollower();
         
         await _context.SaveChangesAsync();
         

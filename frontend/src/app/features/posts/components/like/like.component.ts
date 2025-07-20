@@ -16,8 +16,8 @@ export class LikeComponent implements OnInit {
   constructor(private likeService: LikeService) { }
 
   ngOnInit(): void {
-    this.likeService.isPostLiked(this.post.id).subscribe(isLiked => {
-      this.isLiked = isLiked;
+    this.likeService.isPostLiked(this.post.id).subscribe(result => {
+      this.isLiked = result.response!;
     });
   }
 

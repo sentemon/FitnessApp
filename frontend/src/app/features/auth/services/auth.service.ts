@@ -1,13 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {BehaviorSubject, map, Observable} from "rxjs";
-import {LOGIN, LOGOUT, REGISTER} from "../requests/mutations";
-import {MutationResponse} from "../responses/mutation.response";
+import {BehaviorSubject, map, Observable, tap} from "rxjs";
+import {LOGIN, LOGOUT, REGISTER} from "../graphql/mutations";
 import {CookieService} from "../../../core/services/cookie.service";
 import {Result} from "../../../core/types/result/result.type";
 import {UserService} from "./user.service";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
-import {Comment} from "../../posts/models/comment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -31,12 +29,13 @@ export class AuthService {
   }
 
   public login(username: string, password: string): Observable<Result<boolean>> {
-    return this.authClient.mutate<MutationResponse>({
+    return this.authClient.mutate({
       mutation: LOGIN,
       variables: { username, password },
     }).pipe(
-      map(response => {
-        const token = response.data?.login;
+      toResult<string>("login"),
+      tap(result => {
+        const token = result.response!;
         this.setUserCookies();
 
         if (token) {
@@ -47,6 +46,9 @@ export class AuthService {
           console.error("Login failed: no token received.");
           return Result.success(false);
         }
+      }),
+      map(result => {
+        return result.isSuccess ? Result.success(true) : Result.success(false);
       })
     );
   }
@@ -58,12 +60,13 @@ export class AuthService {
     email: string,
     password: string
   ): Observable<Result<boolean>> {
-    return this.authClient.mutate<MutationResponse>({
+    return this.authClient.mutate({
       mutation: REGISTER,
       variables: { firstName, lastName, username, email, password }
     }).pipe(
-      map(response => {
-        const token = response.data?.register;
+      toResult<string>("register"),
+      tap(result => {
+        const token = result.response!;
         this.setUserCookies();
 
         if (token) {
@@ -74,11 +77,17 @@ export class AuthService {
           console.error("Registration failed: no token received.");
           return Result.success(false);
         }
+      }),
+      map(result => {
+        return result.isSuccess ? Result.success(true) : Result.success(false);
       })
     );
   }
 
   public logout(): Observable<Result<string>> {
+    this.cookieService.delete("userId");
+    this.cookieService.delete("username");
+
     const refreshToken = this.cookieService.get("refreshToken").response!;
 
     return this.authClient.mutate({

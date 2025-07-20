@@ -11,13 +11,12 @@ public class User
     public Email Email { get; private set; }
     public bool EmailVerified { get; private set; }
     public string ImageUrl { get; private set; }
+    public uint FollowingCount { get; private set; }
+    public uint FollowersCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private readonly List<Follow> _followers = [];
-    public IReadOnlyCollection<Follow> Followers => _followers.AsReadOnly();
-
-    private readonly List<Follow> _following = [];
-    public IReadOnlyCollection<Follow> Following => _following.AsReadOnly();
+    public ICollection<Follow> Followers { get; private set; } = [];
+    public ICollection<Follow> Following { get; private set; } = [];
 
     private User(string id, string firstName, string lastName, Username username, Email email, string? imageUrl = null)
     {
@@ -60,6 +59,13 @@ public class User
     {
         EmailVerified = true;
     }
+
+    public void FollowUser() => FollowingCount++;
+    public void UnfollowUser() => FollowingCount--;
+
+    public void AddFollower() => FollowersCount++;
+    public void RemoveFollower() => FollowersCount--;
+
     
     #pragma warning disable CS8618
     // Required by EF Core

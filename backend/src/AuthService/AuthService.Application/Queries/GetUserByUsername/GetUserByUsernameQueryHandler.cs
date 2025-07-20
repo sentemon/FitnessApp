@@ -31,7 +31,9 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
             user.LastName,
             user.Username.Value,
             string.Empty,
-            user.ImageUrl
+            user.ImageUrl,
+            user.FollowingCount,
+            user.FollowersCount
         );
 
         return Result<UserDto>.Success(userDto);

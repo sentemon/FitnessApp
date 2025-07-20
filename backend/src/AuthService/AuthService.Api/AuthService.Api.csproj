@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="HotChocolate.AspNetCore" Version="14.0.0" />
         <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="14.0.0" />
+        <PackageReference Include="HotChocolate.Types.Scalars" Version="14.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">

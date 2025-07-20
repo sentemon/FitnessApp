@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {Result} from "../../../core/types/result/result.type";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {User} from "../models/user.model";
-import {SEARCH_USERS} from "../requests/queries.graphql";
+import {SEARCH_USERS} from "../graphql/queries.graphql";
 
 @Injectable({
   providedIn: 'root'

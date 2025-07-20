@@ -13,6 +13,8 @@ export const GET_CURRENT_USER = gql`
         value
       }
       imageUrl
+      followersCount
+      followingCount
       createdAt
     }
   }
@@ -27,6 +29,8 @@ export const GET_USER_BY_USERNAME = gql`
       username
       email
       imageUrl
+      followersCount
+      followingCount
     }
   }
 `;

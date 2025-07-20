@@ -3,7 +3,7 @@ import {
   CanActivate, Router,
 } from '@angular/router';
 import {UserService} from "./user.service";
-import {map, Observable} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,12 @@ export class SetUpGuard implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.userService.profileSetUp().pipe(
-      map(result => {
-        if (result) {
-          return true;
+      tap(result => {
+        if (!result.isSuccess) {
+          this.router.navigate(['/setup-profile']);
         }
-
-        this.router.navigate(['/setup-profile']);
-        return false;
-      })
-    )
+      }),
+      map(result => result.isSuccess)
+    );
   }
 }

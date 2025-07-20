@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {PostService} from "../../../posts/services/post.service";
@@ -12,7 +12,7 @@ import {UserDto} from "../../models/user-dto.model";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
   user!: UserDto;
   currentUser!: User;
 
@@ -36,13 +36,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.getCurrentUser();
   }
 
-  ngAfterViewInit(): void {
-    this.isUserFollowing();
-    this.getPosts();
-  }
-
   logout(): void {
-    this.authService.logout().subscribe(() => {
+    this.authService.logout().subscribe(result => {
+      console.log(result);
       this.router.navigate(["/"]).then(() => window.location.reload());
     });
   }
@@ -113,6 +109,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.userService.getUserByUsername(username).subscribe(result => {
         if (result.isSuccess) {
           this.user = result.response;
+
+          this.getPosts();
+          this.isUserFollowing();
         } else {
           console.log(result.error.message);
         }

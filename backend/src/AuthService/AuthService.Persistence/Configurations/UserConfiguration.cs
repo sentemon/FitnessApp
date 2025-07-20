@@ -40,9 +40,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.EmailVerified)
             .IsRequired();
 
+        builder.Property(u => u.FollowingCount)
+            .HasDefaultValue(0)
+            .IsRequired();
+        
+        builder.Property(u => u.FollowersCount)
+            .HasDefaultValue(0)
+            .IsRequired();
+
         builder.Property(u => u.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .ValueGeneratedOnAdd();
-
     }
 }

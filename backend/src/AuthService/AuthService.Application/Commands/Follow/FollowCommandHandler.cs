@@ -35,6 +35,9 @@ public class FollowCommandHandler : ICommandHandler<FollowCommand, string>
 
         var follow = Domain.Entities.Follow.Create(user.Id, targetUser.Id);
         _context.Follows.Add(follow);
+        
+        user.FollowUser();
+        targetUser.AddFollower();
 
         await _context.SaveChangesAsync();
 

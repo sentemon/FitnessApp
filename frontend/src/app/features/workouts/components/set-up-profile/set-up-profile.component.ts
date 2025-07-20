@@ -59,8 +59,8 @@ export class SetUpProfileComponent implements OnInit {
       // ToDo: Fix
       []
       // this.favoriteWorkoutTypes
-    ).subscribe(response => {
-      console.log(response);
+    ).subscribe(result => {
+      console.log(result);
     });
 
     this.router.navigate(["/workouts"]);

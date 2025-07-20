@@ -70,8 +70,11 @@ export class CreateWorkoutComponent {
       exercises: this.workoutForm.get("exercises")?.value
     };
 
-    this.workoutService.create(workoutData).subscribe(result =>
-      this.workoutService.addWorkout(result as Workout)
+    this.workoutService.create(workoutData).subscribe(result => {
+        if (result.isSuccess) {
+          this.workoutService.addWorkout(result.response)
+        }
+      }
     );
   }
 

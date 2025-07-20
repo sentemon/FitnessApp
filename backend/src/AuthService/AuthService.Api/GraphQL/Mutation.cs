@@ -64,9 +64,9 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
         
-        _httpContextAccessor.HttpContext?.Response.Cookies.Delete("token");
-        _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
-
+        DeleteCookie("token");
+        DeleteCookie("refreshToken");
+        
         return result.Response;
     }
 
@@ -164,6 +164,18 @@ public class Mutation
             Secure = true,
             SameSite = SameSiteMode.None,
             MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
+        });
+    }
+
+    private void DeleteCookie(string name)
+    {
+        _httpContextAccessor.HttpContext?.Response.Cookies.Delete(name, new CookieOptions
+        {
+            Domain = ".sentemon.me",
+            Path = "/",
+            HttpOnly = false,
+            Secure = true,
+            SameSite = SameSiteMode.None,
         });
     }
 }

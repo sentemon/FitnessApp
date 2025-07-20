@@ -1,16 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import {BehaviorSubject, filter, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, map, Observable, tap} from "rxjs";
 import {Post} from "../models/post.model";
-import {UpdatePostDto} from "../requests/update-post.dto";
+import {UpdatePostDto} from "../models/update-post.dto";
 import {ContentType} from "../../../core/enums/content-type.enum";
 import {GET_ALL_POSTS, GET_POST} from "../graphql/queries.graphql";
-import {ApolloQueryResult} from "@apollo/client";
-import {QueryResponse} from "../graphql/query.response";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CREATE_POST, DELETE_POST} from "../graphql/mutations.graphql";
 import {environment} from "../../../../environments/environment";
-import {MutationResponse} from "../graphql/mutation.response";
 import {Result} from "../../../core/types/result/result.type";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 
@@ -68,12 +65,13 @@ export class PostService {
       }
     ];
 
-    this.postClient.query<QueryResponse>({
+    this.postClient.query({
       query: GET_ALL_POSTS,
       variables: { first, lastPostId }
     }).pipe(
-      tap(response => {
-        let posts = existingPosts.concat(response.data.allPost);
+      toResult<Post[]>("allPost"),
+      tap(result => {
+        let posts = existingPosts.concat(result.response!);
 
         posts.forEach(post => this.addPost(post));
       })
@@ -96,7 +94,7 @@ export class PostService {
   }
 
   getPost(id: string): Observable<Result<Post>> {
-    return this.postClient.query<QueryResponse>({
+    return this.postClient.query({
       query: GET_POST,
       variables: { id }
     }).pipe(
@@ -140,7 +138,7 @@ export class PostService {
   }
 
   deletePost(id: string): Observable<Result<string>> {
-    return this.postClient.mutate<MutationResponse>({
+    return this.postClient.mutate({
       mutation: DELETE_POST,
       variables: { id }
     }).pipe(

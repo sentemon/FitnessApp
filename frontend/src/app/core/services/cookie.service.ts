@@ -32,4 +32,8 @@ export class CookieService {
 
     document.cookie = `${key}=${value || ''}${expires}; path=/`;
   }
+
+  delete(key: string): void {
+    document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+  }
 }

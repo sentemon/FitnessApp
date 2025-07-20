@@ -32,34 +32,13 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const username = params.get("username")!;
-
-      this.userService.getUserByUsername(username).subscribe(result => {
-        if (result.isSuccess) {
-          this.user = result.response;
-        } else {
-          console.warn(result.error.message);
-        }
-      });
-    });
-
-    this.userService.getCurrentUser().subscribe(result => {
-      if (result.isSuccess) {
-        this.currentUser = result.response;
-        this.getPosts();
-      } else {
-        console.warn(result.error.message);
-      }
-    });
+    this.getUser();
+    this.getCurrentUser();
   }
 
   ngAfterViewInit(): void {
-    this.userService.isFollowing(this.user.id).subscribe(result => {
-      if (result.isSuccess) {
-        this.isFollowing = result.response;
-      }
-    });
+    this.isUserFollowing();
+    this.getPosts();
   }
 
   logout(): void {
@@ -123,6 +102,38 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.userService.unfollow(this.user.id).subscribe(result => {
       if (result.isSuccess) {
         this.isFollowing = false;
+      }
+    });
+  }
+
+  private getUser(): void {
+    this.route.paramMap.subscribe(params => {
+      const username = params.get("username")!;
+
+      this.userService.getUserByUsername(username).subscribe(result => {
+        if (result.isSuccess) {
+          this.user = result.response;
+        } else {
+          console.log(result.error.message);
+        }
+      });
+    });
+  }
+
+  private getCurrentUser(): void {
+    this.userService.getCurrentUser().subscribe(result => {
+      if (result.isSuccess) {
+        this.currentUser = result.response;
+      } else {
+        console.log(result.error.message);
+      }
+    });
+  }
+
+  private isUserFollowing(): void {
+    this.userService.isFollowing(this.user.id).subscribe(result => {
+      if (result.isSuccess) {
+        this.isFollowing = result.response;
       }
     });
   }

@@ -7,6 +7,8 @@ export interface User {
   };
   email: {
     value: string;
-  }
+  };
+  followersCount: number;
+  followingCount: number;
   imageUrl: string;
 }

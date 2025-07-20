@@ -33,7 +33,9 @@ public class SearchUsersQueryHandler : IQueryHandler<SearchUsersQuery, IEnumerab
                 u.LastName,
                 u.Username.Value,
                 "",
-                u.ImageUrl
+                u.ImageUrl,
+                u.FollowingCount,
+                u.FollowersCount
             ))
             .ToListAsync();
 

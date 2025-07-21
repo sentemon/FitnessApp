@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar flex">
   <div class="logo">
     <img ngSrc="assets/logo.png" alt="Logo" height="138" width="138">
     <h2>
@@ -8,16 +8,16 @@
 
   <ul class="options">
     <li>
-      <a [routerLink]="''" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a [routerLink]="''" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="onLinkClick()">Home</a>
     </li>
     <li>
-      <a [routerLink]="'/search'" routerLinkActive="active">Search</a>
+      <a [routerLink]="'/search'" routerLinkActive="active" (click)="onLinkClick()">Search</a>
     </li>
     <li>
-      <a [routerLink]="'/chats'" routerLinkActive="active">Chats</a>
+      <a [routerLink]="'/chats'" routerLinkActive="active" (click)="onLinkClick()">Chats</a>
     </li>
     <li>
-      <a [routerLink]="'/workouts'" routerLinkActive="active">Workouts</a>
+      <a [routerLink]="'/workouts'" routerLinkActive="active" (click)="onLinkClick()">Workouts</a>
     </li>
     <li>
       <a href="#" class="disabled">Meal Planner</a>
@@ -29,11 +29,11 @@
       <a href="#" class="disabled">Notifications</a>
     </li>
     <li>
-      <a [routerLink]="'/create-post'" routerLinkActive="active">Create</a>
+      <a [routerLink]="'/create-post'" routerLinkActive="active" (click)="onLinkClick()">Create</a>
     </li>
   </ul>
 
   <div class="profile">
-    <a [routerLink]="username" routerLinkActive="active">Profile</a>
+    <a [routerLink]="username" routerLinkActive="active" (click)="onLinkClick()">Profile</a>
   </div>
 </div>

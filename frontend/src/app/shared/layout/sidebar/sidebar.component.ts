@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CookieService} from "../../../core/services/cookie.service";
 import {UserService} from "../../../features/auth/services/user.service";
 
@@ -10,6 +10,8 @@ import {UserService} from "../../../features/auth/services/user.service";
 export class SideBarComponent implements OnInit {
   username: string = "";
 
+  @Output() linkClicked = new EventEmitter<void>();
+
   constructor(private userService: UserService) { }
 
   ngOnInit() {
@@ -18,5 +20,9 @@ export class SideBarComponent implements OnInit {
         this.username = result.response.username.value;
       }
     });
+  }
+
+  onLinkClick() {
+    this.linkClicked.emit();
   }
 }

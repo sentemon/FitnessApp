@@ -2,17 +2,21 @@
 
 .post {
   height: auto;
-  width: 750px;
-  margin: 20px auto;
+  max-width: 750px;
+  margin: 2rem auto;
   border-radius: 1em;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 1.5rem;
   box-sizing: border-box;
   @include glass-effect;
 
+  @media (max-width: 768px) {
+    max-width: none;
+  }
+
   .content {
     width: 100%;
-    gap: 15px;
+    gap: 1rem;
 
     h3 {
       color: black;
@@ -24,21 +28,21 @@
       align-items: center;
 
       .image {
-        height: 50px;
-        width: 50px;
+        height: 3rem;
+        width: 3rem;
         border-radius: 50%;
       }
 
       p {
         margin: 10px;
-        font-size: 24px;
-        font-weight: 600;
+        font-size: 1.5rem;
+        font-weight: bold;
         color: #333333;
       }
 
       .dot {
         margin-right: 10px;
-        font-size: 32px;
+        font-size: 2rem;
       }
 
       .date {
@@ -52,7 +56,7 @@
     }
 
     p {
-      font-size: 16px;
+      font-size: 1rem;
       color: #555;
     }
 
@@ -71,9 +75,8 @@
 
     .meta {
       height: 100%;
-      font-size: 15px;
+      font-size: 1rem;
       color: #888;
-      display: flex;
       gap: 20px;
     }
   }

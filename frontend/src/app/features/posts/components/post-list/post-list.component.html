@@ -18,7 +18,7 @@
     <div class="media">
       <img *ngIf="post.contentType == ContentType.Image || post.contentType == ContentType.Video" [src]="post.contentUrl" alt="post-image"/>
     </div>
-    <div class="meta">
+    <div class="meta flex">
       <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
       <app-comment (click)="openModal(post)" [post]="post"></app-comment>
     </div>

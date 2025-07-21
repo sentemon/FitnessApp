@@ -20,7 +20,7 @@
     </div>
     <div class="meta flex">
       <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
-      <app-comment [post]="post"></app-comment>
+      <app-comment [routerLink]="'comments'" [post]="post"></app-comment>
     </div>
     <p>{{ post.description }}</p>
   </div>

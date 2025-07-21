@@ -1,0 +1,55 @@
+.comments-container {
+  flex: 1;
+  border-radius: 8px;
+  height: 650px;
+  overflow: hidden;
+
+  .comments {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+
+    .comment {
+      color: white;
+
+      .delete {
+        font-size: 20px;
+        font-weight: bold;
+        color: red;
+        cursor: pointer;
+        margin-left: auto;
+      }
+    }
+  }
+
+  .form-container {
+    border-top: 1px solid #ddd;
+    padding: 8px 16px;
+
+    form {
+      flex: 1;
+
+      input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 8px;
+      }
+
+      button {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  }
+}

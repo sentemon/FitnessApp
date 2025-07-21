@@ -18,12 +18,14 @@ import {WorkoutHistoryComponent} from "./features/workouts/components/workout-hi
 import {ChatComponent} from "./features/chats/components/chat.component";
 import {SearchComponent} from "./features/auth/componets/search/search.component";
 import {PostComponent} from "./features/posts/components/post/post.component";
+import {CommentsComponent} from "./features/posts/components/comments/comments.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'posts/:postId', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'posts/:postId/comments', component: CommentsComponent, canActivate: [AuthGuard] },
   { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'workouts', component: WorkoutsListComponent, canActivate: [AuthGuard, SetUpGuard] },
   { path: 'workouts/new', component: NewWorkoutComponent, canActivate: [AuthGuard] },

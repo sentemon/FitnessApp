@@ -20,16 +20,22 @@
     </div>
     <div class="meta flex">
       <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
-      <app-comment [routerLink]="'comments'" [post]="post"></app-comment>
+      <app-comment (click)="openComments()" [post]="post"></app-comment>
     </div>
     <p>{{ post.description }}</p>
   </div>
 </div>
 
-
 <app-post-options
   *ngIf="postOptions"
   [post]="post"
-  (close)="closeOptions()"
+  (close)="postOptions = false"
   (delete)="deletePost()"
 ></app-post-options>
+
+<app-post-modal
+  *ngIf="postModal"
+  [post]="post"
+  (close)="postModal = false"
+  (postChange)="updatePost($event)"
+></app-post-modal>

@@ -9,6 +9,7 @@ import { CreatePostComponent } from './components/create-post/create-post.compon
 import {SharedModule} from "../../shared/shared.module";
 import {PostService} from "./services/post.service";
 import { PostOptionsComponent } from './components/post-options/post-options.component';
+import { PostComponent } from './components/post/post.component';
 
 
 
@@ -20,6 +21,7 @@ import { PostOptionsComponent } from './components/post-options/post-options.com
     PostModalComponent,
     CreatePostComponent,
     PostOptionsComponent,
+    PostComponent,
   ],
   exports: [
     PostListComponent,

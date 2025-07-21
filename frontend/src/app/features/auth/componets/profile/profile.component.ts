@@ -17,7 +17,6 @@ export class ProfileComponent implements OnInit {
   currentUser!: User;
 
   posts: Post[] = [];
-  selectedPostForModal: Post | null = null;
 
   followers: User[] | null = null;
   following: User[] | null = null;
@@ -50,10 +49,6 @@ export class ProfileComponent implements OnInit {
         console.warn(result.error.message);
       }
     })
-  }
-
-  openPost(post: Post): void {
-    this.selectedPostForModal = post;
   }
 
   updatePost(updatedPost: Post) {
@@ -135,4 +130,6 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
+  protected readonly console = console;
 }

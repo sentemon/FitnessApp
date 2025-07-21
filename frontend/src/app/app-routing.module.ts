@@ -17,11 +17,13 @@ import {WorkoutsHistoryComponent} from "./features/workouts/components/workouts-
 import {WorkoutHistoryComponent} from "./features/workouts/components/workout-history/workout-history.component";
 import {ChatComponent} from "./features/chats/components/chat.component";
 import {SearchComponent} from "./features/auth/componets/search/search.component";
+import {PostComponent} from "./features/posts/components/post/post.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'posts/:postId', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'workouts', component: WorkoutsListComponent, canActivate: [AuthGuard, SetUpGuard] },
   { path: 'workouts/new', component: NewWorkoutComponent, canActivate: [AuthGuard] },
@@ -33,8 +35,8 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent, canActivate: [AuthGuard] },
   { path: 'chats', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'chats/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
-  { path: ':username', component: ProfileComponent },
   { path: 'not-found', component: NotFoundComponent },
+  { path: ':username', component: ProfileComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

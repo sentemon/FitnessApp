@@ -28,7 +28,7 @@ export class CommentsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.postId = params.get("postId")!;
 
-      this.commentService.getAllComments(this.postId, 10).subscribe(result => {
+      this.commentService.getAllComments(this.postId, 100).subscribe(result => {
         if (result.isSuccess) {
           this.comments = result.response;
         } else {

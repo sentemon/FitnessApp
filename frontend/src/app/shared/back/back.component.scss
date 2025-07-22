@@ -12,6 +12,7 @@
   border-radius: 0.25rem;
   transition: background-color 0.2s;
   text-align: center;
+  z-index: 10000;
 
   &:hover {
     background-color: #0056b3;

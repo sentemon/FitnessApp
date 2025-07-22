@@ -16,6 +16,7 @@ export class PostComponent implements OnInit {
   currentUsername!: string;
   postOptions: boolean = false;
   postModal: boolean = false;
+  showBackButton: boolean = false;
 
   constructor(
     private router: Router,
@@ -27,6 +28,7 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const postId = params.get('postId')!;
+      this.showBackButton = !!postId;
 
       this.postService.getPost(postId).subscribe(result => {
         if (result.isSuccess) {

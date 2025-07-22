@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
   currentUser!: User;
 
   posts: Post[] = [];
+  postModal: boolean = false;
+  selectedPost: Post | null = null;
 
   followers: User[] | null = null;
   following: User[] | null = null;
@@ -123,6 +125,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  openPost(post: Post): void {
+    this.selectedPost = post;
+
+    if (window.innerWidth < 1024) {
+      this.router.navigate(['/posts', post.id]);
+    } else {
+      this.postModal = true;
+    }
+  }
+
   private isUserFollowing(): void {
     this.userService.isFollowing(this.user.id).subscribe(result => {
       if (result.isSuccess) {
@@ -130,6 +142,4 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
-  protected readonly console = console;
 }

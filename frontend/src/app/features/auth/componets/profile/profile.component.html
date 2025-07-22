@@ -37,11 +37,18 @@
 <main>
   <div class="title" *ngIf="posts.length !== 0"><strong>POSTS</strong></div>
   <div class="posts grid grid-cols-3">
-    <div [routerLink]="'/posts/' + post.id" *ngFor="let post of posts" class="post">
+    <div (click)="openPost(post)" *ngFor="let post of posts" class="post">
       <img [src]="post.contentUrl" alt="Post Image">
     </div>
   </div>
 </main>
+
+<app-post-modal
+  *ngIf="postModal"
+  [post]="selectedPost!"
+  (close)="postModal = false"
+  (postChange)="updatePost($event)"
+></app-post-modal>
 
 <app-followers-list
   *ngIf="followers"

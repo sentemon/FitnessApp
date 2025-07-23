@@ -13,7 +13,8 @@ COPY --from=build /app/dist/frontend /usr/share/nginx/html
 RUN echo 'server {\
     listen       80;\
     listen  [::]:80;\
-    server_name  localhost;\
+    # server_name  localhost;\
+    server_name  sentemon.me www.sentemon.me;\
     location / {\
         root   /usr/share/nginx/html/browser;\
         try_files $uri $uri/ /index.html;\

@@ -1,0 +1,26 @@
+<app-back></app-back>
+
+<div class="comments-container flex flex-col">
+  <div class="comments">
+    <h3>Comments</h3>
+    <div *ngFor="let comment of comments" class="comment flex">
+      <p><strong>{{ comment.username }}</strong>: {{ comment.content }}</p>
+      <span class="delete" (click)="deleteComment(comment.id)" *ngIf="comment.username === this.currentUsername">×</span>
+    </div>
+    <div #scrollAnchor></div>
+  </div>
+
+  <div class="form-container flex">
+    <form class="flex" (submit)="sendComment($event, commentInput.value)">
+      <input
+        #commentInput
+        type="text"
+        placeholder="Enter your comment..."
+        [(ngModel)]="newComment"
+        name="comment"
+        required
+      />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>

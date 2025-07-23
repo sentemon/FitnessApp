@@ -3,6 +3,7 @@ using FileService.Infrastructure.Interfaces;
 using FileService.Persistence;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Shared.Application.Common;
 using Shared.Application.Abstractions;
 using Shared.DTO.Messages;
@@ -15,14 +16,14 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
     private readonly IAzureBlobStorageService _azureBlobStorageService;
     private readonly FileDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IConfiguration _configuration;
 
-    public UploadPostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, IPublishEndpoint publishEndpoint, IHttpContextAccessor httpContextAccessor)
+    public UploadPostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, IPublishEndpoint publishEndpoint, IConfiguration configuration)
     {
         _azureBlobStorageService = azureBlobStorageService;
         _context = context;
         _publishEndpoint = publishEndpoint;
-        _httpContextAccessor = httpContextAccessor;
+        _configuration = configuration;
     }
 
     public async Task<IResult<File, Error>> HandleAsync(UploadPostCommand command)
@@ -59,7 +60,7 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
         _context.Add(file);
         await _context.SaveChangesAsync();
         
-        const string host = "http://localhost:8000";
+        var host = _configuration["GatewayUrl"] ?? "http://localhost:8000";
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,

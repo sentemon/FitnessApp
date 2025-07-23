@@ -9,6 +9,9 @@ import { CreatePostComponent } from './components/create-post/create-post.compon
 import {SharedModule} from "../../shared/shared.module";
 import {PostService} from "./services/post.service";
 import { PostOptionsComponent } from './components/post-options/post-options.component';
+import { PostComponent } from './components/post/post.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import {RouterLink} from "@angular/router";
 
 
 
@@ -20,6 +23,8 @@ import { PostOptionsComponent } from './components/post-options/post-options.com
     PostModalComponent,
     CreatePostComponent,
     PostOptionsComponent,
+    PostComponent,
+    CommentsComponent,
   ],
   exports: [
     PostListComponent,
@@ -32,6 +37,7 @@ import { PostOptionsComponent } from './components/post-options/post-options.com
     SharedModule,
     ReactiveFormsModule,
     NgOptimizedImage,
+    RouterLink,
   ],
   providers: [
     PostService

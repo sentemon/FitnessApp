@@ -1,0 +1,43 @@
+<app-back *ngIf="showBackButton"></app-back>
+
+<div class="post flex flex-col" xmlns="http://www.w3.org/1999/html">
+  <div class="content flex flex-col">
+    <header class="flex">
+      <img class="image" [src]="post.userImageUrl || 'assets/profile.svg'" alt="post-image">
+      <p>{{ post.username }}</p>
+      <span class="dot">•</span>
+      <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>
+      <img class="see-more"
+           *ngIf="post.username == currentUsername"
+           (click)="openOptions()"
+           [src]="'assets/more.svg'"
+           height="40px"
+           width="40px"
+           alt="see more..."
+      >
+    </header>
+    <h3>{{ post.title }}</h3>
+    <div class="media">
+      <img *ngIf="post.contentType == ContentType.Image || post.contentType == ContentType.Video" [src]="post.contentUrl" alt="post-image"/>
+    </div>
+    <div class="meta flex">
+      <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
+      <app-comment (click)="openComments()" [post]="post"></app-comment>
+    </div>
+    <p>{{ post.description }}</p>
+  </div>
+</div>
+
+<app-post-options
+  *ngIf="postOptions"
+  [post]="post"
+  (close)="postOptions = false"
+  (delete)="deletePost()"
+></app-post-options>
+
+<app-post-modal
+  *ngIf="postModal"
+  [post]="post"
+  (close)="postModal = false"
+  (postChange)="updatePost($event)"
+></app-post-modal>

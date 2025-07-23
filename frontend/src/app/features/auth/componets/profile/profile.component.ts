@@ -17,7 +17,8 @@ export class ProfileComponent implements OnInit {
   currentUser!: User;
 
   posts: Post[] = [];
-  selectedPostForModal: Post | null = null;
+  postModal: boolean = false;
+  selectedPost: Post | null = null;
 
   followers: User[] | null = null;
   following: User[] | null = null;
@@ -50,10 +51,6 @@ export class ProfileComponent implements OnInit {
         console.warn(result.error.message);
       }
     })
-  }
-
-  openPost(post: Post): void {
-    this.selectedPostForModal = post;
   }
 
   updatePost(updatedPost: Post) {
@@ -126,6 +123,16 @@ export class ProfileComponent implements OnInit {
         console.log(result.error.message);
       }
     });
+  }
+
+  openPost(post: Post): void {
+    this.selectedPost = post;
+
+    if (window.innerWidth < 1024) {
+      this.router.navigate(['/posts', post.id]);
+    } else {
+      this.postModal = true;
+    }
   }
 
   private isUserFollowing(): void {

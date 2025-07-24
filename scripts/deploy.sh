@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-REPO_URL="git@github.com:sentemon/FitnessApp.git"
-APP_DIR="/home/fitnessapp"
+REPO_URL="https://github.com/sentemon/FitnessApp.git"
+APP_DIR="/home/FitnessApp"
 
 # 1. Update system and install dependencies
-sudo apt update && sudo apt upgrade -y
+sudo apt update && apt upgrade -y
 sudo apt install -y git curl
 
 # 2. Install Docker if not present
@@ -18,11 +18,11 @@ fi
 
 # 3. Clone the repository (or update it)
 if [ ! -d "$APP_DIR" ]; then
-  git clone $REPO_URL $APP_DIR
+  sudo git clone $REPO_URL $APP_DIR
 else
   cd $APP_DIR
-  git reset --hard
-  git pull origin main
+  sudo git reset --hard
+  sudo git pull origin main
 fi
 
 # 4. Start Docker Compose

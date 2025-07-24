@@ -254,3 +254,7 @@ services:
 
 volumes:
   postgres-data:
+  nginx-certs:
+  nginx-vhost:
+  nginx-html:
+  nginx-acme:

@@ -8,8 +8,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - 4200:80
+    environment:
+      - VIRTUAL_HOST=sentemon.me,www.sentemon.me
+      - LETSENCRYPT_HOST=sentemon.me,www.sentemon.me
+      - LETSENCRYPT_EMAIL=sentemon.i@gmail.com
     depends_on:
       gateway:
         condition: service_healthy
@@ -147,6 +149,41 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - microservices
+    
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs:ro
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+    networks:
+      - microservices
+
+  nginx-letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: nginx-letsencrypt
+    restart: always
+    environment:
+      - DEFAULT_EMAIL=sentemon.i@gmail.com
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - nginx-acme:/etc/acme.sh
     networks:
       - microservices
 

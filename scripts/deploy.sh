@@ -20,21 +20,10 @@ if ! command -v docker &> /dev/null; then
   echo "Docker installed. Please log out and log in again to apply group changes."
 fi
 
-# 3. Clone or update the repository
-if [ ! -d "$APP_DIR" ]; then
-  echo "Cloning repository..."
-  sudo git clone $REPO_URL $APP_DIR
-else
-  echo "Updating repository..."
-  cd $APP_DIR
-  sudo git reset --hard
-  sudo git pull origin master
-fi
+# 3. Generate .env file if not present
+echo "Creating .env file at $ENV_FILE..."
 
-# 4. Generate .env file if not present
-if [ ! -f "$ENV_FILE" ]; then
-  echo "Creating .env file..."
-  sudo tee "$ENV_FILE" > /dev/null <<EOF
+echo "
 # Basic
 LETSENCRYPT_EMAIL=
 
@@ -59,23 +48,12 @@ RABBITMQ_DEFAULT_PASS=
 # Keycloak
 KEYCLOAK_ADMIN_USERNAME=
 KEYCLOAK_ADMIN_PASSWORD=
+" > .env
 
-# Other env variables can go here...
-EOF
+echo ".env file created. Please edit it with your values."
 
-  echo ".env file created at $ENV_FILE. Please edit it with real values before starting the app."
-  exit 0
-fi
-
-# 5. Pull Docker images
-echo "Pulling Docker images..."
-cd $APP_DIR
-sudo docker compose -f docker-compose.prod.yml down
-sudo docker compose -f docker-compose.prod.yml pull
-echo "Docker images pulled successfully."
-
-# 6. Final instructions
+# 5. Final instructions
 echo ""
 echo "To start the application make sure you have edited the .env file, then run this: "
 echo ""
-echo "sudo docker compose -f docker-compose.prod.yml up -d"
+echo "sudo docker compose -f docker-compose.prod.yml up --build -d"

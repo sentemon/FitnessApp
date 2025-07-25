@@ -60,6 +60,7 @@ jobs:
           docker buildx build \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${IMAGE_VERSION} \
             -f ./frontend/Dockerfile \
+            --build-arg ENVIRONMENT=Production \
             ./frontend
 
       - name: Push Docker image to Docker Hub

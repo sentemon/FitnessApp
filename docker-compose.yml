@@ -8,10 +8,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment:
-      - VIRTUAL_HOST=sentemon.me,www.sentemon.me
-      - LETSENCRYPT_HOST=sentemon.me,www.sentemon.me
-      - LETSENCRYPT_EMAIL=sentemon.i@gmail.com
+      args:
+        ENVIRONMENT: Development
     depends_on:
       gateway:
         condition: service_healthy
@@ -25,11 +23,7 @@ services:
       dockerfile: Gateway/Dockerfile
     ports:
       - 8000:8000
-    environment:
-      VIRTUAL_HOST: api.sentemon.me
-      LETSENCRYPT_HOST: api.sentemon.me
-      LETSENCRYPT_EMAIL: sentemon@gmail.com
-      
+    environment:      
       ReverseProxy__Clusters__auth-service__Destinations__destination1__Address: http://auth-service:8001
       ReverseProxy__Clusters__file-service__Destinations__destination1__Address: http://file-service:8004
       ReverseProxy__Clusters__post-service__Destinations__destination1__Address: http://post-service:8002
@@ -162,32 +156,8 @@ services:
     restart: always
     ports:
       - 80:80
-      - 443:443
     volumes:
-      - /etc/nginx/certs
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx-certs:/etc/nginx/certs:ro
-      - nginx-vhost:/etc/nginx/vhost.d
-      - nginx-html:/usr/share/nginx/html
-    networks:
-      - microservices
-
-  nginx-letsencrypt:
-    image: nginxproxy/acme-companion
-    container_name: nginx-letsencrypt
-    restart: always
-    environment:
-      - DEFAULT_EMAIL=sentemon.i@gmail.com
-    volumes_from:
-      - nginx-proxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx-certs:/etc/nginx/certs
-      - nginx-vhost:/etc/nginx/vhost.d
-      - nginx-html:/usr/share/nginx/html
-      - nginx-acme:/etc/acme.sh
     networks:
       - microservices
 
@@ -258,7 +228,3 @@ services:
 
 volumes:
   postgres-data:
-  nginx-certs:
-  nginx-vhost:
-  nginx-html:
-  nginx-acme:

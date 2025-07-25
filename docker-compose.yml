@@ -220,7 +220,7 @@ services:
       - KC_HOSTNAME=localhost
     ports:
       - 8080:8080
-    command: [ "start-dev", "--import-realm" ]
+    command: [ "start-dev", "--import-realm", "--import-strategy=IGNORE_EXISTING" ]
     restart: always
     volumes:
       - ./keycloak/fitness-app-realm.json:/opt/keycloak/data/import/fitness-app-realm.json

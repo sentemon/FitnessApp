@@ -29,6 +29,7 @@ services:
       - ReverseProxy__Clusters__post-service__Destinations__destination1__Address=http://post-service:8002
       - ReverseProxy__Clusters__workout-service__Destinations__destination1__Address=http://workout-service:8005
       - ReverseProxy__Clusters__chat-service__Destinations__destination1__Address=http://chat-service:8006
+      - GatewayUrl=https://api.sentemon.me
     depends_on:
       postgres:
         condition: service_healthy

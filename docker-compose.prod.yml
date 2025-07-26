@@ -30,21 +30,6 @@ services:
       - ReverseProxy__Clusters__workout-service__Destinations__destination1__Address=http://workout-service:8005
       - ReverseProxy__Clusters__chat-service__Destinations__destination1__Address=http://chat-service:8006
       - GatewayUrl=https://api.sentemon.me
-    depends_on:
-      postgres:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      auth-service:
-        condition: service_healthy
-      file-service:
-        condition: service_healthy
-      post-service:
-        condition: service_healthy
-      workout-service:
-        condition: service_healthy
-      chat-service:
-        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://gateway:8000/health || exit 1"]
       interval: 10s

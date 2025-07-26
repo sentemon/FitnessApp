@@ -48,9 +48,13 @@ jobs:
           fi
           docker buildx build \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/file-service:${IMAGE_VERSION} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/file-service:latest \
             -f ./backend/src/FileService/Dockerfile \
             ./backend/src
 
+      - name: Push latest Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/file-service:latest
+        
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')
         run: |

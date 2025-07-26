@@ -59,9 +59,13 @@ jobs:
           fi
           docker buildx build \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${IMAGE_VERSION} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest \
             -f ./frontend/Dockerfile \
             --build-arg ENVIRONMENT=Production \
             ./frontend
+
+      - name: Push latest Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
 
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')

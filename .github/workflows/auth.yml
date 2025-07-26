@@ -48,8 +48,12 @@ jobs:
           fi
           docker buildx build \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:${IMAGE_VERSION} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:latest \
             -f ./backend/src/AuthService/Dockerfile \
             ./backend/src
+          
+      - name: Push latest Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:latest
 
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')

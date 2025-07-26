@@ -206,10 +206,9 @@ services:
       - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
       - KC_DB_USERNAME=${POSTGRES_USER}
       - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
-      - KC_HOSTNAME=keycloak
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USERNAME}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-    command: [ "start-dev", "--import-realm", "--import-strategy=IGNORE_EXISTING" ]
+    command: [ "start", "--import-realm", "--import-strategy=IGNORE_EXISTING", "--optimized", "--hostname-strict=false" ]
     ports:
       - 8080:8080
     restart: unless-stopped

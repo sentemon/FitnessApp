@@ -161,20 +161,21 @@ public class Mutation
     {
         _httpContextAccessor.HttpContext?.Response.Cookies.Append(name, value, new CookieOptions
         {
-            Domain = !string.IsNullOrEmpty(_configuration[AppSettingsConstants.Domain]) ? _configuration[AppSettingsConstants.Domain] : null,
+            Domain = _configuration[AppSettingsConstants.Domain],
             Path = "/",
             HttpOnly = false,
             Secure = true,
             SameSite = SameSiteMode.None,
             MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
         });
+        Console.WriteLine("Domain: " + _configuration[AppSettingsConstants.Domain]);
     }
 
     private void DeleteCookie(string name)
     {
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete(name, new CookieOptions
         {
-            Domain = !string.IsNullOrEmpty(_configuration[AppSettingsConstants.Domain]) ? _configuration[AppSettingsConstants.Domain] : null,
+            Domain = _configuration[AppSettingsConstants.Domain],
             Path = "/",
             HttpOnly = false,
             Secure = true,

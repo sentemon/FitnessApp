@@ -10,6 +10,8 @@ services:
       dockerfile: Dockerfile
       args:
         ENVIRONMENT: Development
+    ports:
+      - 4200:80
     depends_on:
       gateway:
         condition: service_healthy
@@ -148,17 +150,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    networks:
-      - microservices
-    
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - 80:80
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - microservices
 

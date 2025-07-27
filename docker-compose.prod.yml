@@ -47,6 +47,7 @@ services:
       - DatabaseConnectionString=${AUTH_DATABASE_CONNECTION_STRING}
       - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
+      - Domain=.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy

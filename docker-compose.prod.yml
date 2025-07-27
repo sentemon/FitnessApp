@@ -155,6 +155,7 @@ services:
     restart: always
     environment:
       - DEFAULT_EMAIL=${LETSENCRYPT_EMAIL}
+      - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - nginx-certs:/etc/nginx/certs

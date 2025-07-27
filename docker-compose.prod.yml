@@ -23,6 +23,8 @@ services:
     restart: unless-stopped
     environment:
       - VIRTUAL_HOST=api.sentemon.me
+      - VIRTUAL_PORT=8000
+      - HTTPS_METHOD=noredirect
       - LETSENCRYPT_HOST=api.sentemon.me
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - ReverseProxy__Clusters__auth-service__Destinations__destination1__Address=http://auth-service:8001

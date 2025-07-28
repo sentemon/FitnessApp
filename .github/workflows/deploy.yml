@@ -1,0 +1,42 @@
+name: Deploy to Amazon Web Services
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  AssumeRoleAndCallIdentity:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      AWS_SESSION_NAME: ${{ secrets.AWS_SESSION_NAME }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: ${{ env.AWS_SESSION_NAME }}
+          aws-region: ${{ env.AWS_REGION}}
+
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name FitnessApp \
+          --deployment-group-name FitnessApp \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --github-location repository=${{ github.repository }},commitId=${{ github.sha }}

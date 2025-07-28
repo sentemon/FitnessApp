@@ -5,6 +5,7 @@ using ChatService.Application;
 using ChatService.Domain.Constants;
 using ChatService.Infrastructure;
 using ChatService.Persistence;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,14 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
     dbContext.Database.Migrate();
 }
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownNetworks = { },
+    KnownProxies = { }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -3,7 +3,7 @@ name: Docker Compose Build
 on:
   push:
     branches:
-      - main
+      - master
       - develop
   pull_request:
     branches: [ develop ]
@@ -21,6 +21,14 @@ jobs:
             
         - name: Start Docker Compose
           run: docker compose up -d
+          
+        - name: Health Check Gateway
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/health || exit 1
           
         - name: Health Check AuthService
           run: |
@@ -45,3 +53,19 @@ jobs:
               curl --fail http://0.0.0.0:8000/post/health && break || sleep 5
             done
             curl --fail http://0.0.0.0:8000/post/health || exit 1
+            
+        - name: Health Check ChatService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/chat/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/chat/health || exit 1
+            
+        - name: Health Check WorkoutService
+          run: |
+            echo "Checking health..."
+            for i in {1..10}; do
+              curl --fail http://0.0.0.0:8000/workout/health && break || sleep 5
+            done
+            curl --fail http://0.0.0.0:8000/workout/health || exit 1

@@ -60,7 +60,7 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
         _context.Add(file);
         await _context.SaveChangesAsync();
         
-        var host = _configuration["GatewayUrl"] ?? "http://localhost:8000";
+        var host = _configuration[AppSettingsConstants.GatewayUrl];
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,

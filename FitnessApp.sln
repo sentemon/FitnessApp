@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{CE086396
 		docker-compose.yml = docker-compose.yml
 		LICENSE = LICENSE
 		README.md = README.md
+		docker-compose.prod.yml = docker-compose.prod.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{C7DC7946-2C31-4266-BF89-17E15C5B5A63}"
@@ -68,6 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\file.yml = .github\workflows\file.yml
 		.github\workflows\workout.yml = .github\workflows\workout.yml
 		.github\workflows\chat.yml = .github\workflows\chat.yml
+		.github\workflows\gateway.yml = .github\workflows\gateway.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{499BA3B4-A81F-4079-B256-CC04927BB06D}"

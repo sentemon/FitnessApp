@@ -9,6 +9,7 @@ using AuthService.Application.Commands.Unfollow;
 using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
+using AuthService.Domain.Constants;
 using AuthService.Infrastructure.Models;
 
 namespace AuthService.Api.GraphQL;
@@ -16,10 +17,12 @@ namespace AuthService.Api.GraphQL;
 public class Mutation
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IConfiguration _configuration;
 
-    public Mutation(IHttpContextAccessor httpContextAccessor)
+    public Mutation(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
     {
         _httpContextAccessor = httpContextAccessor;
+        _configuration = configuration;
     }
 
     public async Task<KeycloakTokenResponse> Register(RegisterDto input, [Service] RegisterCommandHandler registerCommandHandler)
@@ -158,20 +161,21 @@ public class Mutation
     {
         _httpContextAccessor.HttpContext?.Response.Cookies.Append(name, value, new CookieOptions
         {
-            Domain = ".sentemon.me",
+            Domain = _configuration[AppSettingsConstants.Domain],
             Path = "/",
             HttpOnly = false,
             Secure = true,
             SameSite = SameSiteMode.None,
             MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
         });
+        Console.WriteLine("Domain: " + _configuration[AppSettingsConstants.Domain]);
     }
 
     private void DeleteCookie(string name)
     {
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete(name, new CookieOptions
         {
-            Domain = ".sentemon.me",
+            Domain = _configuration[AppSettingsConstants.Domain],
             Path = "/",
             HttpOnly = false,
             Secure = true,

@@ -3,6 +3,7 @@ using FileService.Application.Queries.DownloadPost;
 using FileService.Domain.Constants;
 using FileService.Infrastructure;
 using FileService.Persistence;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,15 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<FileDbContext>();
     dbContext.Database.Migrate();
 }
+
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownNetworks = { },
+    KnownProxies = { }
+});
 
 if (app.Environment.IsDevelopment())
 {

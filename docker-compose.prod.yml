@@ -1,0 +1,255 @@
+networks:
+  microservices:
+    driver: bridge
+
+services:
+  frontend:
+    container_name: frontend
+    image: sentemon/frontend:latest
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=sentemon.me,www.sentemon.me
+      - LETSENCRYPT_HOST=sentemon.me,www.sentemon.me
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    depends_on:
+      gateway:
+        condition: service_healthy
+    networks:
+      - microservices
+
+  gateway:
+    container_name: gateway
+    image: sentemon/gateway:latest
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=api.sentemon.me
+      - VIRTUAL_PORT=8000
+      - LETSENCRYPT_HOST=api.sentemon.me
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - ReverseProxy__Clusters__auth-service__Destinations__destination1__Address=http://auth-service:8001
+      - ReverseProxy__Clusters__file-service__Destinations__destination1__Address=http://file-service:8004
+      - ReverseProxy__Clusters__post-service__Destinations__destination1__Address=http://post-service:8002
+      - ReverseProxy__Clusters__workout-service__Destinations__destination1__Address=http://workout-service:8005
+      - ReverseProxy__Clusters__chat-service__Destinations__destination1__Address=http://chat-service:8006
+      - GatewayUrl=https://api.sentemon.me
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://gateway:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  auth-service:
+    container_name: auth-service
+    image: sentemon/auth-service:latest
+    restart: unless-stopped
+    environment:
+      - DatabaseConnectionString=${AUTH_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
+      - RabbitMq__Host=rabbitmq
+      - Domain=.sentemon.me
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://auth-service:8001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  file-service:
+    container_name: file-service
+    image: sentemon/file-service:latest
+    restart: unless-stopped
+    environment:
+      - ConnectionStrings__DatabaseConnectionString=${FILE_DATABASE_CONNECTION_STRING}
+      - ConnectionStrings__AzureStorageConnectionString=${AZURE_STORAGE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
+      - RabbitMq__Host=rabbitmq
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://file-service:8004/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  post-service:
+    container_name: post-service
+    image: sentemon/post-service:latest
+    restart: unless-stopped
+    environment:
+      - DatabaseConnectionString=${POST_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
+      - RabbitMq__Host=rabbitmq
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://post-service:8002/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  workout-service:
+    container_name: workout-service
+    image: sentemon/workout-service:latest
+    restart: unless-stopped
+    environment:
+      - DatabaseConnectionString=${WORKOUT_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
+      - RabbitMq__Host=rabbitmq
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://workout-service:8005/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  chat-service:
+    container_name: chat-service
+    image: sentemon/chat-service:latest
+    restart: unless-stopped
+    environment:
+      - DatabaseConnectionString=${CHAT_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
+      - RabbitMq__Host=rabbitmq
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://chat-service:8006/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - microservices
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:1.7.1
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs:ro
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+    networks:
+      - microservices
+
+  nginx-letsencrypt:
+    image: nginxproxy/acme-companion:2.6.0
+    container_name: nginx-letsencrypt
+    restart: always
+    environment:
+      - DEFAULT_EMAIL=${LETSENCRYPT_EMAIL}
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - nginx-acme:/etc/acme.sh
+    networks:
+      - microservices
+
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=keycloak
+    ports:
+      - 5432:5432
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: keycloak
+    restart: always
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+      - KC_DB_USERNAME=${POSTGRES_USER}
+      - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USERNAME}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_PROXY=edge
+    command: [ "start-dev", "--import-realm" ]
+    ports:
+      - 8080:8080
+    volumes:
+      - ./keycloak/fitness-app-realm.json:/opt/keycloak/data/import/fitness-app-realm.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - microservices
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    restart: always
+    ports:
+      - 10000:10000
+    command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
+    environment:
+      - AZURITE_ACCOUNTS=${AZURITE_ACCOUNTS}
+    networks:
+      - microservices
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - microservices
+
+volumes:
+  postgres-data:
+  nginx-certs:
+  nginx-vhost:
+  nginx-html:
+  nginx-acme:

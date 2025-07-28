@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using WorkoutService.Api.GraphQL;
 using WorkoutService.Application;
@@ -39,7 +40,14 @@ using (var scope = app.Services.CreateScope())
     // await Seed.SeedWorkouts(dbContext);
 }
 
-// app.UseHttpsRedirection();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownNetworks = { },
+    KnownProxies = { }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

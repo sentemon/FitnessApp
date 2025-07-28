@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using PostService.Api.GraphQL;
 using PostService.Application;
@@ -37,10 +38,14 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-if (!app.Environment.IsDevelopment())
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    app.UseHttpsRedirection();
-}
+    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownNetworks = { },
+    KnownProxies = { }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

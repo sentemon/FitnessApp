@@ -10,4 +10,6 @@ public static class AppSettingsConstants
     public const string RabbitMqHost = "RabbitMq:Host";
     public const string RabbitMqUsername = "RabbitMq:Username";
     public const string RabbitMqPassword = "RabbitMq:Password";
+
+    public const string GatewayUrl = "GatewayUrl";
 }

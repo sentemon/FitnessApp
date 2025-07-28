@@ -1,47 +1,35 @@
-name: Frontend CI Pipeline
+name: Gateway CI Pipeline
 
 on:
-  push:
+  push: 
     paths:
-      - frontend/** 
-      - .github/workflows/frontend.yml
+      - backend/src/**
+      - .github/workflows/gateway.yml
     branches:
       - master
       - develop
     tags:
       - 'v*'
-  pull_request:
+  pull_request: 
     types: [opened, synchronize, reopened]
 
-jobs:
-  build:
+jobs: 
+  build-and-test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      
+      - name: Run reusable Build and Test action
+        uses: ./.github/actions/build-and-test
         with:
-          node-version: '20.x'
-
-      - name: Restore dependencies
-        run: |
-          cd frontend
-          npm ci
-
-      - name: Build Angular app
-        run: |
-          cd frontend
-          npm run build -- --configuration production
-
-#      - name: Run tests
-#        run: |
-#          cd frontend
-#          npm test -- --watch=false --code-coverage
+          backendCsprojPath: ./backend/src/Gateway/Gateway/Gateway.csproj
+          buildConfiguration: Release
+          serviceName: Gateway
+          
   docker:
-    needs: build
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     env:
@@ -51,7 +39,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+        
       - name: Log in to Docker Hub
         run: echo "${{ env.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ env.DOCKER_HUB_USERNAME }}" --password-stdin
 
@@ -62,18 +50,16 @@ jobs:
             IMAGE_VERSION=${GITHUB_REF#refs/tags/}
           fi
           docker buildx build \
-            -t ${{ env.DOCKER_HUB_USERNAME }}/frontend:${IMAGE_VERSION} \
-            -t ${{ env.DOCKER_HUB_USERNAME }}/frontend:latest \
-            -f ./frontend/Dockerfile \
-            --build-arg ENVIRONMENT=Production \
-            ./frontend
+            -t ${{ env.DOCKER_HUB_USERNAME }}/gateway:${IMAGE_VERSION} \
+            -t ${{ env.DOCKER_HUB_USERNAME }}/gateway:latest \
+            -f ./backend/src/Gateway/Dockerfile \
+            ./backend/src
 
       - name: Push latest Docker image to Docker Hub
-        run: docker push ${{ env.DOCKER_HUB_USERNAME }}/frontend:latest
-
+        run: docker push ${{ env.DOCKER_HUB_USERNAME }}/gateway:latest
+        
       - name: Push Docker image to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           IMAGE_VERSION=${GITHUB_REF#refs/tags/}
-          docker push ${{ env.DOCKER_HUB_USERNAME }}/frontend:${IMAGE_VERSION}
-
+          docker push ${{ env.DOCKER_HUB_USERNAME }}/gateway:${IMAGE_VERSION}

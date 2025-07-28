@@ -28,11 +28,6 @@ builder.Services
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-
 app.UseCors(CorsConstants.CorsPolicy);
 
 app.MapReverseProxy();

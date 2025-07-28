@@ -3,6 +3,7 @@ using AuthService.Application;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
 using AuthService.Persistence;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,9 +38,15 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-// app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownNetworks = { },
+    KnownProxies = { }
+});
 
-// app.UseHttpsRedirection();
+// app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

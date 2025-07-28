@@ -53,6 +53,13 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+    Console.WriteLine($"Authorization: {authHeader}");
+    await next();
+});
+
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.MapGraphQL();

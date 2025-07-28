@@ -24,7 +24,6 @@ services:
     environment:
       - VIRTUAL_HOST=api.sentemon.me
       - VIRTUAL_PORT=8000
-      - HTTPS_METHOD=noredirect
       - LETSENCRYPT_HOST=api.sentemon.me
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - ReverseProxy__Clusters__auth-service__Destinations__destination1__Address=http://auth-service:8001
@@ -135,7 +134,7 @@ services:
       - microservices
 
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:1.7.1
     container_name: nginx-proxy
     restart: always
     ports:
@@ -153,7 +152,7 @@ services:
       - microservices
 
   nginx-letsencrypt:
-    image: nginxproxy/acme-companion
+    image: nginxproxy/acme-companion:2.6.0
     container_name: nginx-letsencrypt
     restart: always
     environment:

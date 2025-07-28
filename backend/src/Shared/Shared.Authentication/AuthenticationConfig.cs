@@ -17,6 +17,6 @@ public class AuthenticationConfig
 
         Authority = $"{url}/realms/{realm}";
         MetadataAddress = $"{url}/realms/fitness-app-realm/.well-known/openid-configuration";
-        ValidIssuer = $"http://{url}/realms/{realm}";
+        ValidIssuer = $"{url}/realms/{realm}";
     }
 }

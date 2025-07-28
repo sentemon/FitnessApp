@@ -67,6 +67,7 @@ services:
     environment:
       - ConnectionStrings__DatabaseConnectionString=${FILE_DATABASE_CONNECTION_STRING}
       - ConnectionStrings__AzureStorageConnectionString=${AZURE_STORAGE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -85,6 +86,7 @@ services:
     restart: unless-stopped
     environment:
       - DatabaseConnectionString=${POST_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -103,6 +105,7 @@ services:
     restart: unless-stopped
     environment:
       - DatabaseConnectionString=${WORKOUT_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -121,6 +124,7 @@ services:
     restart: unless-stopped
     environment:
       - DatabaseConnectionString=${CHAT_DATABASE_CONNECTION_STRING}
+      - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:

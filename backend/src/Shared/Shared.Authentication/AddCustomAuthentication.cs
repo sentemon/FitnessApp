@@ -53,24 +53,6 @@ public static class AuthenticationExtensions
                     return jwt;
                 }
             };
-            
-            options.Events = new JwtBearerEvents
-            {
-                OnAuthenticationFailed = context =>
-                {
-                    Console.WriteLine("Token validation failed: " + context.Exception);
-                    return Task.CompletedTask;
-                },
-                OnMessageReceived = context =>
-                {
-                    if (context.Request.Cookies.ContainsKey("token"))
-                    {
-                        context.Token = context.Request.Cookies["token"];
-                    }
-                    return Task.CompletedTask;
-                }
-            };
-
         });
     }
 }

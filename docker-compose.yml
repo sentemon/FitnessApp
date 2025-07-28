@@ -77,6 +77,7 @@ services:
     environment:
       ConnectionStrings__DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
       ConnectionStrings__AzureStorageConnectionString: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://azurite:10000/sentemon
+      Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
       
     depends_on:
@@ -99,6 +100,7 @@ services:
       - 8002:8002
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
+      Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
     depends_on:
       gateway:
@@ -120,6 +122,7 @@ services:
       - 8005:8005
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=WorkoutsDb
+      Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
     depends_on: 
       gateway:
@@ -141,6 +144,7 @@ services:
       - 8006:8006
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
+      Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
     depends_on:
       gateway:

@@ -49,8 +49,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     KnownProxies = { }
 });
 
-// app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

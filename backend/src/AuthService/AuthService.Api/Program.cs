@@ -48,17 +48,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 // app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-// app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.Use(async (context, next) =>
-{
-    var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
-    Console.WriteLine($"Authorization: {authHeader}");
-    await next();
-});
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 

@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/FitnessApp
+    overwrite: yes
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_containers.sh
+      timeout: 120
+      runas: ubuntu
+
+  AfterInstall:
+    - location: scripts/pull_containers.sh
+      timeout: 300
+      runas: ubuntu
+
+  ApplicationStart:
+    - location: scripts/start_containers.sh
+      timeout: 300
+      runas: ubuntu

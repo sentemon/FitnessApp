@@ -1,9 +1,6 @@
 #!/bin/bash
-set -e
 
-REPO_URL="https://github.com/sentemon/FitnessApp.git"
-APP_DIR="/home/FitnessApp"
-ENV_FILE="$APP_DIR/.env"
+ENV_FILE="/home/ubuntu/FitnessApp/.env"
 
 # 1. Update system and install dependencies
 echo "Updating system and installing dependencies..."
@@ -52,8 +49,6 @@ KEYCLOAK_ADMIN_PASSWORD=
 
 echo ".env file created. Please edit it with your values."
 
-# 5. Final instructions
-echo ""
-echo "To start the application make sure you have edited the .env file, then run this: "
-echo ""
-echo "sudo docker compose -f docker-compose.prod.yml up --build -d"
+# 4. How to start the application
+echo "You don't need to start the application manually. The CI/CD pipeline will handle it for you."
+echo "Otherwise, read README.md for manual instructions: https://github.com/sentemon/FitnessApp/develop/README.md"

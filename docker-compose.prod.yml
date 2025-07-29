@@ -67,6 +67,7 @@ services:
     environment:
       - ConnectionStrings__DatabaseConnectionString=${FILE_DATABASE_CONNECTION_STRING}
       - ConnectionStrings__AzureStorageConnectionString=${AZURE_STORAGE_CONNECTION_STRING}
+      - GatewayUrl=https://api.sentemon.me
       - Keycloak__Url=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:

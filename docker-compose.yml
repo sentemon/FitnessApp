@@ -54,6 +54,7 @@ services:
       - 8001:8001
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
+      Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
     depends_on:
       gateway:
@@ -189,7 +190,7 @@ services:
       - microservices
     
   azurite:
-    image: mcr.microsoft.com/azure-storage/azurite
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
     container_name: azurite
     ports:
       - 10000:10000

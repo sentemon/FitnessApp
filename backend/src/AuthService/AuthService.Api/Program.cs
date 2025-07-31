@@ -22,6 +22,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(options => options.IncludeExceptionDetails = true)
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddType(new UuidType())
@@ -37,14 +38,14 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
     dbContext.Database.Migrate();
 }
-
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-    KnownNetworks = { },
-    KnownProxies = { }
-});
+//
+// app.UseForwardedHeaders(new ForwardedHeadersOptions
+// {
+//     // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+//     KnownNetworks = { },
+//     KnownProxies = { }
+// });
 
 // app.UseMiddleware<ExceptionHandlerMiddleware>();
 

@@ -47,6 +47,7 @@ services:
     environment:
       - DatabaseConnectionString=${AUTH_DATABASE_CONNECTION_STRING}
       - Keycloak__Url=http://keycloak:8080
+      - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
       - Domain=.sentemon.me
     depends_on:
@@ -69,6 +70,7 @@ services:
       - ConnectionStrings__AzureStorageConnectionString=${AZURE_STORAGE_CONNECTION_STRING}
       - GatewayUrl=https://api.sentemon.me
       - Keycloak__Url=http://keycloak:8080
+      - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -88,6 +90,7 @@ services:
     environment:
       - DatabaseConnectionString=${POST_DATABASE_CONNECTION_STRING}
       - Keycloak__Url=http://keycloak:8080
+      - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -107,6 +110,7 @@ services:
     environment:
       - DatabaseConnectionString=${WORKOUT_DATABASE_CONNECTION_STRING}
       - Keycloak__Url=http://keycloak:8080
+      - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:
@@ -126,6 +130,7 @@ services:
     environment:
       - DatabaseConnectionString=${CHAT_DATABASE_CONNECTION_STRING}
       - Keycloak__Url=http://keycloak:8080
+      - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
     depends_on:
       gateway:

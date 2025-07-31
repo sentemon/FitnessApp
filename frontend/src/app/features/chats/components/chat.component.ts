@@ -7,12 +7,15 @@ import {CookieService} from "../../../core/services/cookie.service";
   selector: 'app-chat',
   template: `
     <div class="chat flex">
+<!--   ToDo: disable *ngIf for desktop   -->
       <app-chat-sidebar
+        *ngIf="!selectedChatId && !receiverUserId"
         (selectedChatId)="onChatSelected($event)"
         (userSelected)="onUserSelected($event)">
       </app-chat-sidebar>
 
       <app-chat-area
+        *ngIf="selectedChatId || receiverUserId"
         [selectedChatId]="selectedChatId"
         [receiverId]="receiverUserId">
       </app-chat-area>

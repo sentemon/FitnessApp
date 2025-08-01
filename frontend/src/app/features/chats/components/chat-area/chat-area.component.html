@@ -1,6 +1,6 @@
 <div class="chat-area flex flex-col" *ngIf="selectedChatId || receiverId">
   <div class="header flex flex-center">
-    <div *ngIf="deviceService.isMobile() || deviceService.isTablet()" class="chats">☰</div>
+    <div (click)="showChats()" *ngIf="deviceService.isMobile() || deviceService.isTablet()" class="chats">☰</div>
     <div class="chat-info flex flex-col">
       <p class="chat-name">{{ chatName }}</p>
       <p class="chat-status" [ngClass]="isOnline ? 'online' : 'offline'">

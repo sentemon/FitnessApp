@@ -144,4 +144,8 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
       });
     }
   }
+
+  showChats() {
+    this.router.navigate(['/chats']);
+  }
 }

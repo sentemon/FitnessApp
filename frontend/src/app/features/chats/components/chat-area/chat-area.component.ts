@@ -15,6 +15,7 @@ import {SignalRService} from "../../services/signalr.service";
 import {CookieService} from "../../../../core/services/cookie.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {DeviceService} from "../../../../core/services/device.service";
 
 @Component({
   selector: 'app-chat-area',
@@ -37,6 +38,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
     private chatService: ChatService,
     private signalRService: SignalRService,
     private cookieService: CookieService,
+    protected deviceService: DeviceService,
     private router: Router,
   ) {
     this.currentUserId = this.cookieService.get("userId").response!;

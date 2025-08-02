@@ -11,7 +11,7 @@ import {Component, HostListener} from '@angular/core';
 
       <div>
         <button class="sidebar-toggle right" *ngIf="!isSidebarOpen" (click)="toggleSidebar()">→</button>
-        <app-main></app-main>
+        <app-main [isSidebarOpen]="isSidebarOpen"></app-main>
       </div>
     </div>
   `,
@@ -19,33 +19,38 @@ import {Component, HostListener} from '@angular/core';
     .layout {
       display: flex;
       overflow: hidden;
-    }
 
-    .sidebar-container {
-      position: relative;
-    }
-
-    .sidebar-toggle {
-      position: absolute;
-      top: 50%;
-      background-color: #338874;
-      border: none;
-      color: white;
-      padding: 0.5rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 0 5px 5px 0;
-      transition: background-color 0.3s;
-
-      &.left {
-        right: 0;
-        border-radius: 5px 0 0 5px;
+      .sidebar-container {
+        position: relative;
       }
 
-      &.right {
-        left: 0;
-        top: 50%;
+      div {
+        height: 100%;
+        width: 100%;
+
+        .sidebar-toggle {
+          position: absolute;
+          top: 50%;
+          background-color: #338874;
+          border: none;
+          color: white;
+          padding: 0.5rem;
+          font-size: 1.2rem;
+          cursor: pointer;
+          z-index: 10;
+          border-radius: 0 5px 5px 0;
+          transition: background-color 0.3s;
+
+          &.left {
+            right: 0;
+            border-radius: 5px 0 0 5px;
+          }
+
+          &.right {
+            left: 0;
+            top: 50%;
+          }
+        }
       }
     }
   `

@@ -7,6 +7,7 @@ import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {Message} from "../../models/message.model";
+import {DateService} from "../../../../core/services/date.service";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -25,6 +26,7 @@ export class ChatSidebarComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private userService: UserService,
+    private dateService: DateService,
     cookieService: CookieService) {
     this.currentUsername = cookieService.get("username").response!;
     this.searchControl.valueChanges.pipe(
@@ -66,19 +68,19 @@ export class ChatSidebarComponent implements OnInit {
     return chat.userChats.find(uc => uc.user.username !== this.currentUsername)!.user.username;
   }
 
-  getLastMessage(chatId: string): { content: string, sentAt: Date | null } {
+  getLastMessage(chatId: string): { content: string, sentAt: string } {
     const result = this.chatService.getCachedLastMessage(chatId);
 
     if (!result.isSuccess) {
       return {
         content: "Loading...",
-        sentAt: null
+        sentAt: ""
       };
     }
 
     return {
       content: result.response.content,
-      sentAt: result.response.sentAt
+      sentAt: this.dateService.formatMessageDate(result.response.sentAt)
     };
   }
 

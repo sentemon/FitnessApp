@@ -22,7 +22,7 @@
       <div class="chat-content">
         <p class="chat-name">{{ getChatName(chat) }}</p>
         <p class="chat-message">{{ getLastMessage(chat.id).content }}</p>
-        <p class="chat-message-time">{{ getLastMessage(chat.id).sentAt | date: 'shortTime' }}</p>
+        <p class="chat-message-time">{{ getLastMessage(chat.id).sentAt }}</p>
       </div>
     </div>
   </div>

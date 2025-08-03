@@ -14,17 +14,25 @@
     background: #ecf0f1;
     border-bottom: 1px solid #dcdcdc;
 
-    .chat-status {
-      font-size: 0.8rem;
-
-      &.online {
-        color: green;
+    .chat-info {
+      .chat-name {
+        cursor: pointer;
       }
 
-      &.offline {
-        color: gray;
+      .chat-status {
+        font-size: 0.8rem;
+
+        &.online {
+          color: green;
+        }
+
+        &.offline {
+          color: gray;
+        }
       }
     }
+
+
 
     .header-actions {
       gap: 1rem;

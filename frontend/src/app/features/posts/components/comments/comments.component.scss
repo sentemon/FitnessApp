@@ -15,6 +15,12 @@
     .comment {
       color: white;
 
+      .content {
+        strong {
+          cursor: pointer;
+        }
+      }
+
       .delete {
         font-size: 20px;
         font-weight: bold;

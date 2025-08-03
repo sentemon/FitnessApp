@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using ChatService.Application.Queries.GetAllChats;
 using ChatService.Application.Queries.GetChatById;
+using ChatService.Application.Queries.GetLastMessage;
 using ChatService.Application.Queries.GetUserById;
 using ChatService.Application.Queries.SearchUsers;
 using ChatService.Domain.Entities;
@@ -79,6 +80,20 @@ public class Query
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+
+    public async Task<Message> GetLastMessage(string chatId, [Service] GetLastMessageQueryHandler getLastMessageQueryHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var query = new GetLastMessageQuery(Guid.Parse(chatId), userId);
+        var result = await getLastMessageQueryHandler.HandleAsync(query);
+        
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(result.Error.Message);
         }
 
         return result.Response;

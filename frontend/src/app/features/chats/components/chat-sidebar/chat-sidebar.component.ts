@@ -6,6 +6,7 @@ import {FormControl} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {Message} from "../../models/message.model";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -15,6 +16,7 @@ import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 export class ChatSidebarComponent implements OnInit {
   currentUsername: string;
   chats: Chat[] = [];
+  lastMessages: Map<string, Message> = new Map();
   users: User[] = [];
   searchControl = new FormControl('');
 
@@ -35,8 +37,21 @@ export class ChatSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.chatService.getAll().subscribe(result => {
-      if (result.isSuccess)
+      if (result.isSuccess) {
         this.chats = result.response;
+      } else {
+        console.log(result.error.message);
+      }
+
+      for (const chat of this.chats) {
+        this.chatService.getLastMessage(chat.id).subscribe(result => {
+          if (result.isSuccess) {
+            this.lastMessages.set(chat.id, result.response);
+          } else {
+            console.log(result);
+          }
+        })
+      }
     });
   }
 
@@ -50,6 +65,10 @@ export class ChatSidebarComponent implements OnInit {
 
   getChatName(chat: Chat): string {
     return chat.userChats.find(uc => uc.user.username !== this.currentUsername)!.user.username;
+  }
+
+  getLastMessage(chatId: string): string {
+    return this.lastMessages.get(chatId)?.content || 'Loading...';
   }
 
   // get filteredChats(): Chat[] {

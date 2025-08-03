@@ -70,3 +70,17 @@ export const SEARCH_USERS = gql`
     }
   }
 `;
+
+export const GET_LAST_MESSAGE = gql`
+  query LastMessage($chatId: String!) {
+    lastMessage(chatId: $chatId) {
+      id
+      senderId
+      chatId
+      content
+      sentAt
+      updatedAt
+      isRead
+    }
+  }
+`;

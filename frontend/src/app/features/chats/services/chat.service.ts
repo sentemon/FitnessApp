@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {Chat} from "../models/chat.model";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {Apollo, ApolloBase} from "apollo-angular";
-import {GET_ALL_CHATS, GET_CHAT_BY_ID} from "../graphql/queries.graphql";
+import {GET_ALL_CHATS, GET_CHAT_BY_ID, GET_LAST_MESSAGE} from "../graphql/queries.graphql";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
+import {Message} from "../models/message.model";
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,15 @@ export class ChatService {
       fetchPolicy: 'network-only'
     }).pipe(
       toResult<Chat>("chatById")
+    );
+  }
+
+  getLastMessage(chatId: string): Observable<Result<Message>> {
+    return this.chatClient.query({
+      query: GET_LAST_MESSAGE,
+      variables: { chatId }
+    }).pipe(
+      toResult<Message>("lastMessage"),
     );
   }
 }

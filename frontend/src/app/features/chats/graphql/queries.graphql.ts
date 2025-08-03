@@ -13,6 +13,7 @@ export const GET_ALL_CHATS = gql`
           firstName
           lastName
           username
+          lastSeenAt
           imageUrl
           createdAt
         }
@@ -33,6 +34,7 @@ export const GET_CHAT_BY_ID = gql`
           firstName
           lastName
           username
+          lastSeenAt
           imageUrl
           createdAt
         }
@@ -50,6 +52,7 @@ export const GET_CHAT_BY_ID = gql`
           firstName
           lastName
           username
+          lastSeenAt
           imageUrl
           createdAt
         }
@@ -65,6 +68,7 @@ export const SEARCH_USERS = gql`
       firstName
       lastName
       username
+      lastSeenAt
       imageUrl
       createdAt
     }

@@ -45,6 +45,12 @@ export const LOGOUT = gql`
   }
 `;
 
+export const UPDATE_ACTIVITY_STATUS = gql`
+  mutation UpdateActivityStatus {
+    updateActivityStatus
+  }
+`
+
 export const FOLLOW = gql`
   mutation Follow($targetUserId: String!) {
     follow(targetUserId: $targetUserId)

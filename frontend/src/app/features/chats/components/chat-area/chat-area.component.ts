@@ -3,7 +3,8 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild
@@ -16,6 +17,7 @@ import {CookieService} from "../../../../core/services/cookie.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {DeviceService} from "../../../../core/services/device.service";
+import {DateService} from "../../../../core/services/date.service";
 
 @Component({
   selector: 'app-chat-area',
@@ -38,6 +40,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
     private chatService: ChatService,
     private signalRService: SignalRService,
     private cookieService: CookieService,
+    private dateService: DateService,
     protected deviceService: DeviceService,
     private router: Router,
   ) {
@@ -118,7 +121,19 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   get isOnline(): boolean {
-    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUserId)?.user.isOnline ?? false;
+    return this.lastSeenAt === "Online";
+  }
+
+  get lastSeenAt(): string {
+    const lastSeenAt = this.selectedChat?.userChats
+      ?.find(uc => uc.userId !== this.currentUserId)
+      ?.user?.lastSeenAt;
+
+    if (!lastSeenAt) {
+      return "recently";
+    }
+
+    return this.dateService.formatLastSeenDate(lastSeenAt);
   }
 
   get chatName(): string {

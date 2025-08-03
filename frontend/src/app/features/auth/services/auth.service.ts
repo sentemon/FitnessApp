@@ -107,7 +107,6 @@ export class AuthService {
 
   private setUserCookies(): void {
     this.userService.getCurrentUser().subscribe(result => {
-      console.log(result);
 
       if (result.isSuccess) {
         console.log(result.response);

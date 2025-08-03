@@ -8,7 +8,9 @@ export interface User {
   email: {
     value: string;
   };
+  lastSeenAt: Date;
   followersCount: number;
   followingCount: number;
   imageUrl: string;
+  createdAt: Date;
 }

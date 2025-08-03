@@ -32,7 +32,8 @@ public class SearchUsersQueryHandler : IQueryHandler<SearchUsersQuery, IEnumerab
                 u.FirstName,
                 u.LastName,
                 u.Username.Value,
-                "",
+                string.Empty,
+                u.LastSeenAt,
                 u.ImageUrl,
                 u.FollowingCount,
                 u.FollowersCount

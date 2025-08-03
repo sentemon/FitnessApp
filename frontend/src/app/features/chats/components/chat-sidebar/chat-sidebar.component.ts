@@ -16,7 +16,6 @@ import {Message} from "../../models/message.model";
 export class ChatSidebarComponent implements OnInit {
   currentUsername: string;
   chats: Chat[] = [];
-  lastMessages: Map<string, Message> = new Map();
   users: User[] = [];
   searchControl = new FormControl('');
 
@@ -44,11 +43,11 @@ export class ChatSidebarComponent implements OnInit {
       }
 
       for (const chat of this.chats) {
-        this.chatService.getLastMessage(chat.id).subscribe(result => {
+        this.chatService.fetchLastMessage(chat.id).subscribe(result => {
           if (result.isSuccess) {
-            this.lastMessages.set(chat.id, result.response);
+            this.chatService.updateLastMessage(chat.id, result.response);
           } else {
-            console.log(result);
+            console.log(result.error.message);
           }
         })
       }
@@ -67,13 +66,36 @@ export class ChatSidebarComponent implements OnInit {
     return chat.userChats.find(uc => uc.user.username !== this.currentUsername)!.user.username;
   }
 
-  getLastMessage(chatId: string): string {
-    return this.lastMessages.get(chatId)?.content || 'Loading...';
+  getLastMessage(chatId: string): { content: string, sentAt: Date | null } {
+    const result = this.chatService.getCachedLastMessage(chatId);
+
+    if (!result.isSuccess) {
+      return {
+        content: "Loading...",
+        sentAt: null
+      };
+    }
+
+    return {
+      content: result.response.content,
+      sentAt: result.response.sentAt
+    };
   }
 
-  // get filteredChats(): Chat[] {
-  //   return this.chats.filter(chat =>
-  //     chat.userChats.some(uc => uc.user.username.toLowerCase().startsWith(this.searchControl.value!.toLowerCase()) && uc.user.username !== this.currentUsername)
-  //   );
-  // }
+  get filteredChats(): Chat[] {
+    return this.chats.slice().sort((a, b) => {
+      const aResult = this.chatService.getCachedLastMessage(a.id);
+      const bResult = this.chatService.getCachedLastMessage(b.id);
+
+      if (!aResult.isSuccess || !bResult.isSuccess) {
+        return 0;
+      }
+
+      const aTime = new Date(aResult.response.sentAt).getTime();
+      const bTime = new Date(bResult.response.sentAt).getTime();
+
+      return bTime - aTime;
+    });
+  }
+
 }

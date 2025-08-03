@@ -7,4 +7,5 @@ export interface Chat {
   messages: Message[];
   userChats: UserChat[];
   user: User;
+  createdAt: Date;
 }

@@ -64,7 +64,7 @@ public class User
     
     public void UpdateLastSeen()
     {
-        LastSeenAt = DateTime.Now;
+        LastSeenAt = DateTime.UtcNow;
     } 
 
     public void FollowUser() => FollowingCount++;

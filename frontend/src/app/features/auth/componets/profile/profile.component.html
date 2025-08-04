@@ -8,8 +8,8 @@
     <div class="profile__top-row flex">
       <p class="profile__username">{{ user.username }}</p>
       <ng-container *ngIf="currentUser.username.value === user.username">
-        <button>Edit Profile</button>
-        <button (click)="logout()">Logout</button>
+        <button>✏️</button>
+        <button (click)="logout()">➜]</button>
       </ng-container>
     </div>
 

@@ -7,7 +7,6 @@
 
     <div class="modal-body">
       <div class="post-content">
-        <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <img [src]="post.contentUrl" alt="Post Image" />
         <div class="meta flex">
           <app-like [post]="post" (likeChange)="updatePost($event)"></app-like>
@@ -17,6 +16,7 @@
       </div>
 
       <div class="comments-container flex flex-col">
+        <p><strong>{{ post.username }}</strong> • {{ post.createdAt | date: "medium" }}</p>
         <div class="comments">
           <h3>Comments</h3>
           <div *ngFor="let comment of comments" class="comment flex">

@@ -43,7 +43,7 @@
         width: 100%;
         height: auto;
         object-fit: cover;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1;
         margin-bottom: 16px;
         border-radius: 8px;
       }
@@ -62,10 +62,15 @@
     .comments-container {
       flex: 1;
       border-radius: 8px;
-      height: 650px;
+      height: 90vh;
       overflow: hidden;
       @include glass-effect;
 
+      p {
+        color: white;
+        padding: 8px 0 0 8px;
+        font-size: 16px;
+      }
 
       .comments {
         flex: 1;

@@ -10,12 +10,13 @@ import {AuthService} from "../../services/auth.service";
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = "";
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required]],
-      password: ['']
-    })
+      password: ['', [Validators.required]]
+    });
   }
 
   onLogin(): void {
@@ -24,11 +25,11 @@ export class LoginComponent {
         if (result.isSuccess) {
           this.router.navigate(["/"]);
         } else {
-          console.error("Something went wrong during login.")
+          this.errorMessage = result.error.message;
         }
       });
     } else {
-      console.error('Form is invalid', this.loginForm.errors);
+      console.log('Form is invalid', this.loginForm.errors);
     }
   }
 }

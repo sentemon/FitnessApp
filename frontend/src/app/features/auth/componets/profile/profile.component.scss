@@ -62,7 +62,7 @@
     }
 
     button {
-      padding: 6px 12px;
+      padding: 0 4px;
       border-radius: 6px;
       border: none;
       background-color: transparent;
@@ -70,6 +70,12 @@
 
       &:hover {
         background-color: #616161;
+      }
+
+      .settings {
+        margin-top: 4px;
+        width: 16px;
+        height: 16px;
       }
     }
   }

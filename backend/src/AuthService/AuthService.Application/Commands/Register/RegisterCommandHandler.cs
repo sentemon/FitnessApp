@@ -2,6 +2,7 @@ using AuthService.Infrastructure.Interfaces;
 using AuthService.Infrastructure.Models;
 using AuthService.Persistence;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.DTO;
@@ -24,6 +25,22 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
 
     public async Task<IResult<KeycloakTokenResponse, Error>> HandleAsync(RegisterCommand command)
     {
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Username.Value == command.RegisterDto.Username || u.Email.Value == command.RegisterDto.Email);
+
+        if (existingUser is not null)
+        {
+            if (existingUser.Username.Value == command.RegisterDto.Username)
+            {
+                return Result<KeycloakTokenResponse>.Failure(new Error("Username already exists."));
+            }
+
+            if (existingUser.Email.Value == command.RegisterDto.Email && existingUser.EmailVerified)
+            {
+                return Result<KeycloakTokenResponse>.Failure(new Error("Email already exists."));
+            }
+        }
+        
         var user = await _authService.RegisterAsync(
             command.RegisterDto.FirstName,
             command.RegisterDto.LastName,
@@ -44,8 +61,16 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
             user.CreatedAt
         ));
 
-        var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
+        try
+        {
+            var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
         
-        return Result<KeycloakTokenResponse>.Success(token);
+            return Result<KeycloakTokenResponse>.Success(token);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            return Result<KeycloakTokenResponse>.Failure(new Error(ex.Message));
+        }
     }
 }

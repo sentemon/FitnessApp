@@ -23,14 +23,19 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, KeycloakTokenRe
         var isEmail = IsEmail(command.LoginDto.Username);
         var existingUser = await _context.Users.FirstOrDefaultAsync(u => (isEmail ? u.Email.Value : u.Username.Value) == command.LoginDto.Username);
 
-        if (existingUser == null && isEmail)
+        if (existingUser is null && isEmail)
         {
             return Result<KeycloakTokenResponse>.Failure(new Error("User with this email does not exist."));
         }
         
-        if (existingUser == null && !isEmail)
+        if (existingUser is null && !isEmail)
         {
             return Result<KeycloakTokenResponse>.Failure(new Error("User with this username does not exist."));
+        }
+        
+        if (existingUser is not null && !existingUser.EmailVerified)
+        {
+            return Result<KeycloakTokenResponse>.Failure(new Error("Email is not verified. Try to login with the username."));
         }
         
         try

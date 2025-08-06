@@ -37,8 +37,8 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent, canActivate: [AuthGuard] },
   { path: 'chats', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'chats/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: ':username', component: ProfileComponent },
+  { path: 'not-found', component: NotFoundComponent, canActivate: [AuthGuard] },
+  { path: ':username', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

@@ -21,6 +21,7 @@ public class GetChatByIdQueryHandler : IQueryHandler<GetChatByIdQuery, Chat>
         var chat = await _context.Chats
             .AsNoTracking()
             .Include(c => c.Messages)
+                .ThenInclude(m => m.Sender)
             .Include(c => c.UserChats)
                 .ThenInclude(uc => uc.User)
             .FirstOrDefaultAsync(c => c.Id == query.ChatId);

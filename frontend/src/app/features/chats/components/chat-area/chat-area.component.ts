@@ -3,7 +3,8 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild
@@ -15,6 +16,8 @@ import {SignalRService} from "../../services/signalr.service";
 import {CookieService} from "../../../../core/services/cookie.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {DeviceService} from "../../../../core/services/device.service";
+import {DateService} from "../../../../core/services/date.service";
 
 @Component({
   selector: 'app-chat-area',
@@ -37,6 +40,8 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
     private chatService: ChatService,
     private signalRService: SignalRService,
     private cookieService: CookieService,
+    private dateService: DateService,
+    protected deviceService: DeviceService,
     private router: Router,
   ) {
     this.currentUserId = this.cookieService.get("userId").response!;
@@ -45,9 +50,9 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   ngOnInit(): void {
     if (this.selectedChatId) {
       const token = this.cookieService.get("token").response!;
+      this.tryLoadChat();
       this.signalRService.stopConnection();
       this.signalRService.startConnection(this.selectedChatId, token);
-      this.tryLoadChat();
     } else if (this.receiverId) {
       const token = this.cookieService.get("token").response!;
       this.signalRService.stopConnection();
@@ -89,15 +94,26 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   sendMessage() {
-    if (!this.content.trim()) return;
+    const message = this.content.trim();
+
+    if (!message) return;
 
     if (this.selectedChat) {
       this.signalRService.sendMessage(
-        this.selectedChat.userChats.find(u => u.userId !== this.currentUserId)!.userId, this.content.trim()
+        this.selectedChat.userChats.find(u => u.userId !== this.currentUserId)!.userId, message
       );
+      const oldMessageResult = this.chatService.getCachedLastMessage(this.selectedChat.id);
+
+      const newMessage: Message = {
+        ...oldMessageResult.response!,
+        content: message,
+        sentAt: new Date(),
+      };
+
+      this.chatService.updateLastMessage(this.selectedChat.id, newMessage);
     }
     else if (this.receiverId) {
-      this.signalRService.sendMessage(this.receiverId, this.content.trim());
+      this.signalRService.sendMessage(this.receiverId, message);
     }
 
     this.content = '';
@@ -105,7 +121,19 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   }
 
   get isOnline(): boolean {
-    return this.selectedChat?.userChats.find(uc => uc.userId !== this.currentUserId)?.user.isOnline ?? false;
+    return this.lastSeenAt === "Online";
+  }
+
+  get lastSeenAt(): string {
+    const lastSeenAt = this.selectedChat?.userChats
+      ?.find(uc => uc.userId !== this.currentUserId)
+      ?.user?.lastSeenAt;
+
+    if (!lastSeenAt) {
+      return "recently";
+    }
+
+    return this.dateService.formatLastSeenDate(lastSeenAt);
   }
 
   get chatName(): string {
@@ -129,7 +157,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
         const token = this.cookieService.get("token").response!;
         this.signalRService.startConnection(this.selectedChat.id, token);
       } else {
-        console.error(result.error.message);
+        console.log(result.error.message);
       }
     });
   }
@@ -141,5 +169,9 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
         container.scrollTop = container.scrollHeight;
       });
     }
+  }
+
+  showChats() {
+    this.router.navigate(['/chats']);
   }
 }

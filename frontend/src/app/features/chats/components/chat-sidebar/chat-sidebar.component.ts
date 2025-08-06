@@ -6,6 +6,8 @@ import {FormControl} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {Message} from "../../models/message.model";
+import {DateService} from "../../../../core/services/date.service";
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -24,6 +26,7 @@ export class ChatSidebarComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private userService: UserService,
+    private dateService: DateService,
     cookieService: CookieService) {
     this.currentUsername = cookieService.get("username").response!;
     this.searchControl.valueChanges.pipe(
@@ -35,8 +38,21 @@ export class ChatSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.chatService.getAll().subscribe(result => {
-      if (result.isSuccess)
+      if (result.isSuccess) {
         this.chats = result.response;
+      } else {
+        console.log(result.error.message);
+      }
+
+      for (const chat of this.chats) {
+        this.chatService.fetchLastMessage(chat.id).subscribe(result => {
+          if (result.isSuccess) {
+            this.chatService.updateLastMessage(chat.id, result.response);
+          } else {
+            console.log(result.error.message);
+          }
+        })
+      }
     });
   }
 
@@ -52,9 +68,36 @@ export class ChatSidebarComponent implements OnInit {
     return chat.userChats.find(uc => uc.user.username !== this.currentUsername)!.user.username;
   }
 
-  // get filteredChats(): Chat[] {
-  //   return this.chats.filter(chat =>
-  //     chat.userChats.some(uc => uc.user.username.toLowerCase().startsWith(this.searchControl.value!.toLowerCase()) && uc.user.username !== this.currentUsername)
-  //   );
-  // }
+  getLastMessage(chatId: string): { content: string, sentAt: string } {
+    const result = this.chatService.getCachedLastMessage(chatId);
+
+    if (!result.isSuccess) {
+      return {
+        content: "Loading...",
+        sentAt: ""
+      };
+    }
+
+    return {
+      content: result.response.content,
+      sentAt: this.dateService.formatMessageDate(result.response.sentAt)
+    };
+  }
+
+  get filteredChats(): Chat[] {
+    return this.chats.slice().sort((a, b) => {
+      const aResult = this.chatService.getCachedLastMessage(a.id);
+      const bResult = this.chatService.getCachedLastMessage(b.id);
+
+      if (!aResult.isSuccess || !bResult.isSuccess) {
+        return 0;
+      }
+
+      const aTime = new Date(aResult.response.sentAt).getTime();
+      const bTime = new Date(bResult.response.sentAt).getTime();
+
+      return bTime - aTime;
+    });
+  }
+
 }

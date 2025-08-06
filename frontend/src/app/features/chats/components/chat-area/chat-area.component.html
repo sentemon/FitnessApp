@@ -1,9 +1,10 @@
 <div class="chat-area flex flex-col" *ngIf="selectedChatId || receiverId">
   <div class="header flex flex-center">
+    <div (click)="showChats()" *ngIf="deviceService.isMobile() || deviceService.isTablet()" class="chats">☰</div>
     <div class="chat-info flex flex-col">
-      <p class="chat-name">{{ chatName }}</p>
+      <p [routerLink]="'/' + chatName" class="chat-name">{{ chatName }}</p>
       <p class="chat-status" [ngClass]="isOnline ? 'online' : 'offline'">
-        {{ isOnline ? 'Online' : 'Offline' }}
+        {{ isOnline ? 'Online' : 'Last seen ' + lastSeenAt }}
       </p>
     </div>
     <div class="header-actions flex flex-center">

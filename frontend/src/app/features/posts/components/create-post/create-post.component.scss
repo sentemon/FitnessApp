@@ -130,3 +130,72 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .create-post {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+
+    &__form {
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__label {
+      font-size: 0.85rem;
+    }
+
+    &__input,
+    &__select {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    &__upload-btn,
+    &__submit-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    &__preview {
+      .post {
+        padding: 1rem;
+
+        &__header {
+          flex-wrap: wrap;
+          gap: 0.5rem;
+
+          .post__avatar {
+            height: 40px;
+            width: 40px;
+          }
+
+          .post__username,
+          .post__date,
+          .post__dot {
+            font-size: 0.9rem;
+          }
+
+          .post__more-icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        &__title {
+          font-size: 1rem;
+          margin: 0.5rem 0;
+        }
+
+        &__description {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}

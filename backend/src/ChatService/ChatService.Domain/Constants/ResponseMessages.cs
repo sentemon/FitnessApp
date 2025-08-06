@@ -7,4 +7,5 @@ public static class ResponseMessages
     public const string ChatBetweenUsersAlreadyExists = "Chat between users already exists.";
     public const string ChatNotFound = "Chat not found.";
     public const string UserNotFound = "User not found.";
+    public const string NoMessagesInChat = "No messages in the chat";
 }

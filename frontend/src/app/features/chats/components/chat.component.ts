@@ -2,20 +2,37 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../services/chat.service";
 import {CookieService} from "../../../core/services/cookie.service";
+import {DeviceService} from "../../../core/services/device.service";
 
 @Component({
   selector: 'app-chat',
   template: `
     <div class="chat flex">
-      <app-chat-sidebar
-        (selectedChatId)="onChatSelected($event)"
-        (userSelected)="onUserSelected($event)">
-      </app-chat-sidebar>
+      <ng-container *ngIf="deviceService.isMobile() || deviceService.isTablet()">
+        <app-chat-sidebar
+          *ngIf="!selectedChatId && !receiverUserId"
+          (selectedChatId)="onChatSelected($event)"
+          (userSelected)="onUserSelected($event)">
+        </app-chat-sidebar>
 
-      <app-chat-area
-        [selectedChatId]="selectedChatId"
-        [receiverId]="receiverUserId">
-      </app-chat-area>
+        <app-chat-area
+          *ngIf="selectedChatId || receiverUserId"
+          [selectedChatId]="selectedChatId"
+          [receiverId]="receiverUserId">
+        </app-chat-area>
+      </ng-container>
+
+      <ng-container *ngIf="deviceService.isDesktop()">
+        <app-chat-sidebar
+          (selectedChatId)="onChatSelected($event)"
+          (userSelected)="onUserSelected($event)">
+        </app-chat-sidebar>
+
+        <app-chat-area
+          [selectedChatId]="selectedChatId"
+          [receiverId]="receiverUserId">
+        </app-chat-area>
+      </ng-container>
     </div>
   `,
   styles: `
@@ -26,12 +43,13 @@ import {CookieService} from "../../../core/services/cookie.service";
   `
 })
 export class ChatComponent implements OnInit {
-  selectedChatId: string | null = null;
+  protected selectedChatId: string | null = null;
   receiverUserId: string | null = null;
 
   constructor(
     private chatService: ChatService,
     private cookieService: CookieService,
+    protected deviceService: DeviceService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -72,4 +90,6 @@ export class ChatComponent implements OnInit {
       }
     });
   }
+
+
 }

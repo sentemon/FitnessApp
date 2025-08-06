@@ -6,6 +6,7 @@ using AuthService.Application.Commands.Register;
 using AuthService.Application.Commands.ResetPassword;
 using AuthService.Application.Commands.SendVerifyEmail;
 using AuthService.Application.Commands.Unfollow;
+using AuthService.Application.Commands.UpdateActivityStatus;
 using AuthService.Application.Commands.UpdateUser;
 using AuthService.Application.Commands.VerifyEmail;
 using AuthService.Application.DTOs;
@@ -121,6 +122,20 @@ public class Mutation
         var command = new UpdateUserCommand(input, userId);
         var result = await updateUserCommandHandler.HandleAsync(command);
         
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<DateTime> UpdateActivityStatus([Service] UpdateActivityStatusCommandHandler updateActivityStatusCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new UpdateActivityStatusCommand(userId);
+        var result = await updateActivityStatusCommandHandler.HandleAsync(command);
+
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

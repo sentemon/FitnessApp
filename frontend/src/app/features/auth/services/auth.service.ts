@@ -28,27 +28,26 @@ export class AuthService {
     return result.isSuccess;
   }
 
-  public login(username: string, password: string): Observable<Result<boolean>> {
+  public login(username: string, password: string): Observable<Result<string>> {
     return this.authClient.mutate({
       mutation: LOGIN,
-      variables: { username, password },
+      variables: { username, password }
     }).pipe(
       toResult<string>("login"),
       tap(result => {
-        const token = result.response!;
-        this.setUserCookies();
-
-        if (token) {
-          this.isAuthenticatedSubject.next(true);
-          return Result.success(true);
-        } else {
+        if (!result.isSuccess) {
           this.isAuthenticatedSubject.next(false);
-          console.error("Login failed: no token received.");
-          return Result.success(false);
+          console.log("Login failed:", result.error.message);
+          return Result.failure(new Error(result.error.message));
         }
+
+        this.setUserCookies();
+        this.isAuthenticatedSubject.next(true);
+
+        return Result.success("Successfully logged in");
       }),
       map(result => {
-        return result.isSuccess ? Result.success(true) : Result.success(false);
+        return result.isSuccess ? Result.success(result.response) : Result.failure(new Error(result.error.message));
       })
     );
   }
@@ -59,27 +58,26 @@ export class AuthService {
     username: string,
     email: string,
     password: string
-  ): Observable<Result<boolean>> {
+  ): Observable<Result<string>> {
     return this.authClient.mutate({
       mutation: REGISTER,
       variables: { firstName, lastName, username, email, password }
     }).pipe(
       toResult<string>("register"),
       tap(result => {
-        const token = result.response!;
-        this.setUserCookies();
-
-        if (token) {
-          this.isAuthenticatedSubject.next(true);
-          return Result.success(true);
-        } else {
+        if (!result.isSuccess) {
           this.isAuthenticatedSubject.next(false);
-          console.error("Registration failed: no token received.");
-          return Result.success(false);
+          console.log("Registration failed:", result.error.message);
+          return Result.failure(new Error(result.error.message));
         }
+
+        this.setUserCookies();
+        this.isAuthenticatedSubject.next(true);
+
+        return Result.success("Successfully registered");
       }),
       map(result => {
-        return result.isSuccess ? Result.success(true) : Result.success(false);
+        return result.isSuccess ? Result.success(result.response) : Result.failure(new Error(result.error.message));
       })
     );
   }
@@ -107,7 +105,6 @@ export class AuthService {
 
   private setUserCookies(): void {
     this.userService.getCurrentUser().subscribe(result => {
-      console.log(result);
 
       if (result.isSuccess) {
         console.log(result.response);

@@ -17,6 +17,7 @@ import {AuthService} from "../../services/auth.service";
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  errorMessage: string = "";
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
     this.registerForm = this.formBuilder.group({
@@ -38,10 +39,10 @@ export class RegisterComponent {
         this.registerForm.value.email,
         this.registerForm.value.password
       ).subscribe(result => {
-        if (result) {
+        if (result.isSuccess) {
           this.router.navigate(["/"]);
         } else {
-          console.error("Something went wrong during registration.")
+          this.errorMessage = result.error.message;
         }
       });
     } else {

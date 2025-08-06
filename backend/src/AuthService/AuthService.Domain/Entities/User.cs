@@ -10,6 +10,7 @@ public class User
     public Username Username { get; private set; }
     public Email Email { get; private set; }
     public bool EmailVerified { get; private set; }
+    public DateTime LastSeenAt { get; private set; }
     public string ImageUrl { get; private set; }
     public uint FollowingCount { get; private set; }
     public uint FollowersCount { get; private set; }
@@ -26,6 +27,7 @@ public class User
         Username = username;
         Email = email;
         EmailVerified = false;
+        LastSeenAt = DateTime.Now;
         ImageUrl = imageUrl ?? string.Empty;
     }
     
@@ -59,6 +61,11 @@ public class User
     {
         EmailVerified = true;
     }
+    
+    public void UpdateLastSeen()
+    {
+        LastSeenAt = DateTime.UtcNow;
+    } 
 
     public void FollowUser() => FollowingCount++;
     public void UnfollowUser() => FollowingCount--;

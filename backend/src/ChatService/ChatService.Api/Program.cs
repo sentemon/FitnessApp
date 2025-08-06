@@ -39,13 +39,13 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-    KnownNetworks = { },
-    KnownProxies = { }
-});
+// app.UseForwardedHeaders(new ForwardedHeadersOptions
+// {
+//     // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+//     KnownNetworks = { },
+//     KnownProxies = { }
+// });
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -82,9 +82,16 @@ public class AuthService : IAuthService
             };
 
         var response = await _httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadAsStringAsync();
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = JsonSerializer.Deserialize<KeycloakErrorResponse>(content);
+        
+            throw new Exception(error?.Error + " | " + error?.ErrorDescription);
+        }
+
         var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(content);
 
         if (tokenResponse == null)
@@ -93,6 +100,7 @@ public class AuthService : IAuthService
         }
 
         return tokenResponse;
+        
     }
 
     public async Task<bool> LogoutAsync(string refreshToken)

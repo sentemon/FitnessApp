@@ -1,12 +1,20 @@
 :host {
   width: 25%;
   height: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .chat-sidebar {
   height: 100vh;
   background: #2c3e50;
   color: white;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 
   .search-input {
     width: 80%;
@@ -97,6 +105,12 @@
         .chat-message {
           font-size: 0.9rem;
           opacity: 0.8;
+        }
+
+        .chat-message-time {
+          font-size: 0.8rem;
+          opacity: 0.8;
+          text-align: right;
         }
       }
     }

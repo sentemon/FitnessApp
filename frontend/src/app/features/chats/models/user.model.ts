@@ -7,6 +7,6 @@ export interface User {
   username: string;
   imageUrl: string;
   email: string;
-  isOnline: boolean;
+  lastSeenAt: Date;
   userChats: UserChat[];
 }

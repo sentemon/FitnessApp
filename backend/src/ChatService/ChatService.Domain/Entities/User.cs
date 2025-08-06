@@ -6,6 +6,7 @@ public class User
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Username { get; private set; }
+    public DateTime LastSeenAt { get; private set; }
     public string ImageUrl { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -18,12 +19,18 @@ public class User
         FirstName = firstName;
         LastName = lastName;
         Username = username;
+        LastSeenAt = DateTime.UtcNow;
         ImageUrl = imageUrl;
     }
 
     public static User Create(string id, string firstName, string lastName, string username, string imageUrl)
     {
         return new User(id, firstName, lastName, username, imageUrl);
+    }
+    
+    public void UpdateActivityStatus(DateTime lastSeenAt)
+    {
+        LastSeenAt = lastSeenAt;
     }
     
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

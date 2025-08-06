@@ -15,7 +15,7 @@ public static class AuthenticationExtensions
         services.Configure<AuthenticationConfig>(keycloakSection);
         
         var keycloakConfig = new AuthenticationConfig(
-            keycloakSection[AuthenticationConstants.KeycloakUrl],
+            keycloakSection[AuthenticationConstants.KeycloakHost],
             keycloakSection[AuthenticationConstants.KeycloakRealm],
             keycloakSection[AuthenticationConstants.KeycloakAudience]
         );

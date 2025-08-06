@@ -3,8 +3,8 @@
 <div class="post flex flex-col" xmlns="http://www.w3.org/1999/html">
   <div class="content flex flex-col">
     <header class="flex">
-      <img class="image" [src]="post.userImageUrl || 'assets/profile.svg'" alt="post-image">
-      <p>{{ post.username }}</p>
+      <img [routerLink]="'/' + post.username" class="image" [src]="post.userImageUrl || 'assets/profile.svg'" alt="post-image">
+      <p [routerLink]="'/' + post.username" class="username">{{ post.username }}</p>
       <span class="dot">•</span>
       <span class="date">{{ post.createdAt | date: "mediumDate" }}</span>
       <img class="see-more"

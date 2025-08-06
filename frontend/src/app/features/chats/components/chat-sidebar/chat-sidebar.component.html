@@ -17,12 +17,12 @@
     </li>
   </ul>
   <div class="chats">
-    <div *ngFor="let chat of chats" (click)="onSelectChat(chat.id)" class="chat flex flex-center">
+    <div *ngFor="let chat of filteredChats" (click)="onSelectChat(chat.id)" class="chat flex flex-center">
       <img [src]="'assets/profile.svg'" alt="">
       <div class="chat-content">
         <p class="chat-name">{{ getChatName(chat) }}</p>
-<!--        <p class="chat-message">{{ chat.messages[chat.messages.length - 1]?.content || 'No messages yet' }}</p>-->
-        <p class="chat-message">No messages yet</p>
+        <p class="chat-message">{{ getLastMessage(chat.id).content }}</p>
+        <p class="chat-message-time">{{ getLastMessage(chat.id).sentAt }}</p>
       </div>
     </div>
   </div>

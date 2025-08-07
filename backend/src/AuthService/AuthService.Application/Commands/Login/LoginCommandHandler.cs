@@ -33,7 +33,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, KeycloakTokenRe
             return Result<KeycloakTokenResponse>.Failure(new Error("User with this username does not exist."));
         }
         
-        if (existingUser is not null && !existingUser.EmailVerified)
+        if (existingUser is not null && isEmail && !existingUser.EmailVerified)
         {
             return Result<KeycloakTokenResponse>.Failure(new Error("Email is not verified. Try to login with the username."));
         }

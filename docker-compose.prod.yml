@@ -224,7 +224,7 @@ services:
       - microservices
 
   azurite:
-    image: mcr.microsoft.com/azure-storage/azurite
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
     container_name: azurite
     restart: always
     ports:

@@ -74,6 +74,19 @@ public class UserService : IUserService
 
         return user;
     }
+    
+    public async Task<bool> DeleteAsync(string id)
+    {
+        var adminAccessToken = await _tokenService.GetAdminAccessTokenAsync();
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminAccessToken);
+
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"admin/realms/{_keycloakConfig.Realm}/users/{id}");
+
+        var response = await _httpClient.SendAsync(request);
+
+        return response.IsSuccessStatusCode;
+    }
 
     public async Task<bool> ResetPasswordAsync(string id, string newPassword)
     {

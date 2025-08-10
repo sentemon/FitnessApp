@@ -1,3 +1,3 @@
 namespace Shared.DTO.Messages;
 
-public record UserDeletedEventMessage(string userId);
+public record UserDeletedEventMessage(string UserId);

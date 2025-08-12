@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddMassTransit(busConfigurator =>
         {
             busConfigurator.AddConsumer<UserCreatedEventConsumer>();
+            busConfigurator.AddConsumer<UserDeletedEventConsumer>();
             
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {

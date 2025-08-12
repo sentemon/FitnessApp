@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AuthService.Application.Commands.DeleteUser;
 using AuthService.Application.Commands.Follow;
 using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.Logout;
@@ -122,6 +123,20 @@ public class Mutation
         var command = new UpdateUserCommand(input, userId);
         var result = await updateUserCommandHandler.HandleAsync(command);
         
+        if (!result.IsSuccess)
+        {
+            throw new GraphQLException(new Error(result.Error.Message));
+        }
+
+        return result.Response;
+    }
+    
+    public async Task<bool> DeleteUser([Service] DeleteUserCommandHandler deleteUserCommandHandler)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var command = new DeleteUserCommand(userId);
+        var result = await deleteUserCommandHandler.HandleAsync(command);
+
         if (!result.IsSuccess)
         {
             throw new GraphQLException(new Error(result.Error.Message));

@@ -62,3 +62,9 @@ export const UNFOLLOW = gql`
     unfollow(targetUserId: $targetUserId)
   }
 `;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser {
+    deleteUser
+  }
+`;

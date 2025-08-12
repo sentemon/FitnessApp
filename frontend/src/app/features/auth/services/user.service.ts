@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import { Observable } from "rxjs";
+import {Observable, of} from "rxjs";
 import {
   GET_CURRENT_USER,
   GET_FOLLOWERS,
@@ -13,7 +13,7 @@ import {User} from "../models/user.model";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 import {UserDto} from "../models/user-dto.model";
-import {FOLLOW, UNFOLLOW} from "../graphql/mutations";
+import {DELETE_USER, FOLLOW, UNFOLLOW} from "../graphql/mutations";
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +93,18 @@ export class UserService {
       variables: { targetUserId }
     }).pipe(
       toResult<boolean>('isFollowing')
+    );
+  }
+
+  update(formData: FormData) {
+    return of();
+  }
+
+  deleteUser(): Observable<Result<boolean>> {
+    return this.authClient.mutate({
+      mutation: DELETE_USER
+    }).pipe(
+      toResult<boolean>('deleteUser')
     );
   }
 }

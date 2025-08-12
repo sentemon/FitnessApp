@@ -1,0 +1,39 @@
+.settings-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.avatar-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+}
+
+button {
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+}

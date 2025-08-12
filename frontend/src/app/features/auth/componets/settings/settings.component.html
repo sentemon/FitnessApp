@@ -1,0 +1,41 @@
+<div class="settings-container">
+  <h2>Account settings</h2>
+
+  <div class="avatar-section">
+    <img *ngIf="avatarPreview" [src]="avatarPreview" alt="Avatar" class="avatar-preview" />
+    <input type="file" accept="image/*" (change)="onAvatarChange($event)">
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
+    <label>
+      First Name
+      <input type="text" formControlName="firstName">
+    </label>
+
+    <label>
+      Last Name
+      <input type="text" formControlName="lastName">
+    </label>
+
+    <label>
+      Username
+      <input type="text" formControlName="username">
+    </label>
+
+    <label>
+      Email
+      <input type="email" formControlName="email">
+    </label>
+
+    <label>
+      New Password
+      <input type="password" formControlName="password">
+    </label>
+
+    <button type="submit" [disabled]="loading || profileForm.invalid">Save</button>
+  </form>
+
+  <hr>
+
+  <button class="delete-btn" (click)="deleteAccount()">Delete Account</button>
+</div>

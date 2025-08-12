@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Apollo, ApolloBase} from "apollo-angular";
-import { Observable } from "rxjs";
+import {Observable, of} from "rxjs";
 import {
   GET_CURRENT_USER,
   GET_FOLLOWERS,
@@ -94,6 +94,10 @@ export class UserService {
     }).pipe(
       toResult<boolean>('isFollowing')
     );
+  }
+
+  update(formData: FormData) {
+    return of();
   }
 
   deleteUser(): Observable<Result<boolean>> {

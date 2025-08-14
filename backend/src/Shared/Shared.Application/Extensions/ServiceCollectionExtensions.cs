@@ -1,5 +1,7 @@
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Shared.Application.Abstractions;
 
 namespace Shared.Application.Extensions;
@@ -32,5 +34,18 @@ public static class ServiceCollectionExtensions
         {
             services.AddScoped(handler);
         }
+    }
+    
+    public static void ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .Enrich.FromLogContext()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithThreadId()
+            .WriteTo.Console()
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.Seq("http://seq:5341")
+            .CreateLogger();
     }
 }

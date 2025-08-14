@@ -3,8 +3,9 @@ using AuthService.Application;
 using AuthService.Domain.Constants;
 using AuthService.Infrastructure;
 using AuthService.Persistence;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Shared.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ builder.Services
 
 builder.Services.AddGraphQL();
 
+builder.Services.ConfigureSerilog(builder.Configuration);
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -38,14 +42,6 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
     dbContext.Database.Migrate();
 }
-//
-// app.UseForwardedHeaders(new ForwardedHeadersOptions
-// {
-//     // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
-//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-//     KnownNetworks = { },
-//     KnownProxies = { }
-// });
 
 // app.UseMiddleware<ExceptionHandlerMiddleware>();
 

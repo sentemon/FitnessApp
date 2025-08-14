@@ -3,6 +3,7 @@ using AuthService.Domain.Constants;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Shared.Application.Extensions;
 
 namespace AuthService.Application;

@@ -293,3 +293,6 @@ docker-compose*
 .gitignore
 README.md
 LICENSE
+
+# Logs
+**/logs/

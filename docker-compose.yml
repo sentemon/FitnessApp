@@ -56,6 +56,7 @@ services:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=AuthDb
       Keycloak__Url: http://keycloak:8080
       RabbitMq__Host: rabbitmq
+      SeqUrl: http://seq:5341
     depends_on:
       gateway:
         condition: service_healthy
@@ -196,6 +197,8 @@ services:
       - 10000:10000
     command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
     restart: always
+    volumes:
+      - azurite-data:/data
     environment:
       - AZURITE_ACCOUNTS=sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
     networks:
@@ -217,6 +220,21 @@ services:
       retries: 5
     networks:
       - microservices
+  
+  seq:
+    image: datalust/seq:2025
+    container_name: seq
+    ports:
+      - 5341:80
+    environment:
+      ACCEPT_EULA: Y
+      SEQ_FIRSTRUN_ADMINPASSWORD: admin
+    volumes:
+      - seq-data:/data
+    networks:
+      - microservices
 
 volumes:
   postgres-data:
+  azurite-data:
+  seq-data:

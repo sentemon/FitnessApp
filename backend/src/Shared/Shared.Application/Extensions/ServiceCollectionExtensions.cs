@@ -2,7 +2,9 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Events;
 using Shared.Application.Abstractions;
+using Shared.Application.Constants;
 
 namespace Shared.Application.Extensions;
 
@@ -36,16 +38,20 @@ public static class ServiceCollectionExtensions
         }
     }
     
-    public static void ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureSerilog(this IServiceCollection _, IConfiguration configuration)
     {
+        var seqUrl = configuration[AppSettingsConstants.SeqUrl] ?? throw new ArgumentException("Seq URL is not configured.");
+
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .Enrich.WithEnvironmentName()
             .Enrich.WithThreadId()
             .WriteTo.Console()
-            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
-            .WriteTo.Seq("http://seq:5341")
+            .WriteTo.File(
+                path: "../logs/log-.txt",
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel: LogEventLevel.Warning)
+            .WriteTo.Seq(seqUrl)
             .CreateLogger();
     }
 }

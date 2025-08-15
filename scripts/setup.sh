@@ -45,6 +45,10 @@ RABBITMQ_DEFAULT_PASS=
 # Keycloak
 KEYCLOAK_ADMIN_USERNAME=
 KEYCLOAK_ADMIN_PASSWORD=
+
+# Seq
+SEQ_ADMIN_PASSWORD=
+
 " > .env
 
 echo ".env file created. Please edit it with your values."

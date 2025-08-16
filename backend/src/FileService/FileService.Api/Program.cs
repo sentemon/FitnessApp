@@ -5,6 +5,8 @@ using FileService.Infrastructure;
 using FileService.Persistence;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Shared.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,9 @@ builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
+
+builder.Services.ConfigureSerilog(builder.Configuration);
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

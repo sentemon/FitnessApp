@@ -79,6 +79,7 @@ services:
       ConnectionStrings__DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=FileDb
       ConnectionStrings__AzureStorageConnectionString: AccountName=sentemon;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://azurite:10000/sentemon
       RabbitMq__Host: rabbitmq
+      SeqUrl: http://seq:5341
       
     depends_on:
       gateway:
@@ -101,6 +102,7 @@ services:
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=PostsDb
       RabbitMq__Host: rabbitmq
+      SeqUrl: http://seq:5341
     depends_on:
       gateway:
         condition: service_healthy
@@ -122,6 +124,7 @@ services:
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=WorkoutsDb
       RabbitMq__Host: rabbitmq
+      SeqUrl: http://seq:5341
     depends_on: 
       gateway:
         condition: service_healthy
@@ -143,6 +146,7 @@ services:
     environment:
       DatabaseConnectionString: Host=postgres;Port=5432;Username=postgres;Password=mysecretpasswordfordevelopment;Database=ChatsDb
       RabbitMq__Host: rabbitmq
+      SeqUrl: http://seq:5341
     depends_on:
       gateway:
         condition: service_healthy

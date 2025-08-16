@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Shared.Application.Extensions;
 using WorkoutService.Api.GraphQL;
 using WorkoutService.Application;
 using WorkoutService.Domain.Constants;
@@ -29,6 +31,9 @@ builder.Services
     .AddType<UploadType>();
 
 builder.Services.AddGraphQL();
+
+builder.Services.ConfigureSerilog(builder.Configuration);
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

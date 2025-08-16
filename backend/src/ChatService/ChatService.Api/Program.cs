@@ -5,8 +5,9 @@ using ChatService.Application;
 using ChatService.Domain.Constants;
 using ChatService.Infrastructure;
 using ChatService.Persistence;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Shared.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>();
 
+builder.Services.ConfigureSerilog(builder.Configuration);
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -38,14 +42,6 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
     dbContext.Database.Migrate();
 }
-
-// app.UseForwardedHeaders(new ForwardedHeadersOptions
-// {
-//     // ReSharper disable RedundantEmptyObjectOrCollectionInitializer
-//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-//     KnownNetworks = { },
-//     KnownProxies = { }
-// });
 
 app.UseAuthentication();
 app.UseAuthorization();

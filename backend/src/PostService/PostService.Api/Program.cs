@@ -5,6 +5,8 @@ using PostService.Application;
 using PostService.Domain.Constants;
 using PostService.Infrastructure;
 using PostService.Persistence;
+using Serilog;
+using Shared.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,9 @@ builder.Services
     .AddType<UploadType>();
 
 builder.Services.AddGraphQL();
+
+builder.Services.ConfigureSerilog(builder.Configuration);
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

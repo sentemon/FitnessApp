@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
             .Enrich.FromLogContext()
             .Enrich.WithEnvironmentName()
             .Enrich.WithThreadId()
-            .WriteTo.Console()
+            .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information)
             .WriteTo.File(
                 path: "../logs/log-.txt",
                 rollingInterval: RollingInterval.Day,

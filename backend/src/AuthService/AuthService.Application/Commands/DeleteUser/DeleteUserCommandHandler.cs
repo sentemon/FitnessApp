@@ -31,7 +31,7 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, bool>
         
         if (user == null)
         {
-            _logger.LogWarning(ResponseMessages.UserNotFound + " UserId: {UserId}", command.UserId);
+            _logger.LogWarning("Delete user attempt with non-existing user ID: {UserId}", command.UserId);
             return Result<bool>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
@@ -47,10 +47,10 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, bool>
             _logger.LogInformation("User with ID {UserId} deleted successfully.", user.Id);
             return Result<bool>.Success(true);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _logger.LogError(e, "Error: {Error} while deleting user with ID {UserId}. ", e.Message, user.Id);
-            return Result<bool>.Failure(new Error(e.Message));
+            _logger.LogError(ex, "Error: {Error} while deleting user with ID {UserId}. ", ex.Message, user.Id);
+            return Result<bool>.Failure(new Error(ex.Message));
         }
         
     }

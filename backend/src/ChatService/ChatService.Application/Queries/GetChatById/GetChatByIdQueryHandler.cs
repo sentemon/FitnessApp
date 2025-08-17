@@ -2,6 +2,7 @@ using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
@@ -10,10 +11,12 @@ namespace ChatService.Application.Queries.GetChatById;
 public class GetChatByIdQueryHandler : IQueryHandler<GetChatByIdQuery, Chat>
 {
     private readonly ChatDbContext _context;
+    private readonly ILogger<GetChatByIdQueryHandler> _logger;
 
-    public GetChatByIdQueryHandler(ChatDbContext context)
+    public GetChatByIdQueryHandler(ChatDbContext context, ILogger<GetChatByIdQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<Chat, Error>> HandleAsync(GetChatByIdQuery query)
@@ -28,6 +31,7 @@ public class GetChatByIdQueryHandler : IQueryHandler<GetChatByIdQuery, Chat>
 
         if (chat is null)
         {
+            _logger.LogWarning("Chat with ID {ChatId} not found.", query.ChatId);
             return Result<Chat>.Failure(new Error(ResponseMessages.ChatNotFound));
         }
 

@@ -2,6 +2,7 @@ using FileService.Domain.Constants;
 using FileService.Infrastructure.Interfaces;
 using FileService.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
@@ -11,11 +12,13 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
 {
     private readonly IAzureBlobStorageService _azureBlobStorageService;
     private readonly FileDbContext _context;
+    private readonly ILogger<DeletePostCommandHandler> _logger;
 
-    public DeletePostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context)
+    public DeletePostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, ILogger<DeletePostCommandHandler> logger)
     {
         _azureBlobStorageService = azureBlobStorageService;
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(DeletePostCommand command)
@@ -24,6 +27,7 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
 
         if (file == null)
         {
+            _logger.LogWarning("Attempted to delete a file for a post that does not exist: PostId: {PostId}", command.PostId);
             return Result<string>.Failure(new Error(ResponseMessages.FileNotFound));
         }
         

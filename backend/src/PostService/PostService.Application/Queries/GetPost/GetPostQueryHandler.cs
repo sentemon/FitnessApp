@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PostService.Application.DTOs;
 using PostService.Domain.Constants;
 using PostService.Domain.Entities;
@@ -11,10 +12,12 @@ namespace PostService.Application.Queries.GetPost;
 public class GetPostQueryHandler : IQueryHandler<GetPostQuery, PostDto>
 {
     private readonly PostDbContext _context;
+    private readonly ILogger<GetPostQueryHandler> _logger;
 
-    public GetPostQueryHandler(PostDbContext context)
+    public GetPostQueryHandler(PostDbContext context, ILogger<GetPostQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<PostDto, Error>> HandleAsync(GetPostQuery query)
@@ -23,6 +26,7 @@ public class GetPostQueryHandler : IQueryHandler<GetPostQuery, PostDto>
 
         if (post == null)
         {
+            _logger.LogWarning("Attempted to retrieve a post that does not exist: PostId: {PostId}", query.Id);
             return Result<PostDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PostService.Application.DTOs;
 using PostService.Application.Extensions;
 using PostService.Application.Validators;
@@ -19,14 +20,16 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
 {
     private readonly PostDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ILogger<AddPostCommandHandler> _logger;
     
     private readonly IValidator<CreatePostDto> _validator;
 
-    public AddPostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint)
+    public AddPostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint, ILogger<AddPostCommandHandler> logger)
     {
         _context = context;
         _publishEndpoint = publishEndpoint;
-        
+        _logger = logger;
+
         _validator = new CreatePostValidator();
     }
 
@@ -34,8 +37,9 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
     {
         var errorMessage = await _validator.ValidateResultAsync(command.CreatePost);
 
-        if (errorMessage != null)
+        if (errorMessage is not null)
         {
+            _logger.LogWarning("Validation failed for AddPostCommand: {ErrorMessage}", errorMessage);
             return Result<PostDto>.Failure(new Error(errorMessage));
         }
 
@@ -43,43 +47,54 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
         
         if (user == null)
         {
+            _logger.LogWarning("Attempted to add a post with a user that does not exist: UserId: {UserId}", command.UserId);
             return Result<PostDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
-        var post = CreatePostForSpecifiedType(command, user.Id);
-
-        _context.Posts.Add(post);
-        await _context.SaveChangesAsync();
-
-        if (command.CreatePost.ContentType == ContentType.Text && command.CreatePost.File != null ||
-            command.CreatePost.ContentType != ContentType.Text && command.CreatePost.File == null)
+        try
         {
-            return Result<PostDto>.Failure(new Error(ResponseMessages.InvalidFileState));
-        }
+            var post = CreatePostForSpecifiedType(command, user.Id);
+            
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
 
-        var fileContentType = FileExtension.GetContentType(command.CreatePost.File);
+            if (command.CreatePost.ContentType == ContentType.Text && command.CreatePost.File != null ||
+                command.CreatePost.ContentType != ContentType.Text && command.CreatePost.File == null)
+            {
+                _logger.LogWarning("Invalid file state for post creation: ContentType: {ContentType}, File: {FileState}", 
+                    command.CreatePost.ContentType, command.CreatePost.File == null ? "null" : "not null");
+                return Result<PostDto>.Failure(new Error(ResponseMessages.InvalidFileState));
+            }
 
-        await _publishEndpoint.Publish(new PostUploadEventMessage(
-            ReadFully(command.CreatePost.File?.OpenReadStream()),
-            fileContentType,
-            post.Id,
-            post.UserId
-        ));
+            var fileContentType = FileExtension.GetContentType(command.CreatePost.File);
+
+            await _publishEndpoint.Publish(new PostUploadEventMessage(
+                ReadFully(command.CreatePost.File?.OpenReadStream()),
+                fileContentType,
+                post.Id,
+                post.UserId
+            ));
         
-        var postDto = new PostDto(
-            post.Id,
-            post.Title,
-            post.Description,
-            post.ContentUrl,
-            post.ContentType,
-            post.LikeCount,
-            post.CommentCount,
-            post.CreatedAt,
-            user.ImageUrl,
-            user.Username
-        );
+            var postDto = new PostDto(
+                post.Id,
+                post.Title,
+                post.Description,
+                post.ContentUrl,
+                post.ContentType,
+                post.LikeCount,
+                post.CommentCount,
+                post.CreatedAt,
+                user.ImageUrl,
+                user.Username
+            );
 
-        return Result<PostDto>.Success(postDto);
+            return Result<PostDto>.Success(postDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while adding a post: {Message}", ex.Message);
+            return Result<PostDto>.Failure(new Error(ex.Message));
+        }
     }
 
     private static Post CreatePostForSpecifiedType(AddPostCommand command, string userId)

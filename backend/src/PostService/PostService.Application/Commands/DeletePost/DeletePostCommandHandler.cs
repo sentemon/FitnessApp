@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PostService.Domain.Constants;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -12,11 +13,13 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
 {
     private readonly PostDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ILogger<DeletePostCommandHandler> _logger;
 
-    public DeletePostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint)
+    public DeletePostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint, ILogger<DeletePostCommandHandler> logger)
     {
         _context = context;
         _publishEndpoint = publishEndpoint;
+        _logger = logger;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(DeletePostCommand command)
@@ -25,11 +28,13 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
 
         if (post == null)
         {
+            _logger.LogWarning("Attempted to delete a post that does not exist: PostId: {PostId}", command.Id);
             return Result<string>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
         if (post.UserId != command.UserId)
         {
+            _logger.LogWarning("User {UserId} attempted to delete a post they do not own: PostId: {PostId}", command.UserId, command.Id);
             return Result<string>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToDeleteThisPost));
         }
         

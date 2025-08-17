@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PostService.Application.DTOs;
 using PostService.Domain.Constants;
 using PostService.Persistence;
@@ -10,10 +11,12 @@ namespace PostService.Application.Commands.UpdatePost;
 public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostDto>
 {
     private readonly PostDbContext _context;
+    private readonly ILogger<UpdatePostCommandHandler> _logger;
 
-    public UpdatePostCommandHandler(PostDbContext context)
+    public UpdatePostCommandHandler(PostDbContext context, ILogger<UpdatePostCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<PostDto, Error>> HandleAsync(UpdatePostCommand command)
@@ -22,11 +25,13 @@ public class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand, PostD
 
         if (post == null)
         {
+            _logger.LogWarning("Attempted to update a post that does not exist: PostId: {PostId}", command.UpdatePost.Id);
             return Result<PostDto>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 
         if (post.UserId != command.UserId)
         {
+            _logger.LogWarning("User {UserId} attempted to update a post they do not own: PostId: {PostId}", command.UserId, command.UpdatePost.Id);
             return Result<PostDto>.Failure(new Error(ResponseMessages.YouDoNotHavePermissionToUpdateThisPost));
         }
 

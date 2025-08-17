@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
                 path: "../logs/log-.txt",
                 rollingInterval: RollingInterval.Day,
                 restrictedToMinimumLevel: LogEventLevel.Warning)
-            .WriteTo.Seq(seqUrl)
+            .WriteTo.Seq(seqUrl, restrictedToMinimumLevel: LogEventLevel.Warning)
             .CreateLogger();
     }
 }

@@ -50,6 +50,7 @@ services:
       - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
       - Domain=.sentemon.me
+      - SeqUrl=https://logs.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy
@@ -72,6 +73,7 @@ services:
       - Keycloak__Url=http://keycloak:8080
       - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
+      - SeqUrl=https://logs.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy
@@ -92,6 +94,7 @@ services:
       - Keycloak__Url=http://keycloak:8080
       - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
+      - SeqUrl=https://logs.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy
@@ -112,6 +115,7 @@ services:
       - Keycloak__Url=http://keycloak:8080
       - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
+      - SeqUrl=https://logs.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy
@@ -132,6 +136,7 @@ services:
       - Keycloak__Url=http://keycloak:8080
       - Keycloak__Host=http://keycloak:8080
       - RabbitMq__Host=rabbitmq
+      - SeqUrl=https://logs.sentemon.me
     depends_on:
       gateway:
         condition: service_healthy
@@ -263,6 +268,7 @@ services:
       - ACCEPT_EULA=Y
       - SEQ_FIRSTRUN_ADMINPASSWORD=${SEQ_ADMIN_PASSWORD}
       - VIRTUAL_HOST=logs.sentemon.me
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=logs.sentemon.me
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     volumes:

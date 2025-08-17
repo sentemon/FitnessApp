@@ -258,11 +258,13 @@ services:
   seq:
     image: datalust/seq:2025
     container_name: seq
-    ports:
-      - 5341:80
+    restart: always
     environment:
-      ACCEPT_EULA: Y
-      SEQ_FIRSTRUN_ADMINPASSWORD: ${SEQ_ADMIN_PASSWORD}
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORD=${SEQ_ADMIN_PASSWORD}
+      - VIRTUAL_HOST=logs.sentemon.me
+      - LETSENCRYPT_HOST=logs.sentemon.me
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     volumes:
       - seq-data:/data
     networks:

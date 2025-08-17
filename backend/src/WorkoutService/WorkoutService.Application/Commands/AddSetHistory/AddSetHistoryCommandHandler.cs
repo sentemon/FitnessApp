@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using WorkoutService.Application.DTOs;
@@ -11,10 +12,12 @@ namespace WorkoutService.Application.Commands.AddSetHistory;
 public class AddSetHistoryCommandHandler : ICommandHandler<AddSetHistoryCommand, SetDto>
 {
     private readonly WorkoutDbContext _context;
+    private readonly ILogger<AddSetHistoryCommandHandler> _logger;
 
-    public AddSetHistoryCommandHandler(WorkoutDbContext context)
+    public AddSetHistoryCommandHandler(WorkoutDbContext context, ILogger<AddSetHistoryCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<SetDto, Error>> HandleAsync(AddSetHistoryCommand command)
@@ -22,6 +25,7 @@ public class AddSetHistoryCommandHandler : ICommandHandler<AddSetHistoryCommand,
         var exerciseHistory = await _context.ExerciseHistories.FirstOrDefaultAsync(e => e.Id == command.ExerciseHistoryId);
         if (exerciseHistory is null)
         {
+            _logger.LogWarning("Attempted to add a set history to an exercise history that does not exist: ExerciseHistoryId: {ExerciseHistoryId}", command.ExerciseHistoryId);
             return Result<SetDto>.Failure(new Error(ResponseMessages.ExerciseHistoryNotFound));
         }
 

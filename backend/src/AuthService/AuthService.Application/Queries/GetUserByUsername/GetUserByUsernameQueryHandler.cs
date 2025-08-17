@@ -2,6 +2,7 @@ using AuthService.Application.DTOs;
 using AuthService.Domain.Constants;
 using AuthService.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
@@ -10,10 +11,12 @@ namespace AuthService.Application.Queries.GetUserByUsername;
 public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuery, UserDto>
 {
     private readonly AuthDbContext _context;
+    private readonly ILogger<GetUserByUsernameQueryHandler> _logger;
 
-    public GetUserByUsernameQueryHandler(AuthDbContext context)
+    public GetUserByUsernameQueryHandler(AuthDbContext context, ILogger<GetUserByUsernameQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<UserDto, Error>> HandleAsync(GetUserByUsernameQuery query)
@@ -22,6 +25,7 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
 
         if (user == null)
         {
+            _logger.LogWarning("Get user by username attempt with non-existing username: {Username}", query.Username);
             return Result<UserDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 

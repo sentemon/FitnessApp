@@ -2,6 +2,7 @@ using ChatService.Domain.Constants;
 using ChatService.Domain.Entities;
 using ChatService.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 
@@ -10,10 +11,12 @@ namespace ChatService.Application.Queries.GetLastMessage;
 public class GetLastMessageQueryHandler : IQueryHandler<GetLastMessageQuery, Message>
 {
     private readonly ChatDbContext _context;
+    private readonly ILogger<GetLastMessageQueryHandler> _logger;
 
-    public GetLastMessageQueryHandler(ChatDbContext context)
+    public GetLastMessageQueryHandler(ChatDbContext context, ILogger<GetLastMessageQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<Message, Error>> HandleAsync(GetLastMessageQuery query)
@@ -21,6 +24,7 @@ public class GetLastMessageQueryHandler : IQueryHandler<GetLastMessageQuery, Mes
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.UserId);
         if (user is null)   
         {
+            _logger.LogWarning("User with ID {UserId} not found.", query.UserId);
             return Result<Message>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
@@ -32,6 +36,7 @@ public class GetLastMessageQueryHandler : IQueryHandler<GetLastMessageQuery, Mes
         
         if (chat is null)
         {
+            _logger.LogWarning("Chat with ID {ChatId} not found for user {UserId}.", query.ChatId, query.UserId);
             return Result<Message>.Failure(new Error(ResponseMessages.ChatNotFound));
         }
         
@@ -39,6 +44,7 @@ public class GetLastMessageQueryHandler : IQueryHandler<GetLastMessageQuery, Mes
         
         if (lastMessage is null)
         {
+            _logger.LogWarning("No messages found in chat with ID {ChatId} for user {UserId}.", query.ChatId, query.UserId);
             return Result<Message>.Failure(new Error(ResponseMessages.NoMessagesInChat));
         }
 

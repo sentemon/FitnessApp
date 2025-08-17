@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using WorkoutService.Domain.Constants;
@@ -10,10 +11,12 @@ namespace WorkoutService.Application.Queries.GetAllWorkoutHistories;
 public class GetAllWorkoutHistoriesQueryHandler : IQueryHandler<GetAllWorkoutHistoriesQuery, List<WorkoutHistory>>
 {
     private readonly WorkoutDbContext _context;
+    private readonly ILogger<GetAllWorkoutHistoriesQueryHandler> _logger;
 
-    public GetAllWorkoutHistoriesQueryHandler(WorkoutDbContext context)
+    public GetAllWorkoutHistoriesQueryHandler(WorkoutDbContext context, ILogger<GetAllWorkoutHistoriesQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<List<WorkoutHistory>, Error>> HandleAsync(GetAllWorkoutHistoriesQuery query)
@@ -22,6 +25,7 @@ public class GetAllWorkoutHistoriesQueryHandler : IQueryHandler<GetAllWorkoutHis
         
         if (user is null)
         {
+            _logger.LogWarning("Attempted to retrieve workout histories for a user that does not exist: UserId: {UserId}", query.UserId);
             return Result<List<WorkoutHistory>>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 

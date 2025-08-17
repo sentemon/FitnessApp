@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using WorkoutService.Application.DTOs;
@@ -10,16 +11,19 @@ namespace WorkoutService.Application.Queries.GetWorkoutByUrl;
 public class GetWorkoutByUrlQueryHandler : IQueryHandler<GetWorkoutByUrlQuery, WorkoutDto>
 {
     private readonly WorkoutDbContext _context;
+    private readonly ILogger<GetWorkoutByUrlQueryHandler> _logger;
 
-    public GetWorkoutByUrlQueryHandler(WorkoutDbContext context)
+    public GetWorkoutByUrlQueryHandler(WorkoutDbContext context, ILogger<GetWorkoutByUrlQueryHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<WorkoutDto, Error>> HandleAsync(GetWorkoutByUrlQuery query)
     {
         if (string.IsNullOrWhiteSpace(query.Url))
         {
+            _logger.LogWarning("Attempted to get a workout by an empty URL.");
             return Result<WorkoutDto>.Failure(new Error(ResponseMessages.WorkoutUrlEmpty));
         }
 
@@ -32,6 +36,7 @@ public class GetWorkoutByUrlQueryHandler : IQueryHandler<GetWorkoutByUrlQuery, W
 
         if (workout is null)
         {
+            _logger.LogWarning("Attempted to get a workout that does not exist: Url: {Url}", query.Url);
             return Result<WorkoutDto>.Failure(new Error(ResponseMessages.WorkoutNotFound));
         }
 

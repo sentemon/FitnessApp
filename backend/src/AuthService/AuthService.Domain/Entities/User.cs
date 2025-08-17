@@ -27,7 +27,7 @@ public class User
         Username = username;
         Email = email;
         EmailVerified = false;
-        LastSeenAt = DateTime.Now;
+        LastSeenAt = DateTime.UtcNow;
         ImageUrl = imageUrl ?? string.Empty;
     }
     

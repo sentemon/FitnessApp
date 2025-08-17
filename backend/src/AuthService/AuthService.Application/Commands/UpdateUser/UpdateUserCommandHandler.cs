@@ -3,6 +3,7 @@ using AuthService.Infrastructure.Interfaces;
 using AuthService.Persistence;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.DTO;
@@ -15,18 +16,21 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
     private readonly IUserService _userService;
     private readonly AuthDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly ILogger<UpdateUserCommandHandler> _logger;
 
-    public UpdateUserCommandHandler(IUserService userService, AuthDbContext context, IPublishEndpoint publishEndpoint)
+    public UpdateUserCommandHandler(IUserService userService, AuthDbContext context, IPublishEndpoint publishEndpoint, ILogger<UpdateUserCommandHandler> logger)
     {
         _userService = userService;
         _context = context;
         _publishEndpoint = publishEndpoint;
+        _logger = logger;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
         if (command.Id == null)
         {
+            _logger.LogWarning("Update user attempt with null UserId.");
             return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         
@@ -42,6 +46,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
         if (user == null)
         {
+            _logger.LogWarning("Update user attempt with non-existing user ID: {UserId}", command.Id);
             return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
@@ -62,6 +67,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
             user.ImageUrl
         ));
         
+        _logger.LogInformation("User {UserId} updated successfully.", user.Id);
         return Result<string>.Success(ResponseMessages.UserUpdatedSuccessfully);
     }
 }

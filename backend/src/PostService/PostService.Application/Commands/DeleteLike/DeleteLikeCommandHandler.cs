@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PostService.Domain.Constants;
 using PostService.Persistence;
 using Shared.Application.Abstractions;
@@ -9,10 +10,12 @@ namespace PostService.Application.Commands.DeleteLike;
 public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, string>
 {
     private readonly PostDbContext _context;
+    private readonly ILogger<DeleteLikeCommandHandler> _logger;
 
-    public DeleteLikeCommandHandler(PostDbContext context)
+    public DeleteLikeCommandHandler(PostDbContext context, ILogger<DeleteLikeCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IResult<string, Error>> HandleAsync(DeleteLikeCommand command)
@@ -21,6 +24,7 @@ public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, strin
 
         if (like == null)
         {
+            _logger.LogWarning("Attempted to delete a like for a post that does not exist: PostId: {PostId}", command.PostId);
             return Result<string>.Failure(new Error(ResponseMessages.LikeNotFound));
         }
 
@@ -29,6 +33,7 @@ public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, strin
     
         if (!isAlreadyLiked)
         {
+            _logger.LogWarning("User {UserId} has not liked post {PostId} yet.", command.UserId, command.PostId);
             return Result<string>.Failure(new Error(ResponseMessages.UserHasNotLikedThisPostYet));
         }
 
@@ -36,6 +41,7 @@ public class DeleteLikeCommandHandler : ICommandHandler<DeleteLikeCommand, strin
 
         if (post == null)
         {
+            _logger.LogWarning("Attempted to delete a like for a post that does not exist: PostId: {PostId}", like.PostId);
             return Result<string>.Failure(new Error(ResponseMessages.PostNotFound));
         }
 

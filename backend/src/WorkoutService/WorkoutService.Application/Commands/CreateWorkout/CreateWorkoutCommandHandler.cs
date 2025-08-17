@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
 using Shared.Application.Extensions;
@@ -14,12 +15,15 @@ namespace WorkoutService.Application.Commands.CreateWorkout;
 public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand, WorkoutDto>
 {
     private readonly WorkoutDbContext _context;
+    private readonly ILogger<CreateWorkoutCommandHandler> _logger;
 
     private readonly IValidator<CreateWorkoutDto> _validator;
 
-    public CreateWorkoutCommandHandler(WorkoutDbContext context)
+    public CreateWorkoutCommandHandler(WorkoutDbContext context, ILogger<CreateWorkoutCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
+        
         _validator = new CreateWorkoutValidator();
     }
 
@@ -28,6 +32,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         var errors = await _validator.ValidateResultAsync(command.CreateWorkoutDto);
         if (errors is not null)
         {
+            _logger.LogWarning("Validation failed for CreateWorkoutCommand: {Errors}", errors);
             return Result<WorkoutDto>.Failure(new Error(errors));
         }
 
@@ -38,6 +43,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
 
         if (user is null)
         {
+            _logger.LogWarning("Attempted to create a workout for a user that does not exist: UserId: {UserId}", command.UserId);
             return Result<WorkoutDto>.Failure(new Error(ResponseMessages.UserNotFound));
         }
 
@@ -55,6 +61,7 @@ public class CreateWorkoutCommandHandler : ICommandHandler<CreateWorkoutCommand,
         {
             if (string.IsNullOrWhiteSpace(exerciseDto.Name))
             {
+                _logger.LogWarning("Attempted to create an exercise with an empty name in CreateWorkoutCommand");
                 return Result<WorkoutDto>.Failure(new Error("Name of exercise cannot be empty"));
             }
 

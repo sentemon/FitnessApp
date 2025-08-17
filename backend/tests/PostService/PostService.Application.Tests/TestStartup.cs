@@ -20,6 +20,8 @@ public class TestStartup
 
         var services = new ServiceCollection();
         
+        services.AddLogging();
+        
         services.AddDbContext<PostDbContext>(options =>
         {
             options.UseNpgsql(connectionString);

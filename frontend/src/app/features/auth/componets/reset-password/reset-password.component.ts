@@ -9,6 +9,7 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} f
 })
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
+  errorMessage: string = "";
 
   constructor(private userService: UserService, private formBuilder: FormBuilder) {
     this.resetPasswordForm = formBuilder.group({
@@ -24,9 +25,8 @@ export class ResetPasswordComponent {
       this.resetPasswordForm.get("newPassword")?.value,
       this.resetPasswordForm.get("confirmNewPassword")?.value
     ).subscribe(result => {
-      console.log(result);
       if (!result.isSuccess) {
-        console.log(result.error.message);
+        this.errorMessage = result.error.message;
       }
     });
   }

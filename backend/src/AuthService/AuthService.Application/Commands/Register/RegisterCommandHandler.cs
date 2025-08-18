@@ -73,6 +73,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
         try
         {
             var token = await _authService.LoginAsync(command.RegisterDto.Username, command.RegisterDto.Password);
+            _logger.LogWarning("User {Username} logged in successfully after registration.", command.RegisterDto.Username);
             return Result<KeycloakTokenResponse>.Success(token);
         }
         catch (Exception ex)

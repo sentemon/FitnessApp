@@ -47,7 +47,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, KeycloakTokenRe
         try
         {
             var token = await _authService.LoginAsync(command.LoginDto.Username, command.LoginDto.Password);
-            _logger.LogInformation("User {Username} logged in successfully.", command.LoginDto.Username);
+            _logger.LogWarning("User {Username} logged in successfully.", command.LoginDto.Username);
             return Result<KeycloakTokenResponse>.Success(token);
         }
         catch (Exception e)

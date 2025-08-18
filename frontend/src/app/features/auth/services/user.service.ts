@@ -13,7 +13,7 @@ import {User} from "../models/user.model";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 import {UserDto} from "../models/user-dto.model";
-import {DELETE_USER, FOLLOW, UNFOLLOW} from "../graphql/mutations";
+import {DELETE_USER, FOLLOW, RESET_PASSWORD, UNFOLLOW} from "../graphql/mutations";
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +98,15 @@ export class UserService {
 
   update(formData: FormData) {
     return of();
+  }
+
+  resetPassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<Result<string>> {
+    return this.authClient.mutate({
+      mutation: RESET_PASSWORD,
+      variables: { oldPassword, newPassword, confirmNewPassword }
+    }).pipe(
+      toResult<string>('resetPassword')
+    );
   }
 
   deleteUser(): Observable<Result<boolean>> {

@@ -63,6 +63,16 @@ export const UNFOLLOW = gql`
   }
 `;
 
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($oldPassword: String!, $newPassword: String!, $confirmNewPassword: String!) {
+    resetPassword(
+      oldPassword: $oldPassword,
+      confirmNewPassword: $newPassword,
+      newPassword: $confirmNewPassword
+    )
+  }
+`
+
 export const DELETE_USER = gql`
   mutation DeleteUser {
     deleteUser

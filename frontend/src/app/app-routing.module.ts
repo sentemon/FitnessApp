@@ -20,12 +20,14 @@ import {SearchComponent} from "./features/auth/componets/search/search.component
 import {PostComponent} from "./features/posts/components/post/post.component";
 import {CommentsComponent} from "./features/posts/components/comments/comments.component";
 import {SettingsComponent} from "./features/auth/componets/settings/settings.component";
+import {ResetPasswordComponent} from "./features/auth/componets/reset-password/reset-password.component";
 
 const routes: Routes = [
   {path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile/settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'profile/reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'posts/:postId', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'posts/:postId/comments', component: CommentsComponent, canActivate: [AuthGuard] },
   { path: 'create-post', component: CreatePostComponent, canActivate: [AuthGuard] },

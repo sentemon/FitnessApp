@@ -33,11 +33,20 @@ public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand,
             _logger.LogWarning("Reset password attempt for non-existing UserId: {UserId}", command.UserId);
             return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
-        
-        var isOldPasswordValid = await _authService.LoginAsync(user.Username.Value, command.OldPassword);
-        if (string.IsNullOrEmpty(isOldPasswordValid.AccessToken))
+
+        try
         {
-            _logger.LogWarning("Reset password attempt with invalid old password for UserId: {UserId}", command.UserId);
+            var isOldPasswordValid = await _authService.LoginAsync(user.Username.Value, command.OldPassword);
+            
+            if (string.IsNullOrEmpty(isOldPasswordValid.AccessToken))
+            {
+                _logger.LogWarning("Reset password attempt with invalid old password for UserId: {UserId}", command.UserId);
+                return Result<string>.Failure(new Error(ResponseMessages.InvalidOldPassword));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error validating old password for UserId: {UserId}", command.UserId);
             return Result<string>.Failure(new Error(ResponseMessages.InvalidOldPassword));
         }
 

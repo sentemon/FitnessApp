@@ -19,7 +19,7 @@ public class Username
         Value = value;
     }
 
-    public static Username Create(string value) => new (value);
+    public static Username Create(string value) => new (value.ToLower());
 
     public override string ToString() => Value;
 }

@@ -56,33 +56,22 @@ export class SettingsComponent implements OnInit {
     if (this.profileForm.invalid) return;
     this.loading = true;
 
-    const formData = new FormData();
-    formData.append('firstName', this.profileForm.value.firstName);
-    formData.append('lastName', this.profileForm.value.lastName);
-    formData.append('username', this.profileForm.value.username);
-    formData.append('email', this.profileForm.value.email);
-    if (this.profileForm.value.password) {
-      formData.append('password', this.profileForm.value.password);
-    }
-    if (this.selectedAvatar) {
-      formData.append('avatar', this.selectedAvatar);
-    }
+    console.log(this.selectedAvatar)
 
-    this.userService.update(formData).subscribe({
-      next: () => {
-        this.loading = false;
-        alert('Profile updated successfully!');
-      },
-      error: () => {
-        this.loading = false;
-        alert('Failed to update profile!');
-      }
+    this.userService.update(
+      this.profileForm.value.firstName,
+      this.profileForm.value.lastName,
+      this.profileForm.value.username,
+      this.profileForm.value.email,
+      this.selectedAvatar!
+    ).subscribe(result => {
+      console.log(result);
     });
   }
 
   deleteAccount() {
     if (confirm('Are you sure you want to delete?')) {
-      this.userService.deleteUser().subscribe(() => {
+      this.userService.delete().subscribe(() => {
         alert('Account deleted successfully!');
         // redirect
       });

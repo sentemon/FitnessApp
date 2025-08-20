@@ -13,7 +13,10 @@ import {User} from "../models/user.model";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
 import {Result} from "../../../core/types/result/result.type";
 import {UserDto} from "../models/user-dto.model";
-import {DELETE_USER, FOLLOW, RESET_PASSWORD, UNFOLLOW} from "../graphql/mutations";
+import {DELETE_USER, FOLLOW, RESET_PASSWORD, UNFOLLOW, UPDATE_USER} from "../graphql/mutations";
+import {environment} from "../../../../environments/environment";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {print} from "graphql/language";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ import {DELETE_USER, FOLLOW, RESET_PASSWORD, UNFOLLOW} from "../graphql/mutation
 export class UserService {
   private authClient: ApolloBase;
 
-  constructor(apollo: Apollo) {
+  constructor(apollo: Apollo, private http: HttpClient) {
     this.authClient = apollo.use("auth");
   }
 
@@ -96,8 +99,40 @@ export class UserService {
     );
   }
 
-  update(formData: FormData) {
-    return of();
+  // update(firstName: string, lastName: string, username: string, email: string, image: File | null): Observable<Result<string>> {
+  //   return this.authClient.mutate({
+  //     mutation: UPDATE_USER,
+  //     variables: { firstName, lastName, username, email, image }
+  //   }).pipe(
+  //     toResult<string>('updateUser')
+  //   );
+  // }
+
+  update(firstName: string, lastName: string, username: string, email: string, image: File): Observable<any> {
+    const formData = new FormData();
+
+    const operations = JSON.stringify({
+      query: print(UPDATE_USER),
+      variables: {
+        firstName,
+        lastName,
+        username,
+        email,
+        image: null
+      }
+    });
+
+    const map = JSON.stringify({
+      '0': ['variables.image']
+    });
+
+    formData.append("operations", operations);
+    formData.append("map", map);
+    formData.append('0', image);
+
+    return this.http.post(environment.auth_service, formData, {
+      headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
+    });
   }
 
   resetPassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<Result<string>> {
@@ -109,7 +144,7 @@ export class UserService {
     );
   }
 
-  deleteUser(): Observable<Result<boolean>> {
+  delete(): Observable<Result<boolean>> {
     return this.authClient.mutate({
       mutation: DELETE_USER
     }).pipe(

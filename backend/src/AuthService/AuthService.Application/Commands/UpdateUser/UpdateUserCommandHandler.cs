@@ -28,14 +28,14 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
-        if (command.Id == null)
+        if (command.UserId == null)
         {
             _logger.LogWarning("Update user attempt with null UserId.");
             return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         
         var updatedUser = await _userService.UpdateAsync(
-            command.Id,
+            command.UserId,
             command.UpdateUserDto.FirstName,
             command.UpdateUserDto.LastName,
             command.UpdateUserDto.Username,
@@ -46,7 +46,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
         if (user == null)
         {
-            _logger.LogWarning("Update user attempt with non-existing user ID: {UserId}", command.Id);
+            _logger.LogWarning("Update user attempt with non-existing user ID: {UserId}", command.UserId);
             return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         

@@ -1,8 +1,11 @@
+using HotChocolate.Types;
+
 namespace AuthService.Application.DTOs;
 
 public record UpdateUserDto(
-    string? FirstName,
-    string? LastName,
-    string? Username,
-    string? Email
+    IFile? Image,
+    string FirstName,
+    string LastName,
+    string Username,
+    string Email
 );

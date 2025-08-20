@@ -27,7 +27,8 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddType(new UuidType())
-    .AddType(new UnsignedIntType());
+    .AddType(new UnsignedIntType())
+    .AddType(new UploadType());
     // .AddAuthorization();
 
 builder.Services.AddGraphQL();

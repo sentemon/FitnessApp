@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {Result} from "../../../../core/types/result/result.type";
 
 @Component({
   selector: 'app-reset-password',
@@ -9,9 +10,9 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} f
 })
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
-  errorMessage: string = "";
+  messageResult: Result<string> | null = null;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, formBuilder: FormBuilder) {
     this.resetPasswordForm = formBuilder.group({
       oldPassword: ['', Validators.required, Validators.minLength(6)],
       newPassword: ['', Validators.required, Validators.minLength(6)],
@@ -25,10 +26,12 @@ export class ResetPasswordComponent {
       this.resetPasswordForm.get("newPassword")?.value,
       this.resetPasswordForm.get("confirmNewPassword")?.value
     ).subscribe(result => {
-      if (!result.isSuccess) {
-        this.errorMessage = result.error.message;
-      }
+      this.messageResult = result;
     });
+  }
+
+  get message(): string {
+    return this.messageResult?.isSuccess ? this.messageResult.response : this.messageResult?.error?.message || "";
   }
 
   private passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
@@ -36,5 +39,4 @@ export class ResetPasswordComponent {
     const confirmNewPassword = group.get('confirmNewPassword')?.value;
     return newPassword === confirmNewPassword ? null : { passwordMismatch: true };
   }
-
 }

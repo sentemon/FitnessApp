@@ -11,6 +11,7 @@ import {Result} from "../../../../core/types/result/result.type";
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
   messageResult: Result<string> | null = null;
+  message: string = "";
 
   constructor(private userService: UserService, formBuilder: FormBuilder) {
     this.resetPasswordForm = formBuilder.group({
@@ -27,11 +28,15 @@ export class ResetPasswordComponent {
       this.resetPasswordForm.get("confirmNewPassword")?.value
     ).subscribe(result => {
       this.messageResult = result;
-    });
-  }
 
-  get message(): string {
-    return this.messageResult?.isSuccess ? this.messageResult.response : this.messageResult?.error?.message || "";
+      if (!result.isSuccess) {
+        this.message = result.error.message;
+        return;
+      }
+
+      this.message = result.response;
+      this.resetPasswordForm.reset();
+    });
   }
 
   private passwordMatchValidator(group: AbstractControl): ValidationErrors | null {

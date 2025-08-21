@@ -1,9 +1,9 @@
 using HotChocolate.Types;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace PostService.Application.Extensions;
+namespace Shared.Application.Extensions;
 
-public static class FileExtension
+public static class FileExtensions
 {
     public static string GetContentType(IFile? file)
     {

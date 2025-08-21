@@ -5,7 +5,7 @@ using BlobInfo = FileService.Infrastructure.Models.BlobInfo;
 
 namespace FileService.Infrastructure.Services;
 
-public class AzureBlobStorageService : IAzureBlobStorageService
+public class AzureBlobStorageService : IFileService
 {
     private readonly BlobServiceClient _blobServiceClient;
 

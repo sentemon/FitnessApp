@@ -10,13 +10,13 @@ namespace FileService.Application.Commands.DeletePost;
 
 public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, string>
 {
-    private readonly IAzureBlobStorageService _azureBlobStorageService;
+    private readonly IFileService _fileService;
     private readonly FileDbContext _context;
     private readonly ILogger<DeletePostCommandHandler> _logger;
 
-    public DeletePostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, ILogger<DeletePostCommandHandler> logger)
+    public DeletePostCommandHandler(IFileService fileService, FileDbContext context, ILogger<DeletePostCommandHandler> logger)
     {
-        _azureBlobStorageService = azureBlobStorageService;
+        _fileService = fileService;
         _context = context;
         _logger = logger;
     }
@@ -31,7 +31,7 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand, strin
             return Result<string>.Failure(new Error(ResponseMessages.FileNotFound));
         }
         
-        await _azureBlobStorageService.DeleteAsync(file.BlobName, file.BlobContainerName);
+        await _fileService.DeleteAsync(file.BlobName, file.BlobContainerName);
         
         _context.Remove(file);
         await _context.SaveChangesAsync();

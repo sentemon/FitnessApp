@@ -13,15 +13,15 @@ namespace FileService.Application.Commands.SetUserImage;
 
 public class SetUserImageCommandHandler : ICommandHandler<SetUserImageCommand, File>
 {
-    private readonly IAzureBlobStorageService _azureBlobStorageService;
+    private readonly IFileService _fileService;
     private readonly FileDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IConfiguration _configuration;
     private readonly ILogger<SetUserImageCommandHandler> _logger;
 
-    public SetUserImageCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, IPublishEndpoint publishEndpoint, IConfiguration configuration, ILogger<SetUserImageCommandHandler> logger)
+    public SetUserImageCommandHandler(IFileService fileService, FileDbContext context, IPublishEndpoint publishEndpoint, IConfiguration configuration, ILogger<SetUserImageCommandHandler> logger)
     {
-        _azureBlobStorageService = azureBlobStorageService;
+        _fileService = fileService;
         _context = context;
         _publishEndpoint = publishEndpoint;
         _configuration = configuration;
@@ -48,7 +48,7 @@ public class SetUserImageCommandHandler : ICommandHandler<SetUserImageCommand, F
             return Result<File>.Failure(new Error(ResponseMessages.ContentTypeNull));
         }
         
-        var blobName = await _azureBlobStorageService.UploadAsync(
+        var blobName = await _fileService.UploadAsync(
             BlobContainerNamesConstants.UserAvatars,
             command.FileStream, 
             command.ContentType

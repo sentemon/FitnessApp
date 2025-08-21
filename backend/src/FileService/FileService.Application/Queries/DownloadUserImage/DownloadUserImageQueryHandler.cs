@@ -8,16 +8,16 @@ namespace FileService.Application.Queries.DownloadUserImage;
 
 public class DownloadUserImageQueryHandler : IQueryHandler<DownloadUserImageQuery, BlobInfo>
 {
-    private readonly IAzureBlobStorageService _azureBlobStorageService;
+    private readonly IFileService _fileService;
 
-    public DownloadUserImageQueryHandler(IAzureBlobStorageService azureBlobStorageService)
+    public DownloadUserImageQueryHandler(IFileService fileService)
     {
-        _azureBlobStorageService = azureBlobStorageService;
+        _fileService = fileService;
     }
 
     public async Task<IResult<BlobInfo, Error>> HandleAsync(DownloadUserImageQuery query)
     {
-            var blobInfo = await _azureBlobStorageService.DownloadAsync(query.BlobName, BlobContainerNamesConstants.UserAvatars);
+            var blobInfo = await _fileService.DownloadAsync(query.BlobName, BlobContainerNamesConstants.UserAvatars);
 
             return Result<BlobInfo>.Success(blobInfo);
     }

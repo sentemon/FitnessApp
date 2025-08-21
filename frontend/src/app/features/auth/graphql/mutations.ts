@@ -45,6 +45,20 @@ export const LOGOUT = gql`
   }
 `;
 
+export const UPDATE_USER = gql`
+  mutation UpdateUser($firstName: String!, $lastName: String!, $username: String!, $email: String!, $image: Upload) {
+    updateUser(
+      input: {
+        firstName: $firstName,
+        lastName: $lastName,
+        username: $username,
+        email: $email,
+        image: $image,
+      }
+    )
+  }
+`;
+
 export const UPDATE_ACTIVITY_STATUS = gql`
   mutation UpdateActivityStatus {
     updateActivityStatus
@@ -62,6 +76,16 @@ export const UNFOLLOW = gql`
     unfollow(targetUserId: $targetUserId)
   }
 `;
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($oldPassword: String!, $newPassword: String!, $confirmNewPassword: String!) {
+    resetPassword(
+      oldPassword: $oldPassword,
+      confirmNewPassword: $newPassword,
+      newPassword: $confirmNewPassword
+    )
+  }
+`
 
 export const DELETE_USER = gql`
   mutation DeleteUser {

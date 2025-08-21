@@ -2,7 +2,6 @@ using FileService.Domain.Constants;
 using FileService.Infrastructure.Interfaces;
 using FileService.Persistence;
 using MassTransit;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Common;
@@ -14,15 +13,15 @@ namespace FileService.Application.Commands.UploadPost;
 
 public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
 {
-    private readonly IAzureBlobStorageService _azureBlobStorageService;
+    private readonly IFileService _fileService;
     private readonly FileDbContext _context;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IConfiguration _configuration;
     private readonly ILogger<UploadPostCommandHandler> _logger;
 
-    public UploadPostCommandHandler(IAzureBlobStorageService azureBlobStorageService, FileDbContext context, IPublishEndpoint publishEndpoint, IConfiguration configuration, ILogger<UploadPostCommandHandler> logger)
+    public UploadPostCommandHandler(IFileService fileService, FileDbContext context, IPublishEndpoint publishEndpoint, IConfiguration configuration, ILogger<UploadPostCommandHandler> logger)
     {
-        _azureBlobStorageService = azureBlobStorageService;
+        _fileService = fileService;
         _context = context;
         _publishEndpoint = publishEndpoint;
         _configuration = configuration;
@@ -49,7 +48,7 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
             return Result<File>.Failure(new Error(ResponseMessages.ContentTypeNull));
         }
         
-        var blobName = await _azureBlobStorageService.UploadAsync(
+        var blobName = await _fileService.UploadAsync(
             BlobContainerNamesConstants.PostPhotos,
             command.UploadPostFileDto.FileStream, 
             command.UploadPostFileDto.ContentType
@@ -70,8 +69,10 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,
-            $"{host}/file/files/{blobName}"
+            $"{host}/file/files/posts/{blobName}"
         ));
+        
+        _logger.LogInformation("Post file uploaded successfully. FileId: {FileId}, BlobName: {BlobName}", file.Id, blobName);
 
         return Result<File>.Success(file);
     }

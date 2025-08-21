@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +16,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -56,35 +58,25 @@ export class SettingsComponent implements OnInit {
     if (this.profileForm.invalid) return;
     this.loading = true;
 
-    const formData = new FormData();
-    formData.append('firstName', this.profileForm.value.firstName);
-    formData.append('lastName', this.profileForm.value.lastName);
-    formData.append('username', this.profileForm.value.username);
-    formData.append('email', this.profileForm.value.email);
-    if (this.profileForm.value.password) {
-      formData.append('password', this.profileForm.value.password);
-    }
-    if (this.selectedAvatar) {
-      formData.append('avatar', this.selectedAvatar);
-    }
-
-    this.userService.update(formData).subscribe({
-      next: () => {
+    this.userService.update(
+      this.profileForm.value.firstName,
+      this.profileForm.value.lastName,
+      this.profileForm.value.username,
+      this.profileForm.value.email,
+      this.selectedAvatar
+    ).subscribe(result => {
+      if (result.isSuccess) {
         this.loading = false;
-        alert('Profile updated successfully!');
-      },
-      error: () => {
-        this.loading = false;
-        alert('Failed to update profile!');
       }
     });
   }
 
   deleteAccount() {
     if (confirm('Are you sure you want to delete?')) {
-      this.userService.deleteUser().subscribe(() => {
-        alert('Account deleted successfully!');
-        // redirect
+      this.userService.delete().subscribe(result => {
+        if (result.response) {
+          this.router.navigate(['/']);
+        }
       });
     }
   }

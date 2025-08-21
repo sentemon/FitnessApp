@@ -42,7 +42,7 @@ public class UserService : IUserService
             keycloakUser.LastName,
             keycloakUser.Username,
             keycloakUser.Email
-            );
+        );
 
         return user;
     }

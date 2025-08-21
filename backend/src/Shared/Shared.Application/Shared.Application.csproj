@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+      <PackageReference Include="HotChocolate.Types.Scalars.Upload" Version="14.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />

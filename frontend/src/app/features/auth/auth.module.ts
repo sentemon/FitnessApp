@@ -11,6 +11,7 @@ import {SearchComponent} from "./componets/search/search.component";
 import { FollowersListComponent } from './componets/followers-list/followers-list.component';
 import {FollowingListComponent} from "./componets/following-list/following-list.component";
 import { SettingsComponent } from './componets/settings/settings.component';
+import { ResetPasswordComponent } from './componets/reset-password/reset-password.component';
 
 
 
@@ -23,7 +24,8 @@ import { SettingsComponent } from './componets/settings/settings.component';
     SearchComponent,
     FollowersListComponent,
     FollowingListComponent,
-    SettingsComponent
+    SettingsComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

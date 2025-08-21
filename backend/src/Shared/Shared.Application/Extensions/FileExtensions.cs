@@ -1,9 +1,9 @@
 using HotChocolate.Types;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace PostService.Application.Extensions;
+namespace Shared.Application.Extensions;
 
-public static class FileExtension
+public static class FileExtensions
 {
     public static string GetContentType(IFile? file)
     {
@@ -19,5 +19,13 @@ public static class FileExtension
         }
         
         return contentType;
+    }
+    
+    public static byte[] ReadFully(Stream? input)
+    { 
+        using var ms = new MemoryStream();
+        input?.CopyTo(ms);
+        
+        return ms.ToArray();
     }
 }

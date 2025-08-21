@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.Application.Extensions;
 using Shared.DTO;
 using Shared.DTO.Messages;
 
@@ -28,14 +29,14 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
     public async Task<IResult<string, Error>> HandleAsync(UpdateUserCommand command)
     {
-        if (command.Id == null)
+        if (command.UserId == null)
         {
             _logger.LogWarning("Update user attempt with null UserId.");
             return Result<string>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         
         var updatedUser = await _userService.UpdateAsync(
-            command.Id,
+            command.UserId,
             command.UpdateUserDto.FirstName,
             command.UpdateUserDto.LastName,
             command.UpdateUserDto.Username,
@@ -46,7 +47,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
 
         if (user == null)
         {
-            _logger.LogWarning("Update user attempt with non-existing user ID: {UserId}", command.Id);
+            _logger.LogWarning("Update user attempt with non-existing user ID: {UserId}", command.UserId);
             return Result<string>.Failure(new Error(ResponseMessages.UserNotFound));
         }
         
@@ -58,7 +59,7 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         );
         
         await _context.SaveChangesAsync();
-
+        
         await _publishEndpoint.Publish(new UserUpdatedEventMessage(
             user.Id,
             user.FirstName,
@@ -66,6 +67,17 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
             user.Username.Value,
             user.ImageUrl
         ));
+        
+        if (!string.IsNullOrWhiteSpace(command.UpdateUserDto.Image?.Name))
+        {
+            await _publishEndpoint.Publish(new UserSetImageEventMessage(
+                FileExtensions.ReadFully(command.UpdateUserDto.Image?.OpenReadStream()),
+                FileExtensions.GetContentType(command.UpdateUserDto.Image),
+                user.Id
+            ));
+            
+            _logger.LogInformation("User image updated for UserId: {UserId}", user.Id);
+        }
         
         _logger.LogInformation("User {UserId} updated successfully.", user.Id);
         return Result<string>.Success(ResponseMessages.UserUpdatedSuccessfully);

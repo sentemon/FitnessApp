@@ -56,6 +56,16 @@ public class User
         Email = email != null ? Email.Create(email) : Email;
         ImageUrl = imageUrl ?? ImageUrl;
     }
+    
+    public void SetImageUrl(string imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+        {
+            throw new ArgumentException("Image URL cannot be null or empty.", nameof(imageUrl));
+        }
+        
+        ImageUrl = imageUrl;
+    }
 
     public void VerifyEmail()
     {

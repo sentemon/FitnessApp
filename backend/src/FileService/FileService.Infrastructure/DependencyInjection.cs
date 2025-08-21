@@ -14,7 +14,7 @@ public static class DependencyInjection
         var azureStorageConnectionString = configuration.GetConnectionString(AppSettingsConstants.AzureStorageConnectionString);
         
         services.AddSingleton(new BlobServiceClient(azureStorageConnectionString));
-        services.AddSingleton<IAzureBlobStorageService, AzureBlobStorageService>();
+        services.AddSingleton<IFileService, AzureBlobStorageService>();
         
         return services;
     }

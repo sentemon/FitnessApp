@@ -23,6 +23,7 @@ public static class DependencyInjection
         {
             busConfigurator.AddConsumer<PostUploadEventConsumer>();
             busConfigurator.AddConsumer<PostDeletedEventConsumer>();
+            busConfigurator.AddConsumer<UserSetImageEventConsumer>();
             
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {

@@ -8,16 +8,16 @@ namespace FileService.Application.Queries.DownloadPost;
 
 public class DownloadPostQueryHandler : IQueryHandler<DownloadPostQuery, BlobInfo>
 {
-    private readonly IAzureBlobStorageService _azureBlobStorageService;
+    private readonly IFileService _fileService;
 
-    public DownloadPostQueryHandler(IAzureBlobStorageService azureBlobStorageService)
+    public DownloadPostQueryHandler(IFileService fileService)
     {
-        _azureBlobStorageService = azureBlobStorageService;
+        _fileService = fileService;
     }
 
     public async Task<IResult<BlobInfo, Error>> HandleAsync(DownloadPostQuery query)
     {
-        var blobInfo = await _azureBlobStorageService.DownloadAsync(query.BlobName, BlobContainerNamesConstants.PostPhotos);
+        var blobInfo = await _fileService.DownloadAsync(query.BlobName, BlobContainerNamesConstants.PostPhotos);
 
         return Result<BlobInfo>.Success(blobInfo);
     }

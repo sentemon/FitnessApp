@@ -28,12 +28,14 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
 
     public async Task<IResult<KeycloakTokenResponse, Error>> HandleAsync(RegisterCommand command)
     {
+        var username = command.RegisterDto.Username.Trim().ToLower();
+        
         var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username.Value == command.RegisterDto.Username || u.Email.Value == command.RegisterDto.Email);
+            .FirstOrDefaultAsync(u => u.Username.Value == username || u.Email.Value == command.RegisterDto.Email);
 
         if (existingUser is not null)
         {
-            if (existingUser.Username.Value == command.RegisterDto.Username)
+            if (existingUser.Username.Value == username)
             {
                 _logger.LogWarning("Registration attempt with existing username: {Username}", command.RegisterDto.Username);
                 return Result<KeycloakTokenResponse>.Failure(new Error("Username already exists."));
@@ -49,7 +51,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, KeycloakT
         var user = await _authService.RegisterAsync(
             command.RegisterDto.FirstName,
             command.RegisterDto.LastName,
-            command.RegisterDto.Username, 
+            username, 
             command.RegisterDto.Email,
             command.RegisterDto.Password
         );

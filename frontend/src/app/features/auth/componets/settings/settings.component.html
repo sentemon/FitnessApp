@@ -27,15 +27,12 @@
       <input type="email" formControlName="email">
     </label>
 
-    <label>
-      New Password
-      <input type="password" formControlName="password">
-    </label>
-
     <button type="submit" [disabled]="loading || profileForm.invalid">Save</button>
   </form>
 
   <hr>
+
+  <button class="change-password" [routerLink]="'/profile/reset-password'">Change Password</button>
 
   <button class="delete-btn" (click)="deleteAccount()">Delete Account</button>
 </div>

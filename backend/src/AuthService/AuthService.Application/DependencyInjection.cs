@@ -1,4 +1,5 @@
 using System.Reflection;
+using AuthService.Application.Consumers;
 using AuthService.Domain.Constants;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ public static class DependencyInjection
         
         services.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.AddConsumer<UserImageSetEventConsumer>();
+            
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
                 configurator.Host(rabbitMqHost, host =>

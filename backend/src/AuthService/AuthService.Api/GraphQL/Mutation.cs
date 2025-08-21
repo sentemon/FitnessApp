@@ -75,10 +75,10 @@ public class Mutation
         return result.Response;
     }
 
-    public async Task<string> ResetPassword(string newPassword, [Service] ResetPasswordCommandHandler resetPasswordCommandHandler)
+    public async Task<string> ResetPassword(string oldPassword, string confirmNewPassword, string newPassword, [Service] ResetPasswordCommandHandler resetPasswordCommandHandler)
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var command = new ResetPasswordCommand(userId, newPassword);
+        var command = new ResetPasswordCommand(userId, oldPassword, newPassword, confirmNewPassword);
         var result = await resetPasswordCommandHandler.HandleAsync(command);
 
         if (!result.IsSuccess)

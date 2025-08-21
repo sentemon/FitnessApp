@@ -1,5 +1,7 @@
 using FileService.Application;
+using FileService.Application.Commands.SetUserImage;
 using FileService.Application.Queries.DownloadPost;
+using FileService.Application.Queries.DownloadUserImage;
 using FileService.Domain.Constants;
 using FileService.Infrastructure;
 using FileService.Persistence;
@@ -56,11 +58,25 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
-app.MapGet("/files/{blobName}", async (string blobName, DownloadPostQueryHandler downloadPostQueryHandler) =>
+app.MapGet("/files/posts/{blobName}", async (string blobName, DownloadPostQueryHandler downloadPostQueryHandler) =>
 {
     var command = new DownloadPostQuery(blobName);
 
     var result = await downloadPostQueryHandler.HandleAsync(command);
+
+    if (!result.IsSuccess)
+    {
+        return Results.NotFound(result.Error.Message);
+    }
+
+    return Results.File(result.Response.Content, result.Response.ContentType);
+});
+
+app.MapGet("/files/users/{blobName}", async (string blobName, DownloadUserImageQueryHandler downloadUserImageQueryHandler) =>
+{
+    var command = new DownloadUserImageQuery(blobName);
+
+    var result = await downloadUserImageQueryHandler.HandleAsync(command);
 
     if (!result.IsSuccess)
     {

@@ -2,7 +2,6 @@ using FileService.Domain.Constants;
 using FileService.Infrastructure.Interfaces;
 using FileService.Persistence;
 using MassTransit;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Common;
@@ -70,8 +69,10 @@ public class UploadPostCommandHandler : ICommandHandler<UploadPostCommand, File>
         
         await _publishEndpoint.Publish(new PostUploadedEventMessage(
             file.ForeignEntityId,
-            $"{host}/file/files/{blobName}"
+            $"{host}/file/files/posts/{blobName}"
         ));
+        
+        _logger.LogInformation("Post file uploaded successfully. FileId: {FileId}, BlobName: {BlobName}", file.Id, blobName);
 
         return Result<File>.Success(file);
     }

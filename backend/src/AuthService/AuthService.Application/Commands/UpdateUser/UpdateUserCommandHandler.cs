@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
+using Shared.Application.Extensions;
 using Shared.DTO;
 using Shared.DTO.Messages;
 
@@ -58,7 +59,13 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         );
         
         await _context.SaveChangesAsync();
-
+        
+        await _publishEndpoint.Publish(new UserSetImageEventMessage(
+            FileExtensions.ReadFully(command.UpdateUserDto.Image?.OpenReadStream()),
+            FileExtensions.GetContentType(command.UpdateUserDto.Image),
+            user.Id
+        ));
+        
         await _publishEndpoint.Publish(new UserUpdatedEventMessage(
             user.Id,
             user.FirstName,

@@ -20,4 +20,12 @@ public static class FileExtensions
         
         return contentType;
     }
+    
+    public static byte[] ReadFully(Stream? input)
+    { 
+        using var ms = new MemoryStream();
+        input?.CopyTo(ms);
+        
+        return ms.ToArray();
+    }
 }

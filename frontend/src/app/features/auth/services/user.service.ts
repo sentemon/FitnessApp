@@ -108,10 +108,16 @@ export class UserService {
   //   );
   // }
 
-  update(firstName: string, lastName: string, username: string, email: string, image: File): Observable<any> {
+  update(
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
+    image: File | null
+  ): Observable<any> {
     const formData = new FormData();
 
-    const operations = JSON.stringify({
+    const operations = {
       query: print(UPDATE_USER),
       variables: {
         firstName,
@@ -120,20 +126,23 @@ export class UserService {
         email,
         image: null
       }
-    });
+    };
 
-    const map = JSON.stringify({
-      '0': ['variables.image']
-    });
+    formData.append("operations", JSON.stringify(operations));
 
-    formData.append("operations", operations);
-    formData.append("map", map);
-    formData.append('0', image);
+    if (image) {
+      const map = { "0": ["variables.image"] };
+      formData.append("map", JSON.stringify(map));
+      formData.append("0", image);
+    } else {
+      formData.append("map", JSON.stringify({}));
+    }
 
     return this.http.post(environment.auth_service, formData, {
-      headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
+      headers: new HttpHeaders().set("GraphQL-Preflight", "true")
     });
   }
+
 
   resetPassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<Result<string>> {
     return this.authClient.mutate({

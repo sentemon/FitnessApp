@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +16,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -56,24 +58,25 @@ export class SettingsComponent implements OnInit {
     if (this.profileForm.invalid) return;
     this.loading = true;
 
-    console.log(this.selectedAvatar)
-
     this.userService.update(
       this.profileForm.value.firstName,
       this.profileForm.value.lastName,
       this.profileForm.value.username,
       this.profileForm.value.email,
-      this.selectedAvatar!
+      this.selectedAvatar
     ).subscribe(result => {
-      console.log(result);
+      if (result.isSuccess) {
+        this.loading = false;
+      }
     });
   }
 
   deleteAccount() {
     if (confirm('Are you sure you want to delete?')) {
-      this.userService.delete().subscribe(() => {
-        alert('Account deleted successfully!');
-        // redirect
+      this.userService.delete().subscribe(result => {
+        if (result.response) {
+          this.router.navigate(['/']);
+        }
       });
     }
   }

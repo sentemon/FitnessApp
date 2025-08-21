@@ -60,12 +60,6 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
         
         await _context.SaveChangesAsync();
         
-        await _publishEndpoint.Publish(new UserSetImageEventMessage(
-            FileExtensions.ReadFully(command.UpdateUserDto.Image?.OpenReadStream()),
-            FileExtensions.GetContentType(command.UpdateUserDto.Image),
-            user.Id
-        ));
-        
         await _publishEndpoint.Publish(new UserUpdatedEventMessage(
             user.Id,
             user.FirstName,
@@ -73,6 +67,17 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
             user.Username.Value,
             user.ImageUrl
         ));
+        
+        if (!string.IsNullOrWhiteSpace(command.UpdateUserDto.Image?.Name))
+        {
+            await _publishEndpoint.Publish(new UserSetImageEventMessage(
+                FileExtensions.ReadFully(command.UpdateUserDto.Image?.OpenReadStream()),
+                FileExtensions.GetContentType(command.UpdateUserDto.Image),
+                user.Id
+            ));
+            
+            _logger.LogInformation("User image updated for UserId: {UserId}", user.Id);
+        }
         
         _logger.LogInformation("User {UserId} updated successfully.", user.Id);
         return Result<string>.Success(ResponseMessages.UserUpdatedSuccessfully);

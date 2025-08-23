@@ -1,6 +1,7 @@
 using AuthService.Domain.Constants;
 using AuthService.Domain.Entities;
-using AuthService.Infrastructure.Interfaces;
+using AuthService.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Abstractions;
 using Shared.Application.Common;
@@ -9,12 +10,12 @@ namespace AuthService.Application.Queries.GetUserById;
 
 public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
 {
-    private readonly IUserService _userService;
+    private readonly AuthDbContext _context;
     private readonly ILogger<GetUserByIdQueryHandler> _logger;
 
-    public GetUserByIdQueryHandler(IUserService userService, ILogger<GetUserByIdQueryHandler> logger)
+    public GetUserByIdQueryHandler(AuthDbContext context, ILogger<GetUserByIdQueryHandler> logger)
     {
-        _userService = userService;
+        _context = context;
         _logger = logger;
     }
 
@@ -26,7 +27,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User>
             return Result<User>.Failure(new Error(ResponseMessages.UserIdIsNull));
         }
         
-        var user = await _userService.GetByIdAsync(query.Id);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == query.Id);
 
         if (user == null)
         {

@@ -55,7 +55,8 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, strin
             command.UpdateUserDto.FirstName,
             command.UpdateUserDto.LastName,
             command.UpdateUserDto.Username,
-            command.UpdateUserDto.Email
+            command.UpdateUserDto.Email,
+            command.UpdateUserDto.Bio
         );
         
         await _context.SaveChangesAsync();

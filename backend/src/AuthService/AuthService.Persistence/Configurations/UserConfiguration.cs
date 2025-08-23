@@ -39,6 +39,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(u => u.EmailVerified)
             .IsRequired();
+        
+        builder.Property(u => u.Bio)
+            .HasMaxLength(512)
+            .IsRequired();
 
         builder.Property(u => u.FollowingCount)
             .HasDefaultValue(0)

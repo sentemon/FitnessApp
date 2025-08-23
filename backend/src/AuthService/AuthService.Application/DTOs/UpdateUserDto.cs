@@ -7,5 +7,6 @@ public record UpdateUserDto(
     string FirstName,
     string LastName,
     string Username,
-    string Email
+    string Email,
+    string Bio
 );

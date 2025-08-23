@@ -142,6 +142,9 @@ public class Mutation
             throw new GraphQLException(new Error(result.Error.Message));
         }
 
+        DeleteCookie("token");
+        DeleteCookie("refreshToken");
+        
         return result.Response;
     }
     

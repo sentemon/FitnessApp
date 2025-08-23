@@ -28,6 +28,7 @@ export class SettingsComponent implements OnInit {
       lastName: ['', [Validators.required]],
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      bio: ['', [Validators.maxLength(512)]],
       password: ['', [Validators.minLength(6)]]
     });
 
@@ -40,7 +41,8 @@ export class SettingsComponent implements OnInit {
         firstName: result.response.firstName,
         lastName: result.response.lastName,
         username: result.response.username.value,
-        email: result.response.email.value
+        email: result.response.email.value,
+        bio: result.response.bio,
       });
       this.avatarPreview = result.response.imageUrl;
     });
@@ -65,6 +67,7 @@ export class SettingsComponent implements OnInit {
       this.profileForm.value.lastName,
       this.profileForm.value.username,
       this.profileForm.value.email,
+      this.profileForm.value.bio,
       this.selectedAvatar
     ).subscribe(result => {
       if (result.isSuccess) {

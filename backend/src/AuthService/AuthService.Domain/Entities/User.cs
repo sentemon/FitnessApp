@@ -10,6 +10,7 @@ public class User
     public Username Username { get; private set; }
     public Email Email { get; private set; }
     public bool EmailVerified { get; private set; }
+    public string Bio { get; private set; }
     public DateTime LastSeenAt { get; private set; }
     public string ImageUrl { get; private set; }
     public uint FollowingCount { get; private set; }
@@ -27,6 +28,7 @@ public class User
         Username = username;
         Email = email;
         EmailVerified = false;
+        Bio = string.Empty;
         LastSeenAt = DateTime.UtcNow;
         ImageUrl = imageUrl ?? string.Empty;
     }
@@ -48,12 +50,13 @@ public class User
         );
     }
 
-    public void Update(string? firstName, string? lastName, string? username, string? email, string? imageUrl = null)
+    public void Update(string? firstName, string? lastName, string? username, string? email, string? bio, string? imageUrl = null)
     {
         FirstName = firstName ?? FirstName;
         LastName = lastName ?? LastName;
         Username = username != null ? Username.Create(username) : Username;
         Email = email != null ? Email.Create(email) : Email;
+        Bio = bio ?? Bio;
         ImageUrl = imageUrl ?? ImageUrl;
     }
     

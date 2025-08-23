@@ -113,6 +113,7 @@ export class UserService {
     lastName: string,
     username: string,
     email: string,
+    bio: string,
     image: File | null
   ): Observable<any> {
     const formData = new FormData();
@@ -124,6 +125,7 @@ export class UserService {
         lastName,
         username,
         email,
+        bio,
         image: null
       }
     };

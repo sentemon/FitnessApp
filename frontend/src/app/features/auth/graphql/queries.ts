@@ -12,6 +12,7 @@ export const GET_CURRENT_USER = gql`
       email {
         value
       }
+      bio
       lastSeenAt
       imageUrl
       followersCount
@@ -29,6 +30,7 @@ export const GET_USER_BY_USERNAME = gql`
       lastName
       username
       email
+      bio
       lastSeenAt
       imageUrl
       followersCount
@@ -50,6 +52,7 @@ export const SEARCH_USERS = gql`
       lastName
       username
       email
+      bio
       lastSeenAt
       imageUrl
     }
@@ -65,6 +68,7 @@ export const GET_FOLLOWERS = gql`
       username {
         value
       }
+      bio
       lastSeenAt
       imageUrl
       createdAt
@@ -81,6 +85,7 @@ export const GET_FOLLOWING = gql`
       username {
         value
       }
+      bio
       lastSeenAt
       imageUrl
       createdAt

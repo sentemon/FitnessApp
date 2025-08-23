@@ -202,7 +202,7 @@ services:
     command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
     restart: always
     volumes:
-      - azurite-data:/data
+      - ./azurite-data:/data
     environment:
       - AZURITE_ACCOUNTS=sentemon:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
     networks:
@@ -240,5 +240,4 @@ services:
 
 volumes:
   postgres-data:
-  azurite-data:
   seq-data:

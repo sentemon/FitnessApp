@@ -7,7 +7,13 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build --prod
+
+ARG ENVIRONMENT
+RUN if [ "$ENVIRONMENT" = "Production" ]; then \
+      npm run build -- --configuration=production; \
+    else \
+      npm run build -- --configuration=development; \
+    fi
 
 FROM nginx:1.21.3-alpine
 

@@ -35,6 +35,7 @@ public class GetUserByUsernameQueryHandler : IQueryHandler<GetUserByUsernameQuer
             user.LastName,
             user.Username.Value,
             string.Empty,
+            user.Bio,
             user.LastSeenAt,
             user.ImageUrl,
             user.FollowingCount,

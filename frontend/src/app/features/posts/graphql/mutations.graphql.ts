@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const CREATE_POST = `
+export const CREATE_POST = gql`
   mutation CreatePost($title: String!, $description: String!, $contentType: ContentType! $file: Upload) {
     createPost(input: {
       title: $title,

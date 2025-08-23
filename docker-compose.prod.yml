@@ -239,6 +239,7 @@ services:
       - AZURITE_ACCOUNTS=${AZURITE_ACCOUNTS}
     volumes:
       - azurite-data:/data
+      - /home/ubuntu/FitnessApp/azurite-data:/data
     networks:
       - microservices
 
@@ -278,7 +279,6 @@ services:
 
 volumes:
   postgres-data:
-  azurite-data:
   nginx-certs:
   nginx-vhost:
   nginx-html:

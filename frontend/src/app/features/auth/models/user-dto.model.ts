@@ -3,6 +3,7 @@ export interface UserDto {
   firstName: string;
   lastName: string;
   username: string;
+  bio: string;
   lastSeenAt: Date
   imageUrl: string;
   followersCount: number;

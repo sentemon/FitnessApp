@@ -10,6 +10,7 @@ import {CREATE_POST, DELETE_POST} from "../graphql/mutations.graphql";
 import {environment} from "../../../../environments/environment";
 import {Result} from "../../../core/types/result/result.type";
 import {toResult} from "../../../core/extensions/graphql-result-wrapper";
+import {print} from "graphql/language";
 
 @Injectable({
   providedIn: 'root'
@@ -102,11 +103,11 @@ export class PostService {
     );
   }
 
-  createPost(title: string, description: string, contentType: ContentType, contentFile: File): Observable<any> {
+  createPost(title: string, description: string, contentType: ContentType, contentFile: File | null): Observable<any> {
     const formData = new FormData();
 
     const operations = JSON.stringify({
-      query: CREATE_POST,
+      query: print(CREATE_POST),
       variables: {
         title: title,
         description: description,
@@ -115,14 +116,15 @@ export class PostService {
       },
     });
 
-    const map = JSON.stringify({
-      '0': ['variables.file']
-    });
-
     formData.append("operations", operations);
-    formData.append("map", map);
 
-    formData.append('0', contentFile);
+    if (contentFile) {
+      const map = { '0': ['variables.file'] };
+      formData.append("map", JSON.stringify(map));
+      formData.append('0', contentFile);
+    } else {
+      formData.append("map", JSON.stringify({}));
+    }
 
     return this.http.post(environment.post_service, formData, {
       headers: new HttpHeaders().set('GraphQL-Preflight', 'true')
@@ -130,6 +132,7 @@ export class PostService {
   }
 
   addPost(newPost: Post): void {
+    console.log(newPost);
     this.postsSubject.next([newPost, ...this.postsSubject.value]);
   }
 

@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
 export class CreatePostComponent {
   postForm!: FormGroup;
   protected contentTypes = ContentType;
-  private file!: File;
+  private file: File | null = null;
 
   private url!: string;
 
@@ -27,7 +27,7 @@ export class CreatePostComponent {
 
   submitPost() {
     this.postService.createPost(this.title, this.description, this.contentType, this.file).subscribe(response => {
-      this.postService.addPost({ ...response, contentUrl: this.contentUrl });
+      this.postService.addPost({ ...response.data.createPost });
       this.router.navigate(["/"]);
     });
   }

@@ -26,6 +26,7 @@ public class UserTests
         user.Username.Value.Should().Be(username);
         user.Email.Value.Should().Be(email);
         user.EmailVerified.Should().BeFalse();
+        user.Bio.Should().BeEmpty();
         user.ImageUrl.Should().BeEmpty();
     }
 
@@ -45,10 +46,11 @@ public class UserTests
         var newLastName = "Example New Last Name";
         var newUsername = "newusername";
         var newEmail = "newemail@example.com";
+        var newBio = "This is a new bio.";
         var imageUrl = "https://example.com/image.jpg";
         
         // Act 
-        user.Update(newFirstName, newLastName, newUsername,newEmail, imageUrl);
+        user.Update(newFirstName, newLastName, newUsername,newEmail, newBio, imageUrl);
         
         // Assert
         user.FirstName.Should().Be(newFirstName);
@@ -56,6 +58,7 @@ public class UserTests
         user.Username.Value.Should().Be(newUsername);
         user.Email.Value.Should().Be(newEmail);
         user.EmailVerified.Should().BeFalse();
+        user.Bio.Should().Be(newBio);
         user.ImageUrl.Should().Be(imageUrl);
     }
 

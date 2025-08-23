@@ -3,6 +3,7 @@ using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PostService.Application.Commands.AddPost;
 using PostService.Application.Consumers;
 using PostService.Domain.Constants;
 using Shared.Application.Extensions;
@@ -27,6 +28,7 @@ public static class DependencyInjection
             busConfigurator.AddConsumer<UserCreatedEventConsumer>();
             busConfigurator.AddConsumer<UserUpdatedEventConsumer>();
             busConfigurator.AddConsumer<UserDeletedEventConsumer>();
+            busConfigurator.AddRequestClient<AddPostCommandHandler>();
             
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {

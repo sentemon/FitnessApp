@@ -10,9 +10,9 @@ COPY . .
 
 ARG ENVIRONMENT
 RUN if [ "$ENVIRONMENT" = "Production" ]; then \
-      npm run build --prod; \
+      npm run build -- --configuration=production; \
     else \
-      npm run build; \
+      npm run build -- --configuration=development; \
     fi
 
 FROM nginx:1.21.3-alpine

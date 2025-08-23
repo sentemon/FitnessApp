@@ -27,52 +27,13 @@ export class PostService {
     let first = 10;
     let lastPostId = "4bb6a384-e0d7-43df-844f-efb017c02d7d";
 
-    let existingPosts: Post[] = [
-      {
-        commentCount: 4,
-        contentType: ContentType.Image,
-        contentUrl: "https://www.istockphoto.com/resources/images/PhotoFTLP/P5-NOV-iStock-2158268393.jpg", // No Copyright
-        createdAt: new Date(),
-        description: "the men play football",
-        id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
-        likeCount: 56,
-        title: "Title",
-        username: "example",
-        userImageUrl: "assets/profile.svg"
-      },
-      {
-        commentCount: 34,
-        contentType: ContentType.Image,
-        contentUrl: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg", // No Copyright
-        createdAt: new Date(2024, 10, 20),
-        description: "I love swimming!",
-        id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
-        likeCount: 193,
-        title: "",
-        username: "example",
-        userImageUrl: "assets/profile.svg"
-      },
-      {
-        commentCount: 91,
-        contentType: ContentType.Image,
-        contentUrl: "https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg", // No Copyright
-        createdAt: new Date(2024, 10, 19),
-        description: "Yesterday's challenge was great",
-        id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
-        likeCount: 393,
-        title: "Title",
-        username: "example",
-        userImageUrl: "http://localhost:8000/file/files/1d7ce09a-e88b-424f-854c-516b739426dd"
-      }
-    ];
-
     this.postClient.query({
       query: GET_ALL_POSTS,
       variables: { first, lastPostId }
     }).pipe(
       toResult<Post[]>("allPost"),
       tap(result => {
-        let posts = existingPosts.concat(result.response!);
+        let posts = this.existingPosts.concat(result.response!);
 
         posts.forEach(post => this.addPost(post));
       })
@@ -132,7 +93,6 @@ export class PostService {
   }
 
   addPost(newPost: Post): void {
-    console.log(newPost);
     this.postsSubject.next([newPost, ...this.postsSubject.value]);
   }
 
@@ -148,4 +108,43 @@ export class PostService {
       toResult<string>("deletePost")
     );
   }
+
+  private existingPosts: Post[] = [
+    {
+      commentCount: 4,
+      contentType: ContentType.Image,
+      contentUrl: "https://www.istockphoto.com/resources/images/PhotoFTLP/P5-NOV-iStock-2158268393.jpg", // No Copyright
+      createdAt: new Date(),
+      description: "the men play football",
+      id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
+      likeCount: 56,
+      title: "Title",
+      username: "example",
+      userImageUrl: "assets/profile.svg"
+    },
+    {
+      commentCount: 34,
+      contentType: ContentType.Image,
+      contentUrl: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg", // No Copyright
+      createdAt: new Date(2024, 10, 20),
+      description: "I love swimming!",
+      id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
+      likeCount: 193,
+      title: "",
+      username: "example",
+      userImageUrl: "assets/profile.svg"
+    },
+    {
+      commentCount: 91,
+      contentType: ContentType.Image,
+      contentUrl: "https://images.pexels.com/photos/248547/pexels-photo-248547.jpeg", // No Copyright
+      createdAt: new Date(2024, 10, 19),
+      description: "Yesterday's challenge was great",
+      id: "215e4b41-b712-46e2-87a1-9fec01899c7d",
+      likeCount: 393,
+      title: "Title",
+      username: "example",
+      userImageUrl: "assets/profile.svg"
+    }
+  ];
 }

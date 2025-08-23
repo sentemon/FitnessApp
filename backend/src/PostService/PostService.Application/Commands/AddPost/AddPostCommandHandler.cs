@@ -18,15 +18,15 @@ namespace PostService.Application.Commands.AddPost;
 public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
 {
     private readonly PostDbContext _context;
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IRequestClient<PostUploadEventMessage> _client;
     private readonly ILogger<AddPostCommandHandler> _logger;
     
     private readonly IValidator<CreatePostDto> _validator;
 
-    public AddPostCommandHandler(PostDbContext context, IPublishEndpoint publishEndpoint, ILogger<AddPostCommandHandler> logger)
+    public AddPostCommandHandler(PostDbContext context, IRequestClient<PostUploadEventMessage> client, ILogger<AddPostCommandHandler> logger)
     {
         _context = context;
-        _publishEndpoint = publishEndpoint;
+        _client = client;
         _logger = logger;
 
         _validator = new CreatePostValidator();
@@ -55,7 +55,6 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
             var post = CreatePostForSpecifiedType(command, user.Id);
             
             _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
 
             if (command.CreatePost.ContentType == ContentType.Text && command.CreatePost.File != null ||
                 command.CreatePost.ContentType != ContentType.Text && command.CreatePost.File == null)
@@ -67,12 +66,17 @@ public class AddPostCommandHandler : ICommandHandler<AddPostCommand, PostDto>
 
             var fileContentType = FileExtensions.GetContentType(command.CreatePost.File);
 
-            await _publishEndpoint.Publish(new PostUploadEventMessage(
+            var response = await _client.GetResponse<PostUploadedEventMessage>(new PostUploadEventMessage(
                 FileExtensions.ReadFully(command.CreatePost.File?.OpenReadStream()),
                 fileContentType,
                 post.Id,
                 post.UserId
             ));
+
+            _logger.LogInformation("Post upload event processed successfully for PostId: {PostId}, UserId: {UserId}", response.Message.PostId, post.UserId);
+            
+            post.SetContentUrl(response.Message.ContentUrl);
+            await _context.SaveChangesAsync();
         
             var postDto = new PostDto(
                 post.Id,

@@ -38,5 +38,7 @@ public class PostUploadEventConsumer : IConsumer<PostUploadEventMessage>
             _logger.LogError("Failed to upload post file for PostId: {PostId}, UserId: {UserId}. Error: {ErrorMessage}", @event.PostId, @event.UserId, result.Error.Message);
             throw new Exception($"Failed to upload post file: {result.Error.Message}");
         }
+
+        await context.RespondAsync(result.Response);
     }
 }

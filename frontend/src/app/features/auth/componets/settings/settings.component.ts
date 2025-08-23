@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {UserService} from "../../services/user.service";
+import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -17,6 +18,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -75,7 +77,7 @@ export class SettingsComponent implements OnInit {
     if (confirm('Are you sure you want to delete?')) {
       this.userService.delete().subscribe(result => {
         if (result.response) {
-          this.router.navigate(['/']);
+          this.authService.logout().subscribe(() => this.router.navigate(['/']));
         }
       });
     }

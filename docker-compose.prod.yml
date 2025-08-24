@@ -3,9 +3,9 @@ networks:
     driver: bridge
 
 services:
-  frontend:
-    container_name: frontend
-    image: sentemon/frontend:latest
+  frontend-angular:
+    container_name: frontend-angular
+    image: sentemon/frontend-angular:latest
     restart: unless-stopped
     environment:
       - VIRTUAL_HOST=sentemon.me,www.sentemon.me

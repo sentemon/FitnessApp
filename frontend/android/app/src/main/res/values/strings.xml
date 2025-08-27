@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FitnessApp</string>
+    <string name="title_activity_main">FitnessApp</string>
+    <string name="package_name">me.sentemon.fitnessapp</string>
+    <string name="custom_url_scheme">me.sentemon.fitnessapp</string>
+</resources>

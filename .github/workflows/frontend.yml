@@ -1,10 +1,10 @@
-name: Frontend Angular CI Pipeline
+name: Frontend CI Pipeline
 
 on:
   push:
     paths:
-      - frontend/angular/** 
-      - .github/workflows/frontend-angular.yml
+      - frontend/**
+      - .github/workflows/frontend.yml
     branches:
       - master
       - develop

@@ -3,10 +3,10 @@ networks:
     driver: bridge
 
 services:
-  frontend-angular:
-    container_name: frontend-angular
+  frontend:
+    container_name: frontend
     build:
-      context: ./frontend/angular
+      context: ./frontend
       dockerfile: Dockerfile
       args:
         ENVIRONMENT: Development

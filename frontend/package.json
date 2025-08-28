@@ -23,6 +23,7 @@
     "@capacitor/angular": "^2.0.3",
     "@capacitor/core": "latest",
     "@capacitor/ios": "^7.4.3",
+    "@capacitor/preferences": "^7.0.2",
     "@microsoft/signalr": "^8.0.7",
     "@primeng/themes": "^19.0.5",
     "apollo-angular": "^8.0.0",

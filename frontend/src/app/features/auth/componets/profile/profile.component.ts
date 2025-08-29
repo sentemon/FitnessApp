@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     this.authService.logout().subscribe(() => {
       this.router.navigate(["/"]).then(() => window.location.reload());
     });

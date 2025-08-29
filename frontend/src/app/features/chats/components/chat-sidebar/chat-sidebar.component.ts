@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
-import {CookieService} from "../../../../core/services/cookie.service";
+import {StorageService} from "../../../../core/services/storage.service";
 import {FormControl} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
@@ -27,8 +27,8 @@ export class ChatSidebarComponent implements OnInit {
     private chatService: ChatService,
     private userService: UserService,
     private dateService: DateService,
-    cookieService: CookieService) {
-    this.currentUsername = cookieService.get("username").response!;
+    storageService: StorageService) {
+    this.currentUsername = storageService.getUsername().response!;
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),

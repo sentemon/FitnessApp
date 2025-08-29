@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {CookieService} from "../../../core/services/cookie.service";
+import {StorageService} from "../../../core/services/storage.service";
 import {UserService} from "../../../features/auth/services/user.service";
 
 @Component({

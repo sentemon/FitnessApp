@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../services/chat.service";
-import {CookieService} from "../../../core/services/cookie.service";
+import {StorageService} from "../../../core/services/storage.service";
 import {DeviceService} from "../../../core/services/device.service";
 
 @Component({
@@ -48,7 +48,7 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private cookieService: CookieService,
+    private storageService: StorageService,
     protected deviceService: DeviceService,
     private route: ActivatedRoute,
     private router: Router
@@ -70,7 +70,7 @@ export class ChatComponent implements OnInit {
   }
 
   onUserSelected(userId: string) {
-    const currentUserId = this.cookieService.get("userId").response!;
+    const currentUserId = this.storageService.getUserId().response!;
 
     this.chatService.getAll().subscribe(result => {
       if (!result.isSuccess) return;

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +15,16 @@ import {AuthInterceptor} from "./core/services/auth.interceptor";
 import {WorkoutsModule} from "./features/workouts/workouts.module";
 import {FormsModule} from "@angular/forms";
 import {ChatsModule} from "./features/chats/chats.module";
+import {StorageService} from "./core/services/storage.service";
+import {ActivityStatusService} from "./features/auth/services/activity-status.service";
+
+export function initStorage(service: StorageService) {
+  return () => service.init();
+}
+
+export function initActivity(service: ActivityStatusService) {
+  return () => service.init();
+}
 
 @NgModule({
   declarations: [
@@ -41,6 +51,18 @@ import {ChatsModule} from "./features/chats/chats.module";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      deps: [StorageService],
+      useFactory: initStorage,
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      deps: [ActivityStatusService],
+      useFactory: initActivity,
       multi: true,
     }
   ],

@@ -234,11 +234,10 @@ services:
     restart: always
     ports:
       - 10000:10000
-    command: "azurite --blobHost 0.0.0.0 --blobPort 10000"
+    command: "azurite --blobHost 0.0.0.0 --blobPort 10000 --location /data --debug /data/debug.log"
     environment:
       - AZURITE_ACCOUNTS=${AZURITE_ACCOUNTS}
     volumes:
-      - azurite-data:/data
       - /home/ubuntu/FitnessApp/azurite-data:/data
     networks:
       - microservices

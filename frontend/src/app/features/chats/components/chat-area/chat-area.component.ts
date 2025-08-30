@@ -13,7 +13,7 @@ import {Chat} from "../../models/chat.model";
 import {ChatService} from "../../services/chat.service";
 import {Message} from "../../models/message.model";
 import {SignalRService} from "../../services/signalr.service";
-import {CookieService} from "../../../../core/services/cookie.service";
+import {StorageService} from "../../../../core/services/storage.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {DeviceService} from "../../../../core/services/device.service";
@@ -27,7 +27,7 @@ import {DateService} from "../../../../core/services/date.service";
 export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   selectedChat: Chat | null = null;
-  currentUserId: string;
+  currentUserId: string | null = null;
   searchQuery: string = '';
   content: string = '';
 
@@ -39,22 +39,26 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
   constructor(
     private chatService: ChatService,
     private signalRService: SignalRService,
-    private cookieService: CookieService,
+    private storageService: StorageService,
     private dateService: DateService,
     protected deviceService: DeviceService,
     private router: Router,
   ) {
-    this.currentUserId = this.cookieService.get("userId").response!;
+    const result = this.storageService.getUserId();
+
+    if (result.isSuccess) {
+      this.currentUserId = result.response;
+    }
   }
 
   ngOnInit(): void {
     if (this.selectedChatId) {
-      const token = this.cookieService.get("token").response!;
+      const token = this.storageService.getAccessToken().response!;
       this.tryLoadChat();
       this.signalRService.stopConnection();
       this.signalRService.startConnection(this.selectedChatId, token);
     } else if (this.receiverId) {
-      const token = this.cookieService.get("token").response!;
+      const token = this.storageService.getAccessToken().response!;
       this.signalRService.stopConnection();
       this.signalRService.startTempConnection(this.receiverId, token);
     }
@@ -154,7 +158,7 @@ export class ChatAreaComponent implements OnInit, OnChanges, AfterViewChecked, O
     this.chatService.getById(this.selectedChatId).subscribe(result => {
       if (result.isSuccess) {
         this.selectedChat = structuredClone(result.response);
-        const token = this.cookieService.get("token").response!;
+        const token = this.storageService.getAccessToken().response!;
         this.signalRService.startConnection(this.selectedChat.id, token);
       } else {
         console.log(result.error.message);

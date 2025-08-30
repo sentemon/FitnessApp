@@ -8,17 +8,18 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
+import {StorageService} from "../../../../core/services/storage.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './../auth.scss'
+  styleUrl: '../auth.scss'
 })
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string = "";
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private authService: AuthService, private storageService: StorageService, private formBuilder: FormBuilder, private router: Router) {
     this.registerForm = this.formBuilder.group({
       firstName: ['', [
         Validators.required,
@@ -57,9 +58,10 @@ export class RegisterComponent {
         this.registerForm.value.username,
         this.registerForm.value.email,
         this.registerForm.value.password
-      ).subscribe(result => {
+      ).subscribe(async result => {
         if (result.isSuccess) {
-          this.router.navigate(["/"]);
+          await this.storageService.init();
+          await this.router.navigate(["/"]);
         } else {
           this.errorMessage = result.error.message;
         }

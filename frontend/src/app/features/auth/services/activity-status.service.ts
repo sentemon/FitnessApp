@@ -14,7 +14,9 @@ export class ActivityStatusService {
 
   constructor(apollo: Apollo) {
     this.authClient = apollo.use("auth");
+  }
 
+  init() {
     const handler = this.onActivity.bind(this);
 
     document.addEventListener('mousemove', handler);

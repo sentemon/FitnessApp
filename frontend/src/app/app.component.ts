@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {AuthService} from "./features/auth/services/auth.service";
 import {environment} from "../environments/environment";
-import {ActivityStatusService} from "./features/auth/services/activity-status.service";
+import {PlatformService} from "./core/services/platform.service";
 
 @Component({
   selector: 'app-root',
@@ -11,9 +11,10 @@ import {ActivityStatusService} from "./features/auth/services/activity-status.se
 export class AppComponent {
   constructor(
     protected authService: AuthService,
-    private activityStatusService: ActivityStatusService
+    platformService: PlatformService,
   ) {
     console.log("Production", environment.production);
+    console.log("Platform is web", platformService.isWeb());
   }
 
   title = 'Fitness App';

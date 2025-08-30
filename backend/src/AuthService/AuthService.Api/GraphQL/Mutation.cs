@@ -201,7 +201,6 @@ public class Mutation
             SameSite = SameSiteMode.None,
             MaxAge = TimeSpan.FromSeconds(expiresInSeconds)
         });
-        Console.WriteLine("Domain: " + _configuration[AppSettingsConstants.Domain]);
     }
 
     private void DeleteCookie(string name)

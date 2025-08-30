@@ -14,10 +14,9 @@ builder.Services
         options.AddPolicy(CorsConstants.CorsPolicy, policyBuilder =>
         {
             policyBuilder
-                // .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
-                //     "Allowed Origin URLs are not configured."))
-                // .AllowCredentials()
-                .AllowAnyOrigin()
+                .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
+                    "Allowed Origin URLs are not configured."))
+                .AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

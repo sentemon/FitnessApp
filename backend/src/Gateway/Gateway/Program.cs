@@ -16,8 +16,8 @@ builder.Services
             policyBuilder
                 // .WithOrigins(allowedOrigins ?? throw new ArgumentNullException(nameof(allowedOrigins),
                 //     "Allowed Origin URLs are not configured."))
+                // .AllowCredentials()
                 .AllowAnyOrigin()
-                .AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

@@ -107,13 +107,13 @@ export class AuthService {
   }
 
   private async setUserCookies(accessToken: string, refreshToken: string): Promise<void> {
-    await this.storageService.set("token", accessToken, 1);
-    await this.storageService.set("refreshToken", refreshToken, 1);
+    await this.storageService.set("token", accessToken, 7);
+    await this.storageService.set("refreshToken", refreshToken, 7);
 
     this.userService.getCurrentUser().subscribe(async result => {
       if (result.isSuccess) {
-        await this.storageService.set("userId", result.response.id, 1);
-        await this.storageService.set("username", result.response.username.value, 1);
+        await this.storageService.set("userId", result.response.id, 7);
+        await this.storageService.set("username", result.response.username.value, 7);
       }
     });
   }
